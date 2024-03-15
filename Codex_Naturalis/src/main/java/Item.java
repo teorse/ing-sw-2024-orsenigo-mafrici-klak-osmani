@@ -1,0 +1,1 @@
+public enum Item {INKWELL,MANUSCRIPT,QUILL,NULL}
