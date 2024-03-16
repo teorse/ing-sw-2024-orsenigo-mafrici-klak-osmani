@@ -2,7 +2,9 @@ public class CardPlacement {
     private ResourceCard card;
     private Coords coordinates;
     private boolean isFaceUp;
-    private boolean[] cornerVisibility;//if true corner is visible, if false corner is covered by card
+
+    //if true corner is visible, if false corner is covered by card. Same disposition as Corner Class
+    private boolean[] cornerVisibility;
 
     //Constructor
     //setVisibility(boolean, int)

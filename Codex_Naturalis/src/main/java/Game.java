@@ -6,7 +6,6 @@ public class Game {
     private Deck goldenDeck;
     private Deck resourcesDeck;
     private ArrayList<ObjectiveCard> objectives;
-
     private GoldenCard goldenCardVisible1;
     private GoldenCard goldenCardVisible2;
     private ResourceCard resourceCardVisible1;
