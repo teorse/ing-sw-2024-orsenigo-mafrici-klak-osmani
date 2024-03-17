@@ -3,13 +3,29 @@ public class ResourceCard {
     //Corner[0] is corner NW on card.
     //All other corners follow clockwise.
     private Resource resource;
-    int givedPoint;
+    int givesPoint;
 
     //Constructor
-    public ResourceCard(Resource resource, int givedPoints, Corner[] corners){
+    public ResourceCard(Resource resource, int givesPoints, Corner[] corners){
         this.resource = resource;
-        this.givedPoint = givedPoints;
+        this.givesPoint = givesPoints;
         this.corners = corners;
     }
-    //getter methods next
+
+    public ResourceCard(){};
+
+
+    //getter methods
+
+    public Corner[] getCorners() {
+        return corners;
+    }
+
+    public Resource getResource() {
+        return resource;
+    }
+
+    public int getGivesPoint() {
+        return givesPoint;
+    }
 }

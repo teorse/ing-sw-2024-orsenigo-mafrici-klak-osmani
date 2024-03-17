@@ -8,4 +8,9 @@ public class StarterCard extends ResourceCard{
         this.centralResources = centralResources;
     }
     //get method
+
+
+    public Map<Resource, Integer> getCentralResources() {
+        return centralResources;
+    }
 }

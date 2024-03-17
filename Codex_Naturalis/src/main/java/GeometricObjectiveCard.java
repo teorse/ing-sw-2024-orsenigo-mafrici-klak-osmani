@@ -8,4 +8,14 @@ public class GeometricObjectiveCard implements ObjectiveCard{
         return description;
     }
     //constructor and get methods next
+
+
+    public GeometricObjectiveCard(String description, Map<Integer[], Resource> cardPattern) {
+        this.description = description;
+        this.cardPattern = cardPattern;
+    }
+
+    public Map<Integer[], Resource> getCardPattern() {
+        return cardPattern;
+    }
 }

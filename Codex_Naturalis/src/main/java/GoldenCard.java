@@ -11,4 +11,17 @@ public class GoldenCard extends ResourceCard{
         this.constraint = constraint;
     }
     //get methods next
+
+
+    public boolean isRequiresCorner() {
+        return requiresCorner;
+    }
+
+    public Item getRequiredItem() {
+        return requiredItem;
+    }
+
+    public Map<Resource, Integer> getConstraint() {
+        return constraint;
+    }
 }
