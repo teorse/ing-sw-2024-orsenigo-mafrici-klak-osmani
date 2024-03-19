@@ -28,9 +28,15 @@ public class Deck {
     //Pop card
 
     public ResourceCard popCard(ArrayList<ResourceCard> deck){
+
+        ResourceCard resourceCard = new ResourceCard();
+
         // 1. Pop the first card from the deck
         //TODO: Check the validity of the remove method.
-        return deck.remove(cardsLeft(deck) - 1);
+        resourceCard = deck.removeFirst();
+
+
+        return resourceCard;
     }
 
 

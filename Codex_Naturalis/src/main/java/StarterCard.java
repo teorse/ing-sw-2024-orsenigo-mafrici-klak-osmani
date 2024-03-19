@@ -1,6 +1,6 @@
 import java.util.Map;
 
-public class StarterCard extends ResourceCard{
+public class StarterCard extends Card {
     private Map<Resource, Integer> centralResources;
 
     public StarterCard(Resource resource, int givedPoints, Corner[] corners, Map<Resource, Integer> centralResources) {
