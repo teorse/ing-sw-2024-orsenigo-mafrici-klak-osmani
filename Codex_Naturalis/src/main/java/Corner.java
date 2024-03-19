@@ -49,11 +49,8 @@ public class Corner {
         this.item = item;
     }
 
-
-    //Getters
-
     /**
-     * Retruns Enum value of CornerType.
+     * Returns Enum value of CornerType.
      * @return  Enum value of CornerType.
      */
     public CornerType getCornerType() {

@@ -3,4 +3,4 @@
  * Other objects will reference this class when dealing with Resources.
  */
 
-public enum Resource {ANIMAL,FUNGI,INSECT,PLANT,NULL}
+public enum Resource {ANIMAL,FUNGI,INSECT,PLANT}

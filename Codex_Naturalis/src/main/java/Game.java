@@ -29,19 +29,19 @@ public class Game {
     /**
      * First visible Golden Card.
      */
-    private GoldenCard goldenCardVisible1;
+    private CardGolden cardGoldenVisible1;
     /**
      * Second visible Golden Card.
      */
-    private GoldenCard goldenCardVisible2;
+    private CardGolden cardGoldenVisible2;
     /**
      * First visible Resource Card.
      */
-    private Card resourceCardVisible1;
+    private CardResource resourceCardVisible1;
     /**
      * Second visible Resource Card.
      */
-    private Card resourceCardVisible2;
+    private CardResource resourceCardVisible2;
     /**
      * First shared objective.
      */
@@ -92,39 +92,39 @@ public class Game {
 
     /**
      * Method to access the first visible golden card.
-     * @return  GoldenCard goldenCardVisible1.
+     * @return  CardGolden cardGoldenVisible1.
      */
-    public GoldenCard getGoldenCardVisible1() {
-        return goldenCardVisible1;
+    public CardGolden getGoldenCardVisible1() {
+        return cardGoldenVisible1;
     }
 
     /**
      * Method to set the first visible golden card.
-     * @param goldenCardVisible1    GoldenCard card to be set as new goldenCardVisible1.
+     * @param cardGoldenVisible1    CardGolden card to be set as new cardGoldenVisible1.
      */
-    public void setGoldenCardVisible1(GoldenCard goldenCardVisible1) {
-        this.goldenCardVisible1 = goldenCardVisible1;
+    public void setGoldenCardVisible1(CardGolden cardGoldenVisible1) {
+        this.cardGoldenVisible1 = cardGoldenVisible1;
     }
 
     /**
      * Method to access the second visible golden card.
-     * @return  GoldenCard goldenCardVisible2.
+     * @return  CardGolden cardGoldenVisible2.
      */
-    public GoldenCard getGoldenCardVisible2() {
-        return goldenCardVisible2;
+    public CardGolden getGoldenCardVisible2() {
+        return cardGoldenVisible2;
     }
 
     /**
      * Method to set the second visible golden card.
-     * @param goldenCardVisible2    GoldenCard card to be set as new goldenCardVisible2.
+     * @param cardGoldenVisible2    CardGolden card to be set as new cardGoldenVisible2.
      */
-    public void setGoldenCardVisible2(GoldenCard goldenCardVisible2) {
-        this.goldenCardVisible2 = goldenCardVisible2;
+    public void setGoldenCardVisible2(CardGolden cardGoldenVisible2) {
+        this.cardGoldenVisible2 = cardGoldenVisible2;
     }
 
     /**
      * Method to access the first visible resource card.
-     * @return  ResourceCard resourceCardVisible1.
+     * @return  CardResource resourceCardVisible1.
      */
     public Card getResourceCardVisible1() {
         return resourceCardVisible1;
@@ -132,15 +132,15 @@ public class Game {
 
     /**
      * Method to set the first visible resource card.
-     * @param resourceCardVisible1    ResourceCard card to be set as new resourceCardVisible1.
+     * @param resourceCardVisible1    CardResource card to be set as new resourceCardVisible1.
      */
-    public void setResourceCardVisible1(Card resourceCardVisible1) {
+    public void setResourceCardVisible1(CardResource resourceCardVisible1) {
         this.resourceCardVisible1 = resourceCardVisible1;
     }
 
     /**
      * Method to access the second visible resource card.
-     * @return  ResourceCard resourceCardVisible2.
+     * @return  CardResource resourceCardVisible2.
      */
     public Card getResourceCardVisible2() {
         return resourceCardVisible2;
@@ -148,9 +148,9 @@ public class Game {
 
     /**
      * Method to set the second visible resource card.
-     * @param resourceCardVisible2    ResourceCard card to be set as new resourceCardVisible1.
+     * @param resourceCardVisible2    CardResource card to be set as new resourceCardVisible1.
      */
-    public void setResourceCardVisible2(Card resourceCardVisible2) {
+    public void setResourceCardVisible2(CardResource resourceCardVisible2) {
         this.resourceCardVisible2 = resourceCardVisible2;
     }
 

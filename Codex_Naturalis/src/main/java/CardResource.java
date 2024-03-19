@@ -1,9 +1,9 @@
 /**
- * The ResourceCard class is the most common implementation of the Card class in the game.<br>
+ * The CardResource class is the most common implementation of the Card class in the game.<br>
  * Resource Cards always have a resource and some of them can give points when placed.
  */
 
-public class ResourceCard extends Card{
+public class CardResource extends Card{
     /**
      * Indicates the type of resource this card represents.<br>
      * It is used by the GUI and CLI to determine the color of the card.<br>
@@ -23,7 +23,7 @@ public class ResourceCard extends Card{
      * @param corners   Array containing the corners of the card.
      * @param resource  Resource type of the card. Allowed values are: ANIMAL,FUNGI,INSECT,PLANT.
      */
-    public ResourceCard(Corner[] corners, Resource resource) {
+    public CardResource(Corner[] corners, Resource resource) {
         super(corners);
         this.resource = resource;
         this.points = 0;
@@ -36,7 +36,7 @@ public class ResourceCard extends Card{
      * @param resource  Resource type of the card. Allowed values are: ANIMAL,FUNGI,INSECT,PLANT.
      * @param points    Points awarded by playing the card Face-Up.
      */
-    public ResourceCard(Corner[] corners, Resource resource, int points) {
+    public CardResource(Corner[] corners, Resource resource, int points) {
         super(corners);
         this.resource = resource;
         this.points = points;
