@@ -28,29 +28,17 @@ public class Game {
      */
     private List<Objective> objectives;
     /**
-     * First visible Golden Card.
+     * ArrayList containing the visible golden cards.
      */
-    private CardGolden cardGoldenVisible1;
+    private List<CardGolden> cardGoldenVisible = new ArrayList<>(2);
     /**
-     * Second visible Golden Card.
+     * ArrayList containing the visible resource cards.
      */
-    private CardGolden cardGoldenVisible2;
+    private List<CardResource> cardResourceVisible = new ArrayList<>(2);
     /**
-     * First visible Resource Card.
+     * List containing shared objectives.
      */
-    private CardResource resourceCardVisible1;
-    /**
-     * Second visible Resource Card.
-     */
-    private CardResource resourceCardVisible2;
-    /**
-     * First shared objective.
-     */
-    private Objective objectiveVisible1;
-    /**
-     * Second shared objective.
-     */
-    private Objective objectiveVisible2;
+    private List<Objective> objectivesShared = new ArrayList<>(2);
 
     /**
      * Default Constructor.<br>
@@ -60,7 +48,7 @@ public class Game {
      * @param resourcesDeck Deck of Resource Cards.
      * @param objectives    ArrayList of Objectives.
      */
-    public Game(ArrayList<Player> players, Deck goldenDeck, Deck resourcesDeck, ArrayList<Objective> objectives) {
+    public Game(List<Player> players, Deck goldenDeck, Deck resourcesDeck, List<Objective> objectives) {
         this.players = players;
         this.goldenDeck = goldenDeck;
         this.resourcesDeck = resourcesDeck;
@@ -92,99 +80,57 @@ public class Game {
     }
 
     /**
-     * Method to access the first visible golden card.
+     * Returns the visible golden card at position "index" without removing it from the List.
+     * @param index position in List of card to be returned.
      * @return  CardGolden cardGoldenVisible1.
      */
-    public CardGolden getGoldenCardVisible1() {
-        return cardGoldenVisible1;
+    public CardGolden getCardGoldenVisible(int index) {
+        return cardGoldenVisible.get(index);
     }
 
     /**
-     * Method to set the first visible golden card.
-     * @param cardGoldenVisible1    CardGolden card to be set as new cardGoldenVisible1.
+     * Method to set the visible golden card at position "index" in the List.
+     * @param card      CardGolden card to be set as new cardGoldenVisible1.
+     * @param index     position in List of card to be set.
      */
-    public void setGoldenCardVisible1(CardGolden cardGoldenVisible1) {
-        this.cardGoldenVisible1 = cardGoldenVisible1;
+    public void setCardGoldenVisible(CardGolden card, int index) {
+        this.cardGoldenVisible.set(index, card);
     }
 
     /**
-     * Method to access the second visible golden card.
-     * @return  CardGolden cardGoldenVisible2.
+     * Returns the visible resource card at position "index" without removing it from the List.
+     * @param index position in List of card to be returned.
+     * @return  CardGolden cardGoldenVisible1.
      */
-    public CardGolden getGoldenCardVisible2() {
-        return cardGoldenVisible2;
+    public CardResource getCardResourceVisible(int index) {
+        return cardResourceVisible.get(index);
     }
 
     /**
-     * Method to set the second visible golden card.
-     * @param cardGoldenVisible2    CardGolden card to be set as new cardGoldenVisible2.
+     * Method to set the visible resource card at position "index" in the List.
+     * @param card      CardResource card to be set as new cardGoldenVisible1.
+     * @param index     position in List of card to be set.
      */
-    public void setGoldenCardVisible2(CardGolden cardGoldenVisible2) {
-        this.cardGoldenVisible2 = cardGoldenVisible2;
+    public void setCardResourceVisible(CardResource card, int index) {
+        this.cardResourceVisible.set(index, card);
     }
 
     /**
-     * Method to access the first visible resource card.
-     * @return  CardResource resourceCardVisible1.
+     * Returns the shared objective at position "index" without removing it from the List.
+     * @param index position in List of objective to be returned.
+     * @return  Objective shared objective at position "index" in List.
      */
-    public Card getResourceCardVisible1() {
-        return resourceCardVisible1;
+    public Objective getObjectivesShared(int index) {
+        return objectivesShared.get(index);
     }
 
     /**
-     * Method to set the first visible resource card.
-     * @param resourceCardVisible1    CardResource card to be set as new resourceCardVisible1.
+     * Method to set shared objective at position "index" in the List.
+     * @param objective     Objective to be set in List at position "index".
+     * @param index         Position in List to set.
      */
-    public void setResourceCardVisible1(CardResource resourceCardVisible1) {
-        this.resourceCardVisible1 = resourceCardVisible1;
-    }
-
-    /**
-     * Method to access the second visible resource card.
-     * @return  CardResource resourceCardVisible2.
-     */
-    public Card getResourceCardVisible2() {
-        return resourceCardVisible2;
-    }
-
-    /**
-     * Method to set the second visible resource card.
-     * @param resourceCardVisible2    CardResource card to be set as new resourceCardVisible1.
-     */
-    public void setResourceCardVisible2(CardResource resourceCardVisible2) {
-        this.resourceCardVisible2 = resourceCardVisible2;
-    }
-
-    /**
-     * Method to access the first visible Objective.
-     * @return  Objective objectiveVisible1.
-     */
-    public Objective getObjectiveVisible1() {
-        return objectiveVisible1;
-    }
-
-    /**
-     * Method to set the first visible objective.
-     * @param objectiveVisible1    Objective to be set as new objectiveVisible1.
-     */
-    public void setObjectiveVisible1(Objective objectiveVisible1) {
-        this.objectiveVisible1 = objectiveVisible1;
-    }
-
-    /**
-     * Method to access the second visible Objective.
-     * @return  Objective objectiveVisible2.
-     */
-    public Objective getObjectiveVisible2() {
-        return objectiveVisible2;
-    }
-
-    /**
-     * Method to set the second visible objective.
-     * @param objectiveVisible2    Objective to be set as new objectiveVisible1.
-     */
-    public void setObjectiveVisible2(Objective objectiveVisible2) {
-        this.objectiveVisible2 = objectiveVisible2;
+    public void setObjectivesShared(Objective objective, int index) {
+        this.objectivesShared.set(index, objective);
     }
 
     /**
@@ -207,7 +153,7 @@ public class Game {
     /**
      * Increments by 1 the counter for rounds played.
      */
-    public void increaseRoundsCompleted(){
+    public void incrementRoundsCompleted(){
         this.roundsCompleted++;
     }
 }
