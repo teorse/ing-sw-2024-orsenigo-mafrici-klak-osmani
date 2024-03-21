@@ -3,12 +3,13 @@
  */
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
     /**
      * Array containing players taking part to this game session.
      */
-    private ArrayList<Player> players;
+    private List<Player> players;
     /**
      * Stores number of rounds completed by the table.<br>
      * Does not count the round in progress
@@ -25,7 +26,7 @@ public class Game {
     /**
      * Array that initially stores all possible objectives.
      */
-    private ArrayList<Objective> objectives;
+    private List<Objective> objectives;
     /**
      * First visible Golden Card.
      */
@@ -86,7 +87,7 @@ public class Game {
      * Method to access the Objectives ArrayList.
      * @return  ArrayList of Objectives.
      */
-    public ArrayList<Objective> getObjectives() {
+    public List<Objective> getObjectives() {
         return objectives;
     }
 
@@ -191,7 +192,7 @@ public class Game {
      * Can be used to then manipulate the Array by updating information about the players.
      * @return ArrayList of participating players.
      */
-    public ArrayList<Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 

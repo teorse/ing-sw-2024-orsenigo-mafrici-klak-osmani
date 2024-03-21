@@ -5,6 +5,7 @@
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Player {
@@ -27,7 +28,7 @@ public class Player {
     /**
      * ArrayList containing the cards being held by the player.
      */
-    private ArrayList<Card> cardsHeld;
+    private List<Card> cardsHeld;
     /**
      * HashMap storing the information about the cards previously placed during the game by the player.
      */
@@ -35,7 +36,7 @@ public class Player {
     /**
      * An ArrayList containing all the allowed coordinates where the player can place his cards.
      */
-    private ArrayList<Coordinates> availablePlacements;
+    private List<Coordinates> availablePlacements;
     /**
      * A map that is functionally a counter for the Resources currently held by the player.
      */
@@ -103,7 +104,7 @@ public class Player {
      * Method to get the ArrayList with the cards currently held by the player.
      * @return ArrayList with cards held by player.
      */
-    public ArrayList<Card> getCardsHeld() {
+    public List<Card> getCardsHeld() {
         return cardsHeld;
     }
 
@@ -119,7 +120,7 @@ public class Player {
      * Method to get ArrayList with coordinates currently available for placement.
      * @return ArrayList of Coordinates available for placement.
      */
-    public ArrayList<Coordinates> getAvailablePlacements() {
+    public List<Coordinates> getAvailablePlacements() {
         return availablePlacements;
     }
 

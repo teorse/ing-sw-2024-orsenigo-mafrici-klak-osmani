@@ -4,19 +4,20 @@
  */
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Deck {
     /**
      * It's the ArrayList that stores the card part of the deck.
      */
-    private ArrayList<Card> deck;
+    private List<Card> deck;
 
     /**
      * Default Constructor.<br>
      * Defines a deck by taking as parameter the ArrayList which is to be turned into the deck.
      * @param deck  ArrayList of Cards to be turned into a deck.
      */
-    public Deck(ArrayList<Card> deck) {
+    public Deck(List<Card> deck) {
         this.deck = deck;
     }
 
