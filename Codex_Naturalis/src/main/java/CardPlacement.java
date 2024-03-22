@@ -1,9 +1,8 @@
 /**
- * This class will store all the "positional" information of played cards.<br>
- * When any card is played a new object of this class will be instanced and linked to it
- * storing all the information about that card that is contextual to the current game.<br>
- * The class stores the following information about the card it is linked to:<br>
- * -Visibility of the corners (
+ * This class is instanced before playing a card, it stores information about how a card is being played specifically
+ * if it's been placed face up or face down and the visibility of its corners when it's being placed and when it will be
+ * covered by other cards.
+ * This class is then stored in the CardMap.
  */
 
 public class CardPlacement {
@@ -12,13 +11,9 @@ public class CardPlacement {
      */
     private Card card;
     /**
-     * Coordinates of the card relative to the Starter Card [0,0].
-     */
-    private Coordinates coordinates;
-    /**
      * Face orientation of the card, if true the card has been placed Face-up.
      */
-    private boolean isFaceUp;
+    private boolean faceUp;
     /**
      *Stores information about the visibility of each of the card's corners.<br>
      *If true, the corner is visible, if false, the corner is covered and not visible.<br>
@@ -33,23 +28,28 @@ public class CardPlacement {
 
     /**
      * Default Constructor.<br>
-     * Needs the card it's associated with, its coordinates object, its face orientation and
-     * an Array with the visibility of its corners.
-     * @param card              Card it is associated with.
-     * @param coordinates       Coordinates object with coordinates of card placement.
-     * @param isFaceUp          Face orientation of the card.
-     * @param cornerVisibility  Array with visibility for each corner.
+     * Stores information about card's face orientation and sets all corners' visibility to true as by the game's
+     * definition when placing a card it can only be placed on top of other cards meaning all of its corners will be visible.
+     * @param card              Card this instance of CardPlacement is being instanced for.
+     * @param faceUp            Boolean face orientation of the card, if true card is placed face-up.
      */
-    public CardPlacement(Card card, Coordinates coordinates, boolean isFaceUp, boolean[] cornerVisibility) {
+    public CardPlacement(Card card, boolean faceUp) {
         this.card = card;
-        this.coordinates = coordinates;
-        this.isFaceUp = isFaceUp;
-        this.cornerVisibility = cornerVisibility;
+        this.faceUp = faceUp;
+        for(int i = 0; i<4; i++)
+            this.cornerVisibility[i] = true;
     }
 
     /**
-     * Method to update corner visibility once a card has been placed and has then been
-     * covered by another card.
+     * Returns the card associated with this placement data.
+     * @return  Card object this placement data is associated to.
+     */
+    public Card getCard() {
+        return card;
+    }
+
+    /**
+     * Method to update corner visibility once a corner gets covered by a new card being placed on top of it.
      * @param index Position of the corner in the Array
      * @param value Value of visibility flag: true corner is visible, false corner is covered.
      */
@@ -62,11 +62,12 @@ public class CardPlacement {
     }
 
     /**
-     * Returns the card associated with this placement data.
-     * @return  Card object this placement data is associated to.
+     * Returns visibility value of specified corner.
+     * @param index int index of corner in the Array cornerVisibility to be returned.
+     * @return      boolean value of corner at specified index in Array.
      */
-    public Card getCard() {
-        return card;
+    public boolean getCornerVisibility(int index) {
+        return cornerVisibility[index];
     }
 
     /**
@@ -74,22 +75,6 @@ public class CardPlacement {
      * @return Boolean isFaceUp. if true the face is up, if false the face is covered.
      */
     public boolean isFaceUp() {
-        return isFaceUp;
-    }
-
-    /**
-     * Returns Array with information about the visibility of the card's corners.
-     * @return  Boolean Array determining the visibility of the card's corners.
-     */
-    public boolean[] getCornerVisibility() {
-        return cornerVisibility;
-    }
-
-    /**
-     * Returns the Coordinates object containing the coordinates of the card.
-     * @return Coordinates object containing the coordinates of the card.
-     */
-    public Coordinates getCoordinates(){
-        return this.coordinates;
+        return faceUp;
     }
 }
