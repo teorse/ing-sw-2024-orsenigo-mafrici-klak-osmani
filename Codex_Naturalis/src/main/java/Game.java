@@ -24,35 +24,51 @@ public class Game {
      */
     private Deck resourcesDeck;
     /**
+     * Stores the deck of Starter Cards,
+     */
+    private Deck starterDeck;
+    /**
      * Array that initially stores all possible objectives.
      */
     private List<Objective> objectives;
     /**
      * ArrayList containing the visible golden cards.
      */
-    private List<CardGolden> cardGoldenVisible = new ArrayList<>(2);
+    private List<Card> cardGoldenVisible = new ArrayList<>();
     /**
      * ArrayList containing the visible resource cards.
      */
-    private List<CardResource> cardResourceVisible = new ArrayList<>(2);
+    private List<Card> cardResourceVisible = new ArrayList<>();
     /**
      * List containing shared objectives.
      */
-    private List<Objective> objectivesShared = new ArrayList<>(2);
+    private List<Objective> objectivesShared = new ArrayList<>();
 
     /**
      * Default Constructor.<br>
-     * Initializes a Game object by taking Players ArrayList, Golden and Resource Deck, and ArrayList of Objectives.
+     * Initializes a Game object by taking Players ArrayList, Golden and Resource Deck, and ArrayList of Objectives.<br>
+     * Automatically
      * @param players       ArrayList of Players.
+     * @param visibleCards  Int number of cards for each type that will be visible to the player next to the decks.
      * @param goldenDeck    Deck of Golden Cards.
      * @param resourcesDeck Deck of Resource Cards.
      * @param objectives    ArrayList of Objectives.
      */
-    public Game(List<Player> players, Deck goldenDeck, Deck resourcesDeck, List<Objective> objectives) {
+    public Game(List<Player> players, int visibleCards, Deck goldenDeck, Deck resourcesDeck, Deck starterDeck, List<Objective> objectives) {
         this.players = players;
         this.goldenDeck = goldenDeck;
         this.resourcesDeck = resourcesDeck;
+        this.starterDeck = starterDeck;
         this.objectives = objectives;
+
+        this.goldenDeck.shuffleDeck();
+        this.resourcesDeck.shuffleDeck();
+        this.starterDeck.shuffleDeck();
+
+        for(int i=0; i<visibleCards; i++);{
+            this.cardGoldenVisible.add(goldenDeck.pop());
+            this.cardResourceVisible.add(resourcesDeck.pop());
+        }
     }
 
     /**
@@ -84,7 +100,7 @@ public class Game {
      * @param index position in List of card to be returned.
      * @return  CardGolden cardGoldenVisible1.
      */
-    public CardGolden getCardGoldenVisible(int index) {
+    public Card getCardGoldenVisible(int index) {
         return cardGoldenVisible.get(index);
     }
 
@@ -102,7 +118,7 @@ public class Game {
      * @param index position in List of card to be returned.
      * @return  CardGolden cardGoldenVisible1.
      */
-    public CardResource getCardResourceVisible(int index) {
+    public Card getCardResourceVisible(int index) {
         return cardResourceVisible.get(index);
     }
 
