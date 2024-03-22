@@ -88,6 +88,14 @@ public class Game {
     }
 
     /**
+     * Method to access the starterDeck.
+     * @return  Deck starterDeck.
+     */
+    public Deck getStarterDeck() {
+        return starterDeck;
+    }
+
+    /**
      * Method to access the Objectives ArrayList.
      * @return  ArrayList of Objectives.
      */
