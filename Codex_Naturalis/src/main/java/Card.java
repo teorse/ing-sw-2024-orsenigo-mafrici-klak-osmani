@@ -32,4 +32,19 @@ public abstract class Card {
     public Corner[] getCorners() {
         return corners;
     }
+
+    //public boolean checkPlacementRequirements(CardMap cardMap)
+    //Returns true if, in the given cardMap, the card could be placed both
+    //face-up and face-down, returns false if the card can only be placed face-down.
+
+    //public Map getResources(boolean faceUp)
+    //returns a map <Resource, Integer> containing the amount of resources depending on if the card has
+    //been played face-up or face-down.
+
+    //public Map getItems(boolean faceUp)
+    //returns a map <Item, Integer> containing the amount of items depending on if the card has
+    //been played face-up or face-down.
+
+    //public int countPoints(CardMap cardMap, Coordinates coordinates, boolean faceUp)
+    //returns amount of points by placing the card at that coordinate in that cardMap.
 }
