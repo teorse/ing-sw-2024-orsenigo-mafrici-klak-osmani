@@ -28,11 +28,11 @@ public class Player {
     /**
      * ArrayList containing the cards being held by the player.
      */
-    private List<Card> cardsHeld;
+    private List<CardPlayability> cardsHeld;
     /**
      * HashMap storing the information about the cards previously placed during the game by the player.
      */
-    private DoubleHashMap cardsPlaced;
+    private NestedMap cardsPlaced;
     /**
      * An ArrayList containing all the allowed coordinates where the player can place his cards.
      */
@@ -104,7 +104,7 @@ public class Player {
      * Method to get the ArrayList with the cards currently held by the player.
      * @return ArrayList with cards held by player.
      */
-    public List<Card> getCardsHeld() {
+    public List<CardPlayability> getCardsHeld() {
         return cardsHeld;
     }
 
@@ -112,7 +112,7 @@ public class Player {
      * Method to get the Hashmap with the placement of the cards played.
      * @return  DoubleHashMap with player's card placement.
      */
-    public DoubleHashMap getCardsPlaced() {
+    public NestedMap getCardsPlaced() {
         return cardsPlaced;
     }
 
