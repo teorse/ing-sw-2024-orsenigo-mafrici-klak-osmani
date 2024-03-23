@@ -29,4 +29,7 @@ public abstract class Objective {
     public String getDescription() {
         return description;
     }
+
+    //public int countPoints(CardMap cardMap){}
+    //counts how many points should be given from this objective in the provided cardMap.
 }

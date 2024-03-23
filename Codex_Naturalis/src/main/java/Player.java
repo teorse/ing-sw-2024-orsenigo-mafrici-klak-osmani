@@ -149,4 +149,16 @@ public class Player {
     public void setConnectionStatus(String connectionStatus) {
         this.connectionStatus = connectionStatus;
     }
+
+    //public void addCardHeld(Card card){}
+    //adds card given as parameter to the List of cards held
+
+    //public Card getCardHeld(int index){}
+    //returns card in from cardsHeld list at specified index.
+
+    //public void updatePlayableSides(){}
+    //method updates playable sides attribute of all cards in cardsHeld List.
+
+    //public void playCard(int cardIndex, int coordinateIndex, boolean faceUp)
+    //method to gather inputs from user and call the Place method in cardMap
 }

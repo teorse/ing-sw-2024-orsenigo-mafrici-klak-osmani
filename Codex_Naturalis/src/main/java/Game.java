@@ -15,6 +15,7 @@ public class Game {
      * Does not count the round in progress
      */
     private int roundsCompleted;
+    private int lastRound;
     /**
      * Stores the current deck of Golden Cards.
      */
@@ -180,4 +181,7 @@ public class Game {
     public void incrementRoundsCompleted(){
         this.roundsCompleted++;
     }
+
+    //public boolean isGameEnding()
+    //checks if cards are over to initiate the GAME ENDING part of the gameplay.
 }
