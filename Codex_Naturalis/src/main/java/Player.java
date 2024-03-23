@@ -30,40 +30,27 @@ public class Player {
      */
     private List<CardPlayability> cardsHeld;
     /**
-     * HashMap storing the information about the cards previously placed during the game by the player.
-     */
-    private NestedMap cardsPlaced;
-    /**
-     * An ArrayList containing all the allowed coordinates where the player can place his cards.
-     */
-    private List<Coordinates> availablePlacements;
-    /**
-     * A map that is functionally a counter for the Resources currently held by the player.
-     */
-    private Map<Resource, Integer> playerResourcesCounter;
-    /**
-     * A map that is functionally a counter for the Items currently held by the player.
-     */
-    private Map<Item, Integer> playerItemsCounter;
-    /**
      * The secret objective held by the player.
      */
     private Objective secretObjective;
+    /**
+     * CardMap storing all the cards placed by the player and the relative counters.
+     */
+    private CardMap cardMap;
     /**
      * A String containing the current connection status of the player to the server.
      */
     private String connectionStatus;
 
     /**
-     * Default Constructor, defines player by their nickname.
+     * Default Constructor, defines player by their nickname and initializes to 0 the various counters
+     * and the cardsHeld List.
      * @param nickname  String with player nickname.
      */
     public Player(String nickname) {
         this.nickname = nickname;
+        this.cardMap = new CardMap();
         this.cardsHeld = new ArrayList<>();
-        this.playerResourcesCounter = new HashMap<>();
-        this.playerItemsCounter = new HashMap<>();
-        this.availablePlacements = new ArrayList<>();
         this.roundsCompleted = 0;
         this.points = 0;
     }
@@ -106,38 +93,6 @@ public class Player {
      */
     public List<CardPlayability> getCardsHeld() {
         return cardsHeld;
-    }
-
-    /**
-     * Method to get the Hashmap with the placement of the cards played.
-     * @return  DoubleHashMap with player's card placement.
-     */
-    public NestedMap getCardsPlaced() {
-        return cardsPlaced;
-    }
-
-    /**
-     * Method to get ArrayList with coordinates currently available for placement.
-     * @return ArrayList of Coordinates available for placement.
-     */
-    public List<Coordinates> getAvailablePlacements() {
-        return availablePlacements;
-    }
-
-    /**
-     * Method to get player's Resources counter.
-     * @return  Map<Resource, Integer> with Key Resource and value number of units held.
-     */
-    public Map<Resource, Integer> getPlayerResourcesCounter() {
-        return playerResourcesCounter;
-    }
-
-    /**
-     * Method to get player's Items counter.
-     * @return  Map<Item, Integer> with Key Item and value number of units held.
-     */
-    public Map<Item, Integer> getPlayerItemsCounter() {
-        return playerItemsCounter;
     }
 
     /**
