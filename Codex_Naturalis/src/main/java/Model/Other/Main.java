@@ -1,7 +1,8 @@
 package Model.Other;
 
-import Cards.*;
-import Utility.Artifacts;
+import Model.Other.*;
+import Model.Utility.*;
+import Model.Cards.*;
 
 public class Main {
     public static void main(String[] args) {
