@@ -2,26 +2,27 @@ package Model.Cards;
 
 import Model.Other.*;
 import Model.Utility.*;
+import Model.Cards.*;
 
 import java.util.Map;
 
 /**
- * 
+ *
  */
-public class CardResource implements Card {
+public class CardGolden extends CardResource{
     //ATTRIBUTES
     /**
-     * 
+     *
      */
-    private Artifacts cardColor;
+    private boolean requiresCorner;
     /**
-     * 
+     *
      */
-    private int points;
+    private Artifacts requiredArtifact;
     /**
-     * 
+     *
      */
-    private Map<CornerOrientation, Corner> corners;
+    private Map<Artifacts, Integer> constraint;
 
 
 
@@ -31,16 +32,17 @@ public class CardResource implements Card {
     /**
      * Constructor is private because all card objects should be created with Factory+Build methods and not through "new".
      */
-    protected CardResource() {
+    private CardGolden() {
+        super();
     }
 
     /**
-     * Build method called by Factory class. Returns cardResource object with all attributes set to null, will be used by Builder
+     * Build method called by Factory class. Returns cardGolden object with all attributes set to null, will be used by Builder
      * class to initialize those attributes.
-     * @return  CardResource object with all fields null.
+     * @return  CardGolden object with all fields null.
      */
     protected static Card Build() {
-        return new CardResource();
+        return new CardGolden();
     }
 
 
@@ -48,18 +50,18 @@ public class CardResource implements Card {
 
 
     //SETTERS
-    protected CardResource setCardColor(Artifacts cardColor) {
-        this.cardColor = cardColor;
+    public CardGolden setRequiresCorner(boolean requiresCorner) {
+        this.requiresCorner = requiresCorner;
         return this;
     }
 
-    protected CardResource setPoints(int points) {
-        this.points = points;
+    public CardGolden setRequiredArtifact(Artifacts requiredArtifact) {
+        this.requiredArtifact = requiredArtifact;
         return this;
     }
 
-    protected CardResource setCorners(Map<CornerOrientation, Corner> corners) {
-        this.corners = corners;
+    public CardGolden setConstraint(Map<Artifacts, Integer> constraint) {
+        this.constraint = constraint;
         return this;
     }
 
@@ -69,7 +71,7 @@ public class CardResource implements Card {
 
     //INTERFACE METHODS
     /**
-     * @param cardMap 
+     * @param cardMap
      * @return
      */
     public boolean isPlaceable(CardMap cardMap) {
@@ -78,9 +80,9 @@ public class CardResource implements Card {
     }
 
     /**
-     * @param cardMap 
-     * @param coordinates 
-     * @param faceUp 
+     * @param cardMap
+     * @param coordinates
+     * @param faceUp
      * @return
      */
     public int countPoints(CardMap cardMap, Coordinates coordinates, boolean faceUp) {
@@ -89,7 +91,7 @@ public class CardResource implements Card {
     }
 
     /**
-     * @param faceUp 
+     * @param faceUp
      * @return
      */
     public Map<Artifacts, Integer> getAllArtifacts(boolean faceUp) {
@@ -98,8 +100,8 @@ public class CardResource implements Card {
     }
 
     /**
-     * @param direction 
-     * @param faceUp 
+     * @param direction
+     * @param faceUp
      * @return
      */
     public Artifacts getCornerArtifact(CornerDirection direction, boolean faceUp) {
@@ -114,5 +116,6 @@ public class CardResource implements Card {
         // TODO implement here
         return null;
     }
+
 
 }
