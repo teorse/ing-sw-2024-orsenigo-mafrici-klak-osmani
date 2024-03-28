@@ -2,6 +2,7 @@
  * This Class stores all the information about the resources shared by all players during the game and other shared metrics.<br>
  */
 
+import Model.Cards.Card;
 import Model.Objectives.Objective;
 
 import java.util.ArrayList;
