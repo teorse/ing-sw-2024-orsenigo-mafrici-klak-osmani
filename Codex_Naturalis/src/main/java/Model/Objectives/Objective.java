@@ -1,3 +1,5 @@
+package Model.Objectives;
+
 import java.util.Map;
 
 public abstract class Objective {
@@ -14,7 +16,7 @@ public abstract class Objective {
     /**
      * Default Constructor.<br>
      * Defines objective description and number of points held.
-     * @param description   String description of the Objective.
+     * @param description   String description of the Model.Objectives.Objective.
      * @param points        Int number of points held by the objective.
      */
     public Objective(String description, int points){
