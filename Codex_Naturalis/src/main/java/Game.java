@@ -2,6 +2,8 @@
  * This Class stores all the information about the resources shared by all players during the game and other shared metrics.<br>
  */
 
+import Model.Objectives.Objective;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -143,7 +145,7 @@ public class Game {
     /**
      * Returns the shared objective at position "index" without removing it from the List.
      * @param index position in List of objective to be returned.
-     * @return  Objective shared objective at position "index" in List.
+     * @return  Model.Objectives.Objective shared objective at position "index" in List.
      */
     public Objective getObjectivesShared(int index) {
         return objectivesShared.get(index);
@@ -151,7 +153,7 @@ public class Game {
 
     /**
      * Method to set shared objective at position "index" in the List.
-     * @param objective     Objective to be set in List at position "index".
+     * @param objective     Model.Objectives.Objective to be set in List at position "index".
      * @param index         Position in List to set.
      */
     public void setObjectivesShared(Objective objective, int index) {

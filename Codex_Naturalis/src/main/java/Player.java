@@ -3,10 +3,10 @@
  * current game that relates individually to players like what cards have been placed, what cards are being held etc.
  */
 
+import Model.Objectives.Objective;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Player {
     /**
@@ -97,7 +97,7 @@ public class Player {
 
     /**
      * Method to get player's secret objective.
-     * @return Objective player's secret objective.
+     * @return Model.Objectives.Objective player's secret objective.
      */
     public Objective getSecretObjective() {
         return secretObjective;
@@ -136,7 +136,7 @@ public class Player {
 
     /**
      * Method to set the player's secret objective.
-     * @param secretObjective   Objective containing the player's secret objective.
+     * @param secretObjective   Model.Objectives.Objective containing the player's secret objective.
      */
     public void setSecretObjective(Objective secretObjective) {
         this.secretObjective = secretObjective;
