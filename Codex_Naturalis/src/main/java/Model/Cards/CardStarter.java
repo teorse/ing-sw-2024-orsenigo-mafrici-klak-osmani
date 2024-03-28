@@ -11,12 +11,7 @@ import java.util.*;
  */
 public class CardStarter implements Card {
 
-    /**
-     * Default constructor
-     */
-    public CardStarter() {
-    }
-
+    //ATTRIBUTES
     /**
      * 
      */
@@ -27,18 +22,13 @@ public class CardStarter implements Card {
      */
     private Map<CornerOrientation, Corner> corners;
 
+    //CONSTRUCTORS
     /**
-     * 
+     * Default constructor
      */
-    protected void CardStarter() {
-        // TODO implement here
-    }
-
-    /**
-     * @return
-     */
-    public static Card Build() {
-        return new CardStarter();
+    public CardStarter(Map<Artifacts, Integer> centralArtifacts, Map<CornerOrientation, Corner> corners) {
+        this.centralArtifacts = centralArtifacts;
+        this.corners = corners;
     }
 
     /**
@@ -61,12 +51,6 @@ public class CardStarter implements Card {
         return 0;
     }
 
-    // Setter per centralArtifacts
-    public CardStarter setCentralArtifacts(Map<Artifacts, Integer> centralArtifacts) {
-        this.centralArtifacts = centralArtifacts;
-        return this;
-    }
-
     /**
      * @param faceUp 
      * @return
@@ -74,11 +58,6 @@ public class CardStarter implements Card {
     public Map<Artifacts, Integer> getAllArtifacts(boolean faceUp) {
         // TODO implement here
         return null;
-    }
-
-    public CardStarter setCorners(Map<CornerOrientation, Corner> corners) {
-        this.corners = corners;
-        return this;
     }
 
     /**
