@@ -31,36 +31,15 @@ public class CardResource implements Card {
     /**
      * Constructor is private because all card objects should be created with Factory+Build methods and not through "new".
      */
-    protected CardResource() {
-    }
-
-    /**
-     * Build method called by Factory class. Returns cardResource object with all attributes set to null, will be used by Builder
-     * class to initialize those attributes.
-     * @return  CardResource object with all fields null.
-     */
-    protected static Card Build() {
-        return new CardResource();
-    }
-
-
-
-
-
-    //SETTERS
-    protected CardResource setCardColor(Artifacts cardColor) {
+    public CardResource(Artifacts cardColor, int points, Map<CornerOrientation, Corner> corners) {
         this.cardColor = cardColor;
-        return this;
-    }
-
-    protected CardResource setPoints(int points) {
         this.points = points;
-        return this;
+        this.corners = corners;
     }
 
-    protected CardResource setCorners(Map<CornerOrientation, Corner> corners) {
+    public CardResource(Artifacts cardColor, Map<CornerOrientation, Corner> corners) {
+        this.cardColor = cardColor;
         this.corners = corners;
-        return this;
     }
 
 

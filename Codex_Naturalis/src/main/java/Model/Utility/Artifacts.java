@@ -8,10 +8,10 @@ public enum Artifacts {
     FUNGI(ArtifactCategories.RESOURCE),
     INSECT(ArtifactCategories.RESOURCE),
     PLANT(ArtifactCategories.RESOURCE),
-    INKWELL(ArtifactCategories.RESOURCE),
-    MANUSCRIPT(ArtifactCategories.RESOURCE),
-    QUILL(ArtifactCategories.RESOURCE),
-    NULL(ArtifactCategories.RESOURCE);
+    INKWELL(ArtifactCategories.ITEM),
+    MANUSCRIPT(ArtifactCategories.ITEM),
+    QUILL(ArtifactCategories.ITEM),
+    NULL(ArtifactCategories.UTILITY);
 
     public final ArtifactCategories categories;
     private Artifacts(ArtifactCategories categories){

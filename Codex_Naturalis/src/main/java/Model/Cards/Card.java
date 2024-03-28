@@ -10,12 +10,6 @@ import java.util.Map;
  */
 public interface Card {
 
-    /**
-     * @return
-     */
-    public static Card build() {
-        return null;
-    }
 
     /**
      * @param cardMap 

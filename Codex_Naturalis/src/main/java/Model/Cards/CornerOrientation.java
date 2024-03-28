@@ -12,20 +12,9 @@ public class CornerOrientation {
 
 
     //CONSTRUCTOR
-    protected CornerOrientation(){};
-
-
-
-
-
-    //SETTERS
-    protected CornerOrientation setCornerDirection(CornerDirection cornerDirection){
+    public CornerOrientation(CornerDirection cornerDirection, boolean faceUp) {
         this.cornerDirection = cornerDirection;
-        return this;
-    }
-    protected CornerOrientation setFaceUp(boolean faceUp){
         this.faceUp = faceUp;
-        return this;
     }
 
 

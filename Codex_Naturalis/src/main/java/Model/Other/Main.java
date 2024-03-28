@@ -4,51 +4,22 @@ import Model.Other.*;
 import Model.Utility.*;
 import Model.Cards.*;
 
+import java.util.HashMap;
+
 public class Main {
     public static void main(String[] args) {
 
-        Card cardResourceExample = new CardResourceBuilder()
-                .withCardColor(Artifacts.FUNGI)
-                .withCorners(
-                        new CornerMapBuilder()
-                                .withCorner(
-                                        new CornerOrientationBuilder()
-                                                .withCornerDirection(CornerDirection.NW)
-                                                .onCardsFace()
-                                                .build(),
-                                        new CornerBuilder()
-                                                .withArtifact(Artifacts.FUNGI)
-                                                .build()
-                                )
-                                .withCorner(
-                                        new CornerOrientationBuilder()
-                                                .withCornerDirection(CornerDirection.NE)
-                                                .onCardsFace()
-                                                .build(),
-                                        new CornerBuilder()
-                                                .withArtifact(Artifacts.INSECT)
-                                                .build()
-                                )
-                                .withCorner(
-                                        new CornerOrientationBuilder()
-                                                .withCornerDirection(CornerDirection.SE)
-                                                .onCardsFace()
-                                                .build(),
-                                        new CornerBuilder()
-                                                .withCornerType(CornerType.EMPTY)
-                                                .build()
-                                )
-                                .withCorner(
-                                        new CornerOrientationBuilder()
-                                                .withCornerDirection(CornerDirection.SW)
-                                                .onCardsFace()
-                                                .build(),
-                                        new CornerBuilder()
-                                                .withArtifact(Artifacts.MANUSCRIPT)
-                                                .build()
-                                )
-                                .build()
-                )
-                .build();
+        Card cardResourceExample1 = new CardResource(
+                Artifacts.FUNGI,
+                new HashMap<>(){{
+                    put(new CornerOrientation(CornerDirection.NW, true), new Corner(Artifacts.FUNGI));
+                    put(new CornerOrientation(CornerDirection.NE, true), new Corner(Artifacts.INSECT));
+                    put(new CornerOrientation(CornerDirection.SE, true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SW, true), new Corner(Artifacts.MANUSCRIPT));
+                    put(new CornerOrientation(CornerDirection.SE, false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SE, false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SE, false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SE, false), new Corner(CornerType.EMPTY));
+        }});
     }
 }

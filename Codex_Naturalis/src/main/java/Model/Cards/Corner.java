@@ -27,20 +27,18 @@ public class Corner {
     /**
      * Default constructor
      */
-    protected Corner() {}
-
-
-
-
-
-    //SETTERS
-    protected Corner setCornerType(CornerType cornerType) {
+    public Corner(CornerType cornerType, Artifacts artifacts) {
         this.cornerType = cornerType;
-        return this;
-    }
-    protected Corner setArtifact(Artifacts artifacts) {
         this.artifacts = artifacts;
-        return this;
+    }
+
+    public Corner(CornerType cornerType) {
+        this.cornerType = cornerType;
+    }
+
+    public Corner(Artifacts artifacts) {
+        this.cornerType = CornerType.ARTIFACT;
+        this.artifacts = artifacts;
     }
 
 
