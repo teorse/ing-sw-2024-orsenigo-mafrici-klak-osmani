@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  *
  */
-public class CardGolden extends CardResource{
+public class CardGolden extends CardResource {
     //ATTRIBUTES
     /**
      *
@@ -32,17 +32,11 @@ public class CardGolden extends CardResource{
     /**
      * Constructor is private because all card objects should be created with Factory+Build methods and not through "new".
      */
-    private CardGolden() {
-        super();
-    }
-
-    /**
-     * Build method called by Factory class. Returns cardGolden object with all attributes set to null, will be used by Builder
-     * class to initialize those attributes.
-     * @return  CardGolden object with all fields null.
-     */
-    protected static Card Build() {
-        return new CardGolden();
+    public CardGolden(Artifacts cardColor, int points, Map<CornerOrientation, Corner> corners, boolean requiresCorner, Artifacts requiredArtifact, Map<Artifacts, Integer> constraint) {
+        super(cardColor, points, corners);
+        this.requiresCorner = requiresCorner;
+        this.requiredArtifact = requiredArtifact;
+        this.constraint = constraint;
     }
 
 
@@ -50,19 +44,16 @@ public class CardGolden extends CardResource{
 
 
     //SETTERS
-    public CardGolden setRequiresCorner(boolean requiresCorner) {
+    public void setRequiresCorner(boolean requiresCorner) {
         this.requiresCorner = requiresCorner;
-        return this;
     }
 
-    public CardGolden setRequiredArtifact(Artifacts requiredArtifact) {
+    public void setRequiredArtifact(Artifacts requiredArtifact) {
         this.requiredArtifact = requiredArtifact;
-        return this;
     }
 
-    public CardGolden setConstraint(Map<Artifacts, Integer> constraint) {
+    public void setConstraint(Map<Artifacts, Integer> constraint) {
         this.constraint = constraint;
-        return this;
     }
 
 
@@ -116,6 +107,4 @@ public class CardGolden extends CardResource{
         // TODO implement here
         return null;
     }
-
-
 }

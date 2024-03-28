@@ -13,8 +13,12 @@ public enum Artifacts {
     QUILL(ArtifactCategories.ITEM),
     NULL(ArtifactCategories.UTILITY);
 
-    public final ArtifactCategories categories;
+    private final ArtifactCategories categories;
     private Artifacts(ArtifactCategories categories){
         this.categories = categories;
+    }
+
+    public ArtifactCategories getCategories() {
+        return categories;
     }
 }
