@@ -1,5 +1,7 @@
 package Model.Other;
 
+import Model.Cards.Card;
+
 /**
  * This class is instanced before playing a card, it stores information about how a card is being played specifically
  * if it's been placed face up or face down and the visibility of its corners when it's being placed and when it will be

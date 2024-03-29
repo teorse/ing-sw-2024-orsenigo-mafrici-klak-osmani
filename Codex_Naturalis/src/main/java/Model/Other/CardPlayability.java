@@ -1,5 +1,7 @@
 package Model.Other;
 
+import Model.Cards.Card;
+
 /**
  * This class represents the individual cards held by the player, it stores information about the cards and about their
  * playability, that is, if they can be played only face-down or also face-up.

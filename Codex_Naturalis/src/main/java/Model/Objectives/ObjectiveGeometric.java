@@ -1,5 +1,6 @@
 package Model.Objectives;
 
+import Model.Other.Coordinates;
 import Model.Utility.Artifacts;
 
 import java.util.Map;
