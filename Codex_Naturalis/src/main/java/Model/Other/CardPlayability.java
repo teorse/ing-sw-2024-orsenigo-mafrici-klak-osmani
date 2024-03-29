@@ -1,3 +1,5 @@
+package Model.Other;
+
 /**
  * This class represents the individual cards held by the player, it stores information about the cards and about their
  * playability, that is, if they can be played only face-down or also face-up.
@@ -14,7 +16,7 @@ public class CardPlayability {
     private boolean playability;
 
     /**
-     * Default constructor, creates CardPlayability object by taking a Card and getting a playability value.
+     * Default constructor, creates Model.Other.CardPlayability object by taking a Card and getting a playability value.
      * @param card          Card object.
      * @param playability   Playability value, returned by method in Card class.
      */

@@ -4,6 +4,8 @@
  */
 
 import Model.Objectives.Objective;
+import Model.Other.CardMap;
+import Model.Other.CardPlayability;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,7 @@ public class Player {
      */
     private Objective secretObjective;
     /**
-     * CardMap storing all the cards placed by the player and the relative counters.
+     * Model.Other.CardMap storing all the cards placed by the player and the relative counters.
      */
     private CardMap cardMap;
     /**
