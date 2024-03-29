@@ -17,7 +17,7 @@ public class Corner {
     /**
      * 
      */
-    private Artifacts artifacts;
+    private Artifacts artifact;
 
 
 
@@ -27,18 +27,18 @@ public class Corner {
     /**
      * Default constructor
      */
-    public Corner(CornerType cornerType, Artifacts artifacts) {
+    public Corner(CornerType cornerType, Artifacts artifact) {
         this.cornerType = cornerType;
-        this.artifacts = artifacts;
+        this.artifact = artifact;
     }
 
     public Corner(CornerType cornerType) {
         this.cornerType = cornerType;
     }
 
-    public Corner(Artifacts artifacts) {
+    public Corner(Artifacts artifact) {
         this.cornerType = CornerType.ARTIFACT;
-        this.artifacts = artifacts;
+        this.artifact = artifact;
     }
 
 
@@ -69,11 +69,11 @@ public class Corner {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Corner corner)) return false;
-        return cornerType == corner.cornerType && artifacts == corner.artifacts;
+        return cornerType == corner.cornerType && artifact == corner.artifact;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cornerType, artifacts);
+        return Objects.hash(cornerType, artifact);
     }
 }

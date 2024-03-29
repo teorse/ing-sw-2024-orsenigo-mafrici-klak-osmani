@@ -30,30 +30,19 @@ public class CardGolden extends CardResource {
 
     //CONSTRUCTORS
     /**
-     * Constructor is private because all card objects should be created with Factory+Build methods and not through "new".
+     *
      */
-    public CardGolden(Artifacts cardColor, int points, Map<CornerOrientation, Corner> corners, boolean requiresCorner, Artifacts requiredArtifact, Map<Artifacts, Integer> constraint) {
+    public CardGolden(Artifacts cardColor, int points, Map<CornerOrientation, Corner> corners, boolean requiresCorner, Map<Artifacts, Integer> constraint) {
         super(cardColor, points, corners);
         this.requiresCorner = requiresCorner;
-        this.requiredArtifact = requiredArtifact;
         this.constraint = constraint;
     }
 
-
-
-
-
-    //SETTERS
-    public void setRequiresCorner(boolean requiresCorner) {
-        this.requiresCorner = requiresCorner;
-    }
-
-    public void setRequiredArtifact(Artifacts requiredArtifact) {
+    public CardGolden(Artifacts cardColor, int points, Map<CornerOrientation, Corner> corners, Artifacts requiredArtifact, Map<Artifacts, Integer> constraint) {
+        super(cardColor, points, corners);
         this.requiredArtifact = requiredArtifact;
-    }
-
-    public void setConstraint(Map<Artifacts, Integer> constraint) {
         this.constraint = constraint;
+        this.requiresCorner = false;
     }
 
 

@@ -29,7 +29,7 @@ public class CardResource implements Card {
 
     //CONSTRUCTORS
     /**
-     * Constructor is private because all card objects should be created with Factory+Build methods and not through "new".
+     *
      */
     public CardResource(Artifacts cardColor, int points, Map<CornerOrientation, Corner> corners) {
         this.cardColor = cardColor;
