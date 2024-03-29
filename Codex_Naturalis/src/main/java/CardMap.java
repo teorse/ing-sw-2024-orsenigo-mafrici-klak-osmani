@@ -1,3 +1,5 @@
+import Model.Utility.Artifacts;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,38 +17,34 @@ public class CardMap {
     /**
      * Map storing the cards previously placed during the game by the player.
      */
-    private NestedMap cardsPlaced;
+    private Map<Coordinates, CardPlacement> cardsPlaced;
     /**
      * A List containing all the allowed coordinates where the player can place his next card.
      */
     private List<Coordinates> availablePlacements;
     /**
-     * A map used as a counter for the Resources currently held by the player.
+     * A map used as a counter for the Artifacts currently held by the player.
      */
-    private Map<Resource, Integer> resourcesCounter;
-    /**
-     * A map used as a counter for the Items currently held by the player.
-     */
-    private Map<Item, Integer> itemsCounter;
+    private Map<Artifacts, Integer> artifactsCounter;
+
 
     /**
      * Default Constructor.<br>
-     * Builds CardPlacement Object by initializing the three maps and the Array and adds to the Array
+     * Builds CardPlacement Object by initializing the two maps and the Array and adds to the Array
      * the first coordinate [0,0] to allow for the starter card to be placed.
      */
     public CardMap(){
-        cardsPlaced = new NestedMap();
+        cardsPlaced = new HashMap<>();
         availablePlacements = new ArrayList<>();
         availablePlacements.add(new Coordinates(0,0));
-        resourcesCounter = new HashMap<>();
-        itemsCounter = new HashMap<>();
+        artifactsCounter = new HashMap<>();
     }
 
     /**
      * Method to get the Hashmap with the placement of the cards played.
-     * @return  DoubleHashMap with player's card placement.
+     * @return HashMap with player's card placement.
      */
-    public NestedMap getCardsPlaced() {
+    public Map<Coordinates, CardPlacement> getCardsPlaced() {
         return cardsPlaced;
     }
 
