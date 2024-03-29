@@ -3,6 +3,8 @@
  * deck of cards.
  */
 
+import Model.Cards.Card;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -12,8 +12,10 @@ public interface Card {
 
 
     /**
-     * @param cardMap 
-     * @return
+     *  For CardResource and CardStarter this method returns always true, because these cards don't have constraints.
+     *
+     * @param cardMap
+     * @return true if the card is placeable on both faces, false if can be placed only face down
      */
     public boolean isPlaceable(CardMap cardMap);
 
@@ -21,7 +23,7 @@ public interface Card {
      * @param cardMap 
      * @param coordinates 
      * @param faceUp 
-     * @return
+     * @return the points due to a specific card placement
      */
     public int countPoints(CardMap cardMap, Coordinates coordinates, boolean faceUp);
 
@@ -42,5 +44,4 @@ public interface Card {
      * @return
      */
     public Artifacts getCardColor();
-
 }

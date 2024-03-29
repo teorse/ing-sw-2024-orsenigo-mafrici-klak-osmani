@@ -31,13 +31,13 @@ public class CardStarter implements Card {
         this.corners = corners;
     }
 
-    /**
-     * @param cardMap 
-     * @return
-     */
+
+
+
+
+    //INTERFACE METHODS
     public boolean isPlaceable(CardMap cardMap) {
-        // TODO implement here
-        return false;
+        return true;
     }
 
     /**
@@ -47,7 +47,6 @@ public class CardStarter implements Card {
      * @return
      */
     public int countPoints(CardMap cardMap, Coordinates coordinates, boolean faceUp) {
-        // TODO implement here
         return 0;
     }
 

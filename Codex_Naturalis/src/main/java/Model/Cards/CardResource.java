@@ -47,24 +47,15 @@ public class CardResource implements Card {
 
 
     //INTERFACE METHODS
-    /**
-     * @param cardMap 
-     * @return
-     */
     public boolean isPlaceable(CardMap cardMap) {
-        // TODO implement here
-        return false;
+        return true;
     }
 
-    /**
-     * @param cardMap 
-     * @param coordinates 
-     * @param faceUp 
-     * @return
-     */
     public int countPoints(CardMap cardMap, Coordinates coordinates, boolean faceUp) {
-        // TODO implement here
-        return 0;
+        if (faceUp)
+            return points;
+        else
+            return 0;
     }
 
     /**
@@ -94,4 +85,7 @@ public class CardResource implements Card {
         return null;
     }
 
+    public int getPoints() {
+        return points;
+    }
 }

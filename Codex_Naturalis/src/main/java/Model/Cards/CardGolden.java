@@ -50,13 +50,11 @@ public class CardGolden extends CardResource {
 
 
     //INTERFACE METHODS
-    /**
-     * @param cardMap
-     * @return
-     */
     public boolean isPlaceable(CardMap cardMap) {
-        // TODO implement here
-        return false;
+        boolean check = true;
+        for (Artifacts a : constraint.keySet())
+            check = (constraint.get(a) <= cardMap.getAmountOfArtifacts(a)) & check;
+        return check;
     }
 
     /**
@@ -66,8 +64,11 @@ public class CardGolden extends CardResource {
      * @return
      */
     public int countPoints(CardMap cardMap, Coordinates coordinates, boolean faceUp) {
-        // TODO implement here
-        return 0;
+        if (faceUp)
+            //Multiply the number of artifacts avaible for the player by the point given for each artifact
+            return cardMap.getAmountOfArtifacts(requiredArtifact)*this.getPoints();
+        else
+            return 0;
     }
 
     /**
@@ -96,4 +97,10 @@ public class CardGolden extends CardResource {
         // TODO implement here
         return null;
     }
-}
+
+    /**
+     * This method display all the constraints needed to place the card
+     */
+    public void displayConstraints (){
+        constraint.forEach((a,i) -> System.out.println("Artifact = " + a + ", Quantity = " + i)); }
+    }
