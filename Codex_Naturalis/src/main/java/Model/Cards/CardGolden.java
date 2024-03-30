@@ -58,15 +58,23 @@ public class CardGolden extends CardResource {
     }
 
     /**
+     * NB: Questo metodo va invocato successivamente al metodo che aggiorna i contatori degli artefatti, aggiungendo
+     * quelli presenti sulla carta giocata e togliendo quelli coperti dalla medesima.
+     *
      * @param cardMap
      * @param coordinates
      * @param faceUp
      * @return
      */
     public int countPoints(CardMap cardMap, Coordinates coordinates, boolean faceUp) {
-        if (faceUp)
+        if (faceUp) {
+            if (!requiresCorner)
             //Multiply the number of artifacts avaible for the player by the point given for each artifact
-            return cardMap.getAmountOfArtifacts(requiredArtifact)*this.getPoints();
+                return cardMap.getAmountOfArtifacts(requiredArtifact) * this.getPoints();
+            else
+                //Multiply the number of corners covered by the point given for each corner
+                return cardMap.getAmountOfCoveredCorners(coordinates)*this.getPoints();
+        }
         else
             return 0;
     }

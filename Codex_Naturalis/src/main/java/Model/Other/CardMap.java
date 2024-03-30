@@ -70,7 +70,11 @@ public class CardMap {
         return 1;
     };
 
-    //public int getAmountOfCoveredCorners(Model.Other.Coordinates coordinates){}
+    public int getAmountOfCoveredCorners(Model.Other.Coordinates coordinates) {
+        //TODO: implementare il metodo return messo a caso per evitare errori (Matteo)
+        return 1;
+    };
+
     //First two methods return number of specified resources or items from the respective counters.
     //Last method returns number of corners that would be covered if a card was to be placed in that coordinate.
 }

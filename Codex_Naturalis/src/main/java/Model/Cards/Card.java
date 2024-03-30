@@ -10,9 +10,9 @@ import java.util.Map;
  */
 public interface Card {
 
-
     /**
-     *  For CardResource and CardStarter this method returns always true, because these cards don't have constraints.
+     *  For CardResource and CardStarter this method returns always true, because these cards don't have constraints,
+     *  while for CardGolden checks if the constraints are satisfied.
      *
      * @param cardMap
      * @return true if the card is placeable on both faces, false if can be placed only face down
