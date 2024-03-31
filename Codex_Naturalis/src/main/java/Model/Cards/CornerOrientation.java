@@ -22,12 +22,13 @@ public class CornerOrientation {
 
 
     //EQUALS AND HASH
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CornerOrientation that)) return false;
-        return faceUp == that.faceUp && cornerDirection == that.cornerDirection;
+        if (o instanceof CornerOrientation that)
+            return faceUp == that.faceUp && cornerDirection == that.cornerDirection;
+        else
+            return false;
     }
 
     @Override

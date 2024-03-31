@@ -50,14 +50,14 @@ public class Corner {
      * @return
      */
     protected CornerType getCornerType() {
-        return null;
+        return cornerType;
     }
 
     /**
      * @return
      */
     protected Artifacts getArtifact() {
-        return null;
+        return artifact;
     }
 
 

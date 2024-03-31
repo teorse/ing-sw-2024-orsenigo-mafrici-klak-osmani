@@ -65,16 +65,23 @@ public class CardStarter implements Card {
      * @return
      */
     public Artifacts getCornerArtifact(CornerDirection direction, boolean faceUp) {
-        // TODO implement here
-        return null;
+        CornerOrientation cornerArtifact = new CornerOrientation(direction, faceUp);
+        Corner c = null;
+        for (CornerOrientation co : this.corners.keySet())
+            if (co.equals(cornerArtifact))
+                c = this.corners.get(co);
+        assert c != null;
+        return c.getArtifact();
     }
 
     /**
      * @return
      */
     public Artifacts getCardColor() {
-        // TODO implement here
-        return null;
+        return Artifacts.NULL;
     }
 
+    public int getPoints() {
+        return 0;
+    }
 }

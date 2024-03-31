@@ -3,6 +3,8 @@
  */
 
 import Model.Cards.Card;
+import Model.Cards.CardGolden;
+import Model.Cards.CardResource;
 import Model.Objectives.Objective;
 
 import java.util.ArrayList;

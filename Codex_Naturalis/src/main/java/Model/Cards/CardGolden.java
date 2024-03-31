@@ -53,7 +53,7 @@ public class CardGolden extends CardResource {
     public boolean isPlaceable(CardMap cardMap) {
         boolean check = true;
         for (Artifacts a : constraint.keySet())
-            check = (constraint.get(a) <= cardMap.getAmountOfArtifacts(a)) & check;
+            check = (constraint.get(a) <= cardMap.getAmountOfArtifacts(a)) && check;
         return check;
     }
 
@@ -73,7 +73,7 @@ public class CardGolden extends CardResource {
                 return cardMap.getAmountOfArtifacts(requiredArtifact) * this.getPoints();
             else
                 //Multiply the number of corners covered by the point given for each corner
-                return cardMap.getAmountOfCoveredCorners(coordinates)*this.getPoints();
+                return cardMap.getAmountOfCoveredCorners(coordinates) * this.getPoints();
         }
         else
             return 0;
@@ -84,24 +84,6 @@ public class CardGolden extends CardResource {
      * @return
      */
     public Map<Artifacts, Integer> getAllArtifacts(boolean faceUp) {
-        // TODO implement here
-        return null;
-    }
-
-    /**
-     * @param direction
-     * @param faceUp
-     * @return
-     */
-    public Artifacts getCornerArtifact(CornerDirection direction, boolean faceUp) {
-        // TODO implement here
-        return null;
-    }
-
-    /**
-     * @return
-     */
-    public Artifacts getCardColor() {
         // TODO implement here
         return null;
     }

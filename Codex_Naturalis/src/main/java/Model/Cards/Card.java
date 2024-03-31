@@ -40,8 +40,7 @@ public interface Card {
      */
     public Artifacts getCornerArtifact(CornerDirection direction, boolean faceUp);
 
-    /**
-     * @return
-     */
     public Artifacts getCardColor();
+
+    public int getPoints();
 }

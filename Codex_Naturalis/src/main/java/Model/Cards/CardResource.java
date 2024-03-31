@@ -63,8 +63,20 @@ public class CardResource implements Card {
      * @return
      */
     public Map<Artifacts, Integer> getAllArtifacts(boolean faceUp) {
-        // TODO implement here
-        return null;
+        Map<Artifacts,Integer> mapArtifacts = null;
+        if (faceUp) {
+            Corner corner = null;
+            for (CornerOrientation co : corners.keySet()) {
+                corner = corners.get(co);
+                if (corner != null && corner.getArtifact()!=Artifacts.NULL) {
+//                    if ()
+//                        mapArtifacts.put(corner.getArtifact(),1);
+                }
+            }
+        }
+        else
+            mapArtifacts.put(cardColor,1);
+        return mapArtifacts;
     }
 
     /**
@@ -73,16 +85,20 @@ public class CardResource implements Card {
      * @return
      */
     public Artifacts getCornerArtifact(CornerDirection direction, boolean faceUp) {
-        // TODO implement here
-        return null;
+        CornerOrientation cornerArtifact = new CornerOrientation(direction, faceUp);
+        Corner c = null;
+        for (CornerOrientation co : this.corners.keySet())
+            if (co.equals(cornerArtifact))
+                c = this.corners.get(co);
+        assert c != null;
+        return c.getArtifact();
     }
 
     /**
      * @return
      */
     public Artifacts getCardColor() {
-        // TODO implement here
-        return null;
+        return cardColor;
     }
 
     public int getPoints() {
