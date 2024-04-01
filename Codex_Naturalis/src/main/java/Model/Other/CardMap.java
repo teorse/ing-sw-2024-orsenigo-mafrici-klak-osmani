@@ -65,16 +65,50 @@ public class CardMap {
     //Updates corner visibility of corners of the cards being covered.
     //Updates the player's resources and items counters.
 
-    public int getAmountOfArtifacts(Artifacts artifacts){
-        //TODO: implementare il metodo return messo a caso per evitare errori (Matteo)
-        return 1;
-    };
+    /**
+     * Method to get the amount of artifacts of type "artifacts" held by the player
+     * @param artifacts
+     * @return int corresponding to the number of artifacts of type "artifacts" held by the player
+     */
+    public int getAmountOfArtifacts(Artifacts artifacts) {
+        //Verifies if the map contains the specified artifact
+        if (artifactsCounter.containsKey(artifacts)) {
+            //Returns the number of artifacts of that type
+            return artifactsCounter.get(artifacts);
+        } else {
+            //If the specified artifact isn't present in the map, it returns 0
+            return 0;
+        }
+    }
 
-    public int getAmountOfCoveredCorners(Model.Other.Coordinates coordinates) {
-        //TODO: implementare il metodo return messo a caso per evitare errori (Matteo)
-        return 1;
-    };
 
+    /**
+     * Method to get the amount of corners that would be covered if a card was to be placed
+     * at that coordinates
+     * @param coordinates
+     * @return int corresponding to number of corners that would be covered
+     * if a card was to be placed at that coordinates
+     */
+    public int getAmountOfCoveredCorners(Coordinates coordinates) {
+        //Verify if the map contains an instance of CardPlacement for the specified coordinates
+        if (cardsPlaced.containsKey(coordinates)) {
+            //Get the instance of CardPlacement corresponding to the specified coordinates
+            CardPlacement placement = cardsPlaced.get(coordinates);
+
+            //Counts the number of covered corners
+            int coveredCorners = 0;
+            for (int i = 0; i < 4; i++) {
+                if (!placement.getCornerVisibility(i)) {
+                    coveredCorners++;
+                }
+            }
+
+            return coveredCorners;
+        } else {
+            //If there isn't any CardPlacement for the specified coordinates, it returns 0
+            return 0;
+        }
+    }
     //First two methods return number of specified resources or items from the respective counters.
     //Last method returns number of corners that would be covered if a card was to be placed in that coordinate.
 }
