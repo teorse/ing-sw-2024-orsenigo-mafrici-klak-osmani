@@ -4,6 +4,7 @@ import Model.Player.CardMap;
 import Model.Utility.*;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 
@@ -103,5 +104,22 @@ public class CardResource implements Card {
 
     public int getPoints() {
         return points;
+    }
+
+
+
+
+
+    //OVERRIDE EQUALS AND HASH
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CardResource that)) return false;
+        return points == that.points && cardColor == that.cardColor && Objects.equals(corners, that.corners);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cardColor, points, corners);
     }
 }

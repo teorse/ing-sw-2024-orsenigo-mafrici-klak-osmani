@@ -83,4 +83,21 @@ public class CardStarter implements Card {
     public int getPoints() {
         return 0;
     }
+
+
+
+
+
+    //OVERRIDE EQUALS AND HASH
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CardStarter that)) return false;
+        return Objects.equals(centralArtifacts, that.centralArtifacts) && Objects.equals(corners, that.corners);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(centralArtifacts, corners);
+    }
 }

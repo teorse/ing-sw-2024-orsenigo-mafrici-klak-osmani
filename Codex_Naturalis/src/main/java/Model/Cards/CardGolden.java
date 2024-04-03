@@ -4,6 +4,7 @@ import Model.Player.CardMap;
 import Model.Utility.*;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  *
@@ -92,4 +93,22 @@ public class CardGolden extends CardResource {
      */
     public void displayConstraints (){
         constraint.forEach((a,i) -> System.out.println("Artifact = " + a + ", Quantity = " + i)); }
+
+
+
+
+
+    //OVERRIDE EQUALS AND HASH
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CardGolden that)) return false;
+        if (!super.equals(o)) return false;
+        return requiresCorner == that.requiresCorner && requiredArtifact == that.requiredArtifact && Objects.equals(constraint, that.constraint);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), requiresCorner, requiredArtifact, constraint);
+    }
+}
