@@ -1,21 +1,24 @@
 package Model.Utility;
 
+import java.util.Objects;
+
 /**
- * The Model.Utility.Coordinates class is used to store information about card placement using an X and Y coordinate system.
+ * The Coordinates class is used to store information about where played cards have been placed by the player
+ * using an X and Y coordinates system.
  */
 
 public class Coordinates {
-    /**
-     * Stores the X coordinate.
-     */
+    //ATTRIBUTES
     private int coordX;
-    /**
-     * Stores the Y coordinate.
-     */
     private int coordY;
 
+
+
+
+
+    //CONSTRUCTOR
     /**
-     * Default Constructor for Model.Utility.Coordinates class.
+     * Default Constructor for Model.Player.Coordinates class.
      * @param X int value of X coordinate.
      * @param Y int value of Y coordinate.
      */
@@ -24,19 +27,55 @@ public class Coordinates {
         this.coordY = Y;
     }
 
-    /**
-     * Returns the integer value of X coordinate.
-     * @return  int value of coordinate X.
-     */
-    public int getCoordX(){
+
+
+
+
+    //GETTERS
+    protected int getCoordX(){
         return this.coordX;
     }
 
-    /**
-     * Returns the integer value of Y coordinate.
-     * @return  int value of coordinate Y.
-     */
-    public int getCoordY(){
+    protected int getCoordY(){
         return this.coordY;
+    }
+
+
+
+
+
+    //METHODS
+    /**
+     * Returns a new coordinate object where its X and Y values are the sum of the old coordinate and the
+     * coordinate given as parameter.<br>
+     * Can be used to rapidly calculate new coordinates given a starting point and an
+     * offset value.
+     * @param offset Coordinates object containing the values to be added (offset) to the current X and Y
+     * @return
+     */
+    public Coordinates add(Coordinates offset){
+        return new Coordinates(this.coordX + offset.getCoordX(), this.coordY + offset.getCoordY());
+    }
+
+
+
+
+
+    //OBJECT METHOD OVERRIDES
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Coordinates that)) return false;
+        return coordX == that.coordX && coordY == that.coordY;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(coordX, coordY);
+    }
+
+    @Override
+    public String toString(){
+        return "X: "+coordX+", Y: "+coordY;
     }
 }
