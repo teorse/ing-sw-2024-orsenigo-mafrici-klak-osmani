@@ -1,4 +1,4 @@
-/**
+package Model.Game; /**
  * Class wraps around an ArrayList of Cards and adds to it a shuffle method to treat the ArrayList as if it were a
  * deck of cards.
  */

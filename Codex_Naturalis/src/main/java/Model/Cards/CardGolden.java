@@ -1,8 +1,7 @@
 package Model.Cards;
 
-import Model.Other.*;
+import Model.Player.CardMap;
 import Model.Utility.*;
-import Model.Cards.*;
 
 import java.util.Map;
 

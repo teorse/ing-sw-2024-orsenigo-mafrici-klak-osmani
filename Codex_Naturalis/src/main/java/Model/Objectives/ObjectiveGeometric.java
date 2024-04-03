@@ -1,6 +1,6 @@
 package Model.Objectives;
 
-import Model.Other.Coordinates;
+import Model.Utility.Coordinates;
 import Model.Utility.Artifacts;
 
 import java.util.Map;
@@ -18,7 +18,7 @@ public class ObjectiveGeometric extends Objective{
      * Defines objective description, number of points held and the required Geometric pattern.
      * @param description   String description of the Model.Objectives.Objective.
      * @param points        Int number of points held by the objective.
-     * @param cardPattern   Map with key Model.Other.Coordinates of the pattern and value resource/color of the pattern.
+     * @param cardPattern   Map with key Model.Utility.Coordinates of the pattern and value resource/color of the pattern.
      */
     public ObjectiveGeometric(String description, int points, Map<Coordinates, Artifacts> cardPattern){
         super(description, points);
@@ -27,7 +27,7 @@ public class ObjectiveGeometric extends Objective{
 
     /**
      * Method to access the required card Pattern.
-     * @return  Map<Model.Other.Coordinates, Resource> map with coordinates and type of resource for the card pattern.
+     * @return  Map<Model.Utility.Coordinates, Resource> map with coordinates and type of resource for the card pattern.
      */
     public Map<Coordinates, Artifacts> getCardPattern() {
         return cardPattern;

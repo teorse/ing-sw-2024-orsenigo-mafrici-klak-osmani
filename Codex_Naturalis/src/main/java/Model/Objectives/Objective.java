@@ -32,6 +32,6 @@ public abstract class Objective {
         return description;
     }
 
-    //public int countPoints(Model.Other.CardMap cardMap){}
+    //public int countPoints(Model.Player.CardMap cardMap){}
     //counts how many points should be given from this objective in the provided cardMap.
 }

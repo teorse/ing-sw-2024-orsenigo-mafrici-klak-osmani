@@ -1,4 +1,4 @@
-package Model.Other;
+package Model.Player;
 
 import Model.Cards.Card;
 
@@ -6,12 +6,12 @@ import Model.Cards.Card;
  * This class is instanced before playing a card, it stores information about how a card is being played specifically
  * if it's been placed face up or face down and the visibility of its corners when it's being placed and when it will be
  * covered by other cards.
- * This class is then stored in the Model.Other.CardMap.
+ * This class is then stored in the Model.Player.CardMap.
  */
 
 public class CardPlacement {
     /**
-     * Reference to the card that this instance of Model.Other.CardPlacement is linked to.
+     * Reference to the card that this instance of Model.Player.CardPlacement is linked to.
      */
     private Card card;
     /**
@@ -34,7 +34,7 @@ public class CardPlacement {
      * Default Constructor.<br>
      * Stores information about card's face orientation and sets all corners' visibility to true as by the game's
      * definition when placing a card it can only be placed on top of other cards meaning all of its corners will be visible.
-     * @param card              Card this instance of Model.Other.CardPlacement is being instanced for.
+     * @param card              Card this instance of Model.Player.CardPlacement is being instanced for.
      * @param faceUp            Boolean face orientation of the card, if true card is placed face-up.
      */
     public CardPlacement(Card card, boolean faceUp) {

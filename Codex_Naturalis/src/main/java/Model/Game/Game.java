@@ -1,4 +1,4 @@
-/**
+package Model.Game; /**
  * This Class stores all the information about the resources shared by all players during the game and other shared metrics.<br>
  */
 
@@ -6,6 +6,7 @@ import Model.Cards.Card;
 import Model.Cards.CardGolden;
 import Model.Cards.CardResource;
 import Model.Objectives.Objective;
+import Model.Player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,12 +53,12 @@ public class Game {
 
     /**
      * Default Constructor.<br>
-     * Initializes a Game object by taking Players ArrayList, Golden and Resource Deck, and ArrayList of Objectives.<br>
+     * Initializes a Model.Game.Game object by taking Players ArrayList, Golden and Resource Model.Game.Deck, and ArrayList of Objectives.<br>
      * Automatically
      * @param players       ArrayList of Players.
      * @param visibleCards  Int number of cards for each type that will be visible to the player next to the decks.
-     * @param goldenDeck    Deck of Golden Cards.
-     * @param resourcesDeck Deck of Resource Cards.
+     * @param goldenDeck    Model.Game.Deck of Golden Cards.
+     * @param resourcesDeck Model.Game.Deck of Resource Cards.
      * @param objectives    ArrayList of Objectives.
      */
     public Game(List<Player> players, int visibleCards, Deck goldenDeck, Deck resourcesDeck, Deck starterDeck, List<Objective> objectives) {
@@ -79,7 +80,7 @@ public class Game {
 
     /**
      * Method to access the goldenDeck.
-     * @return  Deck goldenDeck.
+     * @return  Model.Game.Deck goldenDeck.
      */
     public Deck getGoldenDeck() {
         return goldenDeck;
@@ -87,7 +88,7 @@ public class Game {
 
     /**
      * Method to access the resourceDeck.
-     * @return  Deck resourceDeck.
+     * @return  Model.Game.Deck resourceDeck.
      */
     public Deck getResourcesDeck() {
         return resourcesDeck;
@@ -95,7 +96,7 @@ public class Game {
 
     /**
      * Method to access the starterDeck.
-     * @return  Deck starterDeck.
+     * @return  Model.Game.Deck starterDeck.
      */
     public Deck getStarterDeck() {
         return starterDeck;
@@ -164,7 +165,7 @@ public class Game {
     }
 
     /**
-     * Method to access the ArrayList storing the Players participating in the Game.<br>
+     * Method to access the ArrayList storing the Players participating in the Model.Game.Game.<br>
      * Can be used to then manipulate the Array by updating information about the players.
      * @return ArrayList of participating players.
      */

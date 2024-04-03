@@ -1,5 +1,6 @@
-package Model.Other;
+package Model.Player;
 
+import Model.Utility.Coordinates;
 import Model.Utility.Artifacts;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class CardMap {
 
     /**
      * Default Constructor.<br>
-     * Builds Model.Other.CardPlacement Object by initializing the two maps and the Array and adds to the Array
+     * Builds Model.Player.CardPlacement Object by initializing the two maps and the Array and adds to the Array
      * the first coordinate [0,0] to allow for the starter card to be placed.
      */
     public CardMap() {
@@ -54,7 +55,7 @@ public class CardMap {
     /**
      * Method to get ArrayList with coordinates currently available for placement of the next card.
      *
-     * @return ArrayList of Model.Other.Coordinates available for the placement of the next card.
+     * @return ArrayList of Model.Utility.Coordinates available for the placement of the next card.
      */
     public List<Coordinates> getAvailablePlacements() {
         return availablePlacements;

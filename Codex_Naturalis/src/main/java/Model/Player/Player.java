@@ -1,11 +1,9 @@
-/**
- * The Player Class contains all the information about the player, and it stores contextual information about the
+package Model.Player; /**
+ * The Model.Player.Player Class contains all the information about the player, and it stores contextual information about the
  * current game that relates individually to players like what cards have been placed, what cards are being held etc.
  */
 
 import Model.Objectives.Objective;
-import Model.Other.CardMap;
-import Model.Other.CardPlayability;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +34,7 @@ public class Player {
      */
     private Objective secretObjective;
     /**
-     * Model.Other.CardMap storing all the cards placed by the player and the relative counters.
+     * Model.Player.CardMap storing all the cards placed by the player and the relative counters.
      */
     private CardMap cardMap;
     /**

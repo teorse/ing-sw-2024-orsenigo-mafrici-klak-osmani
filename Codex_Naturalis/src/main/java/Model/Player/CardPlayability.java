@@ -1,4 +1,4 @@
-package Model.Other;
+package Model.Player;
 
 import Model.Cards.Card;
 
@@ -18,7 +18,7 @@ public class CardPlayability {
     private boolean playability;
 
     /**
-     * Default constructor, creates Model.Other.CardPlayability object by taking a Card and getting a playability value.
+     * Default constructor, creates Model.Player.CardPlayability object by taking a Card and getting a playability value.
      * @param card          Card object.
      * @param playability   Playability value, returned by method in Card class.
      */
