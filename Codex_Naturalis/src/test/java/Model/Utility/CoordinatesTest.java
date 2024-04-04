@@ -1,12 +1,13 @@
 package Model.Utility;
 
-import junit.framework.TestCase;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CoordinatesTest {
 
@@ -26,9 +27,9 @@ public class CoordinatesTest {
 
 
 
-    @Before
-    public void setUp() throws Exception {
 
+    @BeforeEach
+    void setUp() {
         coordinates1 = new ArrayList<>();
         coordinates2 = new ArrayList<>();
         coordinatesExpected = new ArrayList<>();
@@ -49,17 +50,17 @@ public class CoordinatesTest {
         }
     }
 
-
-
-
-
     @Test
-    public void testAdd() {
+    void add() {
         //Test known cases
-        Assert.assertEquals("First calibration test failed", new Coordinates(1,2).add(new Coordinates(4,5)), new Coordinates(5,7));
-        Assert.assertEquals("Second calibration test failed", new Coordinates(9,3).add(new Coordinates(-5,-9)), new Coordinates(4,-6));
-        Assert.assertTrue("Third calibration test failed", !(new Coordinates(1,2).add(new Coordinates(4,5)).equals(new Coordinates(2,1))));
-        Assert.assertTrue("Fourth calibration test failed", !(new Coordinates(9,3).add(new Coordinates(-5,-9)).equals(new Coordinates(4,35))));
+        assertEquals(new Coordinates(1,2).add(new Coordinates(4,5)), new Coordinates(5,7),
+                "First calibration test failed");
+        assertEquals(new Coordinates(9,3).add(new Coordinates(-5,-9)), new Coordinates(4,-6),
+                "Second calibration test failed");
+        assertTrue(!(new Coordinates(1,2).add(new Coordinates(4,5)).equals(new Coordinates(2,1))),
+                "Third calibration test failed");
+        assertTrue(!(new Coordinates(9,3).add(new Coordinates(-5,-9)).equals(new Coordinates(4,35))),
+                "Fourth calibration test failed");
 
 
 
@@ -68,9 +69,10 @@ public class CoordinatesTest {
         for(int i = 0; i < TEST_SIZE; i++){
             Coordinates result = coordinates1.get(i).add(coordinates2.get(i));
             Coordinates expected = coordinatesExpected.get(i);
-            Assert.assertEquals("Addition of coordinates failed at index " + i+"\n"+
-                            "expected: ("+coordinates1.get(i).toString()+") + ("+coordinates2.get(i).toString()+") = ("+expected.toString()+")\n"+
-                            "actually: ("+coordinates1.get(i).toString()+") + ("+coordinates2.get(i).toString()+") = ("+result.toString()+")", expected, result);
+            assertEquals(expected, result,
+                    "Addition of coordinates failed at index " + i+"\n"+
+                    "expected: ("+coordinates1.get(i).toString()+") + ("+coordinates2.get(i).toString()+") = ("+expected.toString()+")\n"+
+                    "actually: ("+coordinates1.get(i).toString()+") + ("+coordinates2.get(i).toString()+") = ("+result.toString()+")");
         }
     }
 }
