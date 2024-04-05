@@ -85,7 +85,7 @@ public class CardResource extends Card {
 
 
 
-    //OVERRIDE EQUALS AND HASH
+    //EQUALS AND HASH
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
