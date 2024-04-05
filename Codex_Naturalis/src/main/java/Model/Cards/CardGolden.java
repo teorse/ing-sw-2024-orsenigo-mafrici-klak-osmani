@@ -73,7 +73,7 @@ public class CardGolden extends CardResource {
                 return cardMap.getAmountOfArtifacts(requiredArtifact) * this.getPoints();
             else
                 //Multiply the number of corners covered by the point given for each corner
-                return cardMap.getAmountOfCoveredCorners(coordinates) * this.getPoints();
+                return cardMap.getAmountOfNearbyCorners(coordinates) * this.getPoints();
         }
         else
             return 0;
