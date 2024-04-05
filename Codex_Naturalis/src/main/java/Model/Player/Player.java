@@ -1,52 +1,32 @@
-package Model.Player; /**
- * The Model.Player.Player Class contains all the information about the player, and it stores contextual information about the
- * current game that relates individually to players like what cards have been placed, what cards are being held etc.
- */
+package Model.Player;
 
+import Model.Cards.Card;
 import Model.Objectives.Objective;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Model.Player.Player Class contains all the information about the player, and it stores contextual information about the
+ * current game that relates individually to players like what cards have been placed, what cards are being held etc.
+ */
 public class Player {
-    /**
-     * String containing player's nickname.
-     */
+
+    //ATTRIBUTE
     private String nickname;
-    /**
-     * String containing player's hex color code.
-     */
-    private String color; //May be better to use enum class, only 4 color
-    /**
-     * Field storing the amount of points currently being held by the player.
-     */
+    private Color color;
     private int points;
-    /**
-     * Field storing the number of rounds completed by the player. Only updates AFTER a player commits his moves to a round.
-     */
     private int roundsCompleted;
-    /**
-     * ArrayList containing the cards being held by the player.
-     */
     private List<CardPlayability> cardsHeld;
-    /**
-     * The secret objective held by the player.
-     */
     private Objective secretObjective;
     /**
-     * Model.Player.CardMap storing all the cards placed by the player and the relative counters.
+     * Model.Model.Player.Player.CardMap storing all the cards placed by the player and the relative counters.
      */
     private CardMap cardMap;
-    /**
-     * A String containing the current connection status of the player to the server.
-     */
     private String connectionStatus;
 
-    /**
-     * Default Constructor, defines player by their nickname and initializes to 0 the various counters
-     * and the cardsHeld List.
-     * @param nickname  String with player nickname.
-     */
+
+    //CONSTRUCTOR
     public Player(String nickname) {
         this.nickname = nickname;
         this.cardMap = new CardMap();
@@ -55,110 +35,95 @@ public class Player {
         this.points = 0;
     }
 
-    /**
-     * Method to get String with player's nickname.
-     * @return String with player's nickname.
-     */
+
+    //GETTER
     public String getNickname() {
         return nickname;
     }
 
-    /**
-     * Method to get player's color.
-     * @return String with player's color.
-     */
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 
-    /**
-     * Method to get player's points.
-     * @return Int with player's points.
-     */
     public int getPoints() {
         return points;
     }
 
-    /**
-     * Method to get amount of rounds completed by player.
-     * @return Int with player's completed rounds.
-     */
     public int getRoundsCompleted() {
         return roundsCompleted;
     }
 
-    /**
-     * Method to get the ArrayList with the cards currently held by the player.
-     * @return ArrayList with cards held by player.
-     */
     public List<CardPlayability> getCardsHeld() {
         return cardsHeld;
     }
 
-    /**
-     * Method to get player's secret objective.
-     * @return Model.Objectives.Objective player's secret objective.
-     */
     public Objective getSecretObjective() {
         return secretObjective;
     }
 
-    /**
-     * Method to get player's current connection status.
-     * @return  String with player's current connection status.
-     */
+    public CardMap getCardMap() {
+        return cardMap;
+    }
+
     public String getConnectionStatus() {
         return connectionStatus;
     }
 
-    /**
-     * Method to set player's color.
-     * @param color String containing player's color.
-     */
-    public void setColor(String color) {
+
+    //SETTER
+    public void setColor(Color color) {
         this.color = color;
     }
 
-    /**
-     * Adds specified amount of points to the player.
-     * @param add   Int points to add to the player.
-     */
-    public void addPoints(int add) {
-        this.points = this.points+add;
+    public void setSecretObjective(Objective secretObjective) {
+        this.secretObjective = secretObjective;
     }
 
-    /**
-     * Increments the rounds completed by the player by 1.
-     */
+    public void setConnectionStatus(String connectionStatus) {
+        this.connectionStatus = connectionStatus;
+    }
+
+
+    //METHODS
+    public void addPoints(int add) {
+        this.points = this.points + add;
+    }
+
     public void incrementRoundsCompleted() {
         this.roundsCompleted++;
     }
 
     /**
-     * Method to set the player's secret objective.
-     * @param secretObjective   Model.Objectives.Objective containing the player's secret objective.
+     * Trasform Card to CardPlayability by adding a boolean which represent if that card is playable on both sides.
+     *
+     * @param card choosen either from the four cards faceup in the center of the table (a new card is then revealed to
+     *             replace the one just taken), or the first card from one of the two decks.
      */
-    public void setSecretObjective(Objective secretObjective) {
-        this.secretObjective = secretObjective;
+    public void addCardHeld(Card card) {
+        //Set by defualt the playability of card and then update when all the 3 card are held by the player
+        CardPlayability CP = new CardPlayability(card);
+        cardsHeld.add(CP);
     }
 
     /**
-     * Method to update player's connection status.
-     * @param connectionStatus  String containing player's updated connection status.
+     * @param index
+     * @return card from cardsHeld list at specified index.
      */
-    public void setConnectionStatus(String connectionStatus) {
-        this.connectionStatus = connectionStatus;
+    public CardPlayability getCardsHeld(int index) {
+        return cardsHeld.get(index);
     }
 
-    //public void addCardHeld(Card card){}
-    //adds card given as parameter to the List of cards held
-
-    //public Card getCardHeld(int index){}
-    //returns card in from cardsHeld list at specified index.
-
-    //public void updatePlayableSides(){}
-    //method updates playable sides attribute of all cards in cardsHeld List.
-
-    //public void playCard(int cardIndex, int coordinateIndex, boolean faceUp)
-    //method to gather inputs from user and call the Place method in cardMap
+    /**
+     * Updates playable sides attribute of all cards in cardsHeld List.
+     */
+    public void updatePlayableSides() {
+        CardMap CM = this.cardMap;
+        for (CardPlayability cardPlayability : cardsHeld) {
+            cardPlayability.setPlayability(CM);
+        }
+    }
 }
+
+//public void playCard(int cardIndex, int coordinateIndex, boolean faceUp)
+//method to gather inputs from user and call the Place method in cardMap
+
