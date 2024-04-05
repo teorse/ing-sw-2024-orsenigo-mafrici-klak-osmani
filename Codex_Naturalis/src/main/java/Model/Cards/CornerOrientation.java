@@ -35,4 +35,12 @@ public class CornerOrientation {
     public int hashCode() {
         return Objects.hash(cornerDirection, faceUp);
     }
+
+    @Override
+    public String toString() {
+        return "CornerOrientation{" +
+                "cornerDirection=" + cornerDirection +
+                ", faceUp=" + faceUp +
+                '}';
+    }
 }
