@@ -5,99 +5,102 @@ import Model.Utility.*;
 
 import java.util.*;
 
-/**
- * 
- */
-public class CardStarter implements Card {
+public class CardStarter extends Card {
 
     //ATTRIBUTES
     /**
-     * 
+     * Useful when the card is placed back (faceUp == false). Can contain multiple Artifacts, unlike other cards, which
+     * always have a resource on the back of the same type as the card itself.
      */
     private Map<Artifacts, Integer> centralArtifacts;
 
-    /**
-     * 
-     */
-    private Map<CornerOrientation, Corner> corners;
+
+
+
 
     //CONSTRUCTORS
-    /**
-     * Default constructor
-     */
-    public CardStarter(Map<Artifacts, Integer> centralArtifacts, Map<CornerOrientation, Corner> corners) {
+    public CardStarter(Map<CornerOrientation, Corner> corners, Map<Artifacts, Integer> centralArtifacts) {
+        super(corners);
         this.centralArtifacts = centralArtifacts;
-        this.corners = corners;
     }
 
 
 
 
 
-    //INTERFACE METHODS
-    public boolean isPlaceable(CardMap cardMap) {
-        return true;
+    //GETTER
+    public Artifacts getCardColor() {
+        return Artifacts.NULL;
+    }
+    public int getPoints() {
+        return 0;
+    }
+    public Map<Artifacts, Integer> getCentralArtifacts() {
+        return centralArtifacts;
     }
 
-    /**
-     * @param cardMap 
-     * @param coordinates 
-     * @param faceUp 
-     * @return
-     */
+
+
+
+
+    //ABSTRACT CLASS METHODS
     public int countPoints(CardMap cardMap, Coordinates coordinates, boolean faceUp) {
         return 0;
     }
 
-    /**
-     * @param faceUp 
-     * @return
-     */
     public Map<Artifacts, Integer> getAllArtifacts(boolean faceUp) {
-        // TODO implement here
-        return null;
+        Map<CornerOrientation, Corner> corners = this.getCorners();
+        Map<Artifacts, Integer> mapArtifacts = new HashMap<>();
+        Artifacts art;
+        int value;
+        if (faceUp) {
+            for (CornerOrientation co : corners.keySet()) {
+                if (co.isFaceUp()) {
+                    art = corners.get(co).getArtifact();
+                    if (art != Artifacts.NULL) {
+                        if (mapArtifacts.containsKey(art)) {
+                            value = mapArtifacts.get(art) + 1;
+                            mapArtifacts.put(art, value);
+                        } else
+                            mapArtifacts.put(art, 1);
+                    }
+                }
+            }
+        } else {
+            //Start to add the central artifacts then check if other artifacts in corners are present (no duplicate key)
+            for (Artifacts a : this.centralArtifacts.keySet()){
+                mapArtifacts.put(a,centralArtifacts.get(a));
+            }
+            for (CornerOrientation co : corners.keySet()) {
+                if (!co.isFaceUp()) {
+                    art = corners.get(co).getArtifact();
+                    if (art != Artifacts.NULL) {
+                        if (mapArtifacts.containsKey(art)) {
+                            value = mapArtifacts.get(art) + 1;
+                            mapArtifacts.put(art, value);
+                        } else
+                            mapArtifacts.put(art, 1);
+                    }
+                }
+            }
+        }
+        return mapArtifacts;
     }
 
-    /**
-     * @param direction 
-     * @param faceUp 
-     * @return
-     */
-    public Artifacts getCornerArtifact(CornerDirection direction, boolean faceUp) {
-        CornerOrientation cornerArtifact = new CornerOrientation(direction, faceUp);
-        Corner c = null;
-        for (CornerOrientation co : this.corners.keySet())
-            if (co.equals(cornerArtifact))
-                c = this.corners.get(co);
-        assert c != null;
-        return c.getArtifact();
-    }
-
-    /**
-     * @return
-     */
-    public Artifacts getCardColor() {
-        return Artifacts.NULL;
-    }
-
-    public int getPoints() {
-        return 0;
-    }
 
 
 
 
-
-    //OVERRIDE EQUALS AND HASH
+    //EQUALS AND HASH
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof CardStarter that)) return false;
-        return Objects.equals(centralArtifacts, that.centralArtifacts) && Objects.equals(corners, that.corners);
+        return Objects.equals(centralArtifacts, that.centralArtifacts) && Objects.equals(this.getCorners(), that.getCorners());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(centralArtifacts, corners);
+        return Objects.hash(centralArtifacts, this.getCorners());
     }
 }

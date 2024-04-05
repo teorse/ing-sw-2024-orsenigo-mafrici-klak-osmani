@@ -7,6 +7,7 @@ import Model.Player.CardMap;
 import Model.Utility.*;
 
 import java.util.Map;
+import java.util.Objects;
 
 public abstract class Card {
 
