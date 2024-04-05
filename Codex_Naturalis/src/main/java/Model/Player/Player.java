@@ -26,6 +26,9 @@ public class Player {
     private String connectionStatus;
 
 
+
+
+
     //CONSTRUCTOR
     public Player(String nickname) {
         this.nickname = nickname;
@@ -36,52 +39,52 @@ public class Player {
     }
 
 
+
+
+
     //GETTER
     public String getNickname() {
         return nickname;
     }
-
     public Color getColor() {
         return color;
     }
-
     public int getPoints() {
         return points;
     }
-
     public int getRoundsCompleted() {
         return roundsCompleted;
     }
-
     public List<CardPlayability> getCardsHeld() {
         return cardsHeld;
     }
-
     public Objective getSecretObjective() {
         return secretObjective;
     }
-
     public CardMap getCardMap() {
         return cardMap;
     }
-
     public String getConnectionStatus() {
         return connectionStatus;
     }
+
+
+
 
 
     //SETTER
     public void setColor(Color color) {
         this.color = color;
     }
-
     public void setSecretObjective(Objective secretObjective) {
         this.secretObjective = secretObjective;
     }
-
     public void setConnectionStatus(String connectionStatus) {
         this.connectionStatus = connectionStatus;
     }
+
+
+
 
 
     //METHODS
@@ -101,7 +104,7 @@ public class Player {
      */
     public void addCardHeld(Card card) {
         //Set by defualt the playability of card and then update when all the 3 card are held by the player
-        CardPlayability CP = new CardPlayability(card);
+        CardPlayability CP = new CardPlayability(card,false);
         cardsHeld.add(CP);
     }
 
