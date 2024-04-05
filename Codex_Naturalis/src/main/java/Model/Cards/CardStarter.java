@@ -3,7 +3,9 @@ package Model.Cards;
 import Model.Player.CardMap;
 import Model.Utility.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class CardStarter extends Card {
 
