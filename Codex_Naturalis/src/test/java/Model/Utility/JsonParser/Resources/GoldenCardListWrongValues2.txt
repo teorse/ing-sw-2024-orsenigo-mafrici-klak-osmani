@@ -1,0 +1,155 @@
+{
+  "requiresCorner": false,
+  "requiredArtifact": "QUILL",
+  "constraint": {
+    "ANIMAL": 1,
+    "FUNGI": 2
+  },
+  "cardColor": "FUNGI",
+  "points": -1,
+  "corners": [
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "QUILL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": true,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "ANIMAL": 3,
+    "INSECT": 1
+  },
+  "cardColor": "ANIMAL",
+  "points": 2,
+  "corners": [
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "INSECT": 5
+  },
+  "cardColor": "INSECT",
+  "points": 5,
+  "corners": [
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}

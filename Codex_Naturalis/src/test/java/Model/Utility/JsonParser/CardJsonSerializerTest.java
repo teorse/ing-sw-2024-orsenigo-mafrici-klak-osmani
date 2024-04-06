@@ -25,16 +25,25 @@ public class CardJsonSerializerTest {
 
     //Lists of strings to test deserialization
     private String CardResourceJsonCorrect;
+    private String CardResourceListJsonCorrect;
     private List<String> CardResourceJsonWrongValues = new ArrayList<>();
     private List<String> CardResourceJsonWrongParenthesis = new ArrayList<>();
+    private List<String> CardResourceListJsonWrongValues = new ArrayList<>();
+    private List<String> CardResourceListJsonWrongParenthesis = new ArrayList<>();
 
     private String CardGoldenJsonCorrect;
+    private String CardGoldenListJsonCorrect;
     private List<String> CardGoldenJsonWrongValues = new ArrayList<>();
     private List<String> CardGoldenJsonWrongParenthesis = new ArrayList<>();
+    private List<String> CardGoldenListJsonWrongValues = new ArrayList<>();
+    private List<String> CardGoldenListJsonWrongParenthesis = new ArrayList<>();
 
     private String CardStarterJsonCorrect;
+    private String CardStarterListJsonCorrect;
     private List<String> CardStarterJsonWrongValues = new ArrayList<>();
     private List<String> CardStarterJsonWrongParenthesis = new ArrayList<>();
+    private List<String> CardStarterListJsonWrongValues = new ArrayList<>();
+    private List<String> CardStarterListJsonWrongParenthesis = new ArrayList<>();
 
     private final String empty = "";
 
@@ -212,18 +221,27 @@ public class CardJsonSerializerTest {
 
         try{
             CardResourceJsonCorrect = Files.readString(Path.of(testingFilesDirectory+"ResourceCardCorrect.txt"));
+            CardResourceListJsonCorrect = Files.readString(Path.of(testingFilesDirectory+"ResourceCardListCorrect.txt"));
             CardGoldenJsonCorrect = Files.readString(Path.of(testingFilesDirectory+"GoldenCardCorrect.txt"));
+            CardGoldenListJsonCorrect = Files.readString(Path.of(testingFilesDirectory+"GoldenCardListCorrect.txt"));
             CardStarterJsonCorrect = Files.readString(Path.of(testingFilesDirectory+"StarterCardCorrect.txt"));
+            CardStarterListJsonCorrect = Files.readString(Path.of(testingFilesDirectory+"StarterCardListCorrect.txt"));
 
             for(int i = 1; i<6; i++){
                 CardResourceJsonWrongValues.add(Files.readString(Path.of(testingFilesDirectory+"ResourceCardWrongValues"+i+".txt")));
                 CardResourceJsonWrongParenthesis.add(Files.readString(Path.of(testingFilesDirectory+"ResourceCardWrongParenthesis"+i+".txt")));
+                CardResourceListJsonWrongValues.add(Files.readString(Path.of(testingFilesDirectory+"ResourceCardListWrongValues"+i+".txt")));
+                CardResourceListJsonWrongParenthesis.add(Files.readString(Path.of(testingFilesDirectory+"ResourceCardListWrongParenthesis"+i+".txt")));
 
                 CardGoldenJsonWrongValues.add(Files.readString(Path.of(testingFilesDirectory+"GoldenCardWrongValues"+i+".txt")));
                 CardGoldenJsonWrongParenthesis.add(Files.readString(Path.of(testingFilesDirectory+"GoldenCardWrongParenthesis"+i+".txt")));
+                CardGoldenListJsonWrongValues.add(Files.readString(Path.of(testingFilesDirectory+"GoldenCardListWrongValues"+i+".txt")));
+                CardGoldenListJsonWrongParenthesis.add(Files.readString(Path.of(testingFilesDirectory+"GoldenCardListWrongParenthesis"+i+".txt")));
 
                 CardStarterJsonWrongValues.add(Files.readString(Path.of(testingFilesDirectory+"StarterCardWrongValues"+i+".txt")));
                 CardStarterJsonWrongParenthesis.add(Files.readString(Path.of(testingFilesDirectory+"StarterCardWrongParenthesis"+i+".txt")));
+                CardStarterListJsonWrongValues.add(Files.readString(Path.of(testingFilesDirectory+"StarterCardListWrongValues"+i+".txt")));
+                CardStarterListJsonWrongParenthesis.add(Files.readString(Path.of(testingFilesDirectory+"StarterCardListWrongParenthesis"+i+".txt")));
             }
         }
         catch (IOException i){
@@ -242,7 +260,7 @@ public class CardJsonSerializerTest {
     @Test
     void serializeCard() {
         //This method implements the serialization method of the gson library where it has already been tested
-        //therefore this test is simply a ""calibration" test to ensure that the gson method was implemented correctly
+        //therefore this test is simply a "calibration" test to ensure that the gson method was implemented correctly
         //and that the process of serialization->deserialization works as expected.
 
         for (int i = 0; i< testSize; i++){
@@ -273,6 +291,7 @@ public class CardJsonSerializerTest {
         assertAll(()-> CardJsonSerializer.deserializeCardResource(CardResourceJsonCorrect));
         assertThrows(NullPointerException.class, ()-> CardJsonSerializer.deserializeCardResource(empty),
                 "NullPointerException was not thrown at empty String");
+
 
         //Testing that appropriate exceptions are thrown in edge cases.
         for(int i = 0; i< CardResourceJsonWrongParenthesis.size(); i++){
@@ -341,17 +360,147 @@ public class CardJsonSerializerTest {
     }
 
 
-    //Test conclusion:
+
+    //SerializeList and DeSerializeList internally use serializeCard and deserializeCard methods
+    //For this reason extensive testing is redundant as all exceptions thrown by serializeCard and deserializeCard
+    //will also necessarily be thrown by the respective methods for list serialization/deserialization.
+
+    //Test normal cases: ensuring that serializeCardList and deserializeCardList behave as expected with known inputs.
+    @Test
+    void serializeCardList(){
+        List<Card> cardResourceListResult = CardJsonSerializer.deserializeCardResourceList(CardJsonSerializer.serializeCardList(resourceCards));
+        assertEquals(resourceCards, cardResourceListResult, "Serialization->Deserialization of resource card list failed");
+
+        List<Card> cardGoldenListResult = CardJsonSerializer.deserializeCardGoldenList(CardJsonSerializer.serializeCardList(goldenCards));
+        assertEquals(goldenCards, cardGoldenListResult, "Serialization->Deserialization of golden card list failed");
+
+        List<Card> cardStarterListResult = CardJsonSerializer.deserializeCardStarterList(CardJsonSerializer.serializeCardList(starterCards));
+        assertEquals(starterCards, cardStarterListResult, "Serialization->Deserialization of starter card list failed");
+    }
+
+    @Test
+    void deserializeCardResourceList() {
+
+        //Calibration test to ensure that method does not simply always throw Exceptions.
+        assertAll(() -> CardJsonSerializer.deserializeCardResourceList(CardResourceListJsonCorrect));
+
+        //Testing edge cases with anomalous inputs
+        assertThrows(NullPointerException.class, () -> CardJsonSerializer.deserializeCardResourceList(empty));
+        assertThrows(NullPointerException.class, () -> CardJsonSerializer.deserializeCardResourceList("    "));
+        assertThrows(NullPointerException.class, () -> CardJsonSerializer.deserializeCardResourceList("   \n"));
+        assertThrows(JsonSyntaxException.class, () -> CardJsonSerializer.deserializeCardResourceList("a"));
+        assertThrows(JsonSyntaxException.class, () -> CardJsonSerializer.deserializeCardResourceList("aa"));
+        assertThrows(JsonSyntaxException.class, () -> CardJsonSerializer.deserializeCardResourceList("aaa"));
+
+        //Testing that same exceptions are thrown in edge cases as with single card deserializer.
+        for (int i = 0; i < CardResourceListJsonWrongParenthesis.size(); i++) {
+            int finalI = i;
+            int fileNum = i + 1;
+            assertThrows(JsonSyntaxException.class, () -> CardJsonSerializer.deserializeCardResourceList(CardResourceListJsonWrongParenthesis.get(finalI)),
+                    "JsonSyntaxException was not thrown at ResourceCardListJsonWrongParenthesis" + fileNum);
+        }
+
+        for (int i = 0; i < CardResourceListJsonWrongValues.size(); i++) {
+            int finalI = i;
+            int fileNum = i + 1;
+            assertThrows(IllegalArgumentException.class, () -> CardJsonSerializer.deserializeCardResourceList(CardResourceListJsonWrongValues.get(finalI)),
+                    "IllegalArgumentException was not thrown at ResourceCardListJsonWrongValues" + fileNum);
+
+        }
+    }
+
+    @Test
+    void deserializeCardGoldenList() {
+
+        //Calibration test to ensure that method does not simply always throw Exceptions.
+        assertAll(() -> CardJsonSerializer.deserializeCardGoldenList(CardGoldenListJsonCorrect));
+
+        //Testing edge cases with anomalous inputs
+        assertThrows(NullPointerException.class, () -> CardJsonSerializer.deserializeCardGoldenList(empty));
+        assertThrows(NullPointerException.class, () -> CardJsonSerializer.deserializeCardGoldenList("    "));
+        assertThrows(NullPointerException.class, () -> CardJsonSerializer.deserializeCardGoldenList("   \n"));
+        assertThrows(JsonSyntaxException.class, () -> CardJsonSerializer.deserializeCardGoldenList("a"));
+        assertThrows(JsonSyntaxException.class, () -> CardJsonSerializer.deserializeCardGoldenList("aa"));
+        assertThrows(JsonSyntaxException.class, () -> CardJsonSerializer.deserializeCardGoldenList("aaa"));
+
+        //Testing that same exceptions are thrown in edge cases as with single card deserializer.
+        for (int i = 0; i < CardGoldenListJsonWrongParenthesis.size(); i++) {
+            int finalI = i;
+            int fileNum = i + 1;
+            assertThrows(JsonSyntaxException.class, () -> CardJsonSerializer.deserializeCardGoldenList(CardGoldenListJsonWrongParenthesis.get(finalI)),
+                    "JsonSyntaxException was not thrown at GoldenCardListJsonWrongParenthesis" + fileNum);
+        }
+
+        for (int i = 0; i < CardGoldenListJsonWrongValues.size(); i++) {
+            int finalI = i;
+            int fileNum = i + 1;
+            assertThrows(IllegalArgumentException.class, () -> CardJsonSerializer.deserializeCardGoldenList(CardGoldenListJsonWrongValues.get(finalI)),
+                    "IllegalArgumentException was not thrown at GoldenCardListJsonWrongValues" + fileNum);
+
+        }
+    }
+
+    @Test
+    void deserializeCardStarterList(){
+
+        //Calibration test to ensure that method does not simply always throw Exceptions.
+        assertAll(() -> CardJsonSerializer.deserializeCardStarterList(CardStarterListJsonCorrect));
+
+        //Testing edge cases with anomalous inputs
+        assertThrows(NullPointerException.class, () -> CardJsonSerializer.deserializeCardStarterList(empty));
+        assertThrows(NullPointerException.class, () -> CardJsonSerializer.deserializeCardStarterList("    "));
+        assertThrows(NullPointerException.class, () -> CardJsonSerializer.deserializeCardStarterList("   \n"));
+        assertThrows(JsonSyntaxException.class, () -> CardJsonSerializer.deserializeCardStarterList("a"));
+        assertThrows(JsonSyntaxException.class, () -> CardJsonSerializer.deserializeCardStarterList("aa"));
+        assertThrows(JsonSyntaxException.class, () -> CardJsonSerializer.deserializeCardStarterList("aaa"));
+
+        //Testing that same exceptions are thrown in edge cases as with single card deserializer.
+        for (int i = 0; i < CardStarterListJsonWrongParenthesis.size(); i++) {
+            int finalI = i;
+            int fileNum = i + 1;
+            assertThrows(JsonSyntaxException.class, () -> CardJsonSerializer.deserializeCardStarterList(CardStarterListJsonWrongParenthesis.get(finalI)),
+                    "JsonSyntaxException was not thrown at GoldenCardListJsonWrongParenthesis" + fileNum);
+        }
+
+        for (int i = 0; i < CardStarterListJsonWrongValues.size(); i++) {
+            int finalI = i;
+            int fileNum = i + 1;
+            assertThrows(IllegalArgumentException.class, () -> CardJsonSerializer.deserializeCardStarterList(CardStarterListJsonWrongValues.get(finalI)),
+                    "IllegalArgumentException was not thrown at GoldenCardListJsonWrongValues" + fileNum);
+
+        }
+    }
 
 
-    //All deserializers will throw JsonSyntaxException if:
+
+
+
+    //Tests conclusion:
+
+
+    //All Card deserializers will throw JsonSyntaxException if:
     //-there are missing parenthesis.
     //-field is of int type and value is not an int.
-    //-Duplicate keys in map
+    //-Duplicate keys in map.
 
-    //All deserializers will throw IllegalArgumentException if:
+    //All Card deserializers will throw IllegalArgumentException if:
     //-JsonSyntaxException is not thrown but values provided break class specifications.
 
     //All deserializers will throw NullPointerException if:
     //-provided string is null, empty or contains just a space " ".
+
+
+
+    //All Card list deserializers will throw IllegalArgumentException if:
+    //-provided empty string.
+
+    //All Card list deserializers will throw NullPointerException if:
+    //-provided string has no character but only spaces " " or "\n"
+
+    //All Card list deserializers will throw JsonSyntaxException if:
+    //-provided string is not empty but is also not valid.
+    //-provided string has separator between list entries misplaced or missing
+    //-provided string has a separator that is not preceded AND succeeded by a card.
+
+    //All other cases are the same as with Card deserializers.
 }

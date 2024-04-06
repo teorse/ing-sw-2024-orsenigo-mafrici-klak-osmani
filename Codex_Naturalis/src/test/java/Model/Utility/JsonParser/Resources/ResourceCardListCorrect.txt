@@ -1,0 +1,138 @@
+{
+  "cardColor": "FUNGI",
+  "points": 0,
+  "corners": [
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "MANUSCRIPT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "FUNGI"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "INSECT"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "cardColor": "FUNGI",
+  "points": 1,
+  "corners": [
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "FUNGI"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "cardColor": "INSECT",
+  "points": 0,
+  "corners": [
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "INSECT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "INSECT"
+      }
+    ]
+  ]
+}
