@@ -1,0 +1,86 @@
+{
+  "cardColor": "FUNGI",
+  "points": 0,
+  "corners": [
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "MANUSCRIPT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": false
+      },
+      {
+        "cornerType": "LEEROY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "FUNGI"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": false
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "INSECT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": false
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": false
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}

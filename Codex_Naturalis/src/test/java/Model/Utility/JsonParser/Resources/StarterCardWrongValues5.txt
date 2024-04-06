@@ -1,0 +1,79 @@
+{
+  "centralArtifacts": {
+    "PLANT": 1,
+    "FUNGI": 1,
+    "ANIMAL": 1
+  },
+  "corners": [
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": false
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "ANIMAL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": false
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "PLANT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": false
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "FUNGI"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}

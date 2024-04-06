@@ -1,0 +1,52 @@
+{
+  "requiresCorner": false,
+  "requiredArtifact": "QUILL",
+  "constraint": {
+    "ANIMAL": 1,
+    "FUNGI": 2
+  },
+  "cardColor": "FUNGI",
+  "points": 1,
+  "corners": [
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "QUILL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+
