@@ -3,6 +3,7 @@ package Model.Cards;
 import java.util.Objects;
 
 public class CornerOrientation {
+
     //ATTRIBUTES
     private CornerDirection cornerDirection;
     private boolean faceUp;
@@ -15,6 +16,18 @@ public class CornerOrientation {
     public CornerOrientation(CornerDirection cornerDirection, boolean faceUp) {
         this.cornerDirection = cornerDirection;
         this.faceUp = faceUp;
+    }
+
+
+
+
+
+    //GETTER
+    public CornerDirection getCornerDirection() {
+        return cornerDirection;
+    }
+    public boolean isFaceUp() {
+        return faceUp;
     }
 
 

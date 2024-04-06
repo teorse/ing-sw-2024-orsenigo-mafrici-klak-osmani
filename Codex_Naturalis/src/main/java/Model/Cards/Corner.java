@@ -13,14 +13,9 @@ import java.util.Objects;
  * CornerType and artifact are always explicitly stated.
  */
 public class Corner {
+
     //ATTRIBUTES
-    /**
-     * 
-     */
     private CornerType cornerType;
-    /**
-     * 
-     */
     private Artifacts artifact;
 
 
@@ -28,9 +23,6 @@ public class Corner {
 
 
     //CONSTRUCTOR
-    /**
-     * Default constructor
-     */
     public Corner(CornerType cornerType, Artifacts artifact) {
         if((cornerType.equals(CornerType.NULL) || cornerType.equals(CornerType.EMPTY)) && !artifact.equals(Artifacts.NULL))
             throw new IllegalArgumentException("Incompatible CornerType and Artifact.\nProvided not null artifact but " +
@@ -73,16 +65,9 @@ public class Corner {
 
 
     //GETTERS
-    /**
-     * @return
-     */
     protected CornerType getCornerType() {
         return cornerType;
     }
-
-    /**
-     * @return
-     */
     protected Artifacts getArtifact() {
         return artifact;
     }

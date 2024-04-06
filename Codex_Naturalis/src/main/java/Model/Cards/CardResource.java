@@ -3,123 +3,98 @@ package Model.Cards;
 import Model.Player.CardMap;
 import Model.Utility.*;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * 
- */
-public class CardResource implements Card {
+public class CardResource extends Card {
+
     //ATTRIBUTES
-    /**
-     * 
-     */
     private Artifacts cardColor;
-    /**
-     * 
-     */
     private int points;
-    /**
-     * 
-     */
-    private Map<CornerOrientation, Corner> corners;
 
 
 
 
 
-    //CONSTRUCTORS
-    /**
-     *
-     */
+    //CONSTRUCTOR
+    /* Two case: one providing the points, that are set automatically at the same value; while the other one set by
+     * default the points to zero when no int attribute is provided. */
     public CardResource(Artifacts cardColor, int points, Map<CornerOrientation, Corner> corners) {
+        super(corners);
         this.cardColor = cardColor;
         this.points = points;
-        this.corners = corners;
     }
 
     public CardResource(Artifacts cardColor, Map<CornerOrientation, Corner> corners) {
+        super(corners);
         this.cardColor = cardColor;
-        this.corners = corners;
+        //If missing points attribute is set to zero by default
     }
 
 
 
 
 
-    //INTERFACE METHODS
-    public boolean isPlaceable(CardMap cardMap) {
-        return true;
-    }
+    //GETTER
+    public Artifacts getCardColor(){
+        return cardColor;
+    };
+    public int getPoints(){
+        return points;
+    };
 
+
+
+
+
+    //ABSTRACT CLASS METHODS
     public int countPoints(CardMap cardMap, Coordinates coordinates, boolean faceUp) {
         if (faceUp)
-            return points;
+            return this.getPoints();
         else
             return 0;
-    }
+    };
 
-    /**
-     * @param faceUp 
-     * @return
-     */
     public Map<Artifacts, Integer> getAllArtifacts(boolean faceUp) {
-        Map<Artifacts,Integer> mapArtifacts = null;
+        Map<CornerOrientation, Corner> corners = this.getCorners();
+        Map<Artifacts, Integer> mapArtifacts = new HashMap<>();
+        Artifacts art;
+        int value;
         if (faceUp) {
-            Corner corner = null;
             for (CornerOrientation co : corners.keySet()) {
-                corner = corners.get(co);
-                if (corner != null && corner.getArtifact()!=Artifacts.NULL) {
-//                    if ()
-//                        mapArtifacts.put(corner.getArtifact(),1);
+                if (co.isFaceUp()) {
+                    art = corners.get(co).getArtifact();
+                    if (art != Artifacts.NULL) {
+                        if (mapArtifacts.putIfAbsent(art, 1) != null) {
+                            value = mapArtifacts.get(art) + 1;
+                            mapArtifacts.remove(art);
+                            mapArtifacts.put(art, value);
+                        }
+                    }
                 }
             }
         }
         else
-            mapArtifacts.put(cardColor,1);
+            //Every CardResource/Golden don't have any artifacts on back corners, put only the central one
+            mapArtifacts.put(this.getCardColor(),1);
         return mapArtifacts;
     }
 
-    /**
-     * @param direction 
-     * @param faceUp 
-     * @return
-     */
-    public Artifacts getCornerArtifact(CornerDirection direction, boolean faceUp) {
-        CornerOrientation cornerArtifact = new CornerOrientation(direction, faceUp);
-        Corner c = null;
-        for (CornerOrientation co : this.corners.keySet())
-            if (co.equals(cornerArtifact))
-                c = this.corners.get(co);
-        assert c != null;
-        return c.getArtifact();
-    }
-
-    /**
-     * @return
-     */
-    public Artifacts getCardColor() {
-        return cardColor;
-    }
-
-    public int getPoints() {
-        return points;
-    }
 
 
 
 
-
-    //OVERRIDE EQUALS AND HASH
+    //EQUALS AND HASH
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof CardResource that)) return false;
-        return points == that.points && cardColor == that.cardColor && Objects.equals(corners, that.corners);
+        return points == that.points && cardColor == that.cardColor && Objects.equals(this.getCorners(), that.getCorners());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cardColor, points, corners);
+        return Objects.hash(cardColor, points, this.getCorners());
     }
 }

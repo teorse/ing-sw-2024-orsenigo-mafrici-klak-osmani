@@ -8,6 +8,8 @@ import Model.Cards.Card;
  */
 
 public class CardPlayability {
+
+    //ATTRIBUTES
     /**
      * Card being held by the player.
      */
@@ -17,39 +19,39 @@ public class CardPlayability {
      */
     private boolean playability;
 
-    /**
-     * Default constructor, creates Model.Player.CardPlayability object by taking a Card and getting a playability value.
-     * @param card          Card object.
-     * @param playability   Playability value, returned by method in Card class.
-     */
+
+
+
+
+    //CONSTRUCTOR
     public CardPlayability(Card card, boolean playability){
         this.card = card;
         this.playability = playability;
     }
 
-    /**
-     * Method to get the card contained in the object.
-     * @return  Card contained in the object.
-     */
+
+
+
+
+    //GETTER
     public Card getCard() {
         return card;
     }
-
-    /**
-     * Method to get Card playability.
-     * @return Boolean value of playability, if true card can be played both sides, if false card can be played only
-     *         face-down.
-     */
     public boolean getPlayability(){
         return this.playability;
     }
 
+
+
+
+
+    //METHODS
     /**
-     * Method to set playability value.
-     * @param p Boolean value of playability, if true card can be played both sides, if false card can be played only
-     *          face-down.
+     * Method to set playability value at the right value given a CardMap.
+     *
+     * @param CM represents the actual card on the table
      */
-    public void setPlayability(boolean p){
-        this.playability = p;
+    public void setPlayability(CardMap CM){
+        this.playability = this.card.isPlaceable(CM);
     }
 }

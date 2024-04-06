@@ -1,6 +1,11 @@
 package Model.Player;
 
 import Model.Cards.Card;
+import Model.Cards.CornerDirection;
+import Model.Utility.Artifacts;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class is instanced before playing a card, it stores information about how a card is being played specifically
@@ -9,7 +14,7 @@ import Model.Cards.Card;
  * This class is then stored in the Model.Player.CardMap.
  */
 
-public class CardPlacement {
+public class CardVisibility {
     /**
      * Reference to the card that this instance of Model.Player.CardPlacement is linked to.
      */
@@ -28,7 +33,7 @@ public class CardPlacement {
      * cornerVisibility[2] = South-East<br>
      * cornerVisibility[3] = South-West<br>
      */
-    private boolean[] cornerVisibility;
+    private Map<CornerDirection, Boolean> cornerVisibility;
 
     /**
      * Default Constructor.<br>
@@ -37,41 +42,39 @@ public class CardPlacement {
      * @param card              Card this instance of Model.Player.CardPlacement is being instanced for.
      * @param faceUp            Boolean face orientation of the card, if true card is placed face-up.
      */
-    public CardPlacement(Card card, boolean faceUp) {
+    public CardVisibility(Card card, boolean faceUp) {
         this.card = card;
         this.faceUp = faceUp;
-        for(int i = 0; i<4; i++)
-            this.cornerVisibility[i] = true;
-    }
 
-    /**
-     * Returns the card associated with this placement data.
-     * @return  Card object this placement data is associated to.
-     */
-    public Card getCard() {
-        return card;
+        cornerVisibility = new HashMap<>(){{
+            put(CornerDirection.NW, true);
+            put(CornerDirection.NE, true);
+            put(CornerDirection.SE, true);
+            put(CornerDirection.SW, true);
+        }};
     }
 
     /**
      * Method to update corner visibility once a corner gets covered by a new card being placed on top of it.
-     * @param index Position of the corner in the Array
-     * @param value Value of visibility flag: true corner is visible, false corner is covered.
+     * @param cornerDirection Position of the corner in the Array
      */
-    public void setCornerVisibility( int index, boolean value){
-        if(index >= 4 || index < 0 ){
-            throw new IndexOutOfBoundsException("Index of the corner is out of range!");
-        }
-
-        this.cornerVisibility[index] = value;
+    public void coverCorner(CornerDirection cornerDirection){
+        cornerVisibility.put(cornerDirection, false);
     }
 
     /**
      * Returns visibility value of specified corner.
-     * @param index int index of corner in the Array cornerVisibility to be returned.
+     * @param cornerDirection int index of corner in the Array cornerVisibility to be returned.
      * @return      boolean value of corner at specified index in Array.
      */
-    public boolean getCornerVisibility(int index) {
-        return cornerVisibility[index];
+    public boolean getCornerVisibility(CornerDirection cornerDirection) {
+        return cornerVisibility.get(cornerDirection);
+    }
+    protected Artifacts getCornerArtifact(CornerDirection cornerDirection){
+        return card.getCornerArtifact(cornerDirection, faceUp);
+    };
+    protected Map<Artifacts, Integer> getAllArtifacts(){
+        return card.getAllArtifacts(faceUp);
     }
 
     /**

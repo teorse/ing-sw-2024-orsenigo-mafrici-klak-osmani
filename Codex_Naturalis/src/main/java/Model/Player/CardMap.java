@@ -1,12 +1,11 @@
 package Model.Player;
 
+import Model.Cards.Card;
+import Model.Cards.CornerDirection;
 import Model.Utility.Coordinates;
 import Model.Utility.Artifacts;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class stores all the information related to the player's placement of cards:<br>
@@ -17,20 +16,29 @@ import java.util.Map;
 
 
 public class CardMap {
+    //ATTRIBUTES
     /**
      * Map storing the cards previously placed during the game by the player.
      */
-    private Map<Coordinates, CardPlacement> cardsPlaced;
+    private Map<Coordinates, CardVisibility> cardsPlaced;
     /**
      * A List containing all the allowed coordinates where the player can place his next card.
      */
     private List<Coordinates> availablePlacements;
+    /**
+     *
+     */
+    private List<Coordinates> coordinatesPlaced;
     /**
      * A map used as a counter for the Artifacts currently held by the player.
      */
     private Map<Artifacts, Integer> artifactsCounter;
 
 
+
+
+
+    //CONSTRUCTOR
     /**
      * Default Constructor.<br>
      * Builds Model.Player.CardPlacement Object by initializing the two maps and the Array and adds to the Array
@@ -39,17 +47,24 @@ public class CardMap {
     public CardMap() {
         cardsPlaced = new HashMap<>();
         availablePlacements = new ArrayList<>();
+        coordinatesPlaced = new ArrayList<>();
         availablePlacements.add(new Coordinates(0, 0));
         artifactsCounter = new HashMap<>();
+        updateAvailablePlacements(new Coordinates(0, 0));
     }
 
+
+
+
+
+    //GETTERS
     /**
      * Method to get the Hashmap with the placement of the cards played.
      *
      * @return HashMap with player's card placement.
      */
-    public Map<Coordinates, CardPlacement> getCardsPlaced() {
-        return cardsPlaced;
+    public List<Coordinates> getCoordinatesPlaced() {
+        return Collections.unmodifiableList(coordinatesPlaced);
     }
 
     /**
@@ -58,13 +73,76 @@ public class CardMap {
      * @return ArrayList of Model.Utility.Coordinates available for the placement of the next card.
      */
     public List<Coordinates> getAvailablePlacements() {
-        return availablePlacements;
+        return Collections.unmodifiableList(availablePlacements);
     }
 
-    //public void place(Card cardToPlace, int coordinateIndex, boolean faceUp);
-    //Adds card to NestedMap cardsPlaced according to the specified coordinate and face orientation.
-    //Updates corner visibility of corners of the cards being covered.
-    //Updates the player's resources and items counters.
+
+
+    //SETTERS
+    /**
+     * Method which changes the amount of artifacts in the counter
+     * @param artifact
+     * @param delta
+     */
+    public void changeArtifactAmount(Artifacts artifact, int delta) {
+        if(artifactsCounter.containsKey(artifact)) {
+            artifactsCounter.put(artifact, artifactsCounter.get(artifact)+delta);
+        } else {
+            artifactsCounter.put(artifact, delta);
+        }
+    }
+
+    //CLASS SPECIFIC METHODS
+    /**
+     * Method which places the card in cardsPlaced map, updates resources and items of the player,
+     * updates covered corners of nearby cards, updates the list of coordinates placed and calls the method
+     * to update the available placements
+     * @param cardToPlace
+     * @param coordinateIndex
+     * @param faceUp
+     */
+    public void place(Card cardToPlace, int coordinateIndex, boolean faceUp) {
+//        //Coordinates of the card to be placed in the map
+//        Coordinates placed = availablePlacements.get(coordinateIndex);
+//        //CardVisibility of the card to be placed in the map
+//        CardVisibility cardVisibilityToPlace = new CardVisibility(cardToPlace, faceUp);
+//
+//        Coordinates[] offset = new Coordinates[] {
+//                new Coordinates(1, 1),   // North East
+//                new Coordinates(1, -1),  // South East
+//                new Coordinates(-1, 1),  // North West
+//                new Coordinates(-1, -1)  // South West
+//        };
+//
+//        CornerDirection [] cornersToCheck = new CornerDirection[] {
+//                CornerDirection.SW,
+//                CornerDirection.NW,
+//                CornerDirection.SE,
+//                CornerDirection.NE
+//        };
+//        //For loop which function is to cover the corners and reducing the amount of artifacts in the counter
+//        for(int i = 0; i < 4; i++) {
+//            if(cardsPlaced.containsKey(placed.add(offset[i]))) {
+//                CardVisibility coveredCard = cardsPlaced.get(placed.add(offset[i]));
+//                coveredCard.coverCorner(cornersToCheck[i]);
+//                Artifacts coveredArtifact = coveredCard.getCornerArtifact(cornersToCheck[i]);
+//                if(coveredArtifact != Artifacts.NULL) {
+//                    changeArtifactAmount(coveredArtifact, -1);
+//                }
+//            }
+//        }
+//        //For loop which function is to increment the amount of artifacts in the counter
+//        Map<Artifacts, Integer> newArtifacts = cardVisibilityToPlace.getAllArtifacts();
+//        for(Map.Entry<Artifacts, Integer> entry : newArtifacts.entrySet()){
+//            changeArtifactAmount(entry.getKey(), entry.getValue());
+//        }
+//        //Putting the card in the map
+//        cardsPlaced.put(placed, cardVisibilityToPlace);
+//        //Updating the list of used coordinates
+//        coordinatesPlaced.add(placed);
+//        //Calling the method which updates the available placements
+//        updateAvailablePlacements(placed);
+    }
 
     /**
      * Method to get the amount of artifacts of type "artifacts" held by the player
@@ -82,7 +160,6 @@ public class CardMap {
         }
     }
 
-
     /**
      * Method to get the amount of corners that would be covered if a card was to be placed
      * at that coordinates
@@ -90,26 +167,30 @@ public class CardMap {
      * @return int corresponding to number of corners that would be covered
      * if a card was to be placed at that coordinates
      */
-    public int getAmountOfCoveredCorners(Coordinates coordinates) {
-        //Verify if the map contains an instance of CardPlacement for the specified coordinates
-        if (cardsPlaced.containsKey(coordinates)) {
-            //Get the instance of CardPlacement corresponding to the specified coordinates
-            CardPlacement placement = cardsPlaced.get(coordinates);
-
-            //Counts the number of covered corners
-            int coveredCorners = 0;
-            for (int i = 0; i < 4; i++) {
-                if (!placement.getCornerVisibility(i)) {
-                    coveredCorners++;
-                }
-            }
-
-            return coveredCorners;
-        } else {
-            //If there isn't any CardPlacement for the specified coordinates, it returns 0
-            return 0;
-        }
+    public int getAmountOfNearbyCorners(Coordinates coordinates) {
+//
+//        int coveredCorners = 0;
+//
+//        Coordinates[] offset = new Coordinates[] {
+//                new Coordinates(1, 1),   // North East
+//                new Coordinates(1, -1),  // South East
+//                new Coordinates(-1, 1),  // North West
+//                new Coordinates(-1, -1)  // South West
+//        };
+//
+//        for(int i = 0; i < 4; i++) {
+//            Coordinates cardPositions = coordinates.add(offset[i]);
+//            //If a card exists at the coordinates specified by cardPositions
+//            //the card we want to place will cover one corner of the former
+//            if(cardsPlaced.containsKey(cardPositions)) {
+//                coveredCorners++;
+//            }
+//        }
+//
+//        return coveredCorners;
+        return 0;
     }
-    //First two methods return number of specified resources or items from the respective counters.
-    //Last method returns number of corners that would be covered if a card was to be placed in that coordinate.
+
+    protected void updateAvailablePlacements(Coordinates coordinates){
+    }
 }
