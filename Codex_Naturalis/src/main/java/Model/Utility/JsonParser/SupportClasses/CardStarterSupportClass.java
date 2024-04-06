@@ -157,7 +157,7 @@ public class CardStarterSupportClass {
      * @return CardStarter object cast to Card created with parsed and validated inputs.
      */
     public Card createCardStarter(){
-        return (Card) new CardStarter(checkCentralArtifacts(), checkCorners());
+        return (Card) new CardStarter(checkCorners(), checkCentralArtifacts());
     }
 
 }

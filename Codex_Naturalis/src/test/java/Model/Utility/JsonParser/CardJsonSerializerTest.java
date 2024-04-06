@@ -150,9 +150,6 @@ public class CardJsonSerializerTest {
     public void setUpStarterCards(){
         starterCards.add(
                 new CardStarter(
-                        new HashMap<>(){{
-                            put(Artifacts.INSECT, 1);
-                        }},
                         new HashMap<CornerOrientation, Corner>(){{
                             put(new CornerOrientation(CornerDirection.NW, true), new Corner(CornerType.EMPTY));
                             put(new CornerOrientation(CornerDirection.NE, true), new Corner(Artifacts.PLANT));
@@ -162,16 +159,15 @@ public class CardJsonSerializerTest {
                             put(new CornerOrientation(CornerDirection.NE, false), new Corner(Artifacts.PLANT));
                             put(new CornerOrientation(CornerDirection.SE, false), new Corner(Artifacts.ANIMAL));
                             put(new CornerOrientation(CornerDirection.SW, false), new Corner(Artifacts.INSECT));
+                        }},
+                        new HashMap<>(){{
+                            put(Artifacts.INSECT, 1);
                         }}
                 )
         );
 
         starterCards.add(
                 new CardStarter(
-                        new HashMap<>(){{
-                            put(Artifacts.ANIMAL, 1);
-                            put(Artifacts.INSECT, 1);
-                        }},
                         new HashMap<CornerOrientation, Corner>(){{
                             put(new CornerOrientation(CornerDirection.NW, true), new Corner(CornerType.EMPTY));
                             put(new CornerOrientation(CornerDirection.NE, true), new Corner(CornerType.EMPTY));
@@ -181,17 +177,16 @@ public class CardJsonSerializerTest {
                             put(new CornerOrientation(CornerDirection.NE, false), new Corner(Artifacts.INSECT));
                             put(new CornerOrientation(CornerDirection.SE, false), new Corner(Artifacts.FUNGI));
                             put(new CornerOrientation(CornerDirection.SW, false), new Corner(Artifacts.ANIMAL));
+                        }},
+                        new HashMap<>(){{
+                            put(Artifacts.ANIMAL, 1);
+                            put(Artifacts.INSECT, 1);
                         }}
                 )
         );
 
         starterCards.add(
                 new CardStarter(
-                        new HashMap<>(){{
-                            put(Artifacts.PLANT, 1);
-                            put(Artifacts.ANIMAL, 1);
-                            put(Artifacts.FUNGI, 1);
-                        }},
                         new HashMap<CornerOrientation, Corner>(){{
                             put(new CornerOrientation(CornerDirection.NW, true), new Corner(CornerType.EMPTY));
                             put(new CornerOrientation(CornerDirection.NE, true), new Corner(CornerType.EMPTY));
@@ -201,6 +196,11 @@ public class CardJsonSerializerTest {
                             put(new CornerOrientation(CornerDirection.NE, false), new Corner(Artifacts.ANIMAL));
                             put(new CornerOrientation(CornerDirection.SE, false), new Corner(Artifacts.INSECT));
                             put(new CornerOrientation(CornerDirection.SW, false), new Corner(Artifacts.PLANT));
+                        }},
+                        new HashMap<>(){{
+                            put(Artifacts.PLANT, 1);
+                            put(Artifacts.ANIMAL, 1);
+                            put(Artifacts.FUNGI, 1);
                         }}
                 )
         );
