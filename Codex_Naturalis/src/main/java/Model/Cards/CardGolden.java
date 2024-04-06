@@ -36,6 +36,7 @@ public class CardGolden extends CardResource {
         super(cardColor, points, corners);
         this.requiresCorner = requiresCorner;
         this.constraint = constraint;
+        this.requiredArtifact = Artifacts.NULL;
     }
 
     public CardGolden(Artifacts cardColor, int points, Map<CornerOrientation, Corner> corners, Artifacts requiredArtifact, Map<Artifacts, Integer> constraint) {
