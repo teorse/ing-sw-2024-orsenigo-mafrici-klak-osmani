@@ -81,6 +81,14 @@ public class CardResource extends Card {
         return mapArtifacts;
     }
 
+    @Override
+    public CornerType getCornerType(CornerDirection direction, boolean faceUp){
+        if(!faceUp)
+            return CornerType.EMPTY;
+        else
+            return super.getCornerType(direction, true);
+    }
+
 
 
 

@@ -82,4 +82,13 @@ public abstract class Card {
                 return this.corners.get(co).getArtifact();
         return null;
     };
+
+    /**
+     * @param direction
+     * @param faceUp
+     * @return CornerType of the required corner.
+     */
+    public CornerType getCornerType(CornerDirection direction, boolean faceUp){
+        return corners.get(new CornerOrientation(direction, faceUp)).getCornerType();
+    }
 }
