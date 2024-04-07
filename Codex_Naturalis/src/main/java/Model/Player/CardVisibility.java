@@ -2,6 +2,7 @@ package Model.Player;
 
 import Model.Cards.Card;
 import Model.Cards.CornerDirection;
+import Model.Cards.CornerType;
 import Model.Utility.Artifacts;
 
 import java.util.HashMap;
@@ -76,6 +77,15 @@ public class CardVisibility {
      */
     protected Artifacts getCornerArtifact(CornerDirection cornerDirection){
         return card.getCornerArtifact(cornerDirection, faceUp);
+    }
+
+    /**
+     * Method that returns the CornerType of the specified corner direction currently found on the visible side of the card.
+     * @param cornerDirection   Corner from which to get the CornerType
+     * @return                  CornerType of the corner
+     */
+    protected CornerType getCornerType(CornerDirection cornerDirection){
+        return card.getCornerType(cornerDirection, faceUp);
     }
 
     /**
