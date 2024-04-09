@@ -82,12 +82,15 @@ public class CardGolden extends CardResource {
     public int countPoints(CardMap cardMap, Coordinates coordinates, boolean faceUp) {
 //        //TODO: testing this method (return statment just to avoid error)
 ////        if (faceUp) {
-////            if (!requiresCorner)
+////            if (requiresCorner)
+////            //Multiply the number of corners covered by the point given for each corner
+////                return cardMap.getAmountOfCoveredCorners(coordinates) * this.getPoints();
+////            else if (requiredArtifact != Artifact.NULL)
 ////            //Multiply the number of artifacts avaible for the player by the point given for each artifact
 ////                return cardMap.getAmountOfArtifacts(requiredArtifact) * this.getPoints();
-////            else
-////                //Multiply the number of corners covered by the point given for each corner
-////                return cardMap.getAmountOfCoveredCorners(coordinates) * this.getPoints();
+////                else
+////                //Gives a fixed amount of points
+////                    return this.getPoints();
 ////        }
 ////        else
 ////            return 0;

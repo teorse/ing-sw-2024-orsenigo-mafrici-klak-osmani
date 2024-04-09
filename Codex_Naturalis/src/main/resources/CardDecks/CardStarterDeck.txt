@@ -1,0 +1,528 @@
+{
+  "centralArtifacts": {
+    "INSECT": 1
+  },
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "FUNGI"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "PLANT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "ANIMAL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "INSECT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": false
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": false
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "PLANT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": false
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": false
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "INSECT"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "centralArtifacts": {
+    "FUNGI": 1
+  },
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "PLANT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "ANIMAL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "INSECT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "FUNGI"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": false
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "ANIMAL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": false
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": false
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "FUNGI"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": false
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "centralArtifacts": {
+    "PLANT": 1,
+    "FUNGI": 1
+  },
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "INSECT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "ANIMAL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "PLANT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "FUNGI"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": false
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": false
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": false
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": false
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "centralArtifacts": {
+    "ANIMAL": 1,
+    "INSECT": 1
+  },
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "PLANT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "INSECT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "FUNGI"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "ANIMAL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": false
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": false
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": false
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": false
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "centralArtifacts": {
+    "ANIMAL": 1,
+    "INSECT": 1,
+    "PLANT": 1
+  },
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "INSECT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "FUNGI"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "ANIMAL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "PLANT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": false
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": false
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": false
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": false
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "centralArtifacts": {
+    "PLANT": 1,
+    "ANIMAL": 1,
+    "FUNGI": 1
+  },
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "FUNGI"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "ANIMAL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "INSECT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "PLANT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": false
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": false
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": false
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": false
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}

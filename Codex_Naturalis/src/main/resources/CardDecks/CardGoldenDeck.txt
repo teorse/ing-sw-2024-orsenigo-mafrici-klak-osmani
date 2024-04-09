@@ -1,6 +1,12 @@
 {
+  "requiresCorner": false,
+  "requiredArtifact": "QUILL",
+  "constraint": {
+    "FUNGI": 2,
+    "ANIMAL": 1
+  },
   "cardColor": "FUNGI",
-  "points": 0,
+  "points": 1,
   "corners": [
     [
       {
@@ -8,8 +14,8 @@
         "faceUp": true
       },
       {
-        "cornerType": "ARTIFACT",
-        "artifact": "FUNGI"
+        "cornerType": "NULL",
+        "artifact": "NULL"
       }
     ],
     [
@@ -25,180 +31,6 @@
     [
       {
         "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "FUNGI"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "FUNGI",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "FUNGI"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "FUNGI"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "FUNGI",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "FUNGI"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "FUNGI"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "FUNGI",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "FUNGI"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "FUNGI"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "FUNGI",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
         "faceUp": true
       },
       {
@@ -208,33 +40,39 @@
     ],
     [
       {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "FUNGI"
-      }
-    ],
-    [
-      {
         "cornerDirection": "SW",
         "faceUp": true
       },
       {
-        "cornerType": "ARTIFACT",
-        "artifact": "PLANT"
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
       }
     ]
   ]
 }CARD_OVER
 {
+  "requiresCorner": false,
+  "requiredArtifact": "INKWELL",
+  "constraint": {
+    "FUNGI": 2,
+    "PLANT": 1
+  },
   "cardColor": "FUNGI",
-  "points": 0,
+  "points": 1,
   "corners": [
     [
       {
         "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
         "faceUp": true
       },
       {
@@ -244,22 +82,12 @@
     ],
     [
       {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "FUNGI"
-      }
-    ],
-    [
-      {
         "cornerDirection": "SE",
         "faceUp": true
       },
       {
-        "cornerType": "ARTIFACT",
-        "artifact": "ANIMAL"
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
       }
     ],
     [
@@ -275,468 +103,14 @@
   ]
 }CARD_OVER
 {
-  "cardColor": "FUNGI",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "FUNGI"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "INSECT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "MANUSCRIPT"
-      }
-    ]
-  ]
-}CARD_OVER
-{
+  "requiresCorner": false,
+  "requiredArtifact": "MANUSCRIPT",
+  "constraint": {
+    "FUNGI": 2,
+    "INSECT": 1
+  },
   "cardColor": "FUNGI",
   "points": 1,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "FUNGI"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "FUNGI",
-  "points": 1,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "FUNGI"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "FUNGI",
-  "points": 1,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "FUNGI"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "PLANT",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "PLANT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "PLANT"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "PLANT",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "PLANT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "PLANT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "PLANT",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "PLANT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "PLANT"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "PLANT",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "PLANT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "PLANT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "PLANT",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "INSECT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "PLANT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "QUILL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "PLANT",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "FUNGI"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "PLANT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "INKWELL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "PLANT",
-  "points": 0,
   "corners": [
     [
       {
@@ -754,7 +128,7 @@
         "faceUp": true
       },
       {
-        "cornerType": "NULL",
+        "cornerType": "EMPTY",
         "artifact": "NULL"
       }
     ],
@@ -764,8 +138,8 @@
         "faceUp": true
       },
       {
-        "cornerType": "ARTIFACT",
-        "artifact": "ANIMAL"
+        "cornerType": "NULL",
+        "artifact": "NULL"
       }
     ],
     [
@@ -774,15 +148,73 @@
         "faceUp": true
       },
       {
-        "cornerType": "ARTIFACT",
-        "artifact": "PLANT"
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
       }
     ]
   ]
 }CARD_OVER
 {
-  "cardColor": "PLANT",
-  "points": 1,
+  "requiresCorner": true,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "FUNGI": 3,
+    "ANIMAL": 1
+  },
+  "cardColor": "FUNGI",
+  "points": 2,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": true,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "FUNGI": 3,
+    "PLANT": 1
+  },
+  "cardColor": "FUNGI",
+  "points": 2,
   "corners": [
     [
       {
@@ -820,15 +252,21 @@
         "faceUp": true
       },
       {
-        "cornerType": "ARTIFACT",
-        "artifact": "PLANT"
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
       }
     ]
   ]
 }CARD_OVER
 {
-  "cardColor": "PLANT",
-  "points": 1,
+  "requiresCorner": true,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "FUNGI": 3,
+    "INSECT": 1
+  },
+  "cardColor": "FUNGI",
+  "points": 2,
   "corners": [
     [
       {
@@ -838,190 +276,6 @@
       {
         "cornerType": "EMPTY",
         "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "PLANT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "PLANT",
-  "points": 1,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "PLANT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "ANIMAL",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "ANIMAL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "ANIMAL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "ANIMAL",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "ANIMAL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "ANIMAL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "ANIMAL",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "ANIMAL"
       }
     ],
     [
@@ -1050,245 +304,20 @@
         "faceUp": true
       },
       {
-        "cornerType": "ARTIFACT",
-        "artifact": "ANIMAL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "ANIMAL",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
         "cornerType": "EMPTY",
         "artifact": "NULL"
       }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "ANIMAL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "ANIMAL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
     ]
   ]
 }CARD_OVER
 {
-  "cardColor": "ANIMAL",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "INSECT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "ANIMAL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "INKWELL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "ANIMAL",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "PLANT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "ANIMAL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "MANUSCRIPT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "ANIMAL",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "QUILL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "FUNGI"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "ANIMAL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "ANIMAL",
-  "points": 1,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "ANIMAL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "ANIMAL",
-  "points": 1,
+  "requiresCorner": false,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "FUNGI": 3
+  },
+  "cardColor": "FUNGI",
+  "points": 3,
   "corners": [
     [
       {
@@ -1308,374 +337,6 @@
       {
         "cornerType": "NULL",
         "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "ANIMAL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "ANIMAL",
-  "points": 1,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "ANIMAL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "INSECT",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "INSECT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "INSECT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "INSECT",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "INSECT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "INSECT"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "INSECT",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "INSECT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "INSECT"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "INSECT",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "INSECT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "INSECT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "INSECT",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "QUILL"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "INSECT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "ANIMAL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "INSECT",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "MANUSCRIPT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "INSECT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "FUNGI"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "SW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "NULL",
-        "artifact": "NULL"
-      }
-    ]
-  ]
-}CARD_OVER
-{
-  "cardColor": "INSECT",
-  "points": 0,
-  "corners": [
-    [
-      {
-        "cornerDirection": "NW",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "INSECT"
-      }
-    ],
-    [
-      {
-        "cornerDirection": "NE",
-        "faceUp": true
-      },
-      {
-        "cornerType": "ARTIFACT",
-        "artifact": "PLANT"
       }
     ],
     [
@@ -1701,6 +362,1197 @@
   ]
 }CARD_OVER
 {
+  "requiresCorner": false,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "FUNGI": 3
+  },
+  "cardColor": "FUNGI",
+  "points": 3,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "QUILL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "FUNGI": 3
+  },
+  "cardColor": "FUNGI",
+  "points": 3,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "MANUSCRIPT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "FUNGI": 5
+  },
+  "cardColor": "FUNGI",
+  "points": 5,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "QUILL",
+  "constraint": {
+    "PLANT": 2,
+    "INSECT": 1
+  },
+  "cardColor": "PLANT",
+  "points": 1,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "QUILL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "MANUSCRIPT",
+  "constraint": {
+    "PLANT": 2,
+    "FUNGI": 1
+  },
+  "cardColor": "PLANT",
+  "points": 1,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "MANUSCRIPT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "INKWELL",
+  "constraint": {
+    "PLANT": 2,
+    "ANIMAL": 1
+  },
+  "cardColor": "PLANT",
+  "points": 1,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "INKWELL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": true,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "PLANT": 3,
+    "INSECT": 1
+  },
+  "cardColor": "PLANT",
+  "points": 2,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": true,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "PLANT": 3,
+    "ANIMAL": 1
+  }
+  "cardColor": "PLANT",
+  "points": 2,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": true,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "PLANT": 3,
+    "FUNGI": 1
+  },
+  "cardColor": "PLANT",
+  "points": 2,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "PLANT": 3
+  },
+  "cardColor": "PLANT",
+  "points": 3,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "QUILL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "PLANT": 3
+  },
+  "cardColor": "PLANT",
+  "points": 3,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "MANUSCRIPT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "PLANT": 3
+  },
+  "cardColor": "PLANT",
+  "points": 3,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "INKWELL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "PLANT": 5
+  },
+  "cardColor": "PLANT",
+  "points": 5,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "INKWELL",
+  "constraint": {
+    "ANIMAL": 2,
+    "INSECT": 1
+  },
+  "cardColor": "ANIMAL",
+  "points": 1,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "INKWELL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "MANUSCRIPT",
+  "constraint": {
+    "ANIMAL": 2,
+    "PLANT": 1
+  },
+  "cardColor": "ANIMAL",
+  "points": 1,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "MANUSCRIPT"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "QUILL",
+  "constraint": {
+    "ANIMAL": 2,
+    "FUNGI": 1
+  },
+  "cardColor": "ANIMAL",
+  "points": 1,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "QUILL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": true,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "ANIMAL": 3,
+    "INSECT": 1
+  },
+  "cardColor": "ANIMAL",
+  "points": 2,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": true,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "ANIMAL": 3,
+    "FUNGI": 1
+  }
+  "cardColor": "ANIMAL",
+  "points": 2,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": true,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "ANIMAL": 3,
+    "PLANT": 1
+  },
+  "cardColor": "ANIMAL",
+  "points": 2,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "ANIMAL": 3
+  },
+  "cardColor": "ANIMAL",
+  "points": 3,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "MANUSCRIPT"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "ANIMAL": 3
+  },
+  "cardColor": "ANIMAL",
+  "points": 3,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "INKWELL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "ANIMAL": 3
+  },
+  "cardColor": "ANIMAL",
+  "points": 3,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "QUILL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "ANIMAL": 5
+  },
+  "cardColor": "ANIMAL",
+  "points": 5,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "QUILL",
+  "constraint": {
+    "INSECT": 2,
+    "PLANT": 1
+  },
   "cardColor": "INSECT",
   "points": 1,
   "corners": [
@@ -1710,8 +1562,268 @@
         "faceUp": true
       },
       {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
         "cornerType": "ARTIFACT",
-        "artifact": "INSECT"
+        "artifact": "QUILL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "MANUSCRIPT",
+  "constraint": {
+    "INSECT": 2,
+    "ANIMAL": 1
+  },
+  "cardColor": "INSECT",
+  "points": 1,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "MANUSCRIIPT"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "INKWELL",
+  "constraint": {
+    "INSECT": 2,
+    "FUNGI": 1
+  },
+  "cardColor": "INSECT",
+  "points": 1,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "INKWELL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": true,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "INSECT": 3,
+    "ANIMAL": 1
+  },
+  "cardColor": "INSECT",
+  "points": 2,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": true,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "INSECT": 3,
+    "PLANT": 1
+  }
+  "cardColor": "INSECT",
+  "points": 2,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": true,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "INSECT": 3,
+    "FUNGI": 1
+  },
+  "cardColor": "INSECT",
+  "points": 2,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
       }
     ],
     [
@@ -1747,8 +1859,64 @@
   ]
 }CARD_OVER
 {
-  "cardColor": "ANIMAL",
-  "points": 1,
+  "requiresCorner": false,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "INSECT": 3
+  },
+  "cardColor": "INSECT",
+  "points": 3,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "ARTIFACT",
+        "artifact": "INKWELL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "INSECT": 3
+  },
+  "cardColor": "INSECT",
+  "points": 3,
   "corners": [
     [
       {
@@ -1766,8 +1934,8 @@
         "faceUp": true
       },
       {
-        "cornerType": "EMPTY",
-        "artifact": "NULL"
+        "cornerType": "ARTIFACT",
+        "artifact": "MANUSCRIPT"
       }
     ],
     [
@@ -1776,8 +1944,8 @@
         "faceUp": true
       },
       {
-        "cornerType": "ARTIFACT",
-        "artifact": "INSECT"
+        "cornerType": "NULL",
+        "artifact": "NULL"
       }
     ],
     [
@@ -1793,8 +1961,13 @@
   ]
 }CARD_OVER
 {
-  "cardColor": "ANIMAL",
-  "points": 1,
+  "requiresCorner": false,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "INSECT": 3
+  },
+  "cardColor": "INSECT",
+  "points": 3,
   "corners": [
     [
       {
@@ -1812,8 +1985,8 @@
         "faceUp": true
       },
       {
-        "cornerType": "ARTIFACT",
-        "artifact": "INSECT"
+        "cornerType": "NULL",
+        "artifact": "NULL"
       }
     ],
     [
@@ -1832,7 +2005,58 @@
         "faceUp": true
       },
       {
+        "cornerType": "ARTIFACT",
+        "artifact": "QUILL"
+      }
+    ]
+  ]
+}CARD_OVER
+{
+  "requiresCorner": false,
+  "requiredArtifact": "NULL",
+  "constraint": {
+    "INSECT": 5
+  },
+  "cardColor": "INSECT",
+  "points": 5,
+  "corners": [
+    [
+      {
+        "cornerDirection": "NW",
+        "faceUp": true
+      },
+      {
         "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "NE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "EMPTY",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SE",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
+        "artifact": "NULL"
+      }
+    ],
+    [
+      {
+        "cornerDirection": "SW",
+        "faceUp": true
+      },
+      {
+        "cornerType": "NULL",
         "artifact": "NULL"
       }
     ]
