@@ -145,11 +145,25 @@ public class CardJsonSerializer {
 
         String[] cardStrings = jsonString.split("CARD_OVER");
 
+        int i = 0;
         for (String cardString : cardStrings) {
-            if(cardStrings.length > 1 && cardString.trim().isEmpty())
-                throw new JsonSyntaxException("Missing card object after CARD_OVER");
+            try {
+                if (cardStrings.length > 1 && cardString.trim().isEmpty())
+                    throw new JsonSyntaxException("Missing card object after CARD_OVER");
 
-            cardList.add(deserializeCardResource(cardString.trim()));
+                cardList.add(deserializeCardResource(cardString.trim()));
+            }
+            catch (IllegalArgumentException m){
+                throw new IllegalArgumentException("Exception thrown reading card number "+i+":\n"+m);
+            }
+            catch (JsonSyntaxException m){
+                throw new JsonSyntaxException("Exception thrown reading card number "+i+":\n"+m);
+            }
+            catch (NullPointerException m){
+                throw new NullPointerException("Exception thrown reading card number "+i+":\n"+m);
+            }
+
+            i++;
         }
 
     return cardList;
@@ -169,11 +183,27 @@ public class CardJsonSerializer {
 
         String[] cardStrings = jsonString.split("CARD_OVER");
 
+        int i = 0;
         for (String cardString : cardStrings) {
-            if(cardStrings.length > 1 && cardString.trim().isEmpty())
-                throw new JsonSyntaxException("Missing card object after CARD_OVER");
+            try {
 
-            cardList.add(deserializeCardGolden(cardString.trim()));
+
+                if (cardStrings.length > 1 && cardString.trim().isEmpty())
+                    throw new JsonSyntaxException("Missing card object after CARD_OVER");
+
+                cardList.add(deserializeCardGolden(cardString.trim()));
+            }
+            catch (IllegalArgumentException m){
+                throw new IllegalArgumentException("Exception thrown reading card number "+i+":\n"+m);
+            }
+            catch (JsonSyntaxException m){
+                throw new JsonSyntaxException("Exception thrown reading card number "+i+":\n"+m);
+            }
+            catch (NullPointerException m){
+                throw new NullPointerException("Exception thrown reading card number "+i+":\n"+m);
+            }
+
+            i++;
         }
 
         return cardList;
@@ -193,11 +223,25 @@ public class CardJsonSerializer {
 
         String[] cardStrings = jsonString.split("CARD_OVER");
 
+        int i = 0;
         for (String cardString : cardStrings) {
-            if(cardStrings.length > 1 && cardString.trim().isEmpty())
-                throw new JsonSyntaxException("Missing card object after CARD_OVER");
+            try{
+                if(cardStrings.length > 1 && cardString.trim().isEmpty())
+                    throw new JsonSyntaxException("Missing card object after CARD_OVER");
 
-            cardList.add(deserializeCardStarter(cardString.trim()));
+                cardList.add(deserializeCardStarter(cardString.trim()));
+            }
+            catch (IllegalArgumentException m){
+                throw new IllegalArgumentException("Exception thrown reading card number "+i+":\n"+m);
+            }
+            catch (JsonSyntaxException m){
+                throw new JsonSyntaxException("Exception thrown reading card number "+i+":\n"+m);
+            }
+            catch (NullPointerException m){
+                throw new NullPointerException("Exception thrown reading card number "+i+":\n"+m);
+            }
+
+            i++;
         }
 
         return cardList;
