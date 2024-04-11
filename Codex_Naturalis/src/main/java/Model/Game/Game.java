@@ -1,193 +1,85 @@
-package Model.Game; /**
- * This Class stores all the information about the resources shared by all players during the game and other shared metrics.<br>
- */
+package Model.Game;
 
 import Model.Cards.Card;
-import Model.Cards.CardGolden;
-import Model.Cards.CardResource;
 import Model.Objectives.Objective;
 import Model.Player.Player;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+/**
+ * This Class stores all the information about the current game, including the list of players, the current game phase,
+ * the current round etc.
+ */
 public class Game {
-    /**
-     * Array containing players taking part to this game session.
-     */
+    //ATTRIBUTES
     private List<Player> players;
+    private Table table;
+    private GamePhases gamePhase;
+
     /**
      * Stores number of rounds completed by the table.<br>
-     * Does not count the round in progress
+     * A round is deemed completed if all the currently online players have completed their turn for the current round.
      */
     private int roundsCompleted;
-    private int lastRound;
-    /**
-     * Stores the current deck of Golden Cards.
-     */
-    private Deck goldenDeck;
-    /**
-     * Stores the current deck of Resource Cards.
-     */
-    private Deck resourcesDeck;
-    /**
-     * Stores the deck of Starter Cards,
-     */
-    private Deck starterDeck;
-    /**
-     * Array that initially stores all possible objectives.
-     */
-    private List<Objective> objectives;
-    /**
-     * ArrayList containing the visible golden cards.
-     */
-    private List<Card> cardGoldenVisible = new ArrayList<>();
-    /**
-     * ArrayList containing the visible resource cards.
-     */
-    private List<Card> cardResourceVisible = new ArrayList<>();
-    /**
-     * List containing shared objectives.
-     */
-    private List<Objective> objectivesShared = new ArrayList<>();
 
+
+
+
+
+    //CONSTRUCTOR
     /**
      * Default Constructor.<br>
      * Initializes a Model.Game.Game object by taking Players ArrayList, Golden and Resource Model.Game.Deck, and ArrayList of Objectives.<br>
      * Automatically
-     * @param players       ArrayList of Players.
-     * @param visibleCards  Int number of cards for each type that will be visible to the player next to the decks.
-     * @param goldenDeck    Model.Game.Deck of Golden Cards.
-     * @param resourcesDeck Model.Game.Deck of Resource Cards.
-     * @param objectives    ArrayList of Objectives.
+     * @param goldenCards   List of Golden Cards to use during this game.
+     * @param resourceCards List of Resource Cards to use during this game.
+     * @param starterCards  List of Starter Cards to use during this game.
+     * @param objectives    List of Objectives to use during this game.
+     * @param players       List of players taking part to this game.
      */
-    public Game(List<Player> players, int visibleCards, Deck goldenDeck, Deck resourcesDeck, Deck starterDeck, List<Objective> objectives) {
+    public Game(List<Card> goldenCards, List<Card> resourceCards, List<Card> starterCards, List<Objective> objectives, List<Player> players) {
         this.players = players;
-        this.goldenDeck = goldenDeck;
-        this.resourcesDeck = resourcesDeck;
-        this.starterDeck = starterDeck;
-        this.objectives = objectives;
-
-        this.goldenDeck.shuffleDeck();
-        this.resourcesDeck.shuffleDeck();
-        this.starterDeck.shuffleDeck();
-
-        for(int i=0; i<visibleCards; i++);{
-            this.cardGoldenVisible.add(goldenDeck.pop());
-            this.cardResourceVisible.add(resourcesDeck.pop());
-        }
+        Collections.shuffle(players);
+        this.table = new Table(goldenCards, resourceCards, starterCards, objectives);
+        this.gamePhase = GamePhases.SETUP;
     }
 
-    /**
-     * Method to access the goldenDeck.
-     * @return  Model.Game.Deck goldenDeck.
-     */
-    public Deck getGoldenDeck() {
-        return goldenDeck;
+
+
+
+
+    //GETTERS
+    public GamePhases getGamePhase() {
+        return gamePhase;
     }
 
-    /**
-     * Method to access the resourceDeck.
-     * @return  Model.Game.Deck resourceDeck.
-     */
-    public Deck getResourcesDeck() {
-        return resourcesDeck;
-    }
 
-    /**
-     * Method to access the starterDeck.
-     * @return  Model.Game.Deck starterDeck.
-     */
-    public Deck getStarterDeck() {
-        return starterDeck;
-    }
 
-    /**
-     * Method to access the Objectives ArrayList.
-     * @return  ArrayList of Objectives.
-     */
-    public List<Objective> getObjectives() {
-        return objectives;
-    }
 
-    /**
-     * Returns the visible golden card at position "index" without removing it from the List.
-     * @param index position in List of card to be returned.
-     * @return  CardGolden cardGoldenVisible1.
-     */
-    public Card getCardGoldenVisible(int index) {
-        return cardGoldenVisible.get(index);
-    }
 
-    /**
-     * Method to set the visible golden card at position "index" in the List.
-     * @param card      CardGolden card to be set as new cardGoldenVisible1.
-     * @param index     position in List of card to be set.
-     */
-    public void setCardGoldenVisible(CardGolden card, int index) {
-        this.cardGoldenVisible.set(index, card);
-    }
-
-    /**
-     * Returns the visible resource card at position "index" without removing it from the List.
-     * @param index position in List of card to be returned.
-     * @return  CardGolden cardGoldenVisible1.
-     */
-    public Card getCardResourceVisible(int index) {
-        return cardResourceVisible.get(index);
-    }
-
-    /**
-     * Method to set the visible resource card at position "index" in the List.
-     * @param card      CardResource card to be set as new cardGoldenVisible1.
-     * @param index     position in List of card to be set.
-     */
-    public void setCardResourceVisible(CardResource card, int index) {
-        this.cardResourceVisible.set(index, card);
-    }
-
-    /**
-     * Returns the shared objective at position "index" without removing it from the List.
-     * @param index position in List of objective to be returned.
-     * @return  Model.Objectives.Objective shared objective at position "index" in List.
-     */
-    public Objective getObjectivesShared(int index) {
-        return objectivesShared.get(index);
-    }
-
-    /**
-     * Method to set shared objective at position "index" in the List.
-     * @param objective     Model.Objectives.Objective to be set in List at position "index".
-     * @param index         Position in List to set.
-     */
-    public void setObjectivesShared(Objective objective, int index) {
-        this.objectivesShared.set(index, objective);
-    }
-
-    /**
-     * Method to access the ArrayList storing the Players participating in the Model.Game.Game.<br>
-     * Can be used to then manipulate the Array by updating information about the players.
-     * @return ArrayList of participating players.
-     */
-    public List<Player> getPlayers() {
-        return players;
-    }
-
-    /**
-     * Returns integer with rounds already completed.
-     * @return  int roundsCompleted.
-     */
-    public int getRoundsCompleted() {
-        return roundsCompleted;
-    }
-
-    /**
-     * Increments by 1 the counter for rounds played.
-     */
+    //METHODS
     public void incrementRoundsCompleted(){
         this.roundsCompleted++;
     }
 
-    //public boolean isGameEnding()
-    //checks if cards are over to initiate the GAME ENDING part of the gameplay.
+    /**
+     * Method verifies wether the conditions for the game-end are met, if so it updates the game phase accordingly.
+     */
+    public void checkGameEnding(){
+
+        if(table.areDecksEmpty()){
+            this.gamePhase = GamePhases.ENDING;
+            return;
+        }
+
+        for (Player player : players){
+            if(player.getPoints() >= 20)
+            {
+                this.gamePhase = GamePhases.ENDING;
+                return;
+            }
+        }
+        return;
+    }
 }
