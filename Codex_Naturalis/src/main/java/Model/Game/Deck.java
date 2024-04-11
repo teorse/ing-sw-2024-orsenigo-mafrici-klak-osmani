@@ -1,4 +1,4 @@
-Upackage Model.Game;
+package Model.Game;
 
 import Model.Cards.Card;
 
