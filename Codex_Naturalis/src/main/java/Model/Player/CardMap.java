@@ -75,6 +75,23 @@ public class CardMap {
         return Collections.unmodifiableList(availablePlacements);
     }
 
+    /**
+     * Method which returns the map cardsPlaced as an unmodifiable map
+     * @return cardsPlaced
+     */
+    public Map<Coordinates, CardVisibility> getCardsPlaced() {
+        return Collections.unmodifiableMap(cardsPlaced);
+    }
+
+    /**
+     * Method which returns the card visibility of the card positioned at the specified coordinates
+     * @param coordinates
+     * @return
+     */
+    public CardVisibility getCardVisibility(Coordinates coordinates) {
+        return cardsPlaced.get(coordinates);
+    }
+
 
 
     //SETTERS
@@ -101,46 +118,26 @@ public class CardMap {
      * @param faceUp
      */
     public void place(Card cardToPlace, int coordinateIndex, boolean faceUp) {
-//        //Coordinates of the card to be placed in the map
-//        Coordinates placed = availablePlacements.get(coordinateIndex);
-//        //CardVisibility of the card to be placed in the map
-//        CardVisibility cardVisibilityToPlace = new CardVisibility(cardToPlace, faceUp);
-//
-//        Coordinates[] offset = new Coordinates[] {
-//                new Coordinates(1, 1),   // North East
-//                new Coordinates(1, -1),  // South East
-//                new Coordinates(-1, 1),  // North West
-//                new Coordinates(-1, -1)  // South West
-//        };
-//
-//        CornerDirection [] cornersToCheck = new CornerDirection[] {
-//                CornerDirection.SW,
-//                CornerDirection.NW,
-//                CornerDirection.SE,
-//                CornerDirection.NE
-//        };
-//        //For loop which function is to cover the corners and reducing the amount of artifacts in the counter
-//        for(int i = 0; i < 4; i++) {
-//            if(cardsPlaced.containsKey(placed.add(offset[i]))) {
-//                CardVisibility coveredCard = cardsPlaced.get(placed.add(offset[i]));
-//                coveredCard.coverCorner(cornersToCheck[i]);
-//                Artifacts coveredArtifact = coveredCard.getCornerArtifact(cornersToCheck[i]);
-//                if(coveredArtifact != Artifacts.NULL) {
-//                    changeArtifactAmount(coveredArtifact, -1);
-//                }
-//            }
-//        }
-//        //For loop which function is to increment the amount of artifacts in the counter
-//        Map<Artifacts, Integer> newArtifacts = cardVisibilityToPlace.getAllArtifacts();
-//        for(Map.Entry<Artifacts, Integer> entry : newArtifacts.entrySet()){
-//            changeArtifactAmount(entry.getKey(), entry.getValue());
-//        }
-//        //Putting the card in the map
-//        cardsPlaced.put(placed, cardVisibilityToPlace);
-//        //Updating the list of used coordinates
-//        coordinatesPlaced.add(placed);
-//        //Calling the method which updates the available placements
-//        updateAvailablePlacements(placed);
+        //Coordinates of the card to be placed in the map
+        Coordinates placed = availablePlacements.get(coordinateIndex);
+        //CardVisibility of the card to be placed in the map
+        CardVisibility cardVisibilityToPlace = new CardVisibility(cardToPlace, faceUp);
+
+        //Calling the method which updates the number od artifacts of the player and the corners to cover
+        updateCoveredCornersAndArtifacts(placed);
+
+        //For loop which function is to increment the amount of artifacts in the counter
+        Map<Artifacts, Integer> newArtifacts = cardVisibilityToPlace.getAllArtifacts();
+        for(Map.Entry<Artifacts, Integer> entry : newArtifacts.entrySet()){
+            changeArtifactAmount(entry.getKey(), entry.getValue());
+        }
+
+        //Putting the card in the map
+        cardsPlaced.put(placed, cardVisibilityToPlace);
+        //Updating the list of used coordinates
+        coordinatesPlaced.add(placed);
+        //Calling the method which updates the available placements
+        updateAvailablePlacements(cardVisibilityToPlace, coordinateIndex);
     }
 
     /**
@@ -150,45 +147,93 @@ public class CardMap {
      */
     public int getAmountOfArtifacts(Artifacts artifacts) {
         //Verifies if the map contains the specified artifact
-        if (artifactsCounter.containsKey(artifacts)) {
-            //Returns the number of artifacts of that type
-            return artifactsCounter.get(artifacts);
-        } else {
-            //If the specified artifact isn't present in the map, it returns 0
-            return 0;
-        }
+        //Returns the number of artifacts of that type
+        //If the specified artifact isn't present in the map, it returns 0
+        return artifactsCounter.getOrDefault(artifacts, 0);
     }
+
+
 
     /**
      * Method to get the amount of corners that would be covered if a card was to be placed
-     * at that coordinates
+     * at that coordinates. Precondition: All the coordinates passed as parameters of the function are taken
+     * from availablePlacements, so we don't need to check if they're legit or not
      * @param coordinates
      * @return int corresponding to number of corners that would be covered
      * if a card was to be placed at that coordinates
      */
-    public int getAmountOfNearbyCorners(Coordinates coordinates) {
-//
-//        int coveredCorners = 0;
-//
-//        Coordinates[] offset = new Coordinates[] {
-//                new Coordinates(1, 1),   // North East
-//                new Coordinates(1, -1),  // South East
-//                new Coordinates(-1, 1),  // North West
-//                new Coordinates(-1, -1)  // South West
-//        };
-//
-//        for(int i = 0; i < 4; i++) {
-//            Coordinates cardPositions = coordinates.add(offset[i]);
-//            //If a card exists at the coordinates specified by cardPositions
-//            //the card we want to place will cover one corner of the former
-//            if(cardsPlaced.containsKey(cardPositions)) {
-//                coveredCorners++;
-//            }
-//        }
-//
-//        return coveredCorners;
-        return 0;
+    public int getAmountOfNearbyCorners(Coordinates coordinates, Card cardToPlace, boolean faceUp) {
+
+        int coveredCorners = 0;
+
+        //CardVisibility of the card to be placed in the map
+        CardVisibility cardVisibilityToPlace = new CardVisibility(cardToPlace, faceUp);
+
+        Coordinates[] offset = new Coordinates[] {
+                new Coordinates(1, 1),   // North East
+                new Coordinates(1, -1),  // South East
+                new Coordinates(-1, 1),  // North West
+                new Coordinates(-1, -1)  // South West
+        };
+
+        CornerDirection[] cornersToCheck = new CornerDirection[] {
+                CornerDirection.SW,
+                CornerDirection.NW,
+                CornerDirection.SE,
+                CornerDirection.NE
+        };
+
+        for(int i = 0; i < 4; i++) {
+            Coordinates cardPositions = coordinates.add(offset[i]);
+            //If the map cardsPlaced contains a card at the coordinates specified by cardPositions
+            if(cardsPlaced.containsKey(cardPositions)) {
+                //the card we want to place will cover one corner of the former
+                coveredCorners++;
+            }
+        }
+        return coveredCorners;
     }
+
+    /**
+     * Method which updates the number of artifacts of the player and
+     * the corners that will be covered by the card placed
+     * @param placed
+     */
+    protected void updateCoveredCornersAndArtifacts(Coordinates placed) {
+        //Array containing the four possible cornerDirections of a corner.
+        Coordinates[] offset = new Coordinates[] {
+                new Coordinates(1, 1),   // North East
+                new Coordinates(1, -1),  // South East
+                new Coordinates(-1, 1),  // North West
+                new Coordinates(-1, -1)  // South West
+        };
+        //Array containing the coordinates offset corresponding to each cornerDirection above.
+        //The positioning of the offsets in the Array matches that of the cornerDirections so that the
+        //offset in the array represents the coordinate to check when analyzing the corner specified by the CornerDirection
+        //at the same position in the other Array
+        CornerDirection[] cornersToCheck = new CornerDirection[] {
+                CornerDirection.SW,
+                CornerDirection.NW,
+                CornerDirection.SE,
+                CornerDirection.NE
+        };
+
+        for (int i = 0; i < 4; i++) {
+            //If a card is placed in the position placed.add(offset[i])
+            if (cardsPlaced.containsKey(placed.add(offset[i]))) {
+                //We cover the corner in the cornersToCheck[i] position of that card
+                CardVisibility coveredCard = cardsPlaced.get(placed.add(offset[i]));
+                coveredCard.coverCorner(cornersToCheck[i]);
+                Artifacts coveredArtifact = coveredCard.getCornerArtifact(cornersToCheck[i]);
+                //If the covered corner contained an artifact
+                if (coveredArtifact != Artifacts.NULL) {
+                    //We decrease the amount of that artifact by 1
+                    changeArtifactAmount(coveredArtifact, -1);
+                }
+            }
+        }
+    }
+
 
     /**
      * Method used by .place() in this class to update the available placements after adding a card to the cardsPlaced map.

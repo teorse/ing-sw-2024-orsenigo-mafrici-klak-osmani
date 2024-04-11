@@ -1,6 +1,6 @@
 package Model.Player;
 
-import Model.Cards.Card;
+import Model.Cards.*;
 import Model.Utility.Artifacts;
 
 import Model.Utility.Coordinates;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CardMapTest {
 
     @Nested
-    public class getAmountOfArtifactsTest {
+    public class GetAmountOfArtifactsTest {
         //DATA
         private CardMap cardMap;
 
@@ -47,7 +47,7 @@ public class CardMapTest {
             cardMap.changeArtifactAmount(Artifacts.ANIMAL, 2);
             //Test known cases
             assertEquals(4, cardMap.getAmountOfArtifacts(Artifacts.ANIMAL),
-                    "First calibration test failed");
+                    "Second calibration test failed");
         }
 
         @Test
@@ -55,26 +55,297 @@ public class CardMapTest {
             cardMap.changeArtifactAmount(Artifacts.ANIMAL, -2);
             //Test known cases
             assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.ANIMAL),
-                    "First calibration test failed");
+                    "Third calibration test failed");
         }
 
         @Test
         void getAmountOfArtifactsMissingArtifactTest() {
             //Test known cases
             assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.PLANT),
-                    "Second calibration test failed");
+                    "Fourth calibration test failed");
         }
 
         @Test
         void getAmountOfArtifactsZeroArtifactTest() {
             //Test known cases
             assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.INSECT),
-                    "Second calibration test failed");
+                    "Fifth calibration test failed");
         }
     }
 
     @Nested
-    public class updateAvailablePlacementsTest{
+    public class UpdateCoveredCornersAndArtifactsTest {
+        //DATA
+        private CardMap cardMap;
+
+        @BeforeEach
+        void setUp() {
+            cardMap = new CardMap();
+
+            Map<Coordinates, CardVisibility> cardsPlacedValue = new HashMap<>();
+            Map<Artifacts, Integer> artifactsCounterValue = new HashMap<>();
+
+            Map<CornerOrientation, Corner> cornersCardResource = new HashMap<>();
+            cornersCardResource.put(new CornerOrientation(CornerDirection.SW, true), new Corner(Artifacts.MANUSCRIPT));
+            cornersCardResource.put(new CornerOrientation(CornerDirection.SE, true), new Corner(Artifacts.QUILL));
+            cornersCardResource.put(new CornerOrientation(CornerDirection.NE, true), new Corner(Artifacts.ANIMAL));
+            cornersCardResource.put(new CornerOrientation(CornerDirection.NW, true), new Corner(Artifacts.PLANT));
+            CardResource cardResource = new CardResource(Artifacts.ANIMAL, cornersCardResource);
+
+            Map<CornerOrientation, Corner> dummyCardCorners = new HashMap<>();
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.SW, true), new Corner(Artifacts.MANUSCRIPT));
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.SE, true), new Corner(Artifacts.INSECT));
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.NW, true), new Corner(Artifacts.INKWELL));
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.NE, true), new Corner(CornerType.EMPTY));
+            CardResource dummyCard = new CardResource(Artifacts.ANIMAL, dummyCardCorners);
+
+            cardsPlacedValue.put(new Coordinates(1, 1), new CardVisibility(cardResource, true));
+            Map<Artifacts, Integer> newArtifacts1 = new CardVisibility(cardResource, true).getAllArtifacts();
+            for(Map.Entry<Artifacts, Integer> entry : newArtifacts1.entrySet()){
+                if(artifactsCounterValue.containsKey(entry.getKey())){
+                    artifactsCounterValue.put(entry.getKey(), entry.getValue() + artifactsCounterValue.get(entry.getKey()));
+                } else {
+                    artifactsCounterValue.put(entry.getKey(), entry.getValue());
+                }
+            }
+
+            cardsPlacedValue.put(new Coordinates(1, -1), new CardVisibility(cardResource, true));
+            Map<Artifacts, Integer> newArtifacts2 = new CardVisibility(cardResource, true).getAllArtifacts();
+            for(Map.Entry<Artifacts, Integer> entry : newArtifacts2.entrySet()){
+                if(artifactsCounterValue.containsKey(entry.getKey())){
+                    artifactsCounterValue.put(entry.getKey(), entry.getValue() + artifactsCounterValue.get(entry.getKey()));
+                } else {
+                    artifactsCounterValue.put(entry.getKey(), entry.getValue());
+                }
+            }
+
+            cardsPlacedValue.put(new Coordinates(-1, 1), new CardVisibility(cardResource, true));
+            Map<Artifacts, Integer> newArtifacts3 = new CardVisibility(cardResource, true).getAllArtifacts();
+            for(Map.Entry<Artifacts, Integer> entry : newArtifacts3.entrySet()){
+                if(artifactsCounterValue.containsKey(entry.getKey())){
+                    artifactsCounterValue.put(entry.getKey(), entry.getValue() + artifactsCounterValue.get(entry.getKey()));
+                } else {
+                    artifactsCounterValue.put(entry.getKey(), entry.getValue());
+                }
+            }
+
+            cardsPlacedValue.put(new Coordinates(-1, -1), new CardVisibility(cardResource, true));
+            Map<Artifacts, Integer> newArtifacts4 = new CardVisibility(cardResource, true).getAllArtifacts();
+            for(Map.Entry<Artifacts, Integer> entry : newArtifacts4.entrySet()){
+                if(artifactsCounterValue.containsKey(entry.getKey())){
+                    artifactsCounterValue.put(entry.getKey(), entry.getValue() + artifactsCounterValue.get(entry.getKey()));
+                } else {
+                    artifactsCounterValue.put(entry.getKey(), entry.getValue());
+                }
+            }
+
+            cardsPlacedValue.put(new Coordinates(0, 0), new CardVisibility(dummyCard, true));
+            Map<Artifacts, Integer> newArtifacts5 = new CardVisibility(dummyCard, true).getAllArtifacts();
+            for(Map.Entry<Artifacts, Integer> entry : newArtifacts5.entrySet()){
+                if(artifactsCounterValue.containsKey(entry.getKey())){
+                    artifactsCounterValue.put(entry.getKey(), entry.getValue() + artifactsCounterValue.get(entry.getKey()));
+                } else {
+                    artifactsCounterValue.put(entry.getKey(), entry.getValue());
+                }
+            }
+
+            cardMap = CardMapReflectionBuilder(cardsPlacedValue, artifactsCounterValue);
+
+            cardMap.updateCoveredCornersAndArtifacts(new Coordinates(0, 0));
+        }
+
+        public CardMap CardMapReflectionBuilder(Map<Coordinates, CardVisibility> cardsPlacedValue, Map<Artifacts, Integer> artifactsCounterValue){
+            //Creating using the usual constructor a normal CardMap object.
+            CardMap cardMap = new CardMap();
+
+            //Defining two field type object
+            Field field0;
+            Field field1;
+
+            try{
+                //field0 now will be able to access the attribute "cardsPlaced" inside objects of the CardMap class.
+                field0 = CardMap.class.getDeclaredField("cardsPlaced");
+                //setting the accessibility of the field to true to allow us to use getters and setters.
+                field0.setAccessible(true);
+
+                //Using the set method in the following way:
+                //field0 is the field we want to interact with, in this case it is cardsPlaced as defined above.
+                //field0.set(object inside which we want to apply the set, value we want to set the attribute to)
+                field0.set(cardMap, cardsPlacedValue);
+
+
+
+                //field1 now will be able to access the attribute "artifactsCounter" inside objects of the CardMap class.
+                field1 = CardMap.class.getDeclaredField("artifactsCounter");
+                //setting the accessibility of the field to true to allow us to use getters and setters.
+                field1.setAccessible(true);
+
+                //Using the set method in the following way:
+                //field1 is the field we want to interact with, in this case it is artifactsCounter as defined above.
+                //field1.set(object inside which we want to apply the set, value we want to set the attribute to)
+                field1.set(cardMap, artifactsCounterValue);
+            }
+            catch (NoSuchFieldException | IllegalAccessException m){
+                System.out.println(m);
+            }
+
+            //returning the object inside which we set the new values.
+            return cardMap;
+        }
+
+        @Test
+        void updateCoveredCornersAndArtifactsTest() {
+
+            assertEquals(4, cardMap.getAmountOfArtifacts(Artifacts.MANUSCRIPT),
+                    "First calibration test failed");
+            assertEquals(3, cardMap.getAmountOfArtifacts(Artifacts.QUILL),
+                    "Second calibration test failed");
+            assertEquals(3, cardMap.getAmountOfArtifacts(Artifacts.ANIMAL),
+                    "Third calibration test failed");
+            assertEquals(3, cardMap.getAmountOfArtifacts(Artifacts.PLANT),
+                    "Fourth calibration test failed");
+            assertEquals(1, cardMap.getAmountOfArtifacts(Artifacts.INSECT),
+                    "Fifth calibration test failed");
+            assertEquals(1, cardMap.getAmountOfArtifacts(Artifacts.INKWELL),
+                    "Sixth calibration test failed");
+            assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.FUNGI),
+                    "Seventh calibration test failed");
+        }
+    }
+
+    @Nested
+    public class GetAmountOfNearbyCornersTest {
+        //DATA
+        private CardMap cardMap;
+
+
+
+
+        @BeforeEach
+        void setUp() {
+
+            Map<CornerOrientation, Corner> cornersCardResource = new HashMap<>();
+            cornersCardResource.put(new CornerOrientation(CornerDirection.SW, true), new Corner(Artifacts.MANUSCRIPT));
+            cornersCardResource.put(new CornerOrientation(CornerDirection.SE, true), new Corner(Artifacts.QUILL));
+            cornersCardResource.put(new CornerOrientation(CornerDirection.NE, true), new Corner(Artifacts.ANIMAL));
+            cornersCardResource.put(new CornerOrientation(CornerDirection.NW, true), new Corner(Artifacts.PLANT));
+            CardResource cardResource = new CardResource(Artifacts.ANIMAL, cornersCardResource);
+
+            Map<Coordinates, CardVisibility> cardsPlacedValue = new HashMap<>();
+            Map<Artifacts, Integer> artifactsCounterValue = new HashMap<>();
+
+            cardMap = new CardMap();
+
+            cardsPlacedValue.put(new Coordinates(3, 2), new CardVisibility(cardResource, true));
+            cardsPlacedValue.put(new Coordinates(1, 1), new CardVisibility(cardResource, true));
+            cardsPlacedValue.put(new Coordinates(1, -1), new CardVisibility(cardResource, true));
+            cardsPlacedValue.put(new Coordinates(-1, 1), new CardVisibility(cardResource, true));
+            cardsPlacedValue.put(new Coordinates(-1, -1), new CardVisibility(cardResource, true));
+
+            cardMap = CardMapReflectionBuilder(cardsPlacedValue, artifactsCounterValue);
+        }
+
+        public CardMap CardMapReflectionBuilder(Map<Coordinates, CardVisibility> cardsPlacedValue, Map<Artifacts, Integer> artifactsCounterValue){
+            //Creating using the usual constructor a normal CardMap object.
+            CardMap cardMap = new CardMap();
+
+            //Defining two field type object
+            Field field0;
+            Field field1;
+
+            try{
+                //field0 now will be able to access the attribute "cardsPlaced" inside objects of the CardMap class.
+                field0 = CardMap.class.getDeclaredField("cardsPlaced");
+                //setting the accessibility of the field to true to allow us to use getters and setters.
+                field0.setAccessible(true);
+
+                //Using the set method in the following way:
+                //field0 is the field we want to interact with, in this case it is cardsPlaced as defined above.
+                //field0.set(object inside which we want to apply the set, value we want to set the attribute to)
+                field0.set(cardMap, cardsPlacedValue);
+
+
+
+                //field1 now will be able to access the attribute "artifactsCounter" inside objects of the CardMap class.
+                field1 = CardMap.class.getDeclaredField("artifactsCounter");
+                //setting the accessibility of the field to true to allow us to use getters and setters.
+                field1.setAccessible(true);
+
+                //Using the set method in the following way:
+                //field1 is the field we want to interact with, in this case it is artifactsCounter as defined above.
+                //field1.set(object inside which we want to apply the set, value we want to set the attribute to)
+                field1.set(cardMap, artifactsCounterValue);
+            }
+            catch (NoSuchFieldException | IllegalAccessException m){
+                System.out.println(m);
+            }
+
+            //returning the object inside which we set the new values.
+            return cardMap;
+        }
+
+        //Test for one corner
+        @Test
+        void getAmountOfNearbyCornersTest() {
+
+            Map<CornerOrientation, Corner> dummyCardCorners = new HashMap<>();
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.SW, true), new Corner(Artifacts.MANUSCRIPT));
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.SE, true), new Corner(Artifacts.INSECT));
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.NW, true), new Corner(Artifacts.INKWELL));
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.NE, true), new Corner(CornerType.EMPTY));
+            CardResource dummyCard = new CardResource(Artifacts.ANIMAL, dummyCardCorners);
+
+            assertEquals(1, cardMap.getAmountOfNearbyCorners(new Coordinates(2, 3), dummyCard, true),
+                    "First calibration test failed");
+        }
+
+        //Test for all corners
+        @Test
+        void getAmountOfNearbyCornersAllCornersCoveredTest() {
+
+            Map<CornerOrientation, Corner> dummyCardCorners = new HashMap<>();
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.SW, true), new Corner(Artifacts.MANUSCRIPT));
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.SE, true), new Corner(Artifacts.INSECT));
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.NW, true), new Corner(Artifacts.INKWELL));
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.NE, true), new Corner(Artifacts.QUILL));
+            CardResource dummyCard = new CardResource(Artifacts.PLANT, dummyCardCorners);
+
+            assertEquals(4, cardMap.getAmountOfNearbyCorners(new Coordinates(0, 0), dummyCard, true),
+                    "Second calibration test failed");
+        }
+
+        //Test for zero corners
+        @Test
+        void getAmountOfNearbyCornersZeroTest() {
+
+            Map<CornerOrientation, Corner> dummyCardCorners = new HashMap<>();
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.SW, true), new Corner(Artifacts.MANUSCRIPT));
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.SE, true), new Corner(Artifacts.INSECT));
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.NW, true), new Corner(Artifacts.INKWELL));
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.NE, true), new Corner(Artifacts.QUILL));
+            CardResource dummyCard = new CardResource(Artifacts.INSECT, dummyCardCorners);
+
+            assertEquals(0, cardMap.getAmountOfNearbyCorners(new Coordinates(4, 4), dummyCard, true),
+                    "Third calibration test failed");
+        }
+
+        @Test
+        void getAmountOfNearbyCornersAllEmptyCornersTest() {
+
+            Map<CornerOrientation, Corner> dummyCardCorners = new HashMap<>();
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.SW, true), new Corner(CornerType.EMPTY));
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.SE, true), new Corner(CornerType.EMPTY));
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.NW, true), new Corner(CornerType.EMPTY));
+            dummyCardCorners.put(new CornerOrientation(CornerDirection.NE, true), new Corner(CornerType.EMPTY));
+            CardResource dummyCard = new CardResource(Artifacts.INSECT, dummyCardCorners);
+
+            assertEquals(4, cardMap.getAmountOfNearbyCorners(new Coordinates(0, 0), dummyCard, true),
+                    "Fourth calibration test failed");
+        }
+    }
+
+    @Nested
+    public class UpdateAvailablePlacementsTest{
         private List<CardMap> scenarios = new ArrayList<>();
         private List<List<Coordinates>> expectedAvailablePlacements = new ArrayList<>();
         private List<CardVisibility> cardsToPlace = new ArrayList<>();
