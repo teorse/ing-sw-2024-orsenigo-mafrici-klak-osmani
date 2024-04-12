@@ -728,7 +728,7 @@
   "constraint": {
     "PLANT": 3,
     "ANIMAL": 1
-  }
+  },
   "cardColor": "PLANT",
   "points": 2,
   "corners": [
@@ -1244,7 +1244,7 @@
   "constraint": {
     "ANIMAL": 3,
     "FUNGI": 1
-  }
+  },
   "cardColor": "ANIMAL",
   "points": 2,
   "corners": [
@@ -1645,7 +1645,7 @@
       },
       {
         "cornerType": "ARTIFACT",
-        "artifact": "MANUSCRIIPT"
+        "artifact": "MANUSCRIPT"
       }
     ]
   ]
@@ -1760,7 +1760,7 @@
   "constraint": {
     "INSECT": 3,
     "PLANT": 1
-  }
+  },
   "cardColor": "INSECT",
   "points": 2,
   "corners": [
