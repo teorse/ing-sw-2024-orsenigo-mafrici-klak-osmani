@@ -99,6 +99,13 @@ public class CardVisibility {
     }
 
     /**
+     * @return Artifact representing the color of the card.
+     */
+    protected Artifacts getCardColor(){
+        return card.getCardColor();
+    }
+
+    /**
      * Returns boolean value of the card's face orientation: true face is up, false face is down.
      * @return Boolean isFaceUp. if true the face is up, if false the face is covered.
      */

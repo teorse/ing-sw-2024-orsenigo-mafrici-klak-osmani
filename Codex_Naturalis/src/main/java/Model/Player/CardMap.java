@@ -84,12 +84,12 @@ public class CardMap {
     }
 
     /**
-     * Method which returns the card visibility of the card positioned at the specified coordinates
-     * @param coordinates
-     * @return
+     * Method which returns the card color of the card positioned at the specified coordinates.
+     * @param coordinates   coordinates of the card.
+     * @return              Artifact representing the color of the card.
      */
-    public CardVisibility getCardVisibility(Coordinates coordinates) {
-        return cardsPlaced.get(coordinates);
+    public Artifacts getCardColorByCoordinate(Coordinates coordinates) {
+        return cardsPlaced.get(coordinates).getCardColor();
     }
 
 
