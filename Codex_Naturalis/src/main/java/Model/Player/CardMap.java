@@ -16,6 +16,7 @@ import java.util.*;
  */
 
 public class CardMap {
+
     //ATTRIBUTES
     /**
      * Map storing the cards previously placed during the game by the player.
@@ -25,9 +26,6 @@ public class CardMap {
      * A List containing all the allowed coordinates where the player can place his next card.
      */
     private List<Coordinates> availablePlacements;
-    /**
-     *
-     */
     private List<Coordinates> coordinatesPlaced;
     /**
      * A map used as a counter for the Artifacts currently held by the player.
@@ -93,6 +91,8 @@ public class CardMap {
 
 
 
+
+
     //SETTERS
     /**
      * Method which changes the amount of artifacts in the counter
@@ -106,6 +106,10 @@ public class CardMap {
             artifactsCounter.put(artifact, delta);
         }
     }
+
+
+
+
 
     //CLASS SPECIFIC METHODS
     /**
@@ -150,8 +154,6 @@ public class CardMap {
         //If the specified artifact isn't present in the map, it returns 0
         return artifactsCounter.getOrDefault(artifacts, 0);
     }
-
-
 
     /**
      * Method to get the amount of corners that would be covered if a card was to be placed
@@ -229,7 +231,6 @@ public class CardMap {
             }
         }
     }
-
 
     /**
      * Method used by .place() in this class to update the available placements after adding a card to the cardsPlaced map.

@@ -27,7 +27,6 @@ public class CardGolden extends CardResource {
         this.requiresCorner = requiresCorner;
         this.requiredArtifact = Artifacts.NULL;
         this.constraint = constraint;
-        this.requiredArtifact = Artifacts.NULL;
     }
 
     public CardGolden(Artifacts cardColor, int points, Map<CornerOrientation, Corner> corners, Artifacts requiredArtifact, Map<Artifacts, Integer> constraint) {
@@ -66,12 +65,10 @@ public class CardGolden extends CardResource {
     //ABSTRACT CLASS METHODS
     @Override
     public boolean isPlaceable(CardMap cardMap) {
-//        //TODO: testing this method (return statment just to avoid error)
-////        boolean check = true;
-////        for (Artifacts a : constraint.keySet())
-////            check = (constraint.get(a) <= cardMap.getAmountOfArtifacts(a)) && check;
-////        return check;
-        return false;
+        boolean check = true;
+        for (Artifacts a : constraint.keySet())
+            check = (constraint.get(a) <= cardMap.getAmountOfArtifacts(a)) && check;
+        return check;
     }
 
     /*
@@ -80,21 +77,19 @@ public class CardGolden extends CardResource {
      */
     @Override
     public int countPoints(CardMap cardMap, Coordinates coordinates, boolean faceUp) {
-//        //TODO: testing this method (return statment just to avoid error)
-////        if (faceUp) {
-////            if (requiresCorner)
-////            //Multiply the number of corners covered by the point given for each corner
-////                return cardMap.getAmountOfCoveredCorners(coordinates) * this.getPoints();
-////            else if (requiredArtifact != Artifact.NULL)
-////            //Multiply the number of artifacts avaible for the player by the point given for each artifact
-////                return cardMap.getAmountOfArtifacts(requiredArtifact) * this.getPoints();
-////                else
-////                //Gives a fixed amount of points
-////                    return this.getPoints();
-////        }
-////        else
-////            return 0;
-        return 0;
+        if (faceUp) {
+            if (requiresCorner)
+            //Multiply the number of corners covered by the point given for each corner
+                return cardMap.getAmountOfNearbyCorners(coordinates) * this.getPoints();
+            else if (requiredArtifact != Artifacts.NULL)
+            //Multiply the number of artifacts avaible for the player by the point given for each artifact
+                    return cardMap.getAmountOfArtifacts(requiredArtifact) * this.getPoints();
+                else
+                //Gives a fixed amount of points
+                    return this.getPoints();
+        }
+        else
+            return 0;
     }
 
 
