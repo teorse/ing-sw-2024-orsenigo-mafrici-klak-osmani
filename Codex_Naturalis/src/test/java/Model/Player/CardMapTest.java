@@ -295,7 +295,7 @@ public class CardMapTest {
             dummyCardCorners.put(new CornerOrientation(CornerDirection.NE, true), new Corner(CornerType.EMPTY));
             CardResource dummyCard = new CardResource(Artifacts.ANIMAL, dummyCardCorners);
 
-            assertEquals(1, cardMap.getAmountOfNearbyCorners(new Coordinates(2, 3), dummyCard, true),
+            assertEquals(1, cardMap.getAmountOfNearbyCorners(new Coordinates(2, 3)),
                     "First calibration test failed");
         }
 
@@ -310,7 +310,7 @@ public class CardMapTest {
             dummyCardCorners.put(new CornerOrientation(CornerDirection.NE, true), new Corner(Artifacts.QUILL));
             CardResource dummyCard = new CardResource(Artifacts.PLANT, dummyCardCorners);
 
-            assertEquals(4, cardMap.getAmountOfNearbyCorners(new Coordinates(0, 0), dummyCard, true),
+            assertEquals(4, cardMap.getAmountOfNearbyCorners(new Coordinates(0, 0)),
                     "Second calibration test failed");
         }
 
@@ -325,7 +325,7 @@ public class CardMapTest {
             dummyCardCorners.put(new CornerOrientation(CornerDirection.NE, true), new Corner(Artifacts.QUILL));
             CardResource dummyCard = new CardResource(Artifacts.INSECT, dummyCardCorners);
 
-            assertEquals(0, cardMap.getAmountOfNearbyCorners(new Coordinates(4, 4), dummyCard, true),
+            assertEquals(0, cardMap.getAmountOfNearbyCorners(new Coordinates(4, 4)),
                     "Third calibration test failed");
         }
 
@@ -339,7 +339,7 @@ public class CardMapTest {
             dummyCardCorners.put(new CornerOrientation(CornerDirection.NE, true), new Corner(CornerType.EMPTY));
             CardResource dummyCard = new CardResource(Artifacts.INSECT, dummyCardCorners);
 
-            assertEquals(4, cardMap.getAmountOfNearbyCorners(new Coordinates(0, 0), dummyCard, true),
+            assertEquals(4, cardMap.getAmountOfNearbyCorners(new Coordinates(0, 0)),
                     "Fourth calibration test failed");
         }
     }
