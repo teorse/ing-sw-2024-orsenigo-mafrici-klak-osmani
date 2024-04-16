@@ -15,7 +15,6 @@ import java.util.*;
  * -It stores the player's current Resources and Items counters.
  */
 
-
 public class CardMap {
     //ATTRIBUTES
     /**

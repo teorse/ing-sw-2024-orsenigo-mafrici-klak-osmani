@@ -2,8 +2,10 @@ package Model.Player;
 
 import Model.Cards.Card;
 import Model.Objectives.Objective;
+import Model.Utility.Coordinates;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -56,7 +58,10 @@ public class Player {
         return roundsCompleted;
     }
     public List<CardPlayability> getCardsHeld() {
-        return cardsHeld;
+        return Collections.unmodifiableList(cardsHeld);
+    }
+    public CardPlayability getCardsHeld(int index) {
+        return cardsHeld.get(index);
     }
     public Objective getSecretObjective() {
         return secretObjective;
@@ -97,7 +102,8 @@ public class Player {
     }
 
     /**
-     * Trasform Card to CardPlayability by adding a boolean which represent if that card is playable on both sides.
+     * Trasform Card to CardPlayability by adding a boolean which represent if that card is playable on both sides, set
+     * as false at the beginning.
      *
      * @param card choosen either from the four cards faceup in the center of the table (a new card is then revealed to
      *             replace the one just taken), or the first card from one of the two decks.
@@ -109,14 +115,6 @@ public class Player {
     }
 
     /**
-     * @param index
-     * @return card from cardsHeld list at specified index.
-     */
-    public CardPlayability getCardsHeld(int index) {
-        return cardsHeld.get(index);
-    }
-
-    /**
      * Updates playable sides attribute of all cards in cardsHeld List.
      */
     public void updatePlayableSides() {
@@ -125,8 +123,17 @@ public class Player {
             cardPlayability.setPlayability(CM);
         }
     }
+
+    /**
+     * Method to gather inputs from user and call the Place method in cardMap
+     *
+     * @param cardIndex
+     * @param coordinateIndex
+     * @param faceUp
+     */
+    public void playCard(int cardIndex, int coordinateIndex, boolean faceUp) {
+        cardMap.place(getCardsHeld(cardIndex).getCard(),coordinateIndex,faceUp);
+    }
 }
 
-//public void playCard(int cardIndex, int coordinateIndex, boolean faceUp)
-//method to gather inputs from user and call the Place method in cardMap
 
