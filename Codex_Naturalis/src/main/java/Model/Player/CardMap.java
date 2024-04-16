@@ -161,12 +161,9 @@ public class CardMap {
      * @return int corresponding to number of corners that would be covered
      * if a card was to be placed at that coordinates
      */
-    public int getAmountOfNearbyCorners(Coordinates coordinates, Card cardToPlace, boolean faceUp) {
+    public int getAmountOfNearbyCorners(Coordinates coordinates) {
 
         int coveredCorners = 0;
-
-        //CardVisibility of the card to be placed in the map
-        CardVisibility cardVisibilityToPlace = new CardVisibility(cardToPlace, faceUp);
 
         Coordinates[] offset = new Coordinates[] {
                 new Coordinates(1, 1),   // North East
