@@ -13,14 +13,18 @@ import java.util.Map;
 public class CardStarterTest {
 
     //ATTRIBUTES
-    private Map<CornerOrientation, Corner> corners = new HashMap<>();
-    private Map<Artifacts, Integer> centralArtifacts = new HashMap<>();
-    private Map<Artifacts, Integer> upperArtifacts = new HashMap<>();
-    private Map<Artifacts, Integer> lowerArtifacts = new HashMap<>();
+    private Map<CornerOrientation, Corner> corners;
+    private Map<Artifacts, Integer> centralArtifacts;
+    private Map<Artifacts, Integer> upperArtifacts;
+    private Map<Artifacts, Integer> lowerArtifacts;
     
 
     @BeforeEach
     public void setUp() {
+        corners = new HashMap<>();
+        centralArtifacts = new HashMap<>();
+        upperArtifacts = new HashMap<>();
+        lowerArtifacts = new HashMap<>();
         corners.put(new CornerOrientation(CornerDirection.NW, true),new Corner(CornerType.ARTIFACT,Artifacts.PLANT));
         corners.put(new CornerOrientation(CornerDirection.NE, true),new Corner(CornerType.ARTIFACT,Artifacts.FUNGI));
         corners.put(new CornerOrientation(CornerDirection.SE, true),new Corner(CornerType.ARTIFACT,Artifacts.ANIMAL));
