@@ -37,18 +37,8 @@ public abstract class Card {
 
 
 
-    //METHODS
-    /**
-     * For CardResource and CardStarter this method returns always true, because these cards don't have constraints to
-     * play the card, while for CardGolden checks if the constraints are satisfied or not.
-     *
-     * @param cardMap
-     * @return true if the card is placeable on both faces, false if can be placed only face down
-     */
-    public boolean isPlaceable(CardMap cardMap){
-        return true;
-    }
 
+    //METHODS
     /**
      * A generic card gives you points only if is placed faceUp. For CardStarter always returns 0, for CardResource can
      * be either 0 or 1, while for CardGolden calculate the points using the game rules.
@@ -69,6 +59,17 @@ public abstract class Card {
      * @return a Map which represents the total amount of Artifacts on the choosen side
      */
     public abstract Map<Artifacts, Integer> getAllArtifacts(boolean faceUp);
+
+    /**
+     * For CardResource and CardStarter this method returns always true, because these cards don't have constraints to
+     * play the card, while for CardGolden checks if the constraints are satisfied or not.
+     *
+     * @param cardMap
+     * @return true if the card is placeable on both faces, false if can be placed only face down
+     */
+    public boolean isPlaceable(CardMap cardMap){
+        return true;
+    }
 
     /**
      * @param direction
