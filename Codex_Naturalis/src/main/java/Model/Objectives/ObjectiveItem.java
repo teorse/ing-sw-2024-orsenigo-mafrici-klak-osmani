@@ -1,7 +1,10 @@
 package Model.Objectives;
 
+import Model.Player.CardMap;
 import Model.Utility.Artifacts;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class ObjectiveItem extends Objective{
@@ -30,4 +33,69 @@ public class ObjectiveItem extends Objective{
     public Map<Artifacts, Integer> getRequiredItems() {
         return requiredItems;
     }
+
+
+
+    /**
+     * Method to iterate the card map and count how many times a certain pattern has been completed.
+     * @param cardMap CardMap associated to the player.
+     * @return int number of points given to the player.
+     */
+
+    public int countPoints (CardMap cardMap){
+
+        // Counts how many times the pattern has been completed.
+        int itemPatternCounter;
+
+        /*
+        * Checks the size of the map to determine the type of pattern is being checked.
+        * if size = 1 : the map has only one element.
+        */
+        if(requiredItems.size() == 1){
+            Artifacts requiredArtifact = null;
+            for (Artifacts artifact : requiredItems.keySet()){
+                requiredArtifact = artifact;
+            }
+
+            /*Finds the amount of times the artifact was found in the cardMap
+            and divides it by the number you need to create a pattern.*/
+            itemPatternCounter = cardMap.getAmountOfArtifacts(requiredArtifact) / requiredItems.get(requiredArtifact);
+            return getPoints()*itemPatternCounter;
+        }else{
+            // List that contains how many times each artifact can be found in the specific CardMap.
+            List<Integer> numberOfItems = new ArrayList<>();
+            for (Artifacts artifacts : requiredItems.keySet()){
+                int numberOfItemsOnMap = cardMap.getAmountOfArtifacts(artifacts);
+                numberOfItems.add(numberOfItemsOnMap);
+            }
+
+            /*
+                The minimum number between the amount of times the artifact was found in the CardMap
+                is the amount of times that the pattern has been repeated.
+            */
+            itemPatternCounter = findMin(numberOfItems);
+            return getPoints()*itemPatternCounter;
+        }
+
+    }
+
+
+    /**
+     * Method to find the minimum number in a list of integers
+     * @param list List<Integer>.
+     * @return int minimum number of the list.
+     */
+    public int findMin (List<Integer> list){
+        int min = list.getFirst();
+
+        for (int i = 1; i < list.size(); i++){
+            if (list.get(i)< min){
+                min = list.get(i);
+            }
+        }
+        return min;
+    }
+
+
+
 }
