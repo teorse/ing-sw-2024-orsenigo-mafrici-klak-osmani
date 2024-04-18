@@ -18,7 +18,8 @@ public class Player {
     private PlayerColors playerColor;
     private int roundsCompleted;
     private List<CardPlayability> cardsHeld;
-    private Objective secretObjective;
+    private List<Objective> secretObjectiveCandidates;
+    private List<Objective> secretObjectives;
     /**
      * CardMap storing all the cards placed by the player and the relative counters.
      */
@@ -35,6 +36,8 @@ public class Player {
         this.nickname = nickname;
         this.cardMap = new CardMap();
         this.cardsHeld = new ArrayList<>();
+        this.secretObjectiveCandidates = new ArrayList<>();
+        this.secretObjectives = new ArrayList<>();
         this.playerState = PlayerStates.WAIT;
         this.roundsCompleted = 0;
     }
@@ -59,9 +62,6 @@ public class Player {
     public CardPlayability getCardsHeld(int index) {
         return cardsHeld.get(index);
     }
-    public Objective getSecretObjective() {
-        return secretObjective;
-    }
     public CardMap getCardMap() {
         return cardMap;
     }
@@ -80,9 +80,6 @@ public class Player {
     public void setPlayerColor(PlayerColors playerColors) {
         this.playerColor = playerColors;
     }
-    public void setSecretObjective(Objective secretObjective) {
-        this.secretObjective = secretObjective;
-    }
     public void setConnectionStatus(String connectionStatus) {
         this.connectionStatus = connectionStatus;
     }
@@ -96,15 +93,29 @@ public class Player {
 
     //METHODS
 
+    public void addSecretObjectiveCandidate(Objective objective){
+        secretObjectiveCandidates.add(objective);
+    }
+
+    /**
+     * Method allows to select an objective from the list of secret objective candidates and adds it to
+     * the player's actually confirmed objectives that will be used to count points at the end of the game.
+     * @param index Index of the objective candidate the player wants to select.
+     */
+    public void selectSecretObjective(int index){
+        Objective selectedObjective = secretObjectiveCandidates.get(index);
+        secretObjectives.add(selectedObjective);
+    }
+
     public void incrementRoundsCompleted() {
         this.roundsCompleted++;
     }
 
     /**
-     * Trasform Card to CardPlayability by adding a boolean which represent if that card is playable on both sides, set
+     * Transform Card to CardPlayability by adding a boolean which represent if that card is playable on both sides, set
      * as false at the beginning.
      *
-     * @param card choosen either from the four cards faceup in the center of the table (a new card is then revealed to
+     * @param card chosen either from the four cards faceUp in the center of the table (a new card is then revealed to
      *             replace the one just taken), or the first card from one of the two decks.
      */
     public void addCardHeld(Card card) {
