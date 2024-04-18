@@ -3,9 +3,7 @@ package Model.Game;
 import Model.Cards.Card;
 import Model.Objectives.Objective;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Class storing all common resources between players in the same game: Stores the card pools, the shared objectives etc.<br>
@@ -13,7 +11,7 @@ import java.util.List;
  */
 public class Table {
     //ATTRIBUTES
-    private List<CardPool> cardPools;
+    private Map<CardPoolTypes, CardPool> cardPools;
     private Deck starterCards;
     private List<Objective> objectives;
     private List<Objective> objectivesShared;
@@ -31,9 +29,9 @@ public class Table {
      * @param objectives    List of Objectives to use during this game.
      */
     public Table(List<Card> goldenCards, List<Card> resourceCards, List<Card> starterCards, List<Objective> objectives){
-        this.cardPools = new ArrayList<>(){{
-            add(new CardPool(goldenCards));
-            add(new CardPool(resourceCards));
+        this.cardPools = new HashMap<>(){{
+            put(CardPoolTypes.RESOURCE, new CardPool(resourceCards));
+            put(CardPoolTypes.GOLDEN, new CardPool(goldenCards));
         }};
         this.starterCards = new Deck(starterCards);
         this.starterCards.shuffleDeck();
@@ -49,19 +47,26 @@ public class Table {
     //GETTERS
     /**
      * Method to pick a card from the available pools.
-     * @param poolIndex Index specifying the pool to pick from.
-     * @param cardIndex Index specifying the card to pick.
+     * @param cardPoolType  Parameter specifying the pool from which to pick the card.
+     * @param cardIndex     Index specifying the card to pick.
      * @return  Card corresponding to the indexes.
      */
-    public Card getCard(int poolIndex, int cardIndex){
-        return cardPools.get(poolIndex).getCard(cardIndex);
+    public Card drawCard(CardPoolTypes cardPoolType, int cardIndex){
+        return cardPools.get(cardPoolType).getCard(cardIndex);
     }
 
     /**
      * @return  Objective from list of non-shared objectives.
      */
-    public Objective getRandomObjective(){
+    public Objective drawObjective(){
         return objectives.getLast();
+    }
+
+    /**
+     * @return Card from list of starter cards.
+     */
+    public Card drawStarterCard(){
+        return starterCards.draw();
     }
 
 
@@ -76,8 +81,8 @@ public class Table {
     public boolean areDecksEmpty(){
 
         int counter = 0;
-        for(CardPool cardPool : cardPools) {
-            counter = counter + cardPool.getAmountLeftInDeck();
+        for(Map.Entry<CardPoolTypes, CardPool> entry : cardPools.entrySet()){
+            counter = counter + entry.getValue().getAmountLeftInDeck();
         }
         if(counter == 0)
             return true;
