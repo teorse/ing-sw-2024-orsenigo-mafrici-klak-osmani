@@ -58,6 +58,7 @@ public class ObjectiveGeometric extends Objective{
             for(Coordinates offset : objectivePattern.keySet()){
                 coordinateWithOffset = currentCoordinate.add(offset);
 
+                //Tries to get the color of the card with the coordinateWithOffset.
                 try {
                     Artifacts cardArtifact = cardMap.getCardColorByCoordinate(coordinateWithOffset);
 
@@ -88,8 +89,10 @@ public class ObjectiveGeometric extends Objective{
                             break;
                         }
                     }
+                    // The catch gets executed when the cardColor with a specific coordinate doesn't exist.
                 } catch (NullPointerException e){
-                    System.out.println(e);
+                    break;
+                    //System.out.println(e);
                 }
 
             }

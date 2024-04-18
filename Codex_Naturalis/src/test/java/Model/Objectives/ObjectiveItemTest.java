@@ -78,6 +78,7 @@ class ObjectiveItemTest {
     Scenario scenario2 = new Scenario();
     Scenario scenario3 = new Scenario();
     Scenario scenario4 = new Scenario();
+    Scenario scenario5 = new Scenario();
 
 
 
@@ -88,6 +89,7 @@ class ObjectiveItemTest {
         scenario2();
         scenario3();
         scenario4();
+        scenario5();
     }
 
     void scenario1(){
@@ -177,6 +179,32 @@ class ObjectiveItemTest {
         scenario4.actualValue = objective.countPoints(cardMap);
     }
 
+    void scenario5(){
+
+        Map<Coordinates, CardVisibility> cardsToBePlaced = new HashMap<>();
+        Map<Artifacts, Integer> artifactsIntegerReflection = new HashMap<>();
+        List<Coordinates> coordinatesToBePlaced = new ArrayList<>();
+        CardMap cardMap = CardMapReflectionBuilder(cardsToBePlaced,artifactsIntegerReflection,coordinatesToBePlaced);
+
+        cardMap.changeArtifactAmount(Artifacts.ANIMAL, 5);
+        cardMap.changeArtifactAmount(Artifacts.FUNGI,3);
+        cardMap.changeArtifactAmount(Artifacts.INSECT, 6);
+        cardMap.changeArtifactAmount(Artifacts.PLANT,8);
+        cardMap.changeArtifactAmount(Artifacts.INKWELL,3);
+        cardMap.changeArtifactAmount(Artifacts.MANUSCRIPT,2);
+        cardMap.changeArtifactAmount(Artifacts.QUILL,4);
+
+        Map<Artifacts,Integer> requiredItems = new HashMap<>();
+        requiredItems.put(Artifacts.INKWELL, 1);
+        requiredItems.put(Artifacts.MANUSCRIPT, 1);
+        requiredItems.put(Artifacts.QUILL, 1);
+
+
+        ObjectiveItem objective = new ObjectiveItem("Generic Item Objective", 3, requiredItems);
+        scenario5.expectedValue = 6;
+        scenario5.actualValue = objective.countPoints(cardMap);
+    }
+
 
     @Test
     void countPoints() {
@@ -185,6 +213,7 @@ class ObjectiveItemTest {
         assertEquals(scenario2.expectedValue, scenario2.actualValue, "Test 2 Failed");
         assertEquals(scenario3.expectedValue, scenario3.actualValue, "Test 3 Failed");
         assertEquals(scenario4.expectedValue, scenario4.actualValue, "Test 4 Failed");
+        assertEquals(scenario5.expectedValue, scenario5.actualValue, "Test 5 Failed");
 
     }
 }
