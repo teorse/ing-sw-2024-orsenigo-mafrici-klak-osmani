@@ -17,7 +17,6 @@ public class Player {
     //ATTRIBUTES
     private String nickname;
     private Color color;
-    private int points;
     private int roundsCompleted;
     private List<CardPlayability> cardsHeld;
     private Objective secretObjective;
@@ -39,7 +38,6 @@ public class Player {
         this.cardsHeld = new ArrayList<>();
         this.playerState = PlayerStates.WAIT;
         this.roundsCompleted = 0;
-        this.points = 0;
     }
 
 
@@ -52,9 +50,6 @@ public class Player {
     }
     public Color getColor() {
         return color;
-    }
-    public int getPoints() {
-        return points;
     }
     public int getRoundsCompleted() {
         return roundsCompleted;
@@ -101,9 +96,6 @@ public class Player {
 
 
     //METHODS
-    public void addPoints(int add) {
-        this.points = this.points + add;
-    }
 
     public void incrementRoundsCompleted() {
         this.roundsCompleted++;

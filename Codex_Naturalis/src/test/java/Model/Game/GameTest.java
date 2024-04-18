@@ -35,7 +35,7 @@ class GameTest {
             setUpScenario5();
         }
 
-        void scenarioBuilder(Map<CardPoolTypes, CardPool> cardPools, List<Player> players, GamePhases expectedGamePhase){
+        void scenarioBuilder(Map<CardPoolTypes, CardPool> cardPools, Map<Player, Integer> playerPoints, GamePhases expectedGamePhase){
 
             List<List<Card>> sampleCards = new ArrayList<>();
             String cardJsonPath = "src/test/java/Model/Game/Resources/DefaultResourceCards.txt";
@@ -62,25 +62,29 @@ class GameTest {
                 add(new ObjectiveItem("Sample", 1, null));
             }};
 
-            Game game = new Game(sampleCards.get(0), sampleCards.get(1),sampleCards.get(2),sampleObjectives1, players);
+            Game game = new Game(sampleCards.get(0), sampleCards.get(1),sampleCards.get(2),sampleObjectives1, new ArrayList<>());
             Table table = new Table(sampleCards.get(3), sampleCards.get(4), sampleCards.get(5),sampleObjectives2);
 
             Field cardPoolsField;
             Field tableField;
             Field gamePhaseField;
+            Field playerPointsField;
 
             try{
                 cardPoolsField = Table.class.getDeclaredField("cardPools");
                 tableField = Game.class.getDeclaredField("table");
                 gamePhaseField = Game.class.getDeclaredField("gamePhase");
+                playerPointsField = Game.class.getDeclaredField("playerPoints");
 
                 cardPoolsField.setAccessible(true);
                 tableField.setAccessible(true);
                 gamePhaseField.setAccessible(true);
+                playerPointsField.setAccessible(true);
 
                 cardPoolsField.set(table, cardPools);
                 tableField.set(game, table);
                 gamePhaseField.set(game, GamePhases.MAIN_LOOP);
+                playerPointsField.set(game, playerPoints);
             }
             catch (NoSuchFieldException | IllegalAccessException e) {
                 throw new RuntimeException(e);
@@ -113,19 +117,18 @@ class GameTest {
 
             //Setting up the list of players.
             Player player1 = new Player("Leeroy1");
-            player1.addPoints(15);
             Player player2 = new Player("Leeroy2");
-            player2.addPoints(15);
             Player player3 = new Player("Leeroy3");
-            player3.addPoints(15);
             Player player4 = new Player("Leeroy4");
-            player4.addPoints(15);
 
-            List<Player> players = new ArrayList<>() {{
-                add(player1);
-                add(player2);
-                add(player3);
-                add(player4);
+
+            //Adding players to points map
+            Map<Player, Integer> playerPoints = new HashMap<>()
+            {{
+                put(player1, 15);
+                put(player2, 15);
+                put(player3, 15);
+                put(player4, 15);
             }};
 
 
@@ -146,7 +149,7 @@ class GameTest {
             GamePhases expectedGamePhase = GamePhases.MAIN_LOOP;
 
             //Adding the scenario to test pipeline.
-            scenarioBuilder(cardPools, players, expectedGamePhase);
+            scenarioBuilder(cardPools, playerPoints, expectedGamePhase);
         }
 
         //One player above 20 points and all decks have cards
@@ -172,19 +175,17 @@ class GameTest {
 
             //Setting up the list of players.
             Player player1 = new Player("Leeroy1");
-            player1.addPoints(24);
             Player player2 = new Player("Leeroy2");
-            player2.addPoints(15);
             Player player3 = new Player("Leeroy3");
-            player3.addPoints(15);
             Player player4 = new Player("Leeroy4");
-            player4.addPoints(15);
 
-            List<Player> players = new ArrayList<>() {{
-                add(player1);
-                add(player2);
-                add(player3);
-                add(player4);
+            //Adding players to points map
+            Map<Player, Integer> playerPoints = new HashMap<>()
+            {{
+                put(player1, 24);
+                put(player2, 15);
+                put(player3, 15);
+                put(player4, 15);
             }};
 
 
@@ -205,7 +206,7 @@ class GameTest {
             GamePhases expectedGamePhase = GamePhases.ENDING;
 
             //Adding the scenario to test pipeline.
-            scenarioBuilder(cardPools, players, expectedGamePhase);
+            scenarioBuilder(cardPools, playerPoints, expectedGamePhase);
         }
 
         //One player with exactly 20 points and all decks have cards
@@ -231,19 +232,17 @@ class GameTest {
 
             //Setting up the list of players.
             Player player1 = new Player("Leeroy1");
-            player1.addPoints(15);
             Player player2 = new Player("Leeroy2");
-            player2.addPoints(15);
             Player player3 = new Player("Leeroy3");
-            player3.addPoints(20);
             Player player4 = new Player("Leeroy4");
-            player4.addPoints(15);
 
-            List<Player> players = new ArrayList<>() {{
-                add(player1);
-                add(player2);
-                add(player3);
-                add(player4);
+            //Adding players to points map
+            Map<Player, Integer> playerPoints = new HashMap<>()
+            {{
+                put(player1, 15);
+                put(player2, 15);
+                put(player3, 20);
+                put(player4, 15);
             }};
 
 
@@ -264,7 +263,7 @@ class GameTest {
             GamePhases expectedGamePhase = GamePhases.ENDING;
 
             //Adding the scenario to test pipeline.
-            scenarioBuilder(cardPools, players, expectedGamePhase);
+            scenarioBuilder(cardPools, playerPoints, expectedGamePhase);
         }
 
         //No players above 19 points and one deck with no cards
@@ -290,19 +289,17 @@ class GameTest {
 
             //Setting up the list of players.
             Player player1 = new Player("Leeroy1");
-            player1.addPoints(15);
             Player player2 = new Player("Leeroy2");
-            player2.addPoints(15);
             Player player3 = new Player("Leeroy3");
-            player3.addPoints(15);
             Player player4 = new Player("Leeroy4");
-            player4.addPoints(15);
 
-            List<Player> players = new ArrayList<>() {{
-                add(player1);
-                add(player2);
-                add(player3);
-                add(player4);
+            //Adding players to points map
+            Map<Player, Integer> playerPoints = new HashMap<>()
+            {{
+                put(player1, 15);
+                put(player2, 15);
+                put(player3, 15);
+                put(player4, 15);
             }};
 
 
@@ -326,7 +323,7 @@ class GameTest {
             GamePhases expectedGamePhase = GamePhases.MAIN_LOOP;
 
             //Adding the scenario to test pipeline.
-            scenarioBuilder(cardPools, players, expectedGamePhase);
+            scenarioBuilder(cardPools, playerPoints, expectedGamePhase);
         }
 
         //No players above 19 points and all decks with no cards
@@ -352,19 +349,17 @@ class GameTest {
 
             //Setting up the list of players.
             Player player1 = new Player("Leeroy1");
-            player1.addPoints(15);
             Player player2 = new Player("Leeroy2");
-            player2.addPoints(15);
             Player player3 = new Player("Leeroy3");
-            player3.addPoints(15);
             Player player4 = new Player("Leeroy4");
-            player4.addPoints(15);
 
-            List<Player> players = new ArrayList<>() {{
-                add(player1);
-                add(player2);
-                add(player3);
-                add(player4);
+            //Adding players to points map
+            Map<Player, Integer> playerPoints = new HashMap<>()
+            {{
+                put(player1, 15);
+                put(player2, 15);
+                put(player3, 15);
+                put(player4, 15);
             }};
 
 
@@ -392,7 +387,7 @@ class GameTest {
             GamePhases expectedGamePhase = GamePhases.ENDING;
 
             //Adding the scenario to test pipeline.
-            scenarioBuilder(cardPools, players, expectedGamePhase);
+            scenarioBuilder(cardPools, playerPoints, expectedGamePhase);
         }
 
         //One player above 20 points and all decks with no cards
@@ -418,19 +413,17 @@ class GameTest {
 
             //Setting up the list of players.
             Player player1 = new Player("Leeroy1");
-            player1.addPoints(15);
             Player player2 = new Player("Leeroy2");
-            player2.addPoints(15);
             Player player3 = new Player("Leeroy3");
-            player3.addPoints(27);
             Player player4 = new Player("Leeroy4");
-            player4.addPoints(15);
 
-            List<Player> players = new ArrayList<>() {{
-                add(player1);
-                add(player2);
-                add(player3);
-                add(player4);
+            //Adding players to points map
+            Map<Player, Integer> playerPoints = new HashMap<>()
+            {{
+                put(player1, 15);
+                put(player2, 15);
+                put(player3, 27);
+                put(player4, 15);
             }};
 
 
@@ -458,7 +451,7 @@ class GameTest {
             GamePhases expectedGamePhase = GamePhases.ENDING;
 
             //Adding the scenario to test pipeline.
-            scenarioBuilder(cardPools, players, expectedGamePhase);
+            scenarioBuilder(cardPools, playerPoints, expectedGamePhase);
         }
 
 
