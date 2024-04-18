@@ -2,7 +2,6 @@ package Model.Player;
 
 import Model.Cards.Card;
 import Model.Objectives.Objective;
-import Model.Utility.Coordinates;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +15,7 @@ public class Player {
 
     //ATTRIBUTES
     private String nickname;
-    private Color color;
+    private PlayerColors playerColor;
     private int roundsCompleted;
     private List<CardPlayability> cardsHeld;
     private Objective secretObjective;
@@ -48,8 +47,8 @@ public class Player {
     public String getNickname() {
         return nickname;
     }
-    public Color getColor() {
-        return color;
+    public PlayerColors getPlayerColor() {
+        return playerColor;
     }
     public int getRoundsCompleted() {
         return roundsCompleted;
@@ -78,8 +77,8 @@ public class Player {
 
 
     //SETTERS
-    public void setColor(Color color) {
-        this.color = color;
+    public void setPlayerColor(PlayerColors playerColors) {
+        this.playerColor = playerColors;
     }
     public void setSecretObjective(Objective secretObjective) {
         this.secretObjective = secretObjective;
