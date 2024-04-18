@@ -24,7 +24,7 @@ public class Player {
      * CardMap storing all the cards placed by the player and the relative counters.
      */
     private CardMap cardMap;
-    private String connectionStatus;
+    private PlayerConnectionStatus connectionStatus;
     private PlayerStates playerState;
 
 
@@ -65,7 +65,7 @@ public class Player {
     public CardMap getCardMap() {
         return cardMap;
     }
-    public String getConnectionStatus() {
+    public PlayerConnectionStatus getConnectionStatus() {
         return connectionStatus;
     }
     public PlayerStates getPlayerState() {
@@ -80,7 +80,7 @@ public class Player {
     public void setPlayerColor(PlayerColors playerColors) {
         this.playerColor = playerColors;
     }
-    public void setConnectionStatus(String connectionStatus) {
+    public void setConnectionStatus(PlayerConnectionStatus connectionStatus) {
         this.connectionStatus = connectionStatus;
     }
     public void setPlayerState(PlayerStates playerState){
