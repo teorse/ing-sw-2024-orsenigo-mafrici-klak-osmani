@@ -21,6 +21,229 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CardMapTest {
 
     @Nested
+    public class PlaceTest {
+        //DATA
+        private CardMap cardMap;
+        private List<Card> resourceCards = new ArrayList<>();
+        private List<Card> goldenCards = new ArrayList<>();
+        private List<Card> starterCards = new ArrayList<>();
+        private List<Coordinates> expectedCoordinatesPlaced = new ArrayList<>();
+        private List<Coordinates> expectedAvailablePlacements = new ArrayList<>();
+
+        @BeforeEach
+        void setUp() {
+
+            cardMap = new CardMap();
+
+            String resourceCardsJson = "";
+            String goldenCardsJson = "";
+            String starterCardsJson = "";
+
+            try{
+                resourceCardsJson = Files.readString(Path.of("src/main/resources/CardDecks/CardResourceDeck.txt"));
+                goldenCardsJson = Files.readString(Path.of("src/main/resources/CardDecks/CardGoldenDeck.txt"));
+                starterCardsJson = Files.readString(Path.of("src/main/resources/CardDecks/CardStarterDeck.txt"));
+            }
+            catch (IOException m){
+                System.out.println(m);
+            }
+
+            resourceCards = CardJsonSerializer.deserializeCardResourceList(resourceCardsJson);
+            goldenCards = CardJsonSerializer.deserializeCardGoldenList(goldenCardsJson);
+            starterCards = CardJsonSerializer.deserializeCardStarterList(starterCardsJson);
+        }
+
+        @Test
+        void placeStarterCard() {
+
+            cardMap.place(starterCards.getFirst(), 0, true);
+
+            //coordinatesPlaced is [(0;0)]
+            expectedCoordinatesPlaced.add(new Coordinates(0, 0));
+
+            //availablePlacements is [(-1;1), (1;1), (1;-1), (-1;-1)]
+            expectedAvailablePlacements.add(new Coordinates(-1, 1)); //NW
+            expectedAvailablePlacements.add(new Coordinates(1, 1)); //NE
+            expectedAvailablePlacements.add(new Coordinates(1, -1)); //SE
+            expectedAvailablePlacements.add(new Coordinates(-1, -1)); //SW
+
+            assertEquals(1, cardMap.getAmountOfArtifacts(Artifacts.PLANT),
+                    "First calibration test failed");
+            assertEquals(1, cardMap.getAmountOfArtifacts(Artifacts.ANIMAL),
+                    "Second calibration test failed");
+            assertEquals(1, cardMap.getAmountOfArtifacts(Artifacts.INSECT),
+                    "Third calibration test failed");
+            assertEquals(1, cardMap.getAmountOfArtifacts(Artifacts.FUNGI),
+                    "Fourth calibration test failed");
+            assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.MANUSCRIPT),
+                    "Fifth calibration test failed");
+            assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.QUILL),
+                    "Sixth calibration test failed");
+            assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.INKWELL),
+                    "Seventh calibration test failed");
+            assertEquals(expectedCoordinatesPlaced, cardMap.getCoordinatesPlaced(),
+                    "Eighth calibration test failed");
+            assertEquals(expectedAvailablePlacements, cardMap.getAvailablePlacements(),
+                    "Ninth calibration test failed");
+        }
+
+        @Test
+        void placeTestResourceCard() {
+
+            cardMap.place(starterCards.getFirst(), 0, true);
+            cardMap.place(resourceCards.getFirst(), 1, true);
+            //coordinatesPlaced is [(0;0), (1;1)]
+            expectedCoordinatesPlaced.add(new Coordinates(0, 0));
+            expectedCoordinatesPlaced.add(new Coordinates(1, 1));
+            //availablePlacements is [(-1;1), (1;-1), (-1;-1), (0;2), (2;2)]
+            expectedAvailablePlacements.add(new Coordinates(-1, 1));
+            expectedAvailablePlacements.add(new Coordinates(1, -1));
+            expectedAvailablePlacements.add(new Coordinates(-1, -1));
+            expectedAvailablePlacements.add(new Coordinates(0, 2));
+            expectedAvailablePlacements.add(new Coordinates(2, 2));
+
+            assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.PLANT),
+                    "First calibration test failed");
+            assertEquals(1, cardMap.getAmountOfArtifacts(Artifacts.ANIMAL),
+                    "Second calibration test failed");
+            assertEquals(1, cardMap.getAmountOfArtifacts(Artifacts.INSECT),
+                    "Third calibration test failed");
+            assertEquals(3, cardMap.getAmountOfArtifacts(Artifacts.FUNGI),
+                    "Fourth calibration test failed");
+            assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.MANUSCRIPT),
+                    "Fifth calibration test failed");
+            assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.QUILL),
+                    "Sixth calibration test failed");
+            assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.INKWELL),
+                    "Seventh calibration test failed");
+            assertEquals(expectedCoordinatesPlaced, cardMap.getCoordinatesPlaced(),
+                    "Eighth calibration test failed");
+            assertEquals(expectedAvailablePlacements, cardMap.getAvailablePlacements(),
+                    "Ninth calibration test failed");
+        }
+
+        @Test
+        void placeTestGoldenCard() {
+
+            cardMap.place(starterCards.getFirst(), 0, true);
+            cardMap.place(resourceCards.getFirst(), 1, true);
+            cardMap.place(goldenCards.getFirst(), 4, true);
+            //coordinatesPlaced is [(0;0), (1;1), (2;2)]
+            expectedCoordinatesPlaced.add(new Coordinates(0, 0));
+            expectedCoordinatesPlaced.add(new Coordinates(1, 1));
+            expectedCoordinatesPlaced.add(new Coordinates(2, 2));
+            //availablePlacements is [(-1;1), (1;-1), (-1;-1), (0;2), (3;3), (3;1)]
+            expectedAvailablePlacements.add(new Coordinates(-1, 1));
+            expectedAvailablePlacements.add(new Coordinates(1, -1));
+            expectedAvailablePlacements.add(new Coordinates(-1, -1));
+            expectedAvailablePlacements.add(new Coordinates(0, 2));
+            expectedAvailablePlacements.add(new Coordinates(3, 3));
+            expectedAvailablePlacements.add(new Coordinates(3, 1));
+
+            assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.PLANT),
+                    "First calibration test failed");
+            assertEquals(1, cardMap.getAmountOfArtifacts(Artifacts.ANIMAL),
+                    "Second calibration test failed");
+            assertEquals(1, cardMap.getAmountOfArtifacts(Artifacts.INSECT),
+                    "Third calibration test failed");
+            assertEquals(3, cardMap.getAmountOfArtifacts(Artifacts.FUNGI),
+                    "Fourth calibration test failed");
+            assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.MANUSCRIPT),
+                    "Fifth calibration test failed");
+            assertEquals(1, cardMap.getAmountOfArtifacts(Artifacts.QUILL),
+                    "Sixth calibration test failed");
+            assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.INKWELL),
+                    "Seventh calibration test failed");
+            assertEquals(expectedCoordinatesPlaced, cardMap.getCoordinatesPlaced(),
+                    "Eighth calibration test failed");
+            assertEquals(expectedAvailablePlacements, cardMap.getAvailablePlacements(),
+                    "Ninth calibration test failed");
+        }
+
+        @Test
+        void placeTestSecondResourceCard() {
+
+            cardMap.place(starterCards.getFirst(), 0, true);
+            cardMap.place(resourceCards.getFirst(), 1, true);
+            cardMap.place(goldenCards.getFirst(), 4, true);
+            cardMap.place(resourceCards.get(1), 3, true);
+            //coordinatesPlaced is [(0;0), (1;1), (2;2), (0;2)]
+            expectedCoordinatesPlaced.add(new Coordinates(0, 0));
+            expectedCoordinatesPlaced.add(new Coordinates(1, 1));
+            expectedCoordinatesPlaced.add(new Coordinates(2, 2));
+            expectedCoordinatesPlaced.add(new Coordinates(0, 2));
+            //availablePlacements is [(1;-1), (-1;-1), (3;3), (3;1), (-1;3), (1;3)]
+            expectedAvailablePlacements.add(new Coordinates(1, -1));
+            expectedAvailablePlacements.add(new Coordinates(-1, -1));
+            expectedAvailablePlacements.add(new Coordinates(3, 3));
+            expectedAvailablePlacements.add(new Coordinates(3, 1));
+            expectedAvailablePlacements.add(new Coordinates(-1, 3));
+
+            assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.PLANT),
+                    "First calibration test failed");
+            assertEquals(1, cardMap.getAmountOfArtifacts(Artifacts.ANIMAL),
+                    "Second calibration test failed");
+            assertEquals(1, cardMap.getAmountOfArtifacts(Artifacts.INSECT),
+                    "Third calibration test failed");
+            assertEquals(4, cardMap.getAmountOfArtifacts(Artifacts.FUNGI),
+                    "Fourth calibration test failed");
+            assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.MANUSCRIPT),
+                    "Fifth calibration test failed");
+            assertEquals(1, cardMap.getAmountOfArtifacts(Artifacts.QUILL),
+                    "Sixth calibration test failed");
+            assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.INKWELL),
+                    "Seventh calibration test failed");
+            assertEquals(expectedCoordinatesPlaced, cardMap.getCoordinatesPlaced(),
+                    "Eighth calibration test failed");
+            assertEquals(expectedAvailablePlacements, cardMap.getAvailablePlacements(),
+                    "Ninth calibration test failed");
+        }
+
+        @Test
+        void placeTestSecondGoldenCardFaceDown() {
+
+            cardMap.place(starterCards.getFirst(), 0, true);
+            cardMap.place(resourceCards.getFirst(), 1, true);
+            cardMap.place(goldenCards.getFirst(), 4, true);
+            cardMap.place(resourceCards.get(1), 3, true);
+            cardMap.place(goldenCards.get(1), 1, false);
+            //coordinatesPlaced is [(0;0), (1;1), (2;2), (0;2), (-1;-1)]
+            expectedCoordinatesPlaced.add(new Coordinates(0, 0));
+            expectedCoordinatesPlaced.add(new Coordinates(1, 1));
+            expectedCoordinatesPlaced.add(new Coordinates(2, 2));
+            expectedCoordinatesPlaced.add(new Coordinates(0, 2));
+            expectedCoordinatesPlaced.add(new Coordinates(-1, -1));
+            //availablePlacements is [(1;-1), (3;3), (3;1), (-1;3), (1;3), (-2;0), (0;-2), (-2;-2)]
+            expectedAvailablePlacements.add(new Coordinates(1, -1));
+            expectedAvailablePlacements.add(new Coordinates(3, 3));
+            expectedAvailablePlacements.add(new Coordinates(3, 1));
+            expectedAvailablePlacements.add(new Coordinates(-1, 3));
+            expectedAvailablePlacements.add(new Coordinates(-2, 0));
+            expectedAvailablePlacements.add(new Coordinates(0, -2));
+            expectedAvailablePlacements.add(new Coordinates(-2, -2));
+
+            assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.PLANT),
+                    "First calibration test failed");
+            assertEquals(1, cardMap.getAmountOfArtifacts(Artifacts.ANIMAL),
+                    "Second calibration test failed");
+            assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.INSECT),
+                    "Third calibration test failed");
+            assertEquals(5, cardMap.getAmountOfArtifacts(Artifacts.FUNGI),
+                    "Fourth calibration test failed");
+            assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.MANUSCRIPT),
+                    "Fifth calibration test failed");
+            assertEquals(1, cardMap.getAmountOfArtifacts(Artifacts.QUILL),
+                    "Sixth calibration test failed");
+            assertEquals(0, cardMap.getAmountOfArtifacts(Artifacts.INKWELL),
+                    "Seventh calibration test failed");
+            assertEquals(expectedCoordinatesPlaced, cardMap.getCoordinatesPlaced(),
+                    "Eighth calibration test failed");
+            assertEquals(expectedAvailablePlacements, cardMap.getAvailablePlacements(),
+                    "Ninth calibration test failed");
+        }
+    }
+
+    @Nested
     public class GetAmountOfArtifactsTest {
         //DATA
         private CardMap cardMap;
