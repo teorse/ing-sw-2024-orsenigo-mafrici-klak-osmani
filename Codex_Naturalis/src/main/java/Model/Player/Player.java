@@ -135,14 +135,33 @@ public class Player {
     }
 
     /**
-     * Method to gather inputs from user and call the Place method in cardMap
+     * Method to gather inputs from user and call the Place method in cardMap.<br>
+     * Checks if the provided value for faceUp is compatible with the card's playability.
+     * If it is then it furthers the request to CardMap.
      *
      * @param cardIndex
      * @param coordinateIndex
      * @param faceUp
      */
     public void playCard(int cardIndex, int coordinateIndex, boolean faceUp) {
-        cardMap.place(getCardsHeld(cardIndex).getCard(),coordinateIndex,faceUp);
+        CardPlayability cardPlayability;
+
+        try {
+             cardPlayability = cardsHeld.get(cardIndex);
+        }
+        catch (IndexOutOfBoundsException i){
+            throw new RuntimeException("Index provided is not a valid index");
+        }
+
+
+        boolean cardCanBeFaceUp = cardPlayability.getPlayability();
+
+        //If the card can't be played faceUp but the player provided faceUp = true, throws an exception
+        //Otherwise the card is played as expected.
+        if(!cardCanBeFaceUp && faceUp)
+            throw new RuntimeException("You can't play this card faceUp!");
+
+        cardMap.place(cardPlayability.getCard(),coordinateIndex,faceUp);
     }
 }
 
