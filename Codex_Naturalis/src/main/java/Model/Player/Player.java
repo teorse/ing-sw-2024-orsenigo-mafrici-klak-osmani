@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class Player {
 
-    //ATTRIBUTE
+    //ATTRIBUTES
     private String nickname;
     private Color color;
     private int points;
@@ -22,10 +22,11 @@ public class Player {
     private List<CardPlayability> cardsHeld;
     private Objective secretObjective;
     /**
-     * Model.Model.Player.Player.CardMap storing all the cards placed by the player and the relative counters.
+     * CardMap storing all the cards placed by the player and the relative counters.
      */
     private CardMap cardMap;
     private String connectionStatus;
+    private PlayerStates playerState;
 
 
 
@@ -36,6 +37,7 @@ public class Player {
         this.nickname = nickname;
         this.cardMap = new CardMap();
         this.cardsHeld = new ArrayList<>();
+        this.playerState = PlayerStates.WAIT;
         this.roundsCompleted = 0;
         this.points = 0;
     }
@@ -44,7 +46,7 @@ public class Player {
 
 
 
-    //GETTER
+    //GETTERS
     public String getNickname() {
         return nickname;
     }
@@ -72,12 +74,15 @@ public class Player {
     public String getConnectionStatus() {
         return connectionStatus;
     }
+    public PlayerStates getPlayerState() {
+        return playerState;
+    }
 
 
 
 
 
-    //SETTER
+    //SETTERS
     public void setColor(Color color) {
         this.color = color;
     }
@@ -86,6 +91,9 @@ public class Player {
     }
     public void setConnectionStatus(String connectionStatus) {
         this.connectionStatus = connectionStatus;
+    }
+    public void setPlayerState(PlayerStates playerState){
+        this.playerState = playerState;
     }
 
 
