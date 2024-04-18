@@ -13,8 +13,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,7 +35,7 @@ class GameTest {
             setUpScenario5();
         }
 
-        void scenarioBuilder(List<CardPool> cardPools, List<Player> players, GamePhases expectedGamePhase){
+        void scenarioBuilder(Map<CardPoolTypes, CardPool> cardPools, List<Player> players, GamePhases expectedGamePhase){
 
             List<List<Card>> sampleCards = new ArrayList<>();
             String cardJsonPath = "src/test/java/Model/Game/Resources/DefaultResourceCards.txt";
@@ -136,9 +135,9 @@ class GameTest {
 
             CardPool cardPool2 = new CardPool(sampleCards2);
 
-            List<CardPool> cardPools = new ArrayList<>(){{
-                add(cardPool1);
-                add(cardPool2);
+            Map<CardPoolTypes, CardPool> cardPools = new HashMap<>(){{
+                put(CardPoolTypes.RESOURCE, cardPool1);
+                put(CardPoolTypes.GOLDEN, cardPool2);
             }};
 
 
@@ -195,9 +194,9 @@ class GameTest {
 
             CardPool cardPool2 = new CardPool(sampleCards2);
 
-            List<CardPool> cardPools = new ArrayList<>(){{
-                add(cardPool1);
-                add(cardPool2);
+            Map<CardPoolTypes, CardPool> cardPools = new HashMap<>(){{
+                put(CardPoolTypes.RESOURCE, cardPool1);
+                put(CardPoolTypes.GOLDEN, cardPool2);
             }};
 
 
@@ -254,9 +253,9 @@ class GameTest {
 
             CardPool cardPool2 = new CardPool(sampleCards2);
 
-            List<CardPool> cardPools = new ArrayList<>(){{
-                add(cardPool1);
-                add(cardPool2);
+            Map<CardPoolTypes, CardPool> cardPools = new HashMap<>(){{
+                put(CardPoolTypes.RESOURCE, cardPool1);
+                put(CardPoolTypes.GOLDEN, cardPool2);
             }};
 
 
@@ -316,9 +315,9 @@ class GameTest {
 
             CardPool cardPool2 = new CardPool(sampleCards2);
 
-            List<CardPool> cardPools = new ArrayList<>(){{
-                add(cardPool1);
-                add(cardPool2);
+            Map<CardPoolTypes, CardPool> cardPools = new HashMap<>(){{
+                put(CardPoolTypes.RESOURCE, cardPool1);
+                put(CardPoolTypes.GOLDEN, cardPool2);
             }};
 
 
@@ -382,9 +381,9 @@ class GameTest {
             cardPool2.getCard(-1);
 
 
-            List<CardPool> cardPools = new ArrayList<>(){{
-                add(cardPool1);
-                add(cardPool2);
+            Map<CardPoolTypes, CardPool> cardPools = new HashMap<>(){{
+                put(CardPoolTypes.RESOURCE, cardPool1);
+                put(CardPoolTypes.GOLDEN, cardPool2);
             }};
 
 
@@ -448,9 +447,9 @@ class GameTest {
             cardPool2.getCard(-1);
 
 
-            List<CardPool> cardPools = new ArrayList<>(){{
-                add(cardPool1);
-                add(cardPool2);
+            Map<CardPoolTypes, CardPool> cardPools = new HashMap<>(){{
+                put(CardPoolTypes.RESOURCE, cardPool1);
+                put(CardPoolTypes.GOLDEN, cardPool2);
             }};
 
 
