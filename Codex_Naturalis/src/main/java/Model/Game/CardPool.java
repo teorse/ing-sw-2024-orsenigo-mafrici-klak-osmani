@@ -28,8 +28,8 @@ public class CardPool {
         deck = new Deck(cards);
         deck.shuffleDeck();
         visibleCards = new ArrayList<>(){{
-            add(deck.pop());
-            add(deck.pop());
+            add(deck.draw());
+            add(deck.draw());
         }};
     }
 
@@ -49,11 +49,11 @@ public class CardPool {
         if(index < -1 || index >= visibleCards.size())
             throw new IndexOutOfBoundsException();
         else if(index == -1)
-            return deck.pop();
+            return deck.draw();
         else
         {
             Card card = visibleCards.remove(index);
-            visibleCards.add(index, deck.pop());
+            visibleCards.add(index, deck.draw());
             return card;
         }
     }

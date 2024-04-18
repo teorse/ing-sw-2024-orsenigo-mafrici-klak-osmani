@@ -44,7 +44,7 @@ public class Deck {
      *Method removes and returns the card in the ArrayList in position [0].
      * @return Card held in deck[0].
      */
-    public Card pop(){
+    public Card draw(){
         return deck.removeLast();
     }
 
