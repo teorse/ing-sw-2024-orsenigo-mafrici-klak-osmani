@@ -142,8 +142,9 @@ public class Player {
      * @param cardIndex
      * @param coordinateIndex
      * @param faceUp
+     * @return returns the points gained by the player for playing the card.
      */
-    public void playCard(int cardIndex, int coordinateIndex, boolean faceUp) {
+    public int playCard(int cardIndex, int coordinateIndex, boolean faceUp) {
         CardPlayability cardPlayability;
 
         try {
@@ -161,7 +162,8 @@ public class Player {
         if(!cardCanBeFaceUp && faceUp)
             throw new RuntimeException("You can't play this card faceUp!");
 
-        cardMap.place(cardPlayability.getCard(),coordinateIndex,faceUp);
+        //returns the points awarded to the player for playing the card.
+        return cardMap.place(cardPlayability.getCard(),coordinateIndex,faceUp);
     }
 }
 

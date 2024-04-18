@@ -114,19 +114,25 @@ public class CardMap {
     //CLASS SPECIFIC METHODS
     /**
      * Method which places the card in cardsPlaced map, updates resources and items of the player,
-     * updates covered corners of nearby cards, updates the list of coordinates placed and calls the method
-     * to update the available placements
+     * updates covered corners of nearby cards, updates the list of coordinates placed, calls the method
+     * to update the available placements and returns the points gained by the player by placing this card.
+     *
      * @param cardToPlace
      * @param coordinateIndex
      * @param faceUp
+     * @return Points earned by the player for placing the card.
      */
-    public void place(Card cardToPlace, int coordinateIndex, boolean faceUp) {
+    public int place(Card cardToPlace, int coordinateIndex, boolean faceUp) {
         //Coordinates of the card to be placed in the map
         Coordinates placed = availablePlacements.get(coordinateIndex);
+
+        //Checks how many points are awarded for playing this card.
+        int points = cardToPlace.countPoints(this, placed, faceUp);
+
         //CardVisibility of the card to be placed in the map
         CardVisibility cardVisibilityToPlace = new CardVisibility(cardToPlace, faceUp);
 
-        //Calling the method which updates the number od artifacts of the player and the corners to cover
+        //Calling the method which updates the number of artifacts of the player and the corners to cover
         updateCoveredCornersAndArtifacts(placed);
 
         //For loop which function is to increment the amount of artifacts in the counter
@@ -141,6 +147,8 @@ public class CardMap {
         coordinatesPlaced.add(placed);
         //Calling the method which updates the available placements
         updateAvailablePlacements(cardVisibilityToPlace, coordinateIndex);
+
+        return points;
     }
 
     /**
