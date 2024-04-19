@@ -14,7 +14,7 @@ public class Table {
     private Map<CardPoolTypes, CardPool> cardPools;
     private Deck starterCards;
     private List<Objective> objectives;
-    private List<Objective> objectivesShared;
+    private List<Objective> sharedObjectives;
 
 
 
@@ -45,6 +45,9 @@ public class Table {
 
 
     //GETTERS
+    public List<Objective> getSharedObjectives(){
+        return this.sharedObjectives;
+    }
     /**
      * Method to pick a card from the available pools.
      * @param cardPoolType  Parameter specifying the pool from which to pick the card.
