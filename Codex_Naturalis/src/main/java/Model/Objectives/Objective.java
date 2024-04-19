@@ -1,5 +1,7 @@
 package Model.Objectives;
 
+import Model.Player.CardMap;
+
 import java.util.Map;
 
 public abstract class Objective {
@@ -35,4 +37,6 @@ public abstract class Objective {
     public int getPoints(){
         return points;
     }
+
+    public abstract int countPoints(CardMap cardMap);
 }
