@@ -1,11 +1,10 @@
 package Model.Player;
 
 import Model.Cards.Card;
+import Model.Game.Game;
 import Model.Objectives.Objective;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * The Model.Player.Player Class contains all the information about the player, and it stores contextual information about the
@@ -135,7 +134,8 @@ public class Player {
     }
 
     /**
-     * Method to gather inputs from user and call the Place method in cardMap.<br>
+     * Method calls the place method in this player's CardMap to place the card, and returns the points gained by the player for
+     * playing the card.<br>
      * Checks if the provided value for faceUp is compatible with the card's playability.
      * If it is then it furthers the request to CardMap.
      *
@@ -164,6 +164,20 @@ public class Player {
 
         //returns the points awarded to the player for playing the card.
         return cardMap.place(cardPlayability.getCard(),coordinateIndex,faceUp);
+    }
+
+    /**
+     * Method calls the countPoints method for each of the player's secret Objectives and returns a map
+     * containing the points earned for each objective
+     * @return  Map with Objectives as key and the points earned with them as value.
+     */
+    public Map<Objective,Integer> countSecretObjectivePoints(){
+        Map<Objective,Integer> objectivesPoints = new HashMap<>();
+
+        for(Objective objective : secretObjectives){
+            objectivesPoints.put(objective,objective.countPoints(cardMap));
+        }
+        return countSecretObjectivePoints();
     }
 }
 
