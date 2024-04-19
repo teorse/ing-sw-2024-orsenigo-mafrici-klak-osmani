@@ -38,6 +38,8 @@ public class Table {
 
         this.objectives = objectives;
         Collections.shuffle(objectives);
+
+        sharedObjectives = new ArrayList<>();
     }
 
 
@@ -91,6 +93,14 @@ public class Table {
             return true;
         else
             return false;
+    }
+
+    /**
+     * Draws two objectives from the list and reveals them as the shared objectives.
+     */
+    public void revealSharedObjectives(){
+        sharedObjectives.add(objectives.getLast());
+        sharedObjectives.add(objectives.getLast());
     }
 
 }
