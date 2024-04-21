@@ -2,7 +2,7 @@ package Model.Game;
 
 import Model.Cards.Card;
 import Model.Objectives.Objective;
-import Model.Objectives.ObjectiveItem;
+import Model.Objectives.ObjectiveArtifact;
 import Model.Player.Player;
 import Model.Utility.JsonParser.CardJsonSerializer;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +22,7 @@ class GameTest {
     @Nested
     public class checkGameEndingTest{
         public List<Game> games = new ArrayList<>();
-        public List<GamePhases> expectedGamePhases = new ArrayList<>();//List of games
+        public List<Boolean> expectedLastRoundTriggers = new ArrayList<>();//List of games
 
 
         @BeforeEach
@@ -35,7 +35,7 @@ class GameTest {
             setUpScenario5();
         }
 
-        void scenarioBuilder(Map<CardPoolTypes, CardPool> cardPools, Map<Player, Integer> playerPoints, GamePhases expectedGamePhase){
+        void scenarioBuilder(Map<CardPoolTypes, CardPool> cardPools, Map<Player, Integer> playerPoints, boolean expectedLastRoundTrigger){
 
             List<List<Card>> sampleCards = new ArrayList<>();
             String cardJsonPath = "src/test/java/Model/Game/Resources/DefaultResourceCards.txt";
@@ -53,13 +53,13 @@ class GameTest {
             }
 
             List<Objective> sampleObjectives1 = new ArrayList<>(){{
-                add(new ObjectiveItem("Sample", 1, null));
-                add(new ObjectiveItem("Sample", 1, null));
+                add(new ObjectiveArtifact("Sample", 1, null));
+                add(new ObjectiveArtifact("Sample", 1, null));
             }};
 
             List<Objective> sampleObjectives2 = new ArrayList<>(){{
-                add(new ObjectiveItem("Sample", 1, null));
-                add(new ObjectiveItem("Sample", 1, null));
+                add(new ObjectiveArtifact("Sample", 1, null));
+                add(new ObjectiveArtifact("Sample", 1, null));
             }};
 
             Game game = new Game(sampleCards.get(0), sampleCards.get(1),sampleCards.get(2),sampleObjectives1, new ArrayList<>());
@@ -67,23 +67,19 @@ class GameTest {
 
             Field cardPoolsField;
             Field tableField;
-            Field gamePhaseField;
             Field playerPointsField;
 
             try{
                 cardPoolsField = Table.class.getDeclaredField("cardPools");
                 tableField = Game.class.getDeclaredField("table");
-                gamePhaseField = Game.class.getDeclaredField("gamePhase");
                 playerPointsField = Game.class.getDeclaredField("playerPoints");
 
                 cardPoolsField.setAccessible(true);
                 tableField.setAccessible(true);
-                gamePhaseField.setAccessible(true);
                 playerPointsField.setAccessible(true);
 
                 cardPoolsField.set(table, cardPools);
                 tableField.set(game, table);
-                gamePhaseField.set(game, GamePhases.MAIN_LOOP);
                 playerPointsField.set(game, playerPoints);
             }
             catch (NoSuchFieldException | IllegalAccessException e) {
@@ -91,7 +87,7 @@ class GameTest {
             }
 
             games.add(game);
-            expectedGamePhases.add(expectedGamePhase);
+            expectedLastRoundTriggers.add(expectedLastRoundTrigger);
         }
 
         //No players above 19 points and all decks have cards
@@ -146,10 +142,10 @@ class GameTest {
 
 
             //Defining the expected outcome.
-            GamePhases expectedGamePhase = GamePhases.MAIN_LOOP;
+            boolean expectedLastRoundTrigger = false;
 
             //Adding the scenario to test pipeline.
-            scenarioBuilder(cardPools, playerPoints, expectedGamePhase);
+            scenarioBuilder(cardPools, playerPoints, expectedLastRoundTrigger);
         }
 
         //One player above 20 points and all decks have cards
@@ -203,10 +199,10 @@ class GameTest {
 
 
             //Defining the expected outcome.
-            GamePhases expectedGamePhase = GamePhases.ENDING;
+            boolean expectedLastRoundTrigger = true;
 
             //Adding the scenario to test pipeline.
-            scenarioBuilder(cardPools, playerPoints, expectedGamePhase);
+            scenarioBuilder(cardPools, playerPoints, expectedLastRoundTrigger);
         }
 
         //One player with exactly 20 points and all decks have cards
@@ -260,10 +256,10 @@ class GameTest {
 
 
             //Defining the expected outcome.
-            GamePhases expectedGamePhase = GamePhases.ENDING;
+            boolean expectedLastRoundTrigger = true;
 
             //Adding the scenario to test pipeline.
-            scenarioBuilder(cardPools, playerPoints, expectedGamePhase);
+            scenarioBuilder(cardPools, playerPoints, expectedLastRoundTrigger);
         }
 
         //No players above 19 points and one deck with no cards
@@ -320,10 +316,10 @@ class GameTest {
 
 
             //Defining the expected outcome.
-            GamePhases expectedGamePhase = GamePhases.MAIN_LOOP;
+            boolean expectedLastRoundTrigger = false;
 
             //Adding the scenario to test pipeline.
-            scenarioBuilder(cardPools, playerPoints, expectedGamePhase);
+            scenarioBuilder(cardPools, playerPoints, expectedLastRoundTrigger);
         }
 
         //No players above 19 points and all decks with no cards
@@ -384,10 +380,10 @@ class GameTest {
 
 
             //Defining the expected outcome.
-            GamePhases expectedGamePhase = GamePhases.ENDING;
+            boolean expectedLastRoundTrigger = true;
 
             //Adding the scenario to test pipeline.
-            scenarioBuilder(cardPools, playerPoints, expectedGamePhase);
+            scenarioBuilder(cardPools, playerPoints, expectedLastRoundTrigger);
         }
 
         //One player above 20 points and all decks with no cards
@@ -448,22 +444,22 @@ class GameTest {
 
 
             //Defining the expected outcome.
-            GamePhases expectedGamePhase = GamePhases.ENDING;
+            boolean expectedLastRoundTrigger = true;
 
             //Adding the scenario to test pipeline.
-            scenarioBuilder(cardPools, playerPoints, expectedGamePhase);
+            scenarioBuilder(cardPools, playerPoints, expectedLastRoundTrigger);
         }
 
 
         @Test
-        void checkGameEnding() {
+        void checkGameEndingConditions() {
             for (int i = 0; i < games.size(); i++){
                 Game game = games.get(i);
-                GamePhases expectedGamePhase = expectedGamePhases.get(i);
+                boolean expectedLastRoundTrigger = expectedLastRoundTriggers.get(i);
 
-                game.checkGameEnding();
+                game.checkGameEndingConditions();
 
-                assertEquals(expectedGamePhase, game.getGamePhase(),"Game phase is not as expected");
+                assertEquals(expectedLastRoundTrigger, game.isLastRoundFlag(),"Trigger is not as expected in scenario "+i);
             }
         }
     }

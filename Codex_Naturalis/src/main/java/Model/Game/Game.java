@@ -2,7 +2,10 @@ package Model.Game;
 
 import Model.Cards.Card;
 import Model.Objectives.Objective;
+import Model.Player.CardMap;
 import Model.Player.Player;
+import Model.Game.States.*;
+import Model.Player.PlayerColors;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,7 +20,9 @@ public class Game {
     //ATTRIBUTES
     private List<Player> players;
     private Table table;
-    private GamePhases gamePhase;
+    private boolean lastRoundFlag;
+    private boolean gameIsOver;
+    private GameState state;
 
     /**
      * Stores number of rounds completed by the table.<br>
@@ -52,7 +57,9 @@ public class Game {
             for(Player player : players)
                 put(player, 0);
         }};
-        this.gamePhase = GamePhases.SETUP;
+        this.lastRoundFlag = false;
+        this.gameIsOver = false;
+        state = new CardsSetup(this);
     }
 
 
@@ -60,8 +67,41 @@ public class Game {
 
 
     //GETTERS
-    public GamePhases getGamePhase() {
-        return gamePhase;
+    public List<Player> getPlayers() {
+        return players;
+    }
+    public Table getTable() {
+        return table;
+    }
+    public int getRoundsCompleted() {
+        return roundsCompleted;
+    }
+    public Map<Player, Integer> getPlayerPoints() {
+        return playerPoints;
+    }
+    public boolean isLastRoundFlag(){
+        return this.lastRoundFlag;
+    }
+
+
+
+
+
+    //STATE PATTERN METHODS
+    public void setState(GameState state){
+        this.state = state;
+    }
+    public void placeCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp){
+        state.placeCard(player, cardIndex, coordinateIndex, faceUp);
+    }
+    public void drawCard(Player player, CardPoolTypes cardPoolType, int index){
+        state.drawCard(player, cardPoolType, index);
+    }
+    public void pickPlayerColor(Player player, PlayerColors color){
+        state.pickPlayerColor(player, color);
+    }
+    public void pickPlayerObjective(Player player, int objectiveIndex){
+        state.pickPlayerObjective(player, objectiveIndex);
     }
 
 
@@ -78,21 +118,43 @@ public class Game {
     }
 
     /**
-     * Method verifies whether the conditions for the game-end are met, if so it updates the game phase accordingly.
+     * Method verifies whether the conditions for the game-end are met, if so sets to true the lastRound flag.
      */
-    public void checkGameEnding(){
+    public void checkGameEndingConditions(){
 
         if(table.areDecksEmpty()){
-            this.gamePhase = GamePhases.ENDING;
+            this.lastRoundFlag = true;
             return;
         }
 
         for(Map.Entry<Player, Integer> entry : playerPoints.entrySet()){
             if(entry.getValue() >= 20){
-                this.gamePhase = GamePhases.ENDING;
+                this.lastRoundFlag = true;
                 return;
             }
         }
         return;
+    }
+
+    public void gameOver(){
+        List<Objective> sharedObjectives = table.getSharedObjectives();
+
+        //Count all the points for each player.
+        for(Player player : players){
+
+            //Get points from secret objective/objectives.
+            Map<Objective, Integer> objectivesPoints = player.countSecretObjectivePoints();
+
+            //Get points from shared objective/objectives.
+            CardMap playersCardMap = player.getCardMap();
+            for(Objective sharedObjective : sharedObjectives)
+                objectivesPoints.put(sharedObjective, sharedObjective.countPoints(playersCardMap));
+
+            //Add all points to counter
+            for(Map.Entry<Objective, Integer> entry : objectivesPoints.entrySet())
+                addPointsToPlayer(player, entry.getValue());
+        }
+        //After all players are given their points the winner is calculated.
+        //ToDo Sort the winner.
     }
 }
