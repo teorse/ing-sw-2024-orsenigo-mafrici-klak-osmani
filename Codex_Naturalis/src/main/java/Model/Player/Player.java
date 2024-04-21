@@ -1,7 +1,6 @@
 package Model.Player;
 
 import Model.Cards.Card;
-import Model.Game.Game;
 import Model.Objectives.Objective;
 
 import java.util.*;
@@ -118,8 +117,10 @@ public class Player {
      *             replace the one just taken), or the first card from one of the two decks.
      */
     public void addCardHeld(Card card) {
-        //Set by defualt the playability of card and then update when all the 3 card are held by the player
+        //Creates a CardPlayability object which immediately reflects the card's playability given the player's
+        //current cardMap.
         CardPlayability CP = new CardPlayability(card,false);
+        CP.updatePlayability(cardMap);
         cardsHeld.add(CP);
     }
 
@@ -127,9 +128,8 @@ public class Player {
      * Updates playable sides attribute of all cards in cardsHeld List.
      */
     public void updatePlayableSides() {
-        CardMap CM = this.cardMap;
         for (CardPlayability cardPlayability : cardsHeld) {
-            cardPlayability.setPlayability(CM);
+            cardPlayability.updatePlayability(cardMap);
         }
     }
 
@@ -163,7 +163,12 @@ public class Player {
             throw new RuntimeException("You can't play this card faceUp!");
 
         //returns the points awarded to the player for playing the card.
-        return cardMap.place(cardPlayability.getCard(),coordinateIndex,faceUp);
+        int points =  cardMap.place(cardPlayability.getCard(),coordinateIndex,faceUp);
+
+        //Updates the playable sides of the remaining cards held after placing the card in the card map.
+        updatePlayableSides();
+
+        return points;
     }
 
     /**
