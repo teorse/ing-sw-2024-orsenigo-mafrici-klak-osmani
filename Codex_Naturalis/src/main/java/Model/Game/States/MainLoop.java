@@ -67,8 +67,7 @@ public class MainLoop implements GameState{
                 throw new RuntimeException("You can't perform this move at the moment.");
 
             //The rest of the method is executed if the player is actually allowed to perform the move.
-            points = player.playCard(cardIndex, coordinateIndex, faceUp);
-            game.addPointsToPlayer(player, points);
+            player.playCard(cardIndex, coordinateIndex, faceUp);
             player.setPlayerState(PlayerStates.DRAW);
         }
         catch (RuntimeException e){

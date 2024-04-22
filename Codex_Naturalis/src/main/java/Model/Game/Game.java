@@ -2,15 +2,12 @@ package Model.Game;
 
 import Model.Cards.Card;
 import Model.Objectives.Objective;
-import Model.Player.CardMap;
 import Model.Player.Player;
 import Model.Game.States.*;
 import Model.Player.PlayerColors;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This Class stores all the information about the current game, including the list of players, the current game phase,
@@ -29,7 +26,6 @@ public class Game {
      * A round is deemed completed if all the currently online players have completed their turn for the current round.
      */
     private int roundsCompleted;
-    private Map<Player, Integer> playerPoints;
 
 
 
@@ -50,13 +46,6 @@ public class Game {
         this.players = players;
         Collections.shuffle(this.players);
         this.table = new Table(goldenCards, resourceCards, starterCards, objectives);
-
-        //Sets all players' points to zero.
-        this.playerPoints = new HashMap<>()
-        {{
-            for(Player player : players)
-                put(player, 0);
-        }};
         this.lastRoundFlag = false;
         this.gameIsOver = false;
         state = new CardsSetup(this);
@@ -75,9 +64,6 @@ public class Game {
     }
     public int getRoundsCompleted() {
         return roundsCompleted;
-    }
-    public Map<Player, Integer> getPlayerPoints() {
-        return playerPoints;
     }
     public boolean isLastRoundFlag(){
         return this.lastRoundFlag;
@@ -113,10 +99,6 @@ public class Game {
         this.roundsCompleted++;
     }
 
-    public void addPointsToPlayer(Player player, int points){
-        playerPoints.compute(player, (k, oldPoints) -> oldPoints + points);
-    }
-
     /**
      * Method verifies whether the conditions for the game-end are met, if so sets to true the lastRound flag.
      */
@@ -127,8 +109,8 @@ public class Game {
             return;
         }
 
-        for(Map.Entry<Player, Integer> entry : playerPoints.entrySet()){
-            if(entry.getValue() >= 20){
+        for(Player player : players){
+            if(player.getPoints() >= 20){
                 this.lastRoundFlag = true;
                 return;
             }
@@ -141,19 +123,10 @@ public class Game {
 
         //Count all the points for each player.
         for(Player player : players){
-
-            //Get points from secret objective/objectives.
-            Map<Objective, Integer> objectivesPoints = player.countSecretObjectivePoints();
-
-            //Get points from shared objective/objectives.
-            CardMap playersCardMap = player.getCardMap();
-            for(Objective sharedObjective : sharedObjectives)
-                objectivesPoints.put(sharedObjective, sharedObjective.countPoints(playersCardMap));
-
-            //Add all points to counter
-            for(Map.Entry<Objective, Integer> entry : objectivesPoints.entrySet())
-                addPointsToPlayer(player, entry.getValue());
+            player.countAllPoints(sharedObjectives);
         }
+
+        gameIsOver = true;
         //After all players are given their points the winner is calculated.
         //ToDo Sort the winner.
     }

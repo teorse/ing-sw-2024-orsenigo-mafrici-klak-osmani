@@ -35,7 +35,7 @@ class GameTest {
             setUpScenario5();
         }
 
-        void scenarioBuilder(Map<CardPoolTypes, CardPool> cardPools, Map<Player, Integer> playerPoints, boolean expectedLastRoundTrigger){
+        void scenarioBuilder(Map<CardPoolTypes, CardPool> cardPools, List<Player> players, boolean expectedLastRoundTrigger){
 
             List<List<Card>> sampleCards = new ArrayList<>();
             String cardJsonPath = "src/test/java/Model/Game/Resources/DefaultResourceCards.txt";
@@ -67,20 +67,20 @@ class GameTest {
 
             Field cardPoolsField;
             Field tableField;
-            Field playerPointsField;
+            Field playersField;
 
             try{
                 cardPoolsField = Table.class.getDeclaredField("cardPools");
                 tableField = Game.class.getDeclaredField("table");
-                playerPointsField = Game.class.getDeclaredField("playerPoints");
+                playersField = Game.class.getDeclaredField("players");
 
                 cardPoolsField.setAccessible(true);
                 tableField.setAccessible(true);
-                playerPointsField.setAccessible(true);
+                playersField.setAccessible(true);
 
                 cardPoolsField.set(table, cardPools);
                 tableField.set(game, table);
-                playerPointsField.set(game, playerPoints);
+                playersField.set(game, players);
             }
             catch (NoSuchFieldException | IllegalAccessException e) {
                 throw new RuntimeException(e);
@@ -110,23 +110,31 @@ class GameTest {
             sampleCards2 = CardJsonSerializer.deserializeCardResourceList(cardJson);
 
 
+            List<Player> players;
+            try {
+                Field points = Player.class.getDeclaredField("points");
+                points.setAccessible(true);
 
-            //Setting up the list of players.
-            Player player1 = new Player("Leeroy1");
-            Player player2 = new Player("Leeroy2");
-            Player player3 = new Player("Leeroy3");
-            Player player4 = new Player("Leeroy4");
+                //Setting up the list of players.
+                Player player1 = new Player("Leeroy1");
+                points.set(player1, 15);
+                Player player2 = new Player("Leeroy2");
+                points.set(player2, 15);
+                Player player3 = new Player("Leeroy3");
+                points.set(player3, 15);
+                Player player4 = new Player("Leeroy4");
+                points.set(player4, 15);
 
-
-            //Adding players to points map
-            Map<Player, Integer> playerPoints = new HashMap<>()
-            {{
-                put(player1, 15);
-                put(player2, 15);
-                put(player3, 15);
-                put(player4, 15);
-            }};
-
+                players = new ArrayList<>() {{
+                    add(player1);
+                    add(player2);
+                    add(player3);
+                    add(player4);
+                }};
+            }
+            catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
 
 
             //Setting up the pools of cards.
@@ -145,7 +153,7 @@ class GameTest {
             boolean expectedLastRoundTrigger = false;
 
             //Adding the scenario to test pipeline.
-            scenarioBuilder(cardPools, playerPoints, expectedLastRoundTrigger);
+            scenarioBuilder(cardPools, players, expectedLastRoundTrigger);
         }
 
         //One player above 20 points and all decks have cards
@@ -169,21 +177,31 @@ class GameTest {
 
 
 
-            //Setting up the list of players.
-            Player player1 = new Player("Leeroy1");
-            Player player2 = new Player("Leeroy2");
-            Player player3 = new Player("Leeroy3");
-            Player player4 = new Player("Leeroy4");
+            List<Player> players;
+            try {
+                Field points = Player.class.getDeclaredField("points");
+                points.setAccessible(true);
 
-            //Adding players to points map
-            Map<Player, Integer> playerPoints = new HashMap<>()
-            {{
-                put(player1, 24);
-                put(player2, 15);
-                put(player3, 15);
-                put(player4, 15);
-            }};
+                //Setting up the list of players.
+                Player player1 = new Player("Leeroy1");
+                points.set(player1, 24);
+                Player player2 = new Player("Leeroy2");
+                points.set(player2, 15);
+                Player player3 = new Player("Leeroy3");
+                points.set(player3, 15);
+                Player player4 = new Player("Leeroy4");
+                points.set(player4, 15);
 
+                players = new ArrayList<>() {{
+                    add(player1);
+                    add(player2);
+                    add(player3);
+                    add(player4);
+                }};
+            }
+            catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
 
 
             //Setting up the pools of cards.
@@ -202,7 +220,7 @@ class GameTest {
             boolean expectedLastRoundTrigger = true;
 
             //Adding the scenario to test pipeline.
-            scenarioBuilder(cardPools, playerPoints, expectedLastRoundTrigger);
+            scenarioBuilder(cardPools, players, expectedLastRoundTrigger);
         }
 
         //One player with exactly 20 points and all decks have cards
@@ -226,21 +244,31 @@ class GameTest {
 
 
 
-            //Setting up the list of players.
-            Player player1 = new Player("Leeroy1");
-            Player player2 = new Player("Leeroy2");
-            Player player3 = new Player("Leeroy3");
-            Player player4 = new Player("Leeroy4");
+            List<Player> players;
+            try {
+                Field points = Player.class.getDeclaredField("points");
+                points.setAccessible(true);
 
-            //Adding players to points map
-            Map<Player, Integer> playerPoints = new HashMap<>()
-            {{
-                put(player1, 15);
-                put(player2, 15);
-                put(player3, 20);
-                put(player4, 15);
-            }};
+                //Setting up the list of players.
+                Player player1 = new Player("Leeroy1");
+                points.set(player1, 15);
+                Player player2 = new Player("Leeroy2");
+                points.set(player2, 15);
+                Player player3 = new Player("Leeroy3");
+                points.set(player3, 20);
+                Player player4 = new Player("Leeroy4");
+                points.set(player4, 15);
 
+                players = new ArrayList<>() {{
+                    add(player1);
+                    add(player2);
+                    add(player3);
+                    add(player4);
+                }};
+            }
+            catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
 
 
             //Setting up the pools of cards.
@@ -259,7 +287,7 @@ class GameTest {
             boolean expectedLastRoundTrigger = true;
 
             //Adding the scenario to test pipeline.
-            scenarioBuilder(cardPools, playerPoints, expectedLastRoundTrigger);
+            scenarioBuilder(cardPools, players, expectedLastRoundTrigger);
         }
 
         //No players above 19 points and one deck with no cards
@@ -283,21 +311,31 @@ class GameTest {
 
 
 
-            //Setting up the list of players.
-            Player player1 = new Player("Leeroy1");
-            Player player2 = new Player("Leeroy2");
-            Player player3 = new Player("Leeroy3");
-            Player player4 = new Player("Leeroy4");
+            List<Player> players;
+            try {
+                Field points = Player.class.getDeclaredField("points");
+                points.setAccessible(true);
 
-            //Adding players to points map
-            Map<Player, Integer> playerPoints = new HashMap<>()
-            {{
-                put(player1, 15);
-                put(player2, 15);
-                put(player3, 15);
-                put(player4, 15);
-            }};
+                //Setting up the list of players.
+                Player player1 = new Player("Leeroy1");
+                points.set(player1, 15);
+                Player player2 = new Player("Leeroy2");
+                points.set(player2, 15);
+                Player player3 = new Player("Leeroy3");
+                points.set(player3, 15);
+                Player player4 = new Player("Leeroy4");
+                points.set(player4, 15);
 
+                players = new ArrayList<>() {{
+                    add(player1);
+                    add(player2);
+                    add(player3);
+                    add(player4);
+                }};
+            }
+            catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
 
 
             //Setting up the pools of cards.
@@ -319,7 +357,7 @@ class GameTest {
             boolean expectedLastRoundTrigger = false;
 
             //Adding the scenario to test pipeline.
-            scenarioBuilder(cardPools, playerPoints, expectedLastRoundTrigger);
+            scenarioBuilder(cardPools, players, expectedLastRoundTrigger);
         }
 
         //No players above 19 points and all decks with no cards
@@ -343,21 +381,31 @@ class GameTest {
 
 
 
-            //Setting up the list of players.
-            Player player1 = new Player("Leeroy1");
-            Player player2 = new Player("Leeroy2");
-            Player player3 = new Player("Leeroy3");
-            Player player4 = new Player("Leeroy4");
+            List<Player> players;
+            try {
+                Field points = Player.class.getDeclaredField("points");
+                points.setAccessible(true);
 
-            //Adding players to points map
-            Map<Player, Integer> playerPoints = new HashMap<>()
-            {{
-                put(player1, 15);
-                put(player2, 15);
-                put(player3, 15);
-                put(player4, 15);
-            }};
+                //Setting up the list of players.
+                Player player1 = new Player("Leeroy1");
+                points.set(player1, 15);
+                Player player2 = new Player("Leeroy2");
+                points.set(player2, 15);
+                Player player3 = new Player("Leeroy3");
+                points.set(player3, 15);
+                Player player4 = new Player("Leeroy4");
+                points.set(player4, 15);
 
+                players = new ArrayList<>() {{
+                    add(player1);
+                    add(player2);
+                    add(player3);
+                    add(player4);
+                }};
+            }
+            catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
 
 
             //Setting up the pools of cards.
@@ -383,7 +431,7 @@ class GameTest {
             boolean expectedLastRoundTrigger = true;
 
             //Adding the scenario to test pipeline.
-            scenarioBuilder(cardPools, playerPoints, expectedLastRoundTrigger);
+            scenarioBuilder(cardPools, players, expectedLastRoundTrigger);
         }
 
         //One player above 20 points and all decks with no cards
@@ -407,20 +455,31 @@ class GameTest {
 
 
 
-            //Setting up the list of players.
-            Player player1 = new Player("Leeroy1");
-            Player player2 = new Player("Leeroy2");
-            Player player3 = new Player("Leeroy3");
-            Player player4 = new Player("Leeroy4");
+            List<Player> players;
+            try {
+                Field points = Player.class.getDeclaredField("points");
+                points.setAccessible(true);
 
-            //Adding players to points map
-            Map<Player, Integer> playerPoints = new HashMap<>()
-            {{
-                put(player1, 15);
-                put(player2, 15);
-                put(player3, 27);
-                put(player4, 15);
-            }};
+                //Setting up the list of players.
+                Player player1 = new Player("Leeroy1");
+                points.set(player1, 15);
+                Player player2 = new Player("Leeroy2");
+                points.set(player2, 15);
+                Player player3 = new Player("Leeroy3");
+                points.set(player3, 27);
+                Player player4 = new Player("Leeroy4");
+                points.set(player4, 15);
+
+                players = new ArrayList<>() {{
+                    add(player1);
+                    add(player2);
+                    add(player3);
+                    add(player4);
+                }};
+            }
+            catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
 
 
 
@@ -447,7 +506,7 @@ class GameTest {
             boolean expectedLastRoundTrigger = true;
 
             //Adding the scenario to test pipeline.
-            scenarioBuilder(cardPools, playerPoints, expectedLastRoundTrigger);
+            scenarioBuilder(cardPools, players, expectedLastRoundTrigger);
         }
 
 

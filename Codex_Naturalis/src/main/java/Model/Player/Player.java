@@ -24,6 +24,8 @@ public class Player {
     private CardMap cardMap;
     private PlayerConnectionStatus connectionStatus;
     private PlayerStates playerState;
+    private int points;
+    private int objectivesCompleted;
 
 
 
@@ -38,6 +40,8 @@ public class Player {
         this.secretObjectives = new ArrayList<>();
         this.playerState = PlayerStates.WAIT;
         this.roundsCompleted = 0;
+        this.points = 0;
+        this.objectivesCompleted = 0;
     }
 
 
@@ -68,6 +72,9 @@ public class Player {
     }
     public PlayerStates getPlayerState() {
         return playerState;
+    }
+    public int getPoints(){
+        return this.points;
     }
 
 
@@ -144,7 +151,7 @@ public class Player {
      * @param faceUp
      * @return returns the points gained by the player for playing the card.
      */
-    public int playCard(int cardIndex, int coordinateIndex, boolean faceUp) {
+    public void playCard(int cardIndex, int coordinateIndex, boolean faceUp) {
         CardPlayability cardPlayability;
 
         try {
@@ -162,27 +169,33 @@ public class Player {
         if(!cardCanBeFaceUp && faceUp)
             throw new RuntimeException("You can't play this card faceUp!");
 
-        //returns the points awarded to the player for playing the card.
-        int points =  cardMap.place(cardPlayability.getCard(),coordinateIndex,faceUp);
+        //Updates player's points after playing the card.
+        points = points + cardMap.place(cardPlayability.getCard(),coordinateIndex,faceUp);
 
         //Updates the playable sides of the remaining cards held after placing the card in the card map.
         updatePlayableSides();
-
-        return points;
     }
 
     /**
-     * Method calls the countPoints method for each of the player's secret Objectives and returns a map
-     * containing the points earned for each objective
-     * @return  Map with Objectives as key and the points earned with them as value.
+     * Method counts all the points a player will score with the shared and secret objectives given their current cardMap.<br>
+     * Updates both the number of points a player has and the number of individual objectives the player has accomplished.
      */
-    public Map<Objective,Integer> countSecretObjectivePoints(){
-        Map<Objective,Integer> objectivesPoints = new HashMap<>();
-
-        for(Objective objective : secretObjectives){
-            objectivesPoints.put(objective,objective.countPoints(cardMap));
+    public void countAllPoints(List<Objective> sharedObjectives){
+        //count points from secret objectives
+        for(Objective objective : secretObjectives) {
+            int pointsToAdd = objective.countPoints(cardMap);
+            if(pointsToAdd != 0)
+                objectivesCompleted++;
+            points = points + pointsToAdd;
         }
-        return countSecretObjectivePoints();
+
+        //count points from shared objectives
+        for(Objective objective : sharedObjectives) {
+            int pointsToAdd = objective.countPoints(cardMap);
+            if(pointsToAdd != 0)
+                objectivesCompleted++;
+            points = points + pointsToAdd;
+        }
     }
 }
 
