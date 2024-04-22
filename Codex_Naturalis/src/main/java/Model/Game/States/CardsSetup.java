@@ -188,11 +188,11 @@ public class CardsSetup implements GameState{
 
             //Checks if the color is not already used by another player.
             for(Player rival : players){
-                if(rival.getPlayerColor().equals(color))
+                if(rival.getColor().equals(color))
                     throw new RuntimeException("Color is already used by another player");
             }
 
-            player.setPlayerColor(color);
+            player.setColor(color);
             player.setPlayerState(PlayerStates.DRAW);
         }
         catch (RuntimeException e){

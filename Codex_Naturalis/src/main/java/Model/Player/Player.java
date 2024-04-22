@@ -13,7 +13,7 @@ public class Player {
 
     //ATTRIBUTES
     private String nickname;
-    private PlayerColors playerColor;
+    private PlayerColors color;
     private int roundsCompleted;
     private List<CardPlayability> cardsHeld;
     private List<Objective> secretObjectiveCandidates;
@@ -52,20 +52,11 @@ public class Player {
     public String getNickname() {
         return nickname;
     }
-    public PlayerColors getPlayerColor() {
-        return playerColor;
+    public PlayerColors getColor() {
+        return color;
     }
     public int getRoundsCompleted() {
         return roundsCompleted;
-    }
-    public List<CardPlayability> getCardsHeld() {
-        return Collections.unmodifiableList(cardsHeld);
-    }
-    public CardPlayability getCardsHeld(int index) {
-        return cardsHeld.get(index);
-    }
-    public CardMap getCardMap() {
-        return cardMap;
     }
     public PlayerConnectionStatus getConnectionStatus() {
         return connectionStatus;
@@ -80,12 +71,13 @@ public class Player {
         return objectivesCompleted;
     }
 
+
+
+
+
     //SETTERS
-    public void setPlayerColor(PlayerColors playerColors) {
-        this.playerColor = playerColors;
-    }
-    public void setConnectionStatus(PlayerConnectionStatus connectionStatus) {
-        this.connectionStatus = connectionStatus;
+    public void setColor(PlayerColors playerColors) {
+        this.color = playerColors;
     }
     public void setPlayerState(PlayerStates playerState){
         this.playerState = playerState;
@@ -133,7 +125,7 @@ public class Player {
     /**
      * Updates playable sides attribute of all cards in cardsHeld List.
      */
-    public void updatePlayableSides() {
+    private void updatePlayableSides() {
         for (CardPlayability cardPlayability : cardsHeld) {
             cardPlayability.updatePlayability(cardMap);
         }

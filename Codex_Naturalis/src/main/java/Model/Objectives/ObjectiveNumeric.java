@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ObjectiveArtifact extends Objective{
+public class ObjectiveNumeric extends Objective{
     /**
      * Map containing the required resources to satisfy the objective.<br>
      * The Keys of the map are the items and the Values are the number of units required.
@@ -21,7 +21,7 @@ public class ObjectiveArtifact extends Objective{
      * @param points        Int number of points held by the objective.
      * @param requiredItems Map with key required items and value the number of units required.
      */
-    public ObjectiveArtifact(String description, int points, Map<Artifacts, Integer> requiredItems){
+    public ObjectiveNumeric(String description, int points, Map<Artifacts, Integer> requiredItems){
         super(description, points);
         this.requiredItems = requiredItems;
     }

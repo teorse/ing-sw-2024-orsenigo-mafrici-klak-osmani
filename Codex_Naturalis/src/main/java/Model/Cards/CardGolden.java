@@ -3,7 +3,6 @@ package Model.Cards;
 import Model.Player.CardMap;
 import Model.Utility.*;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -48,7 +47,7 @@ public class CardGolden extends CardResource {
 
 
     //GETTER
-    public boolean isRequiresCorner() {
+    public boolean requiresCorner() {
         return requiresCorner;
     }
     public Artifacts getRequiredArtifact() {

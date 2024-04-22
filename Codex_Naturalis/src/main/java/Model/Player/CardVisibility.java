@@ -122,7 +122,7 @@ public class CardVisibility {
      * Method to update corner visibility once a corner gets covered by a new card being placed on top of it.
      * @param cornerDirection Position of the corner in the Array
      */
-    public void coverCorner(CornerDirection cornerDirection){
+    protected void coverCorner(CornerDirection cornerDirection){
         cornerVisibility.put(cornerDirection, false);
     }
 }

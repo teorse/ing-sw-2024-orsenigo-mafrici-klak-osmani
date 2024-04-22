@@ -51,7 +51,7 @@ public class CardPlayability {
      *
      * @param CM represents the actual card on the table
      */
-    public void updatePlayability(CardMap CM){
+    protected void updatePlayability(CardMap CM){
         this.playability = this.card.isPlaceable(CM);
     }
 }

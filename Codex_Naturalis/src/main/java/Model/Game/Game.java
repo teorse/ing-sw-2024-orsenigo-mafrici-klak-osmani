@@ -22,7 +22,7 @@ public class Game {
     private List<Player> players;
     private Table table;
     private boolean lastRoundFlag;
-    private boolean gameIsOver;
+    private boolean gameOver;
     private GameState state;
     private List<Player> winners;
 
@@ -52,7 +52,7 @@ public class Game {
         Collections.shuffle(this.players);
         this.table = new Table(goldenCards, resourceCards, starterCards, objectives);
         this.lastRoundFlag = false;
-        this.gameIsOver = false;
+        this.gameOver = false;
         winners = new ArrayList<>();
         state = new CardsSetup(this);
     }
@@ -124,7 +124,7 @@ public class Game {
         return;
     }
 
-    public void selectWinners(){
+    protected void selectWinners(){
         //Comparator to sort players first by points and then by objectives completed
         Comparator<Player> comparator = Comparator.comparing(Player::getPoints);
         comparator = comparator.thenComparing(Comparator.comparing(Player::getObjectivesCompleted));
@@ -133,7 +133,7 @@ public class Game {
         Stream<Player> playerStream = players.stream().sorted(comparator);
         players = playerStream.collect(Collectors.toList());
 
-        //Select winners
+        //Select winners, multiple winners if tie on points and objectives.
         Player referenceWinner = players.getFirst();
         for(Player player : players){
             if(player.getPoints() == referenceWinner.getPoints() && player.getObjectivesCompleted() == referenceWinner.getObjectivesCompleted())
@@ -152,6 +152,6 @@ public class Game {
         selectWinners();
 
         //After all players are given their points the winner is calculated.
-        gameIsOver = true;
+        gameOver = true;
     }
 }

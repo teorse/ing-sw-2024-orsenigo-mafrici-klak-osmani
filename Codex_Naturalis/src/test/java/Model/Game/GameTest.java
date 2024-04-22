@@ -2,7 +2,7 @@ package Model.Game;
 
 import Model.Cards.Card;
 import Model.Objectives.Objective;
-import Model.Objectives.ObjectiveArtifact;
+import Model.Objectives.ObjectiveNumeric;
 import Model.Player.Player;
 import Model.Utility.JsonParser.CardJsonSerializer;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,13 +53,13 @@ class GameTest {
             }
 
             List<Objective> sampleObjectives1 = new ArrayList<>(){{
-                add(new ObjectiveArtifact("Sample", 1, null));
-                add(new ObjectiveArtifact("Sample", 1, null));
+                add(new ObjectiveNumeric("Sample", 1, null));
+                add(new ObjectiveNumeric("Sample", 1, null));
             }};
 
             List<Objective> sampleObjectives2 = new ArrayList<>(){{
-                add(new ObjectiveArtifact("Sample", 1, null));
-                add(new ObjectiveArtifact("Sample", 1, null));
+                add(new ObjectiveNumeric("Sample", 1, null));
+                add(new ObjectiveNumeric("Sample", 1, null));
             }};
 
             Game game = new Game(sampleCards.get(0), sampleCards.get(1),sampleCards.get(2),sampleObjectives1, new ArrayList<>());
@@ -554,13 +554,13 @@ class GameTest {
             }
 
             List<Objective> sampleObjectives1 = new ArrayList<>() {{
-                add(new ObjectiveArtifact("Sample", 1, null));
-                add(new ObjectiveArtifact("Sample", 1, null));
+                add(new ObjectiveNumeric("Sample", 1, null));
+                add(new ObjectiveNumeric("Sample", 1, null));
             }};
 
             List<Objective> sampleObjectives2 = new ArrayList<>() {{
-                add(new ObjectiveArtifact("Sample", 1, null));
-                add(new ObjectiveArtifact("Sample", 1, null));
+                add(new ObjectiveNumeric("Sample", 1, null));
+                add(new ObjectiveNumeric("Sample", 1, null));
             }};
 
             Game game = new Game(sampleCards.get(0), sampleCards.get(1), sampleCards.get(2), sampleObjectives1, playersInitial);

@@ -15,7 +15,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ObjectiveArtifactTest {
+class ObjectiveNumericTest {
 
     public CardMap CardMapReflectionBuilder(Map<Coordinates, CardVisibility> cardsPlacedValue, Map<Artifacts, Integer> artifactsCounterValue, List<Coordinates> coordinatesPlacedValue){
         //Creating using the usual constructor a normal CardMap object.
@@ -108,7 +108,7 @@ class ObjectiveArtifactTest {
         Map<Artifacts,Integer> requiredItems = new HashMap<>();
         requiredItems.put(Artifacts.INSECT, 3);
 
-        ObjectiveArtifact objective = new ObjectiveArtifact("Generic Item Objective", 2, requiredItems);
+        ObjectiveNumeric objective = new ObjectiveNumeric("Generic Item Objective", 2, requiredItems);
         scenario1.expectedValue = 4;
         scenario1.actualValue = objective.countPoints(cardMap);
 
@@ -132,7 +132,7 @@ class ObjectiveArtifactTest {
         requiredItems.put(Artifacts.ANIMAL, 1);
         requiredItems.put(Artifacts.FUNGI, 1);
 
-        ObjectiveArtifact objective = new ObjectiveArtifact("Generic Item Objective", 2, requiredItems);
+        ObjectiveNumeric objective = new ObjectiveNumeric("Generic Item Objective", 2, requiredItems);
         scenario2.expectedValue = 6;
         scenario2.actualValue = objective.countPoints(cardMap);
 
@@ -152,7 +152,7 @@ class ObjectiveArtifactTest {
         requiredItems.put(Artifacts.FUNGI, 3);
 
 
-        ObjectiveArtifact objective = new ObjectiveArtifact("Generic Item Objective", 2, requiredItems);
+        ObjectiveNumeric objective = new ObjectiveNumeric("Generic Item Objective", 2, requiredItems);
         scenario3.expectedValue = 0;
         scenario3.actualValue = objective.countPoints(cardMap);
 
@@ -174,7 +174,7 @@ class ObjectiveArtifactTest {
         requiredItems.put(Artifacts.INSECT, 2);
 
 
-        ObjectiveArtifact objective = new ObjectiveArtifact("Generic Item Objective", 2, requiredItems);
+        ObjectiveNumeric objective = new ObjectiveNumeric("Generic Item Objective", 2, requiredItems);
         scenario4.expectedValue = 6;
         scenario4.actualValue = objective.countPoints(cardMap);
     }
@@ -200,7 +200,7 @@ class ObjectiveArtifactTest {
         requiredItems.put(Artifacts.QUILL, 1);
 
 
-        ObjectiveArtifact objective = new ObjectiveArtifact("Generic Item Objective", 3, requiredItems);
+        ObjectiveNumeric objective = new ObjectiveNumeric("Generic Item Objective", 3, requiredItems);
         scenario5.expectedValue = 6;
         scenario5.actualValue = objective.countPoints(cardMap);
     }

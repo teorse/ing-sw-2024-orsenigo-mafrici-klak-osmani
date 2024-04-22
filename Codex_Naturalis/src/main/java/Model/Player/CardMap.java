@@ -73,14 +73,6 @@ public class CardMap {
     }
 
     /**
-     * Method which returns the map cardsPlaced as an unmodifiable map
-     * @return cardsPlaced
-     */
-    public Map<Coordinates, CardVisibility> getCardsPlaced() {
-        return Collections.unmodifiableMap(cardsPlaced);
-    }
-
-    /**
      * Method which returns the card color of the card positioned at the specified coordinates.
      * @param coordinates   coordinates of the card.
      * @return              Artifact representing the color of the card.

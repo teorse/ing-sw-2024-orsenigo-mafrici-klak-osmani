@@ -34,7 +34,7 @@ public abstract class Objective {
         return description;
     }
 
-    public int getPoints(){
+    protected int getPoints(){
         return points;
     }
 
