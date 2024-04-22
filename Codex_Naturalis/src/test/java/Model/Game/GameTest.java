@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameTest {
 
     @Nested
-    public class checkGameEndingTest{
+    public class checkGameEndingConditionsTest{
         public List<Game> games = new ArrayList<>();
         public List<Boolean> expectedLastRoundTriggers = new ArrayList<>();//List of games
 
@@ -523,4 +523,329 @@ class GameTest {
         }
     }
 
+    @Nested
+    public class selectWinnersTest{
+        public List<List<Player>> sortedPlayers = new ArrayList<>();
+        public List<List<Player>> expectedPlayers = new ArrayList<>();
+
+        @BeforeEach
+        void setUp(){
+            setUpScenario0();
+            setUpScenario1();
+            setUpScenario2();
+            setUpScenario3();
+            setUpScenario4();
+        }
+
+        void scenarioBuilder(List<Player> playersInitial, List<Player> playersExpected) {
+
+            List<List<Card>> sampleCards = new ArrayList<>();
+            String cardJsonPath = "src/test/java/Model/Game/Resources/DefaultResourceCards.txt";
+            String cardJson;
+
+            try {
+                cardJson = Files.readString(Path.of(cardJsonPath));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            for (int i = 0; i < 6; i++) {
+                sampleCards.add(CardJsonSerializer.deserializeCardResourceList(cardJson));
+            }
+
+            List<Objective> sampleObjectives1 = new ArrayList<>() {{
+                add(new ObjectiveArtifact("Sample", 1, null));
+                add(new ObjectiveArtifact("Sample", 1, null));
+            }};
+
+            List<Objective> sampleObjectives2 = new ArrayList<>() {{
+                add(new ObjectiveArtifact("Sample", 1, null));
+                add(new ObjectiveArtifact("Sample", 1, null));
+            }};
+
+            Game game = new Game(sampleCards.get(0), sampleCards.get(1), sampleCards.get(2), sampleObjectives1, playersInitial);
+
+            game.selectWinners();
+
+            try {
+                Field players = Game.class.getDeclaredField("players");
+                players.setAccessible(true);
+                sortedPlayers.add((List<Player>) players.get(game));
+
+                expectedPlayers.add(playersExpected);
+            }
+            catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+
+        //All players tied on same score and objectives, sample test
+        void setUpScenario0(){
+            List<Player> playersInitial;
+            List<Player> playersExpected;
+            Player player1;
+            Player player2;
+            Player player3;
+            Player player4;
+
+            try {
+                Field points = Player.class.getDeclaredField("points");
+                Field objectivesCompleted = Player.class.getDeclaredField("objectivesCompleted");
+                Field players = Game.class.getDeclaredField("players");
+                points.setAccessible(true);
+                objectivesCompleted.setAccessible(true);
+                players.setAccessible(true);
+
+                //Setting up the list of players.
+                player1 = new Player("Leeroy1");
+                points.set(player1, 15);
+                objectivesCompleted.set(player1, 1);
+                player2 = new Player("Leeroy2");
+                points.set(player2, 15);
+                objectivesCompleted.set(player2, 1);
+                player3 = new Player("Leeroy3");
+                points.set(player3, 15);
+                objectivesCompleted.set(player3, 1);
+                player4 = new Player("Leeroy4");
+                points.set(player4, 15);
+                objectivesCompleted.set(player4, 1);
+
+
+                playersInitial = new ArrayList<>() {{
+                    add(player1);
+                    add(player2);
+                    add(player3);
+                    add(player4);
+                }};
+
+                playersExpected = new ArrayList<>() {{
+                    add(player1);
+                    add(player2);
+                    add(player3);
+                    add(player4);
+                }};
+
+            }
+            catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+
+            scenarioBuilder(playersInitial, playersExpected);
+        }
+
+        //No Ties - Single Winner:
+        void setUpScenario1(){
+            List<Player> playersInitial;
+            List<Player> playersExpected;
+            Player player1;
+            Player player2;
+            Player player3;
+            Player player4;
+
+            try {
+                Field points = Player.class.getDeclaredField("points");
+                Field objectivesCompleted = Player.class.getDeclaredField("objectivesCompleted");
+                Field players = Game.class.getDeclaredField("players");
+                points.setAccessible(true);
+                objectivesCompleted.setAccessible(true);
+                players.setAccessible(true);
+
+                //Setting up the list of players.
+                player1 = new Player("Leeroy1");
+                points.set(player1, 20);
+                objectivesCompleted.set(player1, 2);
+                player2 = new Player("Leeroy2");
+                points.set(player2, 15);
+                objectivesCompleted.set(player2, 1);
+                player3 = new Player("Leeroy3");
+                points.set(player3, 18);
+                objectivesCompleted.set(player3, 3);
+                player4 = new Player("Leeroy4");
+                points.set(player4, 10);
+                objectivesCompleted.set(player4, 0);
+
+
+                playersInitial = new ArrayList<>() {{
+                    add(player1);
+                    add(player2);
+                    add(player3);
+                    add(player4);
+                }};
+
+                playersExpected = new ArrayList<>() {{
+                    add(player1);
+                }};
+
+            }
+            catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+
+            scenarioBuilder(playersInitial, playersExpected);
+        }
+
+        //Tie in Points - Single Winner:
+        void setUpScenario2(){
+            List<Player> playersInitial;
+            List<Player> playersExpected;
+            Player player1;
+            Player player2;
+            Player player3;
+            Player player4;
+
+            try {
+                Field points = Player.class.getDeclaredField("points");
+                Field objectivesCompleted = Player.class.getDeclaredField("objectivesCompleted");
+                Field players = Game.class.getDeclaredField("players");
+                points.setAccessible(true);
+                objectivesCompleted.setAccessible(true);
+                players.setAccessible(true);
+
+                //Setting up the list of players.
+                player1 = new Player("Leeroy1");
+                points.set(player1, 20);
+                objectivesCompleted.set(player1, 2);
+                player2 = new Player("Leeroy2");
+                points.set(player2, 20);
+                objectivesCompleted.set(player2, 1);
+                player3 = new Player("Leeroy3");
+                points.set(player3, 15);
+                objectivesCompleted.set(player3, 3);
+                player4 = new Player("Leeroy4");
+                points.set(player4, 10);
+                objectivesCompleted.set(player4, 0);
+
+
+                playersInitial = new ArrayList<>() {{
+                    add(player1);
+                    add(player2);
+                    add(player3);
+                    add(player4);
+                }};
+
+                playersExpected = new ArrayList<>() {{
+                    add(player1);
+                }};
+
+            }
+            catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+
+            scenarioBuilder(playersInitial, playersExpected);
+        }
+
+        //Tie in Objectives - Single Winner:
+        void setUpScenario3(){
+            List<Player> playersInitial;
+            List<Player> playersExpected;
+            Player player1;
+            Player player2;
+            Player player3;
+            Player player4;
+
+            try {
+                Field points = Player.class.getDeclaredField("points");
+                Field objectivesCompleted = Player.class.getDeclaredField("objectivesCompleted");
+                Field players = Game.class.getDeclaredField("players");
+                points.setAccessible(true);
+                objectivesCompleted.setAccessible(true);
+                players.setAccessible(true);
+
+                //Setting up the list of players.
+                player1 = new Player("Leeroy1");
+                points.set(player1, 15);
+                objectivesCompleted.set(player1, 2);
+                player2 = new Player("Leeroy2");
+                points.set(player2, 15);
+                objectivesCompleted.set(player2, 3);
+                player3 = new Player("Leeroy3");
+                points.set(player3, 18);
+                objectivesCompleted.set(player3, 2);
+                player4 = new Player("Leeroy4");
+                points.set(player4, 20);
+                objectivesCompleted.set(player4, 2);
+
+
+                playersInitial = new ArrayList<>() {{
+                    add(player1);
+                    add(player2);
+                    add(player3);
+                    add(player4);
+                }};
+
+                playersExpected = new ArrayList<>() {{
+                    add(player4);
+                }};
+
+            }
+            catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+
+            scenarioBuilder(playersInitial, playersExpected);
+        }
+
+        //Tie in Points and Objectives - Multiple Winners:
+        void setUpScenario4(){
+            List<Player> playersInitial;
+            List<Player> playersExpected;
+            Player player1;
+            Player player2;
+            Player player3;
+            Player player4;
+
+            try {
+                Field points = Player.class.getDeclaredField("points");
+                Field objectivesCompleted = Player.class.getDeclaredField("objectivesCompleted");
+                Field players = Game.class.getDeclaredField("players");
+                points.setAccessible(true);
+                objectivesCompleted.setAccessible(true);
+                players.setAccessible(true);
+
+                //Setting up the list of players.
+                player1 = new Player("Leeroy1");
+                points.set(player1, 20);
+                objectivesCompleted.set(player1, 2);
+                player2 = new Player("Leeroy2");
+                points.set(player2, 15);
+                objectivesCompleted.set(player2, 1);
+                player3 = new Player("Leeroy3");
+                points.set(player3, 20);
+                objectivesCompleted.set(player3, 2);
+                player4 = new Player("Leeroy4");
+                points.set(player4, 15);
+                objectivesCompleted.set(player4, 1);
+
+
+                playersInitial = new ArrayList<>() {{
+                    add(player1);
+                    add(player2);
+                    add(player3);
+                    add(player4);
+                }};
+
+                playersExpected = new ArrayList<>() {{
+                    add(player1);
+                    add(player3);
+                }};
+
+            }
+            catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+
+            scenarioBuilder(playersInitial, playersExpected);
+        }
+
+        @Test
+        void selectWinners(){
+            for(int i = 0; i < expectedPlayers.size(); i++){
+
+                assertTrue(sortedPlayers.get(i).containsAll(expectedPlayers.get(i)), "Sorting failed in scenario: "+i+
+                        "\nexpected: "+expectedPlayers.get(i).toString()+"\nactual:");
+            }
+        }
+    }
 }

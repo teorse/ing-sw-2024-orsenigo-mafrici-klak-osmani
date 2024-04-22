@@ -6,8 +6,12 @@ import Model.Player.Player;
 import Model.Game.States.*;
 import Model.Player.PlayerColors;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * This Class stores all the information about the current game, including the list of players, the current game phase,
@@ -20,6 +24,7 @@ public class Game {
     private boolean lastRoundFlag;
     private boolean gameIsOver;
     private GameState state;
+    private List<Player> winners;
 
     /**
      * Stores number of rounds completed by the table.<br>
@@ -48,6 +53,7 @@ public class Game {
         this.table = new Table(goldenCards, resourceCards, starterCards, objectives);
         this.lastRoundFlag = false;
         this.gameIsOver = false;
+        winners = new ArrayList<>();
         state = new CardsSetup(this);
     }
 
@@ -118,6 +124,23 @@ public class Game {
         return;
     }
 
+    public void selectWinners(){
+        //Comparator to sort players first by points and then by objectives completed
+        Comparator<Player> comparator = Comparator.comparing(Player::getPoints);
+        comparator = comparator.thenComparing(Comparator.comparing(Player::getObjectivesCompleted));
+
+        //Sort players using above comparator
+        Stream<Player> playerStream = players.stream().sorted(comparator);
+        players = playerStream.collect(Collectors.toList());
+
+        //Select winners
+        Player referenceWinner = players.getFirst();
+        for(Player player : players){
+            if(player.getPoints() == referenceWinner.getPoints() && player.getObjectivesCompleted() == referenceWinner.getObjectivesCompleted())
+                winners.add(player);
+        }
+    }
+
     public void gameOver(){
         List<Objective> sharedObjectives = table.getSharedObjectives();
 
@@ -126,8 +149,9 @@ public class Game {
             player.countAllPoints(sharedObjectives);
         }
 
-        gameIsOver = true;
+        selectWinners();
+
         //After all players are given their points the winner is calculated.
-        //ToDo Sort the winner.
+        gameIsOver = true;
     }
 }
