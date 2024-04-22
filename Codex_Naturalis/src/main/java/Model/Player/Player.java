@@ -76,10 +76,9 @@ public class Player {
     public int getPoints(){
         return this.points;
     }
-
-
-
-
+    public int getObjectivesCompleted() {
+        return objectivesCompleted;
+    }
 
     //SETTERS
     public void setPlayerColor(PlayerColors playerColors) {
@@ -196,6 +195,24 @@ public class Player {
                 objectivesCompleted++;
             points = points + pointsToAdd;
         }
+    }
+
+
+
+
+
+    //EQUALS HASH
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return Objects.equals(nickname, player.nickname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(nickname);
     }
 }
 
