@@ -2,8 +2,8 @@ package Server.Controller;
 
 import Server.Exceptions.*;
 import Server.Interfaces.LayerUser;
-import Server.Model.Lobby.Exceptions.GameAlreadyStartedException;
-import Server.Model.Lobby.Exceptions.LobbyIsAlreadyFullException;
+import Server.Model.Lobby.Exceptions.InvalidLobbySettingsException;
+import Server.Model.Lobby.Exceptions.LobbyClosedException;
 import Server.Model.Lobby.Exceptions.LobbyUserAlreadyConnectedException;
 import Server.Model.ServerModel;
 import Server.Model.ServerUser;
@@ -56,11 +56,12 @@ public class ServerController {
      * Creates a new lobby with the given name and assigns the specified user as the owner.
      *
      * @param lobbyName The name of the lobby to be created.
+     * @param targetNumberUsers Number of players the admin wants to start a game with.
      * @param user The client handler representing the owner of the lobby.
      * @return The LobbyController object associated with the newly created lobby.
      */
-    public LobbyController createNewLobby(String lobbyName, ServerUser user, ClientHandler ch) throws LobbyNameAlreadyTakenException {
-        return model.createNewLobby(lobbyName, user, ch);
+    public LobbyController createNewLobby(String lobbyName, int targetNumberUsers, ServerUser user, ClientHandler ch) throws LobbyNameAlreadyTakenException, InvalidLobbySettingsException {
+        return model.createNewLobby(lobbyName, targetNumberUsers, user, ch);
     }
 
     /**
@@ -71,7 +72,7 @@ public class ServerController {
      * @param serverUser The client handler representing the user who wants to join the lobby.
      * @return The LobbyController object associated with the joined lobby.
      */
-    public LobbyController joinLobby(String lobbyName, ServerUser serverUser, ClientHandler connection) throws LobbyNotFoundException, GameAlreadyStartedException, LobbyIsAlreadyFullException, LobbyUserAlreadyConnectedException {
+    public LobbyController joinLobby(String lobbyName, ServerUser serverUser, ClientHandler connection) throws LobbyNotFoundException, LobbyClosedException, LobbyUserAlreadyConnectedException {
         return model.joinLobby(lobbyName, serverUser, connection);
     }
 

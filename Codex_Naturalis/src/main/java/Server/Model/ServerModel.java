@@ -5,8 +5,8 @@ import Server.Controller.LobbyController;
 import Server.Exceptions.*;
 import Server.Interfaces.LayerUser;
 import Server.Interfaces.ServerModelLayer;
-import Server.Model.Lobby.Exceptions.GameAlreadyStartedException;
-import Server.Model.Lobby.Exceptions.LobbyIsAlreadyFullException;
+import Server.Model.Lobby.Exceptions.InvalidLobbySettingsException;
+import Server.Model.Lobby.Exceptions.LobbyClosedException;
 import Server.Model.Lobby.Exceptions.LobbyUserAlreadyConnectedException;
 import Server.Model.Lobby.Lobby;
 import Server.Model.Lobby.LobbyPreview;
@@ -134,18 +134,19 @@ public class ServerModel implements ServerModelLayer {
      * Creates a new lobby.
      *
      * @param lobbyName  The name of the new lobby.
+     * @param targetNumberUsers Number of players the admin wants to start a game with.
      * @param serverUser The user creating the lobby.
      * @param connection The client handler associated with the user.
      * @return The LobbyController object representing the new lobby.
      * @throws LobbyNameAlreadyTakenException If the lobby name is already taken.
      */
-    public LobbyController createNewLobby(String lobbyName, ServerUser serverUser, ClientHandler connection) throws LobbyNameAlreadyTakenException {
+    public LobbyController createNewLobby(String lobbyName, int targetNumberUsers, ServerUser serverUser, ClientHandler connection) throws LobbyNameAlreadyTakenException, InvalidLobbySettingsException {
         if(lobbiesMap.containsKey(lobbyName)){
             throw new LobbyNameAlreadyTakenException(connection, serverUser.getUsername(), "");
         }
 
         System.out.println("Creating new Lobby");
-        Lobby lobby = new Lobby(lobbyName, serverUser, connection, lobbyPreviewObserverRelay);
+        Lobby lobby = new Lobby(lobbyName, targetNumberUsers, serverUser, connection, lobbyPreviewObserverRelay);
 
         LobbyController lobbyController = new LobbyController(lobby);
         lobbiesMap.put(lobby.getLobbyName(), lobbyController);
@@ -165,7 +166,7 @@ public class ServerModel implements ServerModelLayer {
      * @return The LobbyController object representing the joined lobby.
      * @throws LobbyNotFoundException If the lobby is not found.
      */
-    public LobbyController joinLobby(String lobbyName, ServerUser serverUser, ClientHandler connection) throws LobbyNotFoundException, GameAlreadyStartedException, LobbyIsAlreadyFullException, LobbyUserAlreadyConnectedException {
+    public LobbyController joinLobby(String lobbyName, ServerUser serverUser, ClientHandler connection) throws LobbyNotFoundException, LobbyClosedException, LobbyUserAlreadyConnectedException {
         if(!lobbiesMap.containsKey(lobbyName))
             throw new LobbyNotFoundException(lobbyName);
         LobbyController lobbyController = lobbiesMap.get(lobbyName);

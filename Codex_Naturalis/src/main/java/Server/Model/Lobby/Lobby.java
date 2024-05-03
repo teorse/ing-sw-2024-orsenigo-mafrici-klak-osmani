@@ -6,8 +6,8 @@ import Server.Controller.GameController;
 import Server.Controller.InputHandler.LobbyInputHandler;
 import Server.Interfaces.LayerUser;
 import Server.Interfaces.ServerModelLayer;
-import Server.Model.Lobby.Exceptions.GameAlreadyStartedException;
-import Server.Model.Lobby.Exceptions.LobbyIsAlreadyFullException;
+import Server.Model.Lobby.Exceptions.LobbyClosedException;
+import Server.Model.Lobby.Exceptions.InvalidLobbySettingsException;
 import Server.Model.Lobby.Exceptions.LobbyUserAlreadyConnectedException;
 import Server.Model.Lobby.GameDemo.Game;
 import Server.Model.LobbyPreviewObserverRelay;
@@ -26,14 +26,27 @@ import java.util.Map;
 public class Lobby implements ServerModelLayer {
     //ATTRIBUTES
     private final String lobbyName;
+    private final int targetNumberUsers;
+
+
+
+    //Attributes that should always be synchronized to usersLock
     private final List<LobbyUser> lobbyUsers;
-    private final LobbyPreview preview;
     private final Map<ServerUser, LobbyUser> serverUserToLobbyUser;
     private final Map<LobbyUser, ServerUser> lobbyUserToServerUser;
     private final Map<LobbyUser, ClientHandler> lobbyUserConnection;
+    //the lobby is set to closed when the game starts or when the max player amount is reached.
+    private boolean lobbyClosed;
+    //Lock for this group of Attributes
+    private final Object usersLock = new Object();
+
+
+
+    private final LobbyPreview preview;
 
     private GameController gameController;
     private boolean gameStarted;
+
 
     //LISTENERS
     private final List<LobbyInputHandler> gameControllerObservers;
@@ -50,11 +63,18 @@ public class Lobby implements ServerModelLayer {
 
     /**
      * Default constructor, created the lobby and adds the admin user.
-     * @param lobbyName     Name of the lobby
-     * @param serverUser    Admin/creator of the lobby
-     * @param ch            Connection associated with the user
+     * @param lobbyName         Name of the lobby
+     * @param targetNumberUsers Number of players the admin wants to start a game with.
+     * @param serverUser        Admin/creator of the lobby
+     * @param ch                Connection associated with the user
      */
-    public Lobby(String lobbyName, ServerUser serverUser, ClientHandler ch, LobbyPreviewObserverRelay lobbyPreviewObserverRelay){
+    public Lobby(String lobbyName, int targetNumberUsers, ServerUser serverUser, ClientHandler ch, LobbyPreviewObserverRelay lobbyPreviewObserverRelay) throws InvalidLobbySettingsException {
+
+        if(targetNumberUsers > 4 || targetNumberUsers < 2)
+            throw new InvalidLobbySettingsException("The value provided for max lobby users is not a valid number.\n" +
+                    "Please provide a value between 2 and 4");
+
+        this.targetNumberUsers = targetNumberUsers;
         this.lobbyName = lobbyName;
         this.lobbyUsers = new ArrayList<>();
         lobbyUserConnection = new HashMap<>();
@@ -62,6 +82,7 @@ public class Lobby implements ServerModelLayer {
         lobbyUserToServerUser = new HashMap<>();
         gameControllerObservers = new ArrayList<>();
         gameStarted = false;
+        lobbyClosed = false;
 
         //Listens to changes in user connection stats and updates the views.
         LobbyListener lobbyListener = new LobbyListener(this);
@@ -82,16 +103,22 @@ public class Lobby implements ServerModelLayer {
 
     private void addLobbyUserToLobby(ServerUser serverUser, ClientHandler ch, LobbyUser lobbyUser){
 
-        //Links the server and lobby layers of the user. The link will be used during the re-connection phase.
-        serverUserToLobbyUser.put(serverUser, lobbyUser);
-        lobbyUserToServerUser.put(lobbyUser, serverUser);
-        lobbyUsers.add(lobbyUser);
+        synchronized (usersLock) {
 
-        //Links the lobby layer with the output channel of the user to be able to directly send messages to the
-        //user from this layer without needing to go up to the server level and occupy that level's resources.
-        lobbyUserConnection.put(lobbyUser, ch);
+            //Links the server and lobby layers of the user. The link will be used during the re-connection phase.
+            serverUserToLobbyUser.put(serverUser, lobbyUser);
+            lobbyUserToServerUser.put(lobbyUser, serverUser);
+            lobbyUsers.add(lobbyUser);
 
-        preview.setUsers(lobbyUsers.size());
+            if (lobbyUsers.size() == targetNumberUsers)
+                lobbyClosed = true;
+
+            //Links the lobby layer with the output channel of the user to be able to directly send messages to the
+            //user from this layer without needing to go up to the server level and occupy that level's resources.
+            lobbyUserConnection.put(lobbyUser, ch);
+
+            preview.setUsers(lobbyUsers.size());
+        }
 
         lobbyUsersChange.firePropertyChange("LobbyUsersChange", null, lobbyUsers);
     }
@@ -104,28 +131,24 @@ public class Lobby implements ServerModelLayer {
     /**
      * Allows a user to join the lobby.
      *
-     * @param serverUser The user trying to join.
-     * @param ch         The client handler associated with the user.
-     * @throws GameAlreadyStartedException          If a user tries to join when the game has already started.
-     * @throws LobbyIsAlreadyFullException          If the lobby is already full.
+     * @param serverUser                            The user trying to join.
+     * @param ch                                    The client handler associated with the user.
+     * @throws LobbyClosedException                 If the lobby is closed.
      * @throws LobbyUserAlreadyConnectedException   If the user is already connected to the lobby.
      */
-    public void joinLobby(ServerUser serverUser, ClientHandler ch) throws GameAlreadyStartedException, LobbyIsAlreadyFullException, LobbyUserAlreadyConnectedException {
+    public void joinLobby(ServerUser serverUser, ClientHandler ch) throws LobbyClosedException, LobbyUserAlreadyConnectedException {
 
         //If the user was already in the lobby then call reconnection procedure
-        if(serverUserToLobbyUser.containsKey(serverUser)){
-            reconnect(serverUser, ch);
-            return;
+        synchronized (usersLock) {
+            if (serverUserToLobbyUser.containsKey(serverUser)) {
+                reconnect(serverUser, ch);
+                return;
+            }
         }
 
         //If the game had already started then throw exception
-        if(gameStarted){
-            throw new GameAlreadyStartedException("Can't join lobby, the game has already started.");
-        }
-
-        //If the lobby is already full, throw an exception
-        if(lobbyUsers.size() == 4){
-            throw new LobbyIsAlreadyFullException("Cannot join lobby, lobby already at max capacity");
+        if(lobbyClosed){
+            throw new LobbyClosedException("Can't join lobby, the lobby is closed.");
         }
 
         //If none of the above scenarios were true then proceed to add new user to lobby
@@ -133,7 +156,7 @@ public class Lobby implements ServerModelLayer {
 
         addLobbyUserToLobby(serverUser, ch, lobbyUser);
 
-        sendPacket(lobbyUser, new SCPPrintPlaceholder("You have joined the lobby "+lobbyName));
+        sendPacket(lobbyUser, new SCPPrintPlaceholder("You have joined lobby: "+lobbyName));
     }
 
     private void reconnect(ServerUser serverUser, ClientHandler ch) throws LobbyUserAlreadyConnectedException {
@@ -175,7 +198,10 @@ public class Lobby implements ServerModelLayer {
 
         System.out.println("User "+username+" has disconnected from server");
         lobbyUser.setOffline();
-        lobbyUserConnection.remove(lobbyUser);
+        synchronized (usersLock) {
+            lobbyUserConnection.remove(lobbyUser);
+        }
+
         lobbyUsersChange.firePropertyChange("LobbyUsersChange", null, lobbyUsers);
 
         Thread reconnectionTimer = new Thread(() -> {
@@ -183,6 +209,8 @@ public class Lobby implements ServerModelLayer {
             try {
                 Thread.sleep(90000);
                 removeUser(lobbyUser);
+
+                gameController.quitGame(lobbyUser);
 
                 reconnectionTimers.remove(lobbyUser);
                 System.out.println("User " + username + " has been removed from lobby after disconnection timeout");
@@ -214,13 +242,21 @@ public class Lobby implements ServerModelLayer {
     }
 
     private void removeUser(LobbyUser lobbyUser){
-        lobbyUsers.remove(lobbyUser);
 
-        ServerUser serverUser = lobbyUserToServerUser.remove(lobbyUser);
-        serverUserToLobbyUser.remove(serverUser);
+        synchronized (usersLock) {
 
-        preview.setUsers(lobbyUsers.size());
+            lobbyUsers.remove(lobbyUser);
 
+            ServerUser serverUser = lobbyUserToServerUser.remove(lobbyUser);
+            serverUserToLobbyUser.remove(serverUser);
+
+            preview.setUsers(lobbyUsers.size());
+        }
+
+        //If a user leaves the lobby while the game has not yet started then the lobby becomes joinable again
+        //to meet the required max players
+        if(!gameStarted)
+            lobbyClosed = false;
 
         lobbyUsersChange.firePropertyChange("LobbyUsersChange", null, lobbyUsers);
     }
@@ -242,6 +278,7 @@ public class Lobby implements ServerModelLayer {
         broadcastPacket(new SCPPrintPlaceholder("Game has started"));
 
         gameStarted = true;
+        lobbyClosed = true;
 
         preview.setGameStarted(true);
     }

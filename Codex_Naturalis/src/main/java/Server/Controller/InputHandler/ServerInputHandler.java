@@ -11,8 +11,8 @@ import Server.Controller.InputHandler.Exceptions.NotInLobbyException;
 import Server.Controller.LobbyController;
 import Server.Controller.ServerController;
 import Server.Exceptions.*;
-import Server.Model.Lobby.Exceptions.GameAlreadyStartedException;
-import Server.Model.Lobby.Exceptions.LobbyIsAlreadyFullException;
+import Server.Model.Lobby.Exceptions.InvalidLobbySettingsException;
+import Server.Model.Lobby.Exceptions.LobbyClosedException;
 import Server.Model.Lobby.Exceptions.LobbyUserAlreadyConnectedException;
 import Server.Model.ServerUser;
 import Server.Network.ClientHandler.ClientHandler;
@@ -87,7 +87,8 @@ public class ServerInputHandler implements InputHandler{
                 switch (ServerCommands.valueOf(command)){
                     case START_LOBBY -> {
                         String lobbyName = payload.getFirst();
-                        createNewLobby(lobbyName);
+                        int targetNumberUsers = Integer.parseInt(payload.get(1));
+                        createNewLobby(lobbyName, targetNumberUsers);
                     }
 
                     case JOIN_LOBBY -> {
@@ -195,14 +196,14 @@ public class ServerInputHandler implements InputHandler{
         }
     }
 
-    private void createNewLobby(String lobbyName){
+    private void createNewLobby(String lobbyName, int targetNumberUsers){
         try {
             if (serverUser == null) {
                 throw new LogInRequiredException("");
             } else if (lobbyInputHandler != null && lobbyInputHandler.isBound()) {
                 throw new AlreadyInLobbyException("");
             } else {
-                LobbyController lobbyController = serverController.createNewLobby(lobbyName, serverUser, connection);
+                LobbyController lobbyController = serverController.createNewLobby(lobbyName, targetNumberUsers, serverUser, connection);
                 lobbyInputHandler = new LobbyInputHandler(connection, lobbyController, serverUser);
             }
         }
@@ -214,6 +215,9 @@ public class ServerInputHandler implements InputHandler{
         }
         catch (LobbyNameAlreadyTakenException e){
             connection.sendPacket(new SCPPrintPlaceholder("The name provided for the lobby is already used"));
+        }
+        catch (InvalidLobbySettingsException e) {
+            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
         }
     }
 
@@ -240,11 +244,8 @@ public class ServerInputHandler implements InputHandler{
         catch (LobbyUserAlreadyConnectedException e){
             connection.sendPacket(new SCPPrintPlaceholder("This account is already connected to the lobby"));
         }
-        catch (LobbyIsAlreadyFullException e){
-            connection.sendPacket(new SCPPrintPlaceholder("The lobby you are trying to join is already full"));
-        }
-        catch (GameAlreadyStartedException e){
-            connection.sendPacket(new SCPPrintPlaceholder("You cannot join this lobby because their game has already started"));
+        catch (LobbyClosedException e){
+            connection.sendPacket(new SCPPrintPlaceholder("The lobby you are trying to join is closed"));
         }
     }
 

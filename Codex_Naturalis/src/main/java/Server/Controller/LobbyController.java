@@ -2,8 +2,7 @@ package Server.Controller;
 
 import Server.Controller.InputHandler.LobbyInputHandler;
 import Server.Interfaces.LayerUser;
-import Server.Model.Lobby.Exceptions.GameAlreadyStartedException;
-import Server.Model.Lobby.Exceptions.LobbyIsAlreadyFullException;
+import Server.Model.Lobby.Exceptions.LobbyClosedException;
 import Server.Model.Lobby.Exceptions.LobbyUserAlreadyConnectedException;
 import Server.Model.Lobby.Lobby;
 import Server.Model.Lobby.LobbyUser;
@@ -37,7 +36,7 @@ public class LobbyController {
 
 
     //JOINING METHODS
-    public void joinLobby(ServerUser serverUser, ClientHandler ch) throws GameAlreadyStartedException, LobbyIsAlreadyFullException, LobbyUserAlreadyConnectedException {
+    public void joinLobby(ServerUser serverUser, ClientHandler ch) throws LobbyClosedException, LobbyUserAlreadyConnectedException {
         model.joinLobby(serverUser, ch);
     }
 
