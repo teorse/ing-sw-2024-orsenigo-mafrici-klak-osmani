@@ -15,7 +15,7 @@ public class LobbyUser implements Serializable, LayerUser {
     @Serial
     private static final long serialVersionUID = -1039118189828128709L;
     private final ServerUser serverUser;
-    private final String lobbyRole;
+    private final LobbyRoles role;
     private String connectionToLobby;
 
 
@@ -27,11 +27,11 @@ public class LobbyUser implements Serializable, LayerUser {
      * Constructs a new LobbyUser object with the given server user and lobby role.
      *
      * @param serverUser The server user associated with this lobby user.
-     * @param lobbyRole  The role of the user within the lobby.
+     * @param role  The role of the user within the lobby.
      */
-    public LobbyUser(ServerUser serverUser, String lobbyRole){
+    public LobbyUser(ServerUser serverUser, LobbyRoles role){
         this.serverUser = serverUser;
-        this.lobbyRole = lobbyRole;
+        this.role = role;
         connectionToLobby = "CONNECTED";
     }
 
@@ -63,8 +63,8 @@ public class LobbyUser implements Serializable, LayerUser {
         return this.connectionToLobby;
     }
 
-    public String getLobbyRole(){
-        return this.lobbyRole;
+    public LobbyRoles getLobbyRole(){
+        return this.role;
     }
 
     public String getUsername(){

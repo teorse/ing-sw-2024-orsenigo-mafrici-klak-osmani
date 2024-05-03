@@ -95,7 +95,7 @@ public class Lobby implements ServerModelLayer {
         preview = new LobbyPreview(lobbyName);
         preview.addObserver(lobbyPreviewObserverRelay);
 
-        LobbyUser lobbyUser = new LobbyUser(serverUser, "ADMIN");
+        LobbyUser lobbyUser = new LobbyUser(serverUser, LobbyRoles.ADMIN);
         addLobbyUserToLobby(serverUser, ch, lobbyUser);
 
         sendPacket(lobbyUser, new SCPPrintPlaceholder("You have started the lobby "+lobbyName));
@@ -152,7 +152,7 @@ public class Lobby implements ServerModelLayer {
         }
 
         //If none of the above scenarios were true then proceed to add new user to lobby
-        LobbyUser lobbyUser = new LobbyUser(serverUser, "GUEST");
+        LobbyUser lobbyUser = new LobbyUser(serverUser, LobbyRoles.GUEST);
 
         addLobbyUserToLobby(serverUser, ch, lobbyUser);
 
