@@ -5,6 +5,7 @@ import Server.Model.ServerUser;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * This class represents a user within a lobby.
@@ -72,5 +73,24 @@ public class LobbyUser implements Serializable, LayerUser {
 
     public ServerUser getServerUser(){
         return this.serverUser;
+    }
+
+
+
+
+
+    //EQUALS HASH
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LobbyUser lobbyUser = (LobbyUser) o;
+        return Objects.equals(serverUser, lobbyUser.serverUser);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(serverUser);
     }
 }

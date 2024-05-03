@@ -4,6 +4,7 @@ import Server.Interfaces.LayerUser;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * This class represents a user on the server.
@@ -69,5 +70,24 @@ public class ServerUser implements Serializable, LayerUser {
      */
     public String getUsername(){
         return this.username;
+    }
+
+
+
+
+
+    //EQUALS HASH
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ServerUser that = (ServerUser) o;
+        return Objects.equals(username, that.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(username);
     }
 }
