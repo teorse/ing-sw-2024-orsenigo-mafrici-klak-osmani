@@ -54,6 +54,9 @@ public class Lobby implements ServerModelLayer {
     private final PropertyChangeSupport lobbyUsersChange;
 
     //DISCONNECTION TIMER
+    /**
+     * Map that stores for each disconnected player their thread containing the count-down for their removal from the lobby
+     */
     private final Map<LobbyUser, Thread> reconnectionTimers;
 
 
