@@ -2,6 +2,8 @@ package Model.Player;
 
 import Model.Cards.Card;
 import Model.Objectives.Objective;
+import Server.Interfaces.LayerUser;
+import Server.Model.Lobby.LobbyUser;
 
 import java.util.*;
 
@@ -9,19 +11,16 @@ import java.util.*;
  * The Model.Player.Player Class contains all the information about the player, and it stores contextual information about the
  * current game that relates individually to players like what cards have been placed, what cards are being held etc.
  */
-public class Player {
+public class Player implements LayerUser {
 
     //ATTRIBUTES
-    private String nickname;
+    private final LobbyUser user;
     private PlayerColors color;
     private int roundsCompleted;
-    private List<CardPlayability> cardsHeld;
-    private List<Objective> secretObjectiveCandidates;
-    private List<Objective> secretObjectives;
-    /**
-     * CardMap storing all the cards placed by the player and the relative counters.
-     */
-    private CardMap cardMap;
+    private final List<CardPlayability> cardsHeld;
+    private final List<Objective> secretObjectiveCandidates;
+    private final List<Objective> secretObjectives;
+    private final CardMap cardMap;
     private PlayerConnectionStatus connectionStatus;
     private PlayerStates playerState;
     private int points;
@@ -32,8 +31,8 @@ public class Player {
 
 
     //CONSTRUCTOR
-    public Player(String nickname) {
-        this.nickname = nickname;
+    public Player(LobbyUser user) {
+        this.user = user;
         this.cardMap = new CardMap();
         this.cardsHeld = new ArrayList<>();
         this.secretObjectiveCandidates = new ArrayList<>();
@@ -49,8 +48,12 @@ public class Player {
 
 
     //GETTERS
-    public String getNickname() {
-        return nickname;
+    @Override
+    public String getUsername() {
+        return user.getUsername();
+    }
+    public LobbyUser getLobbyUser(){
+        return user;
     }
     public PlayerColors getColor() {
         return color;
@@ -199,12 +202,12 @@ public class Player {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
-        return Objects.equals(nickname, player.nickname);
+        return Objects.equals(user, player.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(nickname);
+        return Objects.hashCode(user);
     }
 }
 
