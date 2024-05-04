@@ -3,6 +3,8 @@ package Model.Game.States;
 import Model.Game.CardPoolTypes;
 import Model.Player.Player;
 import Model.Player.PlayerColors;
+import Server.Interfaces.LayerUser;
+import Server.Model.Lobby.LobbyUser;
 
 
 /**
@@ -18,7 +20,7 @@ public interface GameState {
      * @param coordinateIndex The index of the available coordinate in the cardMap where the card will be placed.
      * @param faceUp          True if the card should be placed face up, false if face down.
      */
-    public void placeCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp);
+    void placeCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp);
 
 
     /**
@@ -28,7 +30,7 @@ public interface GameState {
      * @param cardPoolType The type of card pool from which the card will be drawn.
      * @param index        The index of the card in the card pool.
      */
-    public void drawCard(Player player, CardPoolTypes cardPoolType, int index);
+    void drawCard(Player player, CardPoolTypes cardPoolType, int index);
 
 
     /**
@@ -37,7 +39,7 @@ public interface GameState {
      * @param player The player who is picking the color.
      * @param color  The color chosen by the player.
      */
-    public void pickPlayerColor(Player player, PlayerColors color);
+    void pickPlayerColor(Player player, PlayerColors color);
 
 
     /**
@@ -46,5 +48,36 @@ public interface GameState {
      * @param player        The player who is picking the objective.
      * @param objectiveIndex The index of the objective the player is picking.
      */
-    public void pickPlayerObjective(Player player, int objectiveIndex);
+    void pickPlayerObjective(Player player, int objectiveIndex);
+
+    /**
+     * Determines if the player should be removed from the game upon disconnection.
+     *
+     * @return True if the player should be removed on disconnection, false otherwise.
+     */
+    boolean shouldRemovePlayerOnDisconnect();
+
+    /**
+     * Removes a player from the game.
+     *
+     * @param lobbyUser The lobby user representing the player to be removed.
+     */
+    void removePlayer(LobbyUser lobbyUser);
+
+    /**
+     * Handles disconnection of a user from the game.<br>
+     * This method prepares the game for later player removal (which will be triggered by the outside lobby by calling
+     * the remove method) or helps the game to not get stuck on a disconnected player by advancing the turn to the next
+     * player (if we are in one of the states that returns false for shouldRemovePlayerOnDisconnect).
+     *
+     * @param user The user who disconnected.
+     */
+    void userDisconnectionProcedure(LayerUser user);
+
+    /**
+     * Handles the quitting of a user from the game.
+     *
+     * @param user The user who is quitting.
+     */
+    void quit(LayerUser user);
 }

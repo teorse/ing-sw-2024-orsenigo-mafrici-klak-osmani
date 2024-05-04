@@ -5,6 +5,9 @@ import Model.Game.Table;
 import Model.Objectives.Objective;
 import Model.Player.*;
 import Model.Game.Game;
+import Server.Interfaces.LayerUser;
+import Server.Model.Lobby.Lobby;
+import Server.Model.Lobby.LobbyUser;
 
 import java.util.List;
 import java.util.Map;
@@ -16,8 +19,11 @@ import java.util.Map;
 public class FinalRound implements GameState{
     //ATTRIBUTES
     private final Game game;
-    private final Table table;
     private final List<Player> players;
+    private final Map<LobbyUser, Player> lobbyUserToPlayerMap;
+    private final Lobby lobby;
+    private final Table table;
+
     private int currentPlayerIndex;
 
 
@@ -32,8 +38,10 @@ public class FinalRound implements GameState{
      */
     public FinalRound(Game game){
         this.game = game;
-        table = this.game.getTable();
-        players = this.game.getPlayers();
+        players = game.getPlayers();
+        lobbyUserToPlayerMap = game.getLobbyUserToPlayerMap();
+        lobby = game.getLobby();
+        table = game.getTable();
 
         findFirstPlayer();
     }
@@ -98,8 +106,60 @@ public class FinalRound implements GameState{
         throw new RuntimeException("You can't pick your secret objective in this state");
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean shouldRemovePlayerOnDisconnect() {
+        return false;
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removePlayer(LobbyUser lobbyUser) {
+        Player player = lobbyUserToPlayerMap.remove(lobbyUser);
 
+        players.remove(player);
+
+        //If we are removing the current player then we need to advance to the next player
+        if(player.equals(players.get(currentPlayerIndex)))
+            nextPlayer();
+    }
+
+    /**
+     * Handles user disconnection.<br>
+     * If the user that disconnected was the current player then it makes the next player the current to avoid
+     * getting stuck on a disconnected player.
+     *
+     * @param user The user who disconnected.
+     */
+    @Override
+    public void userDisconnectionProcedure(LayerUser user) {
+        LobbyUser lobbyUser = (LobbyUser) user;
+        String username = lobbyUser.getUsername();
+
+        System.out.println("Player "+username+" has disconnected from the game," +
+                "They will skip all the turns they will miss until they reconnect.");
+
+        if(players.equals(players.get(currentPlayerIndex)))
+            nextPlayer();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param user The user who is quitting.
+     */
+    @Override
+    public void quit(LayerUser user) {
+        LobbyUser lobbyUser = (LobbyUser) user;
+        String username = lobbyUser.getUsername();
+
+        System.out.println("Player "+username+" has quit the game");
+        removePlayer(lobbyUser);
+    }
 
 
     //TURN SWITCHER
@@ -171,8 +231,3 @@ public class FinalRound implements GameState{
         game.gameOver();
     }
 }
-
-//Players ARE allowed to disconnect and reconnect during this phase of the game.
-
-//If players disconnect before they have performed their last move and reconnect only after they have been
-//skipped by the "next player" method, they will not perform any moves during this round.

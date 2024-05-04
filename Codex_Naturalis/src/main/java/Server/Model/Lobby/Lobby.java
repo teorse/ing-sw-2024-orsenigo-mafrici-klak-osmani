@@ -45,6 +45,7 @@ public class Lobby implements ServerModelLayer {
     private final LobbyPreview preview;
 
     private GameController gameController;
+    private Model.Game.Game game;
     private boolean gameStarted;
 
 
@@ -204,24 +205,23 @@ public class Lobby implements ServerModelLayer {
 
         lobbyUsersChange.firePropertyChange("LobbyUsersChange", null, lobbyUsers);
 
-        Thread reconnectionTimer = new Thread(() -> {
-            System.out.println("They have 90 seconds to reconnect to the lobby after which they will be removed from lobby");
-            try {
-                Thread.sleep(90000);
-                removeUser(lobbyUser);
-
-                gameController.quitGame(lobbyUser);
-
-                reconnectionTimers.remove(lobbyUser);
-                System.out.println("User " + username + " has been removed from lobby after disconnection timeout");
+        //If the game has not started then the disconnection need to only be handled on the lobby level with the timer
+        if(!gameStarted) {
+            timeOutDisconnection(lobbyUser);
+        }
+        else{
+            //If the game has started and it is now in a phase that expects disconnected players to be removed then
+            //activate the disconnection procedure in the game and start the timer thread, the thread will remove the
+            //player both from the lobby and from the game.
+            if(game.shouldRemovePlayerOnDisconnect()){
+                game.userDisconnectionProcedure(lobbyUser);
+                timeOutDisconnection(lobbyUser);
             }
-            catch (InterruptedException e) {
-                System.out.println("User "+username+" has reconnected before the timeout, they will not be removed from lobby");
-            }
-        });
-        reconnectionTimers.put(lobbyUser, reconnectionTimer);
-        reconnectionTimer.setDaemon(true);
-        reconnectionTimer.start();
+            //If the game has started and it is in a phase that does not allow for player removal then you DON'T
+            //remove the player from the lobby and only start the user disconnection procedure in the game.
+            else
+                game.userDisconnectionProcedure(lobbyUser);
+        }
     }
 
     /**
@@ -230,7 +230,7 @@ public class Lobby implements ServerModelLayer {
      * @param user The user quitting the lobby.
      */
     @Override
-    public void logOut(LayerUser user){
+    public void quit(LayerUser user){
 
         LobbyUser lobbyUser = (LobbyUser) user;
         String username = lobbyUser.getUsername();
@@ -239,6 +239,33 @@ public class Lobby implements ServerModelLayer {
         if(gameController != null)
             gameController.quitGame(lobbyUser);
         removeUser(lobbyUser);
+    }
+
+    private void timeOutDisconnection(LobbyUser lobbyUser){
+
+        String username = lobbyUser.getUsername();
+
+        Thread reconnectionTimer = new Thread(() -> {
+            System.out.println("They have 90 seconds to reconnect to the lobby after which they will be removed from lobby");
+            try {
+                Thread.sleep(90000);
+                removeUser(lobbyUser);
+
+                if(gameStarted)
+                    game.removePlayer(lobbyUser);
+
+                gameController.quitGame(lobbyUser);
+
+                reconnectionTimers.remove(lobbyUser);
+                System.out.println("User " + username + " has been removed from lobby after disconnection timeout");
+            }
+            catch (InterruptedException e) {
+                System.out.println("User " + username + " has reconnected before the timeout, they will not be removed from lobby");
+            }
+        });
+        reconnectionTimers.put(lobbyUser, reconnectionTimer);
+        reconnectionTimer.setDaemon(true);
+        reconnectionTimer.start();
     }
 
     private void removeUser(LobbyUser lobbyUser){

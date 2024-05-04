@@ -7,6 +7,9 @@ import Model.Player.PlayerColors;
 import Model.Game.Table;
 import Model.Player.PlayerConnectionStatus;
 import Model.Player.PlayerStates;
+import Server.Interfaces.LayerUser;
+import Server.Model.Lobby.Lobby;
+import Server.Model.Lobby.LobbyUser;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,10 +23,12 @@ public class CardsSetup implements GameState{
     //ATTRIBUTES
     private final Game game;
     private final List<Player> players;
+    private final Map<LobbyUser, Player> lobbyUserToPlayerMap;
+    private final Lobby lobby;
     private final Table table;
 
-    private Map<Player, Integer> goldenCardsDrawn;
-    private Map<Player, Integer> resourceCardsDrawn;
+    private final Map<Player, Integer> goldenCardsDrawn;
+    private final Map<Player, Integer> resourceCardsDrawn;
 
     private final int goldenCardsToDraw;
     private final int resourceCardsToDraw;
@@ -32,7 +37,7 @@ public class CardsSetup implements GameState{
      * Map that keeps track of which players have completed the setups of this game phase and which haven't.<br>
      * If true, it means the player HAS completed all setups and is ready for the next phase.
      */
-    private Map<Player, Boolean> playerReady;
+    private final Map<Player, Boolean> playerReadiness;
 
 
 
@@ -47,6 +52,8 @@ public class CardsSetup implements GameState{
     public CardsSetup(Game game){
         this.game = game;
         players = game.getPlayers();
+        lobbyUserToPlayerMap = game.getLobbyUserToPlayerMap();
+        lobby = game.getLobby();
         table = game.getTable();
 
         //Maps to keep track of how many cards of a given type each player has drawn.
@@ -60,7 +67,7 @@ public class CardsSetup implements GameState{
         //Map containing the readiness status of each player.
         //if true, player has completed all required setups for this game state.
         //if false, player is still missing some steps.
-        playerReady = new HashMap<>();
+        playerReadiness = new HashMap<>();
 
         for(Player player : players){
             //Give each player a starter card
@@ -71,7 +78,7 @@ public class CardsSetup implements GameState{
             goldenCardsDrawn.put(player,0);
 
             //Set each player as unready
-            playerReady.put(player, false);
+            playerReadiness.put(player, false);
         }
 
         //Only AFTER everything else has been set up, set the player status as PLACE.
@@ -160,7 +167,7 @@ public class CardsSetup implements GameState{
             //and he is set to ready in the readiness map.
             if (resourceCardsDrawn.get(player) == resourceCardsToDraw && goldenCardsDrawn.get(player) == goldenCardsToDraw) {
                 player.setPlayerState(PlayerStates.WAIT);
-                playerReady.put(player, true);
+                playerReadiness.put(player, true);
             }
 
             nextState();
@@ -208,8 +215,54 @@ public class CardsSetup implements GameState{
         throw new RuntimeException("You can't pick your objective yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean shouldRemovePlayerOnDisconnect() {
+        return true;
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removePlayer(LobbyUser lobbyUser) {
+        Player player = lobbyUserToPlayerMap.remove(lobbyUser);
 
+        playerReadiness.remove(player);
+        players.remove(player);
+
+        nextState();
+    }
+
+    /**
+     * Handles disconnection of a user from the game.<br>
+     * This method prepares the game for later player removal (which will be triggered by the outside lobby by calling
+     * the remove method).
+     *
+     * @param user The user who disconnected.
+     */
+    @Override
+    public void userDisconnectionProcedure(LayerUser user) {
+        LobbyUser lobbyUser = (LobbyUser) user;
+        String username = lobbyUser.getUsername();
+
+        System.out.println("Player "+username+" has disconnected from the game," +
+                "They have 90 seconds to reconnect before being kicked from the game");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void quit(LayerUser user) {
+        LobbyUser lobbyUser = (LobbyUser) user;
+        String username = lobbyUser.getUsername();
+
+        System.out.println("Player "+username+" has quit the game");
+        removePlayer(lobbyUser);
+    }
 
 
     //STATE SWITCHER
@@ -219,7 +272,7 @@ public class CardsSetup implements GameState{
      */
     private void nextState(){
         //If at least one online player that is not yet ready is found then return
-        for(Map.Entry<Player, Boolean> entry : playerReady.entrySet()) {
+        for(Map.Entry<Player, Boolean> entry : playerReadiness.entrySet()) {
             if (entry.getKey().getConnectionStatus().equals(PlayerConnectionStatus.ONLINE) && !entry.getValue())
                 return;
         }
@@ -227,7 +280,3 @@ public class CardsSetup implements GameState{
         game.setState(new ObjectivesSetup(game));
     }
 }
-
-
-//Currently does nothing to disconnected players, does not remove them from the game.
-//Todo add methods to handle player removal if disconnected during this phase of the game.

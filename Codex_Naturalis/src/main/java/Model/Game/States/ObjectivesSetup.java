@@ -7,6 +7,9 @@ import Model.Player.Player;
 import Model.Player.PlayerColors;
 import Model.Player.PlayerConnectionStatus;
 import Model.Player.PlayerStates;
+import Server.Interfaces.LayerUser;
+import Server.Model.Lobby.Lobby;
+import Server.Model.Lobby.LobbyUser;
 
 import java.util.*;
 
@@ -18,14 +21,16 @@ import java.util.*;
 public class ObjectivesSetup implements GameState{
     //ATTRIBUTES
     private final Game game;
-    private final Table table;
     private final List<Player> players;
+    private final Map<LobbyUser, Player> lobbyUserToPlayerMap;
+    private final Lobby lobby;
+    private final Table table;
 
     /**
      * Map that keeps track of which players have completed the setups of this game phase and which haven't.<br>
      * If true, it means the player HAS completed all setups and is ready for the next phase.
      */
-    private Map<Player, Boolean> playerReady;
+    private final Map<Player, Boolean> playerReadiness;
 
 
 
@@ -39,10 +44,12 @@ public class ObjectivesSetup implements GameState{
      */
     public ObjectivesSetup(Game game){
         this.game = game;
-        table = game.getTable();
         players = game.getPlayers();
+        lobbyUserToPlayerMap = game.getLobbyUserToPlayerMap();
+        lobby = game.getLobby();
+        table = game.getTable();
 
-        playerReady = new HashMap<>();
+        playerReadiness = new HashMap<>();
 
         table.revealSharedObjectives();
 
@@ -52,7 +59,7 @@ public class ObjectivesSetup implements GameState{
             player.addSecretObjectiveCandidate(table.drawObjective());
 
             //Add players to readiness map.
-            playerReady.put(player, false);
+            playerReadiness.put(player, false);
         }
 
         //Only AFTER everything else has been set up, set the player status as PICK_OBJECTIVE.
@@ -107,7 +114,7 @@ public class ObjectivesSetup implements GameState{
             //The rest of the method is executed if the player is actually allowed to perform the move.
             player.selectSecretObjective(objectiveIndex);
             player.setPlayerState(PlayerStates.WAIT);
-            playerReady.put(player, true);
+            playerReadiness.put(player, true);
 
             nextState();
         }
@@ -116,8 +123,54 @@ public class ObjectivesSetup implements GameState{
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean shouldRemovePlayerOnDisconnect() {
+        return true;
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removePlayer(LobbyUser lobbyUser) {
+        Player player = lobbyUserToPlayerMap.remove(lobbyUser);
 
+        playerReadiness.remove(player);
+        players.remove(player);
+
+        nextState();
+    }
+
+    /**
+     * Handles disconnection of a user from the game.<br>
+     * This method prepares the game for later player removal (which will be triggered by the outside lobby by calling
+     * the remove method).
+     *
+     * @param user The user who disconnected.
+     */
+    @Override
+    public void userDisconnectionProcedure(LayerUser user) {
+        LobbyUser lobbyUser = (LobbyUser) user;
+        String username = lobbyUser.getUsername();
+
+        System.out.println("Player "+username+" has disconnected from the game," +
+                "They have 90 seconds to reconnect before being kicked from the game");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void quit(LayerUser user) {
+        LobbyUser lobbyUser = (LobbyUser) user;
+        String username = lobbyUser.getUsername();
+
+        System.out.println("Player "+username+" has quit the game");
+        removePlayer(lobbyUser);
+    }
 
 
     //STATE SWITCHER
@@ -127,7 +180,7 @@ public class ObjectivesSetup implements GameState{
      */
     private void nextState(){
         //If at least one online player that is not yet ready is found then return
-        for(Map.Entry<Player, Boolean> entry : playerReady.entrySet()) {
+        for(Map.Entry<Player, Boolean> entry : playerReadiness.entrySet()) {
             if (entry.getKey().getConnectionStatus().equals(PlayerConnectionStatus.ONLINE) && !entry.getValue())
                 return;
         }
@@ -135,6 +188,3 @@ public class ObjectivesSetup implements GameState{
         game.setState(new MainLoop(game));
     }
 }
-
-//Currently does nothing to disconnected players, does not remove them from the game.
-//Todo add methods to handle player removal if disconnected during this phase of the game.

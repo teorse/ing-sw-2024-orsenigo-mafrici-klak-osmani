@@ -5,11 +5,12 @@ import Model.Objectives.Objective;
 import Model.Player.Player;
 import Model.Game.States.*;
 import Model.Player.PlayerColors;
+import Server.Interfaces.LayerUser;
+import Server.Interfaces.ServerModelLayer;
+import Server.Model.Lobby.Lobby;
+import Server.Model.Lobby.LobbyUser;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -17,14 +18,17 @@ import java.util.stream.Stream;
  * This Class stores all the information about the current game, including the list of players, the current game phase,
  * the current round etc.
  */
-public class Game {
+public class Game implements ServerModelLayer {
     //ATTRIBUTES
     private List<Player> players;
-    private Table table;
+    private final Map<LobbyUser, Player> lobbyUserToPlayerMap;
+    private final Lobby lobby;
+
+    private final Table table;
     private boolean lastRoundFlag;
     private boolean gameOver;
     private GameState state;
-    private List<Player> winners;
+    private final List<Player> winners;
 
     /**
      * Stores number of rounds completed by the table.<br>
@@ -45,10 +49,20 @@ public class Game {
      * @param resourceCards List of Resource Cards to use during this game.
      * @param starterCards  List of Starter Cards to use during this game.
      * @param objectives    List of Objectives to use during this game.
-     * @param players       List of players taking part to this game.
+     * @param lobbyUsers    List of lobby users taking part to this game.
      */
-    public Game(List<Card> goldenCards, List<Card> resourceCards, List<Card> starterCards, List<Objective> objectives, List<Player> players) {
-        this.players = players;
+    public Game(Lobby lobby, List<Card> goldenCards, List<Card> resourceCards, List<Card> starterCards, List<Objective> objectives, List<LobbyUser> lobbyUsers) {
+        lobbyUserToPlayerMap = new HashMap<>();
+        this.lobby = lobby;
+        players = new ArrayList<>();
+        for(LobbyUser lobbyUser : lobbyUsers){
+            Player player = new Player(lobbyUser);
+            //todo add listeners
+
+            lobbyUserToPlayerMap.put(lobbyUser, player);
+            players.add(player);
+        }
+
         Collections.shuffle(this.players);
         this.table = new Table(goldenCards, resourceCards, starterCards, objectives);
         this.lastRoundFlag = false;
@@ -65,6 +79,9 @@ public class Game {
     public List<Player> getPlayers() {
         return players;
     }
+    public Player getPlayerByLobbyUser(LobbyUser lobbyUser){
+        return lobbyUserToPlayerMap.get(lobbyUser);
+    }
     public Table getTable() {
         return table;
     }
@@ -73,6 +90,12 @@ public class Game {
     }
     public boolean isLastRoundFlag(){
         return this.lastRoundFlag;
+    }
+    public Lobby getLobby(){
+        return this.lobby;
+    }
+    public Map<LobbyUser, Player> getLobbyUserToPlayerMap(){
+        return this.lobbyUserToPlayerMap;
     }
 
 
@@ -94,6 +117,20 @@ public class Game {
     }
     public void pickPlayerObjective(Player player, int objectiveIndex){
         state.pickPlayerObjective(player, objectiveIndex);
+    }
+    public boolean shouldRemovePlayerOnDisconnect(){
+        return state.shouldRemovePlayerOnDisconnect();
+    }
+    public void removePlayer(LobbyUser lobbyUser){
+        state.removePlayer(lobbyUser);
+    }
+    @Override
+    public void userDisconnectionProcedure(LayerUser user) {
+        state.userDisconnectionProcedure(user);
+    }
+    @Override
+    public void quit(LayerUser user) {
+        state.quit(user);
     }
 
 
