@@ -7,6 +7,7 @@ import Model.Utility.Coordinates;
 import Model.Utility.Artifacts;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * This class stores all the information related to the player's placement of cards:<br>
@@ -26,7 +27,22 @@ public class CardMap {
      * A List containing all the allowed coordinates where the player can place his next card.
      */
     private List<Coordinates> availablePlacements;
+
+    /**
+     * Stores the coordinates placed during this game in a chronological order.<br>
+     * It can be used by the GUI to more easily reconstruct which card covers which other card by placing them in the same
+     * order as in this list.
+     */
     private List<Coordinates> coordinatesPlaced;
+
+    /**
+     * List stores all coordinates placed sorted by Y and then by X.<br>
+     * It is used by getAmountOfPattern to check for patterns using this list to go through all coordinates in an orderly fashion
+     * to avoid making mistakes in the counting.<br>
+     * To avoid sorting each time getAmountOfPattern, it is calculated only once by the first request of getAmountOfPattern
+     * and is only re-calculated if a .place occurred that modified the cards in the map and set to null the list.
+     */
+    private List<Coordinates> coordinatesSorted;
     /**
      * A map used as a counter for the Artifacts currently held by the player.
      */
@@ -140,6 +156,8 @@ public class CardMap {
         //Calling the method which updates the available placements
         updateAvailablePlacements(cardVisibilityToPlace, coordinateIndex);
 
+        //Resets coordinates sorted
+        coordinatesSorted = null;
         return points;
     }
 
@@ -190,6 +208,66 @@ public class CardMap {
             }
         }
         return coveredCorners;
+    }
+
+    /**
+     * Calculates the number of times a specific pattern appears on the card map, ensuring that each card is counted only once.
+     *
+     * @param pattern A map representing the pattern to be checked. Each entry in the map consists of a coordinate and an artifact that represent the color of the card that should appear at that coordinate.
+     * @return The number of times the pattern appears on the card map, ensuring that each card is counted only once.
+     */
+    public int getAmountOfPattern(Map<Coordinates, Artifacts> pattern){
+        if(coordinatesSorted == null){
+            coordinatesSorted = new ArrayList<>(cardsPlaced.keySet());
+            //Comparator to sort coordinates first by Y coord and then by X coord
+            Comparator<Coordinates> comparator = Comparator.comparing(Coordinates::getCoordY);
+            comparator.thenComparing(Coordinates::getCoordX);
+
+            //Sort the coordinates placed by the above comparator
+            Stream<Coordinates> coordinatesStream = coordinatesSorted.stream().sorted(comparator);
+            coordinatesSorted = coordinatesStream.toList();
+        }
+
+
+        //Stores the coordinates of all instances of this objective's pattern found in the cardMap
+        List<List<Coordinates>> patternsFound = new ArrayList<>();
+
+        //Iterates over each placed coordinate.
+        for (Coordinates currentCoordinate : coordinatesSorted) {
+            List<Coordinates> currentPattern = new ArrayList<>();
+
+            //Iterates over each offset of this objective's pattern.
+            for (Coordinates offset : pattern.keySet()) {
+                Coordinates coordinateWithOffset = currentCoordinate.add(offset);
+
+                if (!cardsPlaced.containsKey(coordinateWithOffset)) {
+                    break; // Exit early if the pattern is not found
+                }
+
+                if (!pattern.get(offset).equals(cardsPlaced.get(coordinateWithOffset).getCardColor())) {
+                    break; // Exit early if the colors don't match
+                }
+
+                //Check if the coordinate is not already used.
+                boolean coordinateAlreadyUsed = patternsFound.stream()
+                        .anyMatch(previousPattern -> previousPattern.contains(coordinateWithOffset));
+
+                //If the coordinateWithOffset was not used in any other pattern then add it to the currentPattern.
+                if (!coordinateAlreadyUsed) {
+                    currentPattern.add(coordinateWithOffset);
+                } else {
+                    break; // Move to the next coordinate if already used in another pattern
+                }
+            }
+
+            if (currentPattern.size() == pattern.size()) {
+                //Only if the current pattern contains the same amount of entries as the objectivePattern
+                //It is confirmed as valid and added to the patternsFound.
+                patternsFound.add(currentPattern);
+            }
+        }
+
+        return patternsFound.size();
     }
 
     /**

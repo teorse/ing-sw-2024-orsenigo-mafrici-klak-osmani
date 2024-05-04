@@ -32,11 +32,11 @@ public class Coordinates {
 
 
     //GETTERS
-    protected int getCoordX(){
+    public int getCoordX(){
         return this.coordX;
     }
 
-    protected int getCoordY(){
+    public int getCoordY(){
         return this.coordY;
     }
 

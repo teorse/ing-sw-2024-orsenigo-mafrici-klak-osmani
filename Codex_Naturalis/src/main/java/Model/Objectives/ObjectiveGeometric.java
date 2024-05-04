@@ -37,76 +37,6 @@ public class ObjectiveGeometric extends Objective{
     }
 
 
-    /**
-     * Method to iterate the card map and count how many times a certain geometric pattern has been completed.
-     * @param cardMap CardMap associated to the player.
-     * @return List<List<Model.Utility.Coordinates> patterns that were completed.
-     */
-    public List<List<Coordinates>> findPatterns(CardMap cardMap){
-        Coordinates coordinateWithOffset;
-        //Get all the coordinates ever placed in the cardMap
-        List<Coordinates> allPlacedCoords = cardMap.getCoordinatesPlaced();
-        //Stores the coordinates of all instances of this objective's pattern found in the cardMap
-        List<List<Coordinates>> patternsFound = new ArrayList<>();
-
-
-        //Iterates over each placed coordinate.
-        for(Coordinates currentCoordinate : allPlacedCoords){
-            List<Coordinates> currentPattern = new ArrayList<>();
-
-            //Iterates over each offset of this objective's pattern.
-            for(Coordinates offset : objectivePattern.keySet()){
-                coordinateWithOffset = currentCoordinate.add(offset);
-
-                //Tries to get the color of the card with the coordinateWithOffset.
-                try {
-                    Artifacts cardArtifact = cardMap.getCardColorByCoordinate(coordinateWithOffset);
-
-
-                    //Compare artifact retrieved from cardMap using coordinateWithOffset with artifact that should be
-                    //found in this objective's pattern at that offset
-                    if(!cardArtifact.equals(objectivePattern.get(offset))){
-                        //If the artifacts are different then break the loop and start over with next coordinate.
-                        break;
-                    }
-                    else {
-                        boolean coordinateAlreadyUsed = false;
-                        //If the artifacts did match then:
-                        for (List<Coordinates> previousPattern : patternsFound){
-                            if (previousPattern.contains(coordinateWithOffset)){
-                                //Check if coordinateWithOffset was already used in any other pattern.
-                                coordinateAlreadyUsed = true;
-                                break;
-                            }
-                        }
-                        if(!coordinateAlreadyUsed){
-                            //If the coordinateWithOffset was not used in any other pattern then add it to the currentPattern.
-                            currentPattern.add(coordinateWithOffset);
-                        }
-                        else{
-                            //else, the coordinateWithOffset is not added to the currentPattern and the loop
-                            //continues to the next coordinate from allPlacedCoords
-                            break;
-                        }
-                    }
-                    // The catch gets executed when the cardColor with a specific coordinate doesn't exist.
-                } catch (NullPointerException e){
-                    break;
-                    //System.out.println(e);
-                }
-
-            }
-            if(currentPattern.size() == objectivePattern.size()){
-                //Only if the current pattern contains the same amount of entries as the objectivePattern
-                //It is confirmed as valid and added to the patternsFound.
-                patternsFound.add(currentPattern);
-            }
-        }
-
-        return patternsFound;
-    }
-
-
 
     /**
      * Method to calculate the amount of points given to the player at the end of the game.
@@ -114,8 +44,7 @@ public class ObjectiveGeometric extends Objective{
      * @return int number of points.
      */
     public int countPoints(CardMap cardMap){
-
-        return getPoints()*findPatterns(cardMap).size();
+        return getPoints()* cardMap.getAmountOfPattern(objectivePattern);
     }
 
 }

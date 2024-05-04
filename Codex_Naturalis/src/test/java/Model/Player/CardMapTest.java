@@ -1025,4 +1025,205 @@ public class CardMapTest {
             }
         }
     }
+
+    @Nested
+    public class getAmountOfPatternTest{
+
+        private final CardVisibility red = new CardVisibility(new CardResource(Artifacts.FUNGI, null), true);
+        private final CardVisibility green = new CardVisibility(new CardResource(Artifacts.PLANT, null), true);
+        private final CardVisibility blue = new CardVisibility(new CardResource(Artifacts.ANIMAL, null), true);
+        private final CardVisibility purple = new CardVisibility(new CardResource(Artifacts.INSECT, null), true);
+
+        private List<CardMap> cardMaps;
+        private List<Map<Coordinates, Artifacts>> patterns;
+
+        //Double list of integers
+        //Outer list represents all the expected patterns from the different patterns for the SAME cardMap
+        //Inner list represent the expected points for the cardMap for a specific pattern
+        //Ex get(1).get(5) returns the number expected for the second cardMap and the sixth pattern
+        private List<List<Integer>> expectedAmountOfPatterns;
+
+        @BeforeEach
+        void setup(){
+            cardMaps = new ArrayList<>();
+
+            //Setting up all patterns to be tested
+            patterns = new ArrayList<>();
+            patterns.add(new HashMap<>(){{
+                put(new Coordinates(0,0), Artifacts.FUNGI);
+                put(new Coordinates(1,1), Artifacts.FUNGI);
+                put(new Coordinates(2,2), Artifacts.FUNGI);
+            }});
+            patterns.add(new HashMap<>(){{
+                put(new Coordinates(0,0), Artifacts.INSECT);
+                put(new Coordinates(1,-1), Artifacts.INSECT);
+                put(new Coordinates(2,-2), Artifacts.INSECT);
+            }});
+            patterns.add(new HashMap<>(){{
+                put(new Coordinates(0,0), Artifacts.PLANT);
+                put(new Coordinates(0,-2), Artifacts.PLANT);
+                put(new Coordinates(-1,-3), Artifacts.INSECT);
+            }});
+            patterns.add(new HashMap<>(){{
+                put(new Coordinates(0,0), Artifacts.ANIMAL);
+                put(new Coordinates(1,-1), Artifacts.INSECT);
+                put(new Coordinates(1,-3), Artifacts.INSECT);
+            }});
+
+
+
+
+            //setting up the maps to reflect inside cardMap class
+
+            //Map0: this is a map that represents the "normal scenario", below are the expected amounts for each pattern
+            //Pattern0: 1
+            //Pattern1: 2
+            //Pattern2: 2
+            //Pattern3: 1
+
+            Map<Coordinates, CardVisibility> map0 = new HashMap<>(){{
+                put(new Coordinates(-3,3), purple);
+                put(new Coordinates(-2,2), purple);
+                put(new Coordinates(-1,1), purple);
+                put(new Coordinates(0,0), purple);
+                put(new Coordinates(1,-1), purple);
+                put(new Coordinates(2,-2), purple);
+                put(new Coordinates(3,-3), purple);
+                put(new Coordinates(3,-1), purple);
+
+                put(new Coordinates(-2,-2), red);
+                put(new Coordinates(-1,-1), red);
+                put(new Coordinates(1,1), red);
+                put(new Coordinates(2,2), red);
+                put(new Coordinates(3,3), red);
+                put(new Coordinates(4,4), red);
+
+                put(new Coordinates(-1,5), green);
+                put(new Coordinates(0,4), green);
+                put(new Coordinates(-1,3), green);
+                put(new Coordinates(0,2), green);
+
+                put(new Coordinates(2,0), blue);
+            }};
+
+            //Map1: this is an empty map (edge case) that should return all patterns as 0
+            //Pattern0: 0
+            //Pattern1: 0
+            //Pattern2: 0
+            //Pattern3: 0
+
+            Map<Coordinates, CardVisibility> map1 = new HashMap<>();
+
+
+
+
+            //Map2: this is a variation of map0 (normal case) that should return all patterns as 0
+            //Pattern0: 0
+            //Pattern1: 0
+            //Pattern2: 0
+            //Pattern3: 0
+
+            Map<Coordinates, CardVisibility> map2 = new HashMap<>(){{
+                put(new Coordinates(-3,3), purple);
+                //put(new Coordinates(-2,2), purple);
+                put(new Coordinates(-1,1), purple);
+                put(new Coordinates(0,0), purple);
+                //put(new Coordinates(1,-1), purple);
+                put(new Coordinates(2,-2), purple);
+                //put(new Coordinates(3,-3), purple);
+                put(new Coordinates(3,-1), purple);
+
+                put(new Coordinates(-2,-2), red);
+                put(new Coordinates(-1,-1), red);
+                put(new Coordinates(1,1), red);
+                //put(new Coordinates(2,2), red);
+                put(new Coordinates(3,3), red);
+                put(new Coordinates(4,4), red);
+
+                put(new Coordinates(-1,5), green);
+                put(new Coordinates(0,4), green);
+                put(new Coordinates(-1,3), green);
+                //put(new Coordinates(0,2), green);
+
+                put(new Coordinates(2,0), blue);
+            }};
+
+            List<Map<Coordinates, CardVisibility>> maps = new ArrayList<>(){{
+                add(map0);
+                add(map1);
+                add(map2);
+            }};
+
+
+
+
+
+            //Creating CardMap objects
+            try{
+                Field cardPlacedField = CardMap.class.getDeclaredField("cardsPlaced");
+                //Field coordinatesPlacedField = CardMap.class.getDeclaredField("coordinatesPlaced");
+
+                cardPlacedField.setAccessible(true);
+                //coordinatesPlacedField.setAccessible(true);
+
+                for(int i = 0; i < maps.size(); i++){
+                    Map<Coordinates, CardVisibility> map = maps.get(i);
+
+                    CardMap cardMap = new CardMap();
+                    cardPlacedField.set(cardMap, map);
+
+                    cardMaps.add(cardMap);
+                }
+
+            }
+            catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+
+
+
+
+
+            //Writing expected results
+            expectedAmountOfPatterns = new ArrayList<>(){{
+                add(new ArrayList<>(){{
+                    add(1);
+                    add(2);
+                    add(2);
+                    add(1);
+                }});
+                add(new ArrayList<>(){{
+                    add(0);
+                    add(0);
+                    add(0);
+                    add(0);
+                }});
+                add(new ArrayList<>(){{
+                    add(0);
+                    add(0);
+                    add(0);
+                    add(0);
+                }});
+            }};
+
+            //END OF SETUP
+        }
+
+        @Test
+        void getAmountOfPattern(){
+            for(int i = 0; i < cardMaps.size(); i++){
+                CardMap cardMap = cardMaps.get(i);
+
+                for(int j = 0; j < patterns.size(); j++){
+                    Map<Coordinates, Artifacts> pattern = patterns.get(j);
+                    int expectedResult = expectedAmountOfPatterns.get(i).get(j);
+                    int actualResult = cardMap.getAmountOfPattern(pattern);
+
+                    assertEquals(expectedResult, actualResult, "Pattern "+j+" in cardMap "+i+" failed." +
+                            "\nExpected: "+expectedResult+" instances" +
+                            "\nFound: "+actualResult+" instances.");
+                }
+            }
+        }
+    }
 }

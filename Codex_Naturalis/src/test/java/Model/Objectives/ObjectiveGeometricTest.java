@@ -320,7 +320,6 @@ class ObjectiveGeometricTest {
         scenario3.setObjectiveGeometric(geometricObjective);
         scenario3.setExpectedResult(listOfPatternCoordinates);
     }
-
         void scenario4(){
             Map<Coordinates,CardVisibility> cardsToBePlaced = new HashMap<>();
             List<Coordinates> listOfCoordinatesToBeUsed = new ArrayList<>();
@@ -381,27 +380,8 @@ class ObjectiveGeometricTest {
         }
 
 
-
-
-
-
-
-
-
-
-
-    @Test
-    void findPatterns() {
-
-         assertEquals(scenario1.getExpectedResult(), scenario1.objectiveGeometric.findPatterns(scenario1.getCardMap()), "Test 1 Not Passed");
-         assertEquals(scenario2.getExpectedResult(), scenario2.objectiveGeometric.findPatterns(scenario2.getCardMap()), "Test 2 Not Passed");
-         assertEquals(scenario3.getExpectedResult(), scenario3.objectiveGeometric.findPatterns(scenario3.getCardMap()), "Test 3 Not Passed");
-         assertEquals(scenario4.getExpectedResult(), scenario4.objectiveGeometric.findPatterns(scenario4.getCardMap()), "Test 3 Not Passed");
-
-        }
-
-    @Test
-    void countPoints() {
+        @Test
+        void countPoints() {
 
          assertEquals(3,scenario1.getObjectiveGeometric().countPoints(scenario1.getCardMap()), "Test 1 Failed");
          assertEquals(3,scenario2.getObjectiveGeometric().countPoints(scenario2.getCardMap()), "Test 2 Failed");
@@ -409,9 +389,6 @@ class ObjectiveGeometricTest {
         assertEquals(0,scenario4.getObjectiveGeometric().countPoints(scenario4.getCardMap()), "Test 3 Failed");
 
     }
-
-
-
 }
 
 
