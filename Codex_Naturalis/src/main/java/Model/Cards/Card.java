@@ -6,12 +6,16 @@ import Model.Cards.CornerOrientation;
 import Model.Player.CardMap;
 import Model.Utility.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class Card {
+public abstract class Card implements Serializable {
 
     //ATTRIBUTES
+    @Serial
+    private static final long serialVersionUID = 8378643733472804504L;
     private Map<CornerOrientation, Corner> corners;
 
 

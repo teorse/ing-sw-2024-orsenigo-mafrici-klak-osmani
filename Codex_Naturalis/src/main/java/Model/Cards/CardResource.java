@@ -3,6 +3,7 @@ package Model.Cards;
 import Model.Player.CardMap;
 import Model.Utility.*;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -10,6 +11,8 @@ import java.util.Objects;
 public class CardResource extends Card {
 
     //ATTRIBUTES
+    @Serial
+    private static final long serialVersionUID = -8859474130320820205L;
     private Artifacts cardColor;
     private int points;
 

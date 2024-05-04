@@ -2,6 +2,8 @@ package Model.Cards;
 
 import Model.Utility.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -12,9 +14,11 @@ import java.util.Objects;
  * is ARTIFACT then the artifact is always expected to not be NULL.<br>
  * CornerType and artifact are always explicitly stated.
  */
-public class Corner {
+public class Corner implements Serializable {
 
     //ATTRIBUTES
+    @Serial
+    private static final long serialVersionUID = -2674400925262245787L;
     private CornerType cornerType;
     private Artifacts artifact;
 

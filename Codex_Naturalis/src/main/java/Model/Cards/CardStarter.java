@@ -3,6 +3,7 @@ package Model.Cards;
 import Model.Player.CardMap;
 import Model.Utility.*;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -10,6 +11,8 @@ import java.util.Objects;
 public class CardStarter extends Card {
 
     //ATTRIBUTES
+    @Serial
+    private static final long serialVersionUID = -4633125594886874203L;
     /**
      * Useful when the card is placed back (faceUp == false). Can contain multiple Artifacts, unlike other cards, which
      * always have a resource on the back of the same type as the card itself.

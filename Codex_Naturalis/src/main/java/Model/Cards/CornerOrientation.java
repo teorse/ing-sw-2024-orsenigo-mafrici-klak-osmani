@@ -1,10 +1,14 @@
 package Model.Cards;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class CornerOrientation {
+public class CornerOrientation implements Serializable {
 
     //ATTRIBUTES
+    @Serial
+    private static final long serialVersionUID = -4414100234692308498L;
     private CornerDirection cornerDirection;
     private boolean faceUp;
 

@@ -3,12 +3,15 @@ package Model.Cards;
 import Model.Player.CardMap;
 import Model.Utility.*;
 
+import java.io.Serial;
 import java.util.Map;
 import java.util.Objects;
 
 public class CardGolden extends CardResource {
 
     //ATTRIBUTES
+    @Serial
+    private static final long serialVersionUID = -4619796469655619377L;
     /**
      * If this attribute is true than requiredArtifact is set to Artifacts.NULL
      */

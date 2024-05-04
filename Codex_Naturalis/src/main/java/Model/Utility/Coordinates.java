@@ -1,5 +1,7 @@
 package Model.Utility;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -7,8 +9,10 @@ import java.util.Objects;
  * using an X and Y coordinates system.
  */
 
-public class Coordinates {
+public class Coordinates implements Serializable {
     //ATTRIBUTES
+    @Serial
+    private static final long serialVersionUID = -3789012608437142374L;
     private int coordX;
     private int coordY;
 
