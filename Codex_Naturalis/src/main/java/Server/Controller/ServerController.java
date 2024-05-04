@@ -49,7 +49,7 @@ public class ServerController {
     }
 
     public void quitLayer(LayerUser user){
-        model.logOut(user);
+        model.quit(user);
     }
 
     /**

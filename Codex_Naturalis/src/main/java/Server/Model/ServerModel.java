@@ -186,7 +186,7 @@ public class ServerModel implements ServerModelLayer {
      */
     @Override
     public void userDisconnectionProcedure(LayerUser user) {
-        logOut(user);
+        quit(user);
     }
 
     /**
@@ -195,7 +195,7 @@ public class ServerModel implements ServerModelLayer {
      * @param user user to log-out.
      */
     @Override
-    public void logOut(LayerUser user) {
+    public void quit(LayerUser user) {
         ServerUser serverUser = (ServerUser) user;
         serverUser.setOffline();
         ClientHandler connection = userConnections.remove(serverUser.getUsername());

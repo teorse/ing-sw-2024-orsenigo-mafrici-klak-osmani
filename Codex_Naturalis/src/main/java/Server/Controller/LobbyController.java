@@ -50,7 +50,7 @@ public class LobbyController {
     }
 
     public void quitLobby(LayerUser user){
-        model.logOut(user);
+        model.quit(user);
     }
 
 

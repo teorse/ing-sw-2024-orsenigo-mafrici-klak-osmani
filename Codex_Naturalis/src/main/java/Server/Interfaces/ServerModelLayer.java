@@ -18,5 +18,5 @@ public interface ServerModelLayer {
      *
      * @param user The identifier of the user who logged out.
      */
-    void logOut(LayerUser user);
+    void quit(LayerUser user);
 }
