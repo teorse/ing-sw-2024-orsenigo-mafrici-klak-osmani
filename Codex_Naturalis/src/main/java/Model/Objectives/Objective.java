@@ -3,6 +3,7 @@ package Model.Objectives;
 import Model.Player.CardMap;
 
 import java.util.Map;
+import java.util.Objects;
 
 public abstract class Objective {
     /**
@@ -39,4 +40,23 @@ public abstract class Objective {
     }
 
     public abstract int countPoints(CardMap cardMap);
+
+
+
+
+
+    //EQUALS AND HASH
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Objective objective = (Objective) o;
+        return points == objective.points && Objects.equals(description, objective.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(description, points);
+    }
 }

@@ -6,6 +6,7 @@ import Model.Utility.Artifacts;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ObjectiveGeometric extends Objective{
     /**
@@ -47,6 +48,25 @@ public class ObjectiveGeometric extends Objective{
         return getPoints()* cardMap.getAmountOfPattern(objectivePattern);
     }
 
+
+
+
+
+    //EQUALS AND HASH
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        ObjectiveGeometric that = (ObjectiveGeometric) o;
+        return Objects.equals(objectivePattern, that.objectivePattern);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), objectivePattern);
+    }
 }
 
 
