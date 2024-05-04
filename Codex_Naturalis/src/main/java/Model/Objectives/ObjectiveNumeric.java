@@ -3,12 +3,15 @@ package Model.Objectives;
 import Model.Player.CardMap;
 import Model.Utility.Artifacts;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class ObjectiveNumeric extends Objective{
+    @Serial
+    private static final long serialVersionUID = 2365780516358935930L;
     /**
      * Map containing the required resources to satisfy the objective.<br>
      * The Keys of the map are the items and the Values are the number of units required.

@@ -3,12 +3,16 @@ package Model.Objectives;
 import Model.Player.CardMap;
 import Model.Utility.Coordinates;
 import Model.Utility.Artifacts;
+
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class ObjectiveGeometric extends Objective{
+    @Serial
+    private static final long serialVersionUID = 7803477112581081879L;
     /**
      * Map containing the required pattern to satisfy the objective.<br>
      * The Keys of the map are the coordinates of the pattern and the Values are the Resource/Color of the pattern.

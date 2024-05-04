@@ -2,10 +2,14 @@ package Model.Objectives;
 
 import Model.Player.CardMap;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class Objective {
+public abstract class Objective implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -5290456116285420582L;
     /**
      * String containing the textual description of the objective.
      */
