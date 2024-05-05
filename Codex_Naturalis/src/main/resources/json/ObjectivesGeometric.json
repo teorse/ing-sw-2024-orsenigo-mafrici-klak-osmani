@@ -1,0 +1,218 @@
+[
+  {
+    "objectivePattern": [
+      [
+        {
+          "coordX": 0,
+          "coordY": 0
+        },
+        "FUNGI"
+      ],
+      [
+        {
+          "coordX": 1,
+          "coordY": 1
+        },
+        "FUNGI"
+      ],
+      [
+        {
+          "coordX": 2,
+          "coordY": 2
+        },
+        "FUNGI"
+      ]
+    ],
+    "description": "PlaceHolder",
+    "points": 2
+  },
+  {
+    "objectivePattern": [
+      [
+        {
+          "coordX": 0,
+          "coordY": 0
+        },
+        "PLANT"
+      ],
+      [
+        {
+          "coordX": 2,
+          "coordY": -2
+        },
+        "PLANT"
+      ],
+      [
+        {
+          "coordX": 1,
+          "coordY": -1
+        },
+        "PLANT"
+      ]
+    ],
+    "description": "PlaceHolder",
+    "points": 2
+  },
+  {
+    "objectivePattern": [
+      [
+        {
+          "coordX": 0,
+          "coordY": 0
+        },
+        "ANIMAL"
+      ],
+      [
+        {
+          "coordX": 1,
+          "coordY": 1
+        },
+        "ANIMAL"
+      ],
+      [
+        {
+          "coordX": 2,
+          "coordY": 2
+        },
+        "ANIMAL"
+      ]
+    ],
+    "description": "PlaceHolder",
+    "points": 2
+  },
+  {
+    "objectivePattern": [
+      [
+        {
+          "coordX": 0,
+          "coordY": 0
+        },
+        "INSECT"
+      ],
+      [
+        {
+          "coordX": 2,
+          "coordY": -2
+        },
+        "INSECT"
+      ],
+      [
+        {
+          "coordX": 1,
+          "coordY": -1
+        },
+        "INSECT"
+      ]
+    ],
+    "description": "PlaceHolder",
+    "points": 2
+  },
+  {
+    "objectivePattern": [
+      [
+        {
+          "coordX": 0,
+          "coordY": 0
+        },
+        "FUNGI"
+      ],
+      [
+        {
+          "coordX": 1,
+          "coordY": -3
+        },
+        "PLANT"
+      ],
+      [
+        {
+          "coordX": 0,
+          "coordY": -2
+        },
+        "FUNGI"
+      ]
+    ],
+    "description": "PlaceHolder",
+    "points": 3
+  },
+  {
+    "objectivePattern": [
+      [
+        {
+          "coordX": 0,
+          "coordY": 0
+        },
+        "PLANT"
+      ],
+      [
+        {
+          "coordX": 0,
+          "coordY": -2
+        },
+        "PLANT"
+      ],
+      [
+        {
+          "coordX": -1,
+          "coordY": -3
+        },
+        "INSECT"
+      ]
+    ],
+    "description": "PlaceHolder",
+    "points": 3
+  },
+  {
+    "objectivePattern": [
+      [
+        {
+          "coordX": 0,
+          "coordY": 0
+        },
+        "FUNGI"
+      ],
+      [
+        {
+          "coordX": -1,
+          "coordY": -1
+        },
+        "ANIMAL"
+      ],
+      [
+        {
+          "coordX": -1,
+          "coordY": -3
+        },
+        "ANIMAL"
+      ]
+    ],
+    "description": "PlaceHolder",
+    "points": 3
+  },
+  {
+    "objectivePattern": [
+      [
+        {
+          "coordX": 0,
+          "coordY": 0
+        },
+        "ANIMAL"
+      ],
+      [
+        {
+          "coordX": 1,
+          "coordY": -3
+        },
+        "INSECT"
+      ],
+      [
+        {
+          "coordX": 1,
+          "coordY": -1
+        },
+        "INSECT"
+      ]
+    ],
+    "description": "PlaceHolder",
+    "points": 3
+  }
+]

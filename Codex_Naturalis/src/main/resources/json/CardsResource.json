@@ -1,0 +1,1842 @@
+[
+  {
+    "cardColor": "FUNGI",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "FUNGI"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "FUNGI"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "FUNGI",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "FUNGI"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "FUNGI"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "FUNGI",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "FUNGI"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "FUNGI"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "FUNGI",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "FUNGI"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "FUNGI"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "FUNGI",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "FUNGI"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "QUILL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "PLANT"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "FUNGI",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INKWELL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "ANIMAL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "FUNGI"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "FUNGI",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "FUNGI"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INSECT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "MANUSCRIPT"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "FUNGI",
+    "points": 1,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "FUNGI"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "FUNGI",
+    "points": 1,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "FUNGI"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "FUNGI",
+    "points": 1,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "FUNGI"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "PLANT",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "PLANT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "PLANT"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "PLANT",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "PLANT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "PLANT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "PLANT",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "PLANT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "PLANT"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "PLANT",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "PLANT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "PLANT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "PLANT",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "PLANT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INSECT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "QUILL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "PLANT",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "FUNGI"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INKWELL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "PLANT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "PLANT",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "MANUSCRIPT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "ANIMAL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "PLANT"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "PLANT",
+    "points": 1,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "PLANT"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "PLANT",
+    "points": 1,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "PLANT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "PLANT",
+    "points": 1,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "PLANT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "ANIMAL",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "ANIMAL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "ANIMAL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "ANIMAL",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "ANIMAL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "ANIMAL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "ANIMAL",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "ANIMAL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "ANIMAL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "ANIMAL",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "ANIMAL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "ANIMAL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "ANIMAL",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "ANIMAL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INSECT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INKWELL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "ANIMAL",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "PLANT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "MANUSCRIPT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "ANIMAL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "ANIMAL",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "QUILL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "FUNGI"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "ANIMAL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "ANIMAL",
+    "points": 1,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "ANIMAL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "ANIMAL",
+    "points": 1,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "ANIMAL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "ANIMAL",
+    "points": 1,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "ANIMAL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "INSECT",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INSECT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INSECT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "INSECT",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INSECT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INSECT"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "INSECT",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INSECT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INSECT"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "INSECT",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INSECT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INSECT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "INSECT",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INSECT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "QUILL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "ANIMAL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "INSECT",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "MANUSCRIPT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "FUNGI"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INSECT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "INSECT",
+    "points": 0,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INSECT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "PLANT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INKWELL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "INSECT",
+    "points": 1,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INSECT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "ANIMAL",
+    "points": 1,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INSECT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  },
+  {
+    "cardColor": "ANIMAL",
+    "points": 1,
+    "corners": [
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": true
+        },
+        {
+          "cornerType": "ARTIFACT",
+          "artifact": "INSECT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ]
+    ]
+  }
+]
