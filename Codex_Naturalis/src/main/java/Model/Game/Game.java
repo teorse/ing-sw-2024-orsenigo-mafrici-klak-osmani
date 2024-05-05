@@ -74,6 +74,13 @@ public class Game implements ServerModelLayer {
         this.gameOver = false;
         winners = new ArrayList<>();
         state = new CardsSetup(this);
+
+        System.out.println("Game has started, inside game class now!");
+        System.out.println("goldenCards: "+goldenCards.size());
+        System.out.println("resourceCards: "+resourceCards.size());
+        System.out.println("starterCards: "+starterCards.size());
+        System.out.println("objectives: "+objectives.size());
+        System.out.println("players: "+players.size());
     }
 
 
@@ -111,8 +118,8 @@ public class Game implements ServerModelLayer {
     public void setState(GameState state){
         this.state = state;
     }
-    public void placeCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws NotYourTurnException, MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException {
-        state.placeCard(player, cardIndex, coordinateIndex, faceUp);
+    public void playCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws NotYourTurnException, MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException {
+        state.playCard(player, cardIndex, coordinateIndex, faceUp);
     }
     public void drawCard(Player player, CardPoolTypes cardPoolType, int index) throws NotYourTurnException, MoveAttemptOnWaitStateException, MaxResourceCardsDrawnException, InvalidActionForPlayerStateException, InvalidActionForGameStateException, MaxGoldenCardsDrawnException {
         state.drawCard(player, cardPoolType, index);

@@ -47,7 +47,7 @@ public class LobbyInputHandler implements InputHandler{
         lobbyController.addGameControllerObserver(this);
 
         if(gameController != null)
-            gameInputHandler = new GameInputHandler(lobbyUser, gameController);
+            gameInputHandler = new GameInputHandler(this.connection, lobbyUser, gameController);
 
         else
             gameInputHandler = null;
@@ -181,6 +181,6 @@ public class LobbyInputHandler implements InputHandler{
      * @param gameController The new GameController instance.
      */
     public void updateGameController(GameController gameController){
-        this.gameInputHandler = new GameInputHandler(lobbyUser, gameController);
+        this.gameInputHandler = new GameInputHandler(connection, lobbyUser, gameController);
     }
 }

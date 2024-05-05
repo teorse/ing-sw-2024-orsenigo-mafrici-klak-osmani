@@ -1,11 +1,15 @@
 package Server.Controller.InputHandler;
 
+import Model.Game.CardPoolTypes;
+import Model.Game.Exceptions.GameException;
 import Network.ClientServerPacket.ClientServerPacket;
 import Network.ClientServerPacket.CommandTypes;
 import Network.ClientServerPacket.GameCommands;
+import Network.ServerClientPacket.SCPPrintPlaceholder;
 import Server.Controller.GameController;
-import Server.Model.Lobby.GameDemo.Player;
+import Model.Player.Player;
 import Server.Model.Lobby.LobbyUser;
+import Server.Network.ClientHandler.ClientHandler;
 
 import java.util.List;
 
@@ -15,6 +19,7 @@ import java.util.List;
  */
 public class GameInputHandler implements InputHandler{
     //ATTRIBUTES
+    private final ClientHandler connection;
     private final GameController controller;
     private final Player player;
 
@@ -29,7 +34,8 @@ public class GameInputHandler implements InputHandler{
      * @param lobbyUser  The LobbyUser associated with the player at the lobby level.
      * @param controller The GameController managing the game.
      */
-    public GameInputHandler(LobbyUser lobbyUser, GameController controller){
+    public GameInputHandler(ClientHandler connection, LobbyUser lobbyUser, GameController controller){
+        this.connection = connection;
         this.controller = controller;
         player = controller.getPlayerByLobbyUser(lobbyUser);
     }
@@ -60,9 +66,9 @@ public class GameInputHandler implements InputHandler{
                 List<String> payload = packet.payload();
 
                 switch (GameCommands.valueOf(command)){
-                    case PUBLIC -> appendPublicData(payload);
-                    case PERSONAL -> appendPersonalData(payload);
-                    case PERSONAL_PUBLIC -> appendPublicPersonalData(payload);
+                    case PLAY_CARD -> playCard(payload);
+                    case DRAW_CARD -> drawCard(payload);
+                    case PICK_OBJECTIVE -> pickObjective(payload);
                 }
             }
 
@@ -98,25 +104,44 @@ public class GameInputHandler implements InputHandler{
 
 
     //PACKET HANDLING METHODS
-    private void appendPublicData(List<String> payload){
+    private void playCard(List<String> payload){
 
-        String publicData = payload.getFirst();
+        int cardIndex = Integer.parseInt(payload.getFirst());
+        int coordinateIndex = Integer.parseInt(payload.get(1));
+        boolean faceUp = Boolean.parseBoolean(payload.get(2));
 
-        controller.appendPublicData(player, publicData);
+        try {
+            controller.playCard(player, cardIndex, coordinateIndex, faceUp);
+        }
+        catch (GameException e){
+            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+        }
+
+
     }
 
-    private void appendPersonalData(List<String> payload){
+    private void drawCard(List<String> payload){
 
-        String personalData = payload.getFirst();
+        CardPoolTypes cardPoolType = CardPoolTypes.valueOf(payload.getFirst());
+        int index = Integer.parseInt(payload.get(1));
 
-        controller.appendPersonalData(player, personalData);
+        try {
+            controller.drawCard(player, cardPoolType, index);
+        }
+        catch (GameException e){
+            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+        }
     }
 
-    private void appendPublicPersonalData(List<String> payload){
+    private void pickObjective(List<String> payload){
 
-        String personalData = payload.getFirst();
-        String publicData = payload.get(1);
+        int objectiveIndex = Integer.parseInt(payload.getFirst());
 
-        controller.appendPersonalPublicData(player, personalData, publicData);
+        try {
+            controller.pickPlayerObjective(player, objectiveIndex);
+        }
+        catch (GameException e){
+            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+        }
     }
 }

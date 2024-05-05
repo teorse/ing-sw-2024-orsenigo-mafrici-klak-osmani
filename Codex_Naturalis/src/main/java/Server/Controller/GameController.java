@@ -1,7 +1,10 @@
 package Server.Controller;
 
-import Server.Model.Lobby.GameDemo.Game;
-import Server.Model.Lobby.GameDemo.Player;
+import Model.Game.CardPoolTypes;
+import Model.Game.Exceptions.*;
+import Model.Game.Game;
+import Model.Player.Player;
+import Model.Player.PlayerColors;
 import Server.Model.Lobby.LobbyUser;
 
 /**
@@ -31,36 +34,19 @@ public class GameController {
 
 
     //CONTROLLER METHODS
-    /**
-     * Appends personal data to the specified player in the game.
-     *
-     * @param player The player to which the data should be appended.
-     * @param data   The personal data to append.
-     */
-    public void appendPersonalData(Player player, String data){
-        model.appendPersonalData(player, data);
+    public void playCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws NotYourTurnException, MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException {
+        model.playCard(player, cardIndex, coordinateIndex, faceUp);
+    }
+    public void drawCard(Player player, CardPoolTypes cardPoolType, int index) throws NotYourTurnException, MoveAttemptOnWaitStateException, MaxResourceCardsDrawnException, InvalidActionForPlayerStateException, InvalidActionForGameStateException, MaxGoldenCardsDrawnException {
+        model.drawCard(player, cardPoolType, index);
+    }
+    public void pickPlayerColor(Player player, PlayerColors color) throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException {
+        model.pickPlayerColor(player, color);
+    }
+    public void pickPlayerObjective(Player player, int objectiveIndex) throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException {
+        model.pickPlayerObjective(player, objectiveIndex);
     }
 
-    /**
-     * Appends public data to the specified player in the game.
-     *
-     * @param player The player to which the data should be appended.
-     * @param data   The public data to append.
-     */
-    public void appendPublicData(Player player, String data){
-        model.appendPublicData(player, data);
-    }
-
-    /**
-     * Appends personal and public data to the specified player in the game.
-     *
-     * @param player       The player to which the data should be appended.
-     * @param personalData The personal data to append.
-     * @param publicData   The public data to append.
-     */
-    public void appendPersonalPublicData(Player player, String personalData, String publicData){
-        model.appendPersonalPublicData(player, personalData, publicData);
-    }
 
     /**
      * Returns the player object associated to the provided username in this game.
@@ -69,9 +55,5 @@ public class GameController {
      */
     public Player getPlayerByLobbyUser(LobbyUser lobbyUser){
         return model.getPlayerByLobbyUser(lobbyUser);
-    }
-
-    public void quitGame(LobbyUser lobbyUser){
-        model.quitLayer(lobbyUser);
     }
 }

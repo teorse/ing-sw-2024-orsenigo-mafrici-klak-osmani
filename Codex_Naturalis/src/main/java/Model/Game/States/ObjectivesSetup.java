@@ -87,7 +87,7 @@ public class ObjectivesSetup implements GameState{
      * @throws InvalidActionForGameStateException   Always thrown as players are not allowed to place cards in this state.
      */
     @Override
-    public void placeCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws InvalidActionForGameStateException {
+    public void playCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws InvalidActionForGameStateException {
         throw new InvalidActionForGameStateException("You can't place cards yet.");
     }
 

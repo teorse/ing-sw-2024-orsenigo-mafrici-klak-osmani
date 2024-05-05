@@ -25,7 +25,7 @@ public interface GameState {
      * @throws InvalidActionForPlayerStateException     If a player attempts an action that is not valid in their current state.
      * @throws InvalidActionForGameStateException       If a player attempts an action that is not valid in the current game state.
      */
-    void placeCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws MoveAttemptOnWaitStateException, NotYourTurnException, InvalidActionForPlayerStateException, InvalidActionForGameStateException;
+    void playCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws MoveAttemptOnWaitStateException, NotYourTurnException, InvalidActionForPlayerStateException, InvalidActionForGameStateException;
 
 
     /**

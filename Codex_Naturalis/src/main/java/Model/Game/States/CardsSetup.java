@@ -106,7 +106,7 @@ public class CardsSetup implements GameState{
      * @throws InvalidActionForPlayerStateException Thrown if the player attempts an action that is not valid in their current state.
      */
     @Override
-    public void placeCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException {
+    public void playCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException {
         //Throws exception if the player has already performed all his moves for this turn.
         if (player.getPlayerState().equals(PlayerStates.WAIT))
             throw new MoveAttemptOnWaitStateException("You have already performed all moves for this turn.");

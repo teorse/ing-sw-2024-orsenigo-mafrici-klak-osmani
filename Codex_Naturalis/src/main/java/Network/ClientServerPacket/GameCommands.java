@@ -5,9 +5,7 @@ package Network.ClientServerPacket;
  * These commands are placeholders for the demo and may not represent actual game functionality.
  */
 public enum GameCommands {
-
-    //DEMO PURPOSES
-    PUBLIC,
-    PERSONAL,
-    PERSONAL_PUBLIC
+    PLAY_CARD,
+    DRAW_CARD,
+    PICK_OBJECTIVE
 }

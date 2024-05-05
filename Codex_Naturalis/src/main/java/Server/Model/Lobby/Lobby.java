@@ -1,5 +1,7 @@
 package Server.Model.Lobby;
 
+import Model.Game.Game;
+import Model.Game.GameLoader;
 import Network.ServerClientPacket.SCPPrintPlaceholder;
 import Network.ServerClientPacket.ServerClientPacket;
 import Server.Controller.GameController;
@@ -9,7 +11,6 @@ import Server.Interfaces.ServerModelLayer;
 import Server.Model.Lobby.Exceptions.LobbyClosedException;
 import Server.Model.Lobby.Exceptions.InvalidLobbySettingsException;
 import Server.Model.Lobby.Exceptions.LobbyUserAlreadyConnectedException;
-import Server.Model.Lobby.GameDemo.Game;
 import Server.Model.LobbyPreviewObserverRelay;
 import Server.Model.ServerUser;
 import Server.Network.ClientHandler.ClientHandler;
@@ -239,8 +240,8 @@ public class Lobby implements ServerModelLayer {
         String username = lobbyUser.getUsername();
 
         System.out.println("User "+username+" has quit from the lobby");
-        if(gameController != null)
-            gameController.quitGame(lobbyUser);
+        if(gameStarted)
+            game.quit(lobbyUser);
         removeUser(lobbyUser);
     }
 
@@ -256,8 +257,6 @@ public class Lobby implements ServerModelLayer {
 
                 if(gameStarted)
                     game.removePlayer(lobbyUser);
-
-                gameController.quitGame(lobbyUser);
 
                 reconnectionTimers.remove(lobbyUser);
                 System.out.println("User " + username + " has been removed from lobby after disconnection timeout");
@@ -300,7 +299,7 @@ public class Lobby implements ServerModelLayer {
      * Starts the game in the lobby.
      */
     public void startGame(){
-        Game game = new Game(lobbyUsers, this);
+        game = GameLoader.startNewGame(lobbyUsers, this);
         updateGameController(new GameController(game));
 
         System.out.println("Game started in lobby: "+lobbyName);

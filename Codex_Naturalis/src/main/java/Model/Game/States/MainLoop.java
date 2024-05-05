@@ -69,7 +69,7 @@ public class MainLoop implements GameState{
      * @throws InvalidActionForPlayerStateException Thrown if the player attempts an invalid action in their current state.
      */
     @Override
-    public void placeCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws NotYourTurnException, InvalidActionForPlayerStateException {
+    public void playCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws NotYourTurnException, InvalidActionForPlayerStateException {
 
         //Throws exception if it's not the player's turn.
         if (!players.get(currentPlayerIndex).equals(player))
