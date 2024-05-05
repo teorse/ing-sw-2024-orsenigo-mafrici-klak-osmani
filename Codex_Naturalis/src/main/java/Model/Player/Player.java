@@ -4,6 +4,7 @@ import Model.Cards.Card;
 import Model.Objectives.Objective;
 import Server.Interfaces.LayerUser;
 import Server.Model.Lobby.LobbyUser;
+import Server.Model.Lobby.LobbyUserConnectionStates;
 
 import java.util.*;
 
@@ -21,7 +22,6 @@ public class Player implements LayerUser {
     private final List<Objective> secretObjectiveCandidates;
     private final List<Objective> secretObjectives;
     private final CardMap cardMap;
-    private PlayerConnectionStatus connectionStatus;
     private PlayerStates playerState;
     private int points;
     private int objectivesCompleted;
@@ -61,8 +61,8 @@ public class Player implements LayerUser {
     public int getRoundsCompleted() {
         return roundsCompleted;
     }
-    public PlayerConnectionStatus getConnectionStatus() {
-        return connectionStatus;
+    public LobbyUserConnectionStates getConnectionStatus() {
+        return user.getConnectionStatus();
     }
     public PlayerStates getPlayerState() {
         return playerState;

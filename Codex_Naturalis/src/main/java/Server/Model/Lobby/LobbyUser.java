@@ -16,7 +16,7 @@ public class LobbyUser implements Serializable, LayerUser {
     private static final long serialVersionUID = -1039118189828128709L;
     private final ServerUser serverUser;
     private final LobbyRoles role;
-    private String connectionToLobby;
+    private LobbyUserConnectionStates connectionStatus;
 
 
 
@@ -32,7 +32,7 @@ public class LobbyUser implements Serializable, LayerUser {
     public LobbyUser(ServerUser serverUser, LobbyRoles role){
         this.serverUser = serverUser;
         this.role = role;
-        connectionToLobby = "CONNECTED";
+        connectionStatus = LobbyUserConnectionStates.ONLINE;
     }
 
 
@@ -44,14 +44,14 @@ public class LobbyUser implements Serializable, LayerUser {
      * Sets the connection status of the user to online.
      */
     public void setOnline(){
-        connectionToLobby = "CONNECTED";
+        connectionStatus = LobbyUserConnectionStates.OFFLINE;
     }
 
     /**
      * Sets the connection status of the user to offline.
      */
     public void setOffline(){
-        connectionToLobby = "DISCONNECTED";
+        connectionStatus = LobbyUserConnectionStates.OFFLINE;
     }
 
 
@@ -59,8 +59,8 @@ public class LobbyUser implements Serializable, LayerUser {
 
 
     //GETTERS
-    public String getConnectionToLobby(){
-        return this.connectionToLobby;
+    public LobbyUserConnectionStates getConnectionStatus(){
+        return this.connectionStatus;
     }
 
     public LobbyRoles getLobbyRole(){

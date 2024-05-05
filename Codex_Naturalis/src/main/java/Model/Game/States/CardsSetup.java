@@ -6,7 +6,7 @@ import Model.Game.Game;
 import Model.Player.Player;
 import Model.Player.PlayerColors;
 import Model.Game.Table;
-import Model.Player.PlayerConnectionStatus;
+import Server.Model.Lobby.LobbyUserConnectionStates;
 import Model.Player.PlayerStates;
 import Server.Interfaces.LayerUser;
 import Server.Model.Lobby.Lobby;
@@ -280,9 +280,9 @@ public class CardsSetup implements GameState{
      * the transition itself.
      */
     private void nextState(){
-        //If at least one online player that is not yet ready is found then return
+        //If at least one player is not yet ready return
         for(Map.Entry<Player, Boolean> entry : playerReadiness.entrySet()) {
-            if (entry.getKey().getConnectionStatus().equals(PlayerConnectionStatus.ONLINE) && !entry.getValue())
+            if (!entry.getValue())
                 return;
         }
         //If all online players are ready then go to next state.

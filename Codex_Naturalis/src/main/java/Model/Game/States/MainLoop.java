@@ -3,16 +3,14 @@ package Model.Game.States;
 import Model.Cards.Card;
 import Model.Game.Exceptions.InvalidActionForGameStateException;
 import Model.Game.Exceptions.InvalidActionForPlayerStateException;
-import Model.Game.Exceptions.MoveAttemptOnWaitStateException;
 import Model.Game.Exceptions.NotYourTurnException;
 import Model.Game.Game;
 import Model.Game.CardPoolTypes;
 import Model.Game.Table;
 import Model.Player.Player;
 import Model.Player.PlayerColors;
-import Model.Player.PlayerConnectionStatus;
+import Server.Model.Lobby.LobbyUserConnectionStates;
 import Model.Player.PlayerStates;
-import Server.Controller.InputHandler.Exceptions.NotInLobbyException;
 import Server.Interfaces.LayerUser;
 import Server.Model.Lobby.Lobby;
 import Server.Model.Lobby.LobbyUser;
@@ -202,7 +200,6 @@ public class MainLoop implements GameState{
      * Advances the round to the next player's turn.
      */
     private void nextPlayer(){
-        Player currentPlayer = players.get(currentPlayerIndex);
         int playersSize = players.size();
 
         //If current player is the last players call next state.
@@ -214,7 +211,7 @@ public class MainLoop implements GameState{
             for (int i = currentPlayerIndex + 1; i < playersSize; i++) {
                 Player nextPlayer = players.get(i);
                 //Set as current player the first online player found among the remaining ones.
-                if(nextPlayer.getConnectionStatus().equals(PlayerConnectionStatus.ONLINE)){
+                if(nextPlayer.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)){
                     currentPlayerIndex = i;
                     nextPlayer.setPlayerState(PlayerStates.PLACE);
                     return;
@@ -243,10 +240,10 @@ public class MainLoop implements GameState{
 
         //Look for the first(in the list's order) online player in the list and set them as the current player
         for(int i = 0; i < game.getPlayers().size(); i++){
-            if(game.getPlayers().get(i).getConnectionStatus().equals(PlayerConnectionStatus.ONLINE)){
+            if(players.get(i).getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)){
                 currentPlayerIndex = i;
                 //The player found is set as current player.
-                firstPlayer = game.getPlayers().get(currentPlayerIndex);
+                firstPlayer = players.get(currentPlayerIndex);
                 //The player's state is updated to reflect their next expected move
                 firstPlayer.setPlayerState(PlayerStates.PLACE);
                 break;

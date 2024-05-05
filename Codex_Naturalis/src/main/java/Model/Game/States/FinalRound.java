@@ -5,12 +5,12 @@ import Model.Game.Exceptions.InvalidActionForGameStateException;
 import Model.Game.Exceptions.InvalidActionForPlayerStateException;
 import Model.Game.Exceptions.NotYourTurnException;
 import Model.Game.Table;
-import Model.Objectives.Objective;
 import Model.Player.*;
 import Model.Game.Game;
 import Server.Interfaces.LayerUser;
 import Server.Model.Lobby.Lobby;
 import Server.Model.Lobby.LobbyUser;
+import Server.Model.Lobby.LobbyUserConnectionStates;
 
 import java.util.List;
 import java.util.Map;
@@ -181,22 +181,26 @@ public class FinalRound implements GameState{
      * Advances the game to the next player's turn.
      */
     private void nextPlayer(){
-        Player currentPlayer = game.getPlayers().get(currentPlayerIndex);
+        Player currentPlayer = players.get(currentPlayerIndex);
         currentPlayer.setPlayerState(PlayerStates.WAIT);
-        int playerCount = game.getPlayers().size();
+        int playerCount = players.size();
 
+        //If the current player is the last player then go to the next state
         if(currentPlayerIndex +1 == playerCount)
             nextState();
         else {
-            for (int i = currentPlayerIndex + 1; i < game.getPlayers().size(); i++) {
-                Player nextPlayer = game.getPlayers().get(i);
-                if(nextPlayer.getConnectionStatus().equals(PlayerConnectionStatus.ONLINE)){
+            //If the current player is not the last one then go through the remaining players
+            for (int i = currentPlayerIndex + 1; i < players.size(); i++) {
+                Player nextPlayer = players.get(i);
+                //The first among the remaining players that is found online is set as next player.
+                if(nextPlayer.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)){
                     currentPlayerIndex = i;
                     nextPlayer.setPlayerState(PlayerStates.PLACE);
                     return;
                 }
             }
 
+            //If no eligible players were found after the current player then advance to next round.
             nextState();
         }
     }
@@ -217,11 +221,11 @@ public class FinalRound implements GameState{
         Player firstPlayer;
 
         //Look for the first(in the list's order) online player in the list and set them as the current player
-        for(int i = 0; i < game.getPlayers().size(); i++){
-            if(game.getPlayers().get(i).getConnectionStatus().equals(PlayerConnectionStatus.ONLINE)){
+        for(int i = 0; i < players.size(); i++){
+            if(players.get(i).getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)){
                 currentPlayerIndex = i;
                 //The player found is set as current player.
-                firstPlayer = game.getPlayers().get(currentPlayerIndex);
+                firstPlayer = players.get(currentPlayerIndex);
                 //The player's state is updated to reflect their next expected move
                 firstPlayer.setPlayerState(PlayerStates.PLACE);
                 break;

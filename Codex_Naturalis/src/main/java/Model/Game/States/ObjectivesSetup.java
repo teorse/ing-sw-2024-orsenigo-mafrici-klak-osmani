@@ -8,7 +8,7 @@ import Model.Game.Game;
 import Model.Game.Table;
 import Model.Player.Player;
 import Model.Player.PlayerColors;
-import Model.Player.PlayerConnectionStatus;
+import Server.Model.Lobby.LobbyUserConnectionStates;
 import Model.Player.PlayerStates;
 import Server.Interfaces.LayerUser;
 import Server.Model.Lobby.Lobby;
@@ -165,7 +165,8 @@ public class ObjectivesSetup implements GameState{
 
     /**
      * Handles disconnection of a user from the game.<br>
-     * This method prepares the game for later player removal (which will be triggered by the outside lobby by calling
+     * This method prepares the game for later player removal, it does not directly remove the player
+     * (the removal will be triggered by the outside lobby by calling
      * the remove method).
      *
      * @param user The user who disconnected.
@@ -198,9 +199,9 @@ public class ObjectivesSetup implements GameState{
      * the transition itself.
      */
     private void nextState(){
-        //If at least one online player that is not yet ready is found then return
+        //If at least one player is not yet ready then return
         for(Map.Entry<Player, Boolean> entry : playerReadiness.entrySet()) {
-            if (entry.getKey().getConnectionStatus().equals(PlayerConnectionStatus.ONLINE) && !entry.getValue())
+            if (!entry.getValue())
                 return;
         }
         //If all online players are ready then go to next state.

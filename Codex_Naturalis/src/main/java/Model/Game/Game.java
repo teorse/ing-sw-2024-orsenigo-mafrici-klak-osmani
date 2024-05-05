@@ -31,6 +31,10 @@ public class Game implements ServerModelLayer {
     private GameState state;
     private final List<Player> winners;
 
+
+    //todo add procedures to start time-out if only 1 player is left in session or if no players are left
+
+
     /**
      * Stores number of rounds completed by the table.<br>
      * A round is deemed completed if all the currently online players have completed their turn for the current round.

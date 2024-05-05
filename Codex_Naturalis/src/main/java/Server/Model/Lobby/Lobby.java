@@ -167,7 +167,7 @@ public class Lobby implements ServerModelLayer {
         LobbyUser lobbyUser = serverUserToLobbyUser.get(serverUser);
 
         //If reconnecting to user that is not actually DISCONNECTED throw exception
-        if(!lobbyUser.getConnectionToLobby().equals("DISCONNECTED")){
+        if(!lobbyUser.getConnectionStatus().equals(LobbyUserConnectionStates.OFFLINE)){
             throw new LobbyUserAlreadyConnectedException("user "+lobbyUser.getUsername()+" is already connected to "+lobbyName);
         }
 
@@ -352,7 +352,7 @@ public class Lobby implements ServerModelLayer {
      */
     public void sendPacket(LobbyUser lobbyUser, ServerClientPacket message){
 
-        if(lobbyUser.getConnectionToLobby().equals("CONNECTED")) {
+        if(lobbyUser.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)) {
             ClientHandler ch = lobbyUserConnection.get(lobbyUser);
             ch.sendPacket(message);
         }
@@ -368,7 +368,7 @@ public class Lobby implements ServerModelLayer {
      */
     public void broadcastPacket(ServerClientPacket message){
         for(LobbyUser lobbyUser : lobbyUsers){
-            if(lobbyUser.getConnectionToLobby().equals("CONNECTED")) {
+            if(lobbyUser.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)) {
                 ClientHandler ch = lobbyUserConnection.get(lobbyUser);
                 ch.sendPacket(message);
             }
