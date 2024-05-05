@@ -5,9 +5,8 @@ import Model.Player.CardMap;
 import Model.Player.CardVisibility;
 import Model.Utility.Artifacts;
 import Model.Utility.Coordinates;
-import Model.Utility.JsonParser.CardJsonSerializer;
+import Model.Utility.JsonParser.CardJsonSerializerDebug;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -144,7 +143,7 @@ class ObjectiveGeometricTest {
                 throw new RuntimeException(e);
             }
 
-            List<Card> cards = CardJsonSerializer.deserializeCardResourceList(cardJson);
+            List<Card> cards = CardJsonSerializerDebug.deserializeCardResourceList(cardJson);
             List<Artifacts> testArtifacts = new ArrayList<>();
             List<Card> testCards = new ArrayList<>();
             for (Card card : cards){
@@ -204,7 +203,7 @@ class ObjectiveGeometricTest {
                 throw new RuntimeException(e);
             }
 
-            List<Card> cards = CardJsonSerializer.deserializeCardResourceList(cardJson);
+            List<Card> cards = CardJsonSerializerDebug.deserializeCardResourceList(cardJson);
 
 
             listOfCoordinatesToBeUsed.add(new Coordinates(0,0));
@@ -258,7 +257,7 @@ class ObjectiveGeometricTest {
             throw new RuntimeException(e);
         }
 
-        List<Card> cards = CardJsonSerializer.deserializeCardResourceList(cardJson);
+        List<Card> cards = CardJsonSerializerDebug.deserializeCardResourceList(cardJson);
 
 
         listOfCoordinatesToBeUsed.add(new Coordinates(0,0));
@@ -332,7 +331,7 @@ class ObjectiveGeometricTest {
                 throw new RuntimeException(e);
             }
 
-            List<Card> cards = CardJsonSerializer.deserializeCardResourceList(cardJson);
+            List<Card> cards = CardJsonSerializerDebug.deserializeCardResourceList(cardJson);
             List<Artifacts> testArtifacts = new ArrayList<>();
             List<Card> testCards = new ArrayList<>();
             for (Card card : cards){

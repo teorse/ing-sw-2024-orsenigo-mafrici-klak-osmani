@@ -4,36 +4,27 @@ import Model.Cards.Card;
 import Model.Cards.CardGolden;
 import Model.Cards.CardResource;
 import Model.Cards.CardStarter;
-import Model.Utility.JsonParser.SupportClasses.CardResourceSupportClass;
-import Model.Utility.JsonParser.SupportClasses.CardGoldenSupportClass;
-import Model.Utility.JsonParser.SupportClasses.CardStarterSupportClass;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
-import java.util.ArrayList;
+import java.lang.reflect.Type;
 import java.util.List;
 
+
 /**
- * Class contains static methods to serialize Card->Json and to deserialize Json->Card Objects using the gson library.<br>
- * <ul>
- *     <li><b>SERIALIZATION</b>: It is achieved with standard gson library methods.</li>
- *     <li><b>DESERIALIZATION</b>: By default, the gson parser does not check that the deserialized object matches class specifications because
- *     it bypasses the constructors for the class.<br>
- *     This implementation makes use of support classes to enforce the usage of constructors in the following way:<br>
- *     <ol>
- *          <li>Gson is used to parse the input string and is deserialized into an instance of the support class.</li>
- *          <li>The support class contains the logic to check that the values read with gson do not break class specifications.</li>
- *          <li>If the check is successful, the support class creates and returns the object of the actual class using the appropriate constructors.</li>
- *      </ol></li>
- * </ul>
+ * A utility class for serializing and deserializing {@link Model.Cards.Card} objects and lists of Cards
+ * to and from JSON format using the Gson library.<br>
+ * Serialization is achieved with one method for all Card classes, de-serialization has to be done using the method for the
+ * specific dynamic type.
  */
 public class CardJsonSerializer {
     //OBJECT SERIALIZER
     /**
-     * Method serializes all polymorphisms of Card objects into Json strings using gson library.
-     * @param card Card object to be serialized.
-     * @return Json String of serialized card.
+     * Serializes a single {@link Model.Cards.Card} object to JSON format.
+     *
+     * @param card The card to be serialized.
+     * @return The JSON representation of the card.
      */
     public static String serializeCard(Card card){
         GsonBuilder builder = new GsonBuilder();
@@ -46,204 +37,116 @@ public class CardJsonSerializer {
     }
 
     //LIST SERIALIZER
-
     /**
-     * Method serializes List of Card objects into Json strings of Cards separated by CARD_OVER keyword.<br>
-     * Method uses serializeCard to serialize individual List entries and joins them using CARD_OVER as separator keyword.
-     * @param cardList  List of cards to be serialized.
-     * @return  Json String of serialized List.
+     * Serializes a list of {@link Model.Cards.Card} objects to JSON format.
+     *
+     * @param cardList The list of cards to be serialized.
+     * @return The JSON representation of the list of cards.
      */
     public static String serializeCardList(List<Card> cardList){
-        StringBuilder jsonResult = new StringBuilder();
-
-        for(int i =0; i< cardList.size(); i++){
-            if(i > 0)
-                jsonResult.append("CARD_OVER\n");
-            jsonResult.append(serializeCard(cardList.get(i)));
-        }
-
-        return jsonResult.toString();
-    }
-
-
-
-
-
-    //OBJECT DESERIALIZERS
-
-    /**
-     * Method deserializes Json strings into CardResource objects Typecast to Card type.<br>
-     * @param string String containing Json to deserialize.
-     * @return  CardResource object Typecast to Card deserialized from input string.
-     */
-    public static Card deserializeCardResource(String string){
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder
                 .enableComplexMapKeySerialization()
                 .setPrettyPrinting()
                 .create();
 
-        gson.getAdapter(CardResourceSupportClass.class);
-        CardResourceSupportClass cardSupport = gson.fromJson(string, CardResourceSupportClass.class);
-
-        return cardSupport.createCardResource();
+        return gson.toJson(cardList);
     }
 
+
+
+
+
+    //OBJECT DESERIALIZER
     /**
-     * Method deserializes Json strings into CardGolden objects Typecast to Card type.<br>
-     * @param string String containing Json to deserialize.
-     * @return  CardGolden object Typecast to Card deserialized from input string.
+     * Deserializes a JSON string into a {@link Model.Cards.CardResource} object.
+     *
+     * @param string The JSON string to be deserialized.
+     * @return The deserialized {@link Model.Cards.CardResource} object.
      */
-    public static Card deserializeCardGolden(String string){
+    public static CardResource deserializeCardResource(String string){
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder
                 .enableComplexMapKeySerialization()
                 .setPrettyPrinting()
                 .create();
 
-        gson.getAdapter(CardGoldenSupportClass.class);
-        CardGoldenSupportClass cardSupport = gson.fromJson(string, CardGoldenSupportClass.class);
-
-        return cardSupport.createGoldenCard();
+        return gson.fromJson(string, CardResource.class);
     }
 
     /**
-     * Method deserializes Json strings into CardStarter objects Typecast to Card type.<br>
-     * @param string String containing Json to deserialize.
-     * @return  CardStarter object Typecast to Card deserialized from input string.
+     * Deserializes a JSON string into a {@link Model.Cards.CardGolden} object.
+     *
+     * @param string The JSON string to be deserialized.
+     * @return The deserialized {@link Model.Cards.CardGolden} object.
      */
-    public static Card deserializeCardStarter(String string){
+    public static CardGolden deserializeCardGolden(String string){
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder
                 .enableComplexMapKeySerialization()
                 .setPrettyPrinting()
                 .create();
 
-        gson.getAdapter(CardStarterSupportClass.class);
-        CardStarterSupportClass cardSupport = gson.fromJson(string, CardStarterSupportClass.class);
+        return gson.fromJson(string, CardGolden.class);
+    }
 
-        return cardSupport.createCardStarter();
+    /**
+     * Deserializes a JSON string into a {@link Model.Cards.CardStarter} object.
+     *
+     * @param string The JSON string to be deserialized.
+     * @return The deserialized {@link Model.Cards.CardStarter} object.
+     */
+    public static CardStarter deserializeCardStarter(String string){
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder
+                .enableComplexMapKeySerialization()
+                .setPrettyPrinting()
+                .create();
+
+        return gson.fromJson(string, CardStarter.class);
     }
 
 
 
 
 
-    //LIST DESERIALIZERS
-
+    //LIST DESERIALIZER
     /**
-     * Method splits provided string using CARD_OVER separator keyword and feeds the substrings to deserializeCardResource().
-     * Then it puts the serialized cards into a Map and returns the map.
-     * @param jsonString    String containing Json to deserialize.
-     * @return  List containing Resource Cards deserialized from input string.
+     * Deserializes a JSON string into a list of {@link Model.Cards.CardResource} objects.
+     *
+     * @param string The JSON string to be deserialized.
+     * @return The deserialized list of {@link Model.Cards.CardResource} objects.
      */
-    public static List<Card> deserializeCardResourceList(String jsonString){
-        if(jsonString == null)
-            throw new IllegalArgumentException("Provided string is null.");
+    public static List<CardResource> deserializeCardResourceList(String string){
+        Type CardResourceList = new TypeToken<List<CardResource>>(){}.getType();
 
-        List<Card> cardList = new ArrayList<>();
-
-        String[] cardStrings = jsonString.split("CARD_OVER");
-
-        int i = 0;
-        for (String cardString : cardStrings) {
-            try {
-                if (cardStrings.length > 1 && cardString.trim().isEmpty())
-                    throw new JsonSyntaxException("Missing card object after CARD_OVER");
-
-                cardList.add(deserializeCardResource(cardString.trim()));
-            }
-            catch (IllegalArgumentException m){
-                throw new IllegalArgumentException("Exception thrown reading card number "+i+":\n"+m);
-            }
-            catch (JsonSyntaxException m){
-                throw new JsonSyntaxException("Exception thrown reading card number "+i+":\n"+m);
-            }
-            catch (NullPointerException m){
-                throw new NullPointerException("Exception thrown reading card number "+i+":\n"+m);
-            }
-
-            i++;
-        }
-
-    return cardList;
+        Gson gson = new Gson();
+        return gson.fromJson(string, CardResourceList);
     }
 
     /**
-     * Method splits provided string using CARD_OVER separator keyword and feeds the substrings to deserializeCardGolden().
-     * Then it puts the serialized cards into a Map and returns the map.
-     * @param jsonString    String containing Json to deserialize.
-     * @return  List containing Golden Cards deserialized from input string.
+     * Deserializes a JSON string into a list of {@link Model.Cards.CardGolden} objects.
+     *
+     * @param string The JSON string to be deserialized.
+     * @return The deserialized list of {@link Model.Cards.CardGolden} objects.
      */
-    public static List<Card> deserializeCardGoldenList(String jsonString){
-        if(jsonString == null)
-            throw new IllegalArgumentException("Provided string is null.");
+    public static List<CardGolden> deserializeCardGoldenList(String string){
+        Type CardGoldenList = new TypeToken<List<CardGolden>>(){}.getType();
 
-        List<Card> cardList = new ArrayList<>();
-
-        String[] cardStrings = jsonString.split("CARD_OVER");
-
-        int i = 0;
-        for (String cardString : cardStrings) {
-            try {
-
-
-                if (cardStrings.length > 1 && cardString.trim().isEmpty())
-                    throw new JsonSyntaxException("Missing card object after CARD_OVER");
-
-                cardList.add(deserializeCardGolden(cardString.trim()));
-            }
-            catch (IllegalArgumentException m){
-                throw new IllegalArgumentException("Exception thrown reading card number "+i+":\n"+m);
-            }
-            catch (JsonSyntaxException m){
-                throw new JsonSyntaxException("Exception thrown reading card number "+i+":\n"+m);
-            }
-            catch (NullPointerException m){
-                throw new NullPointerException("Exception thrown reading card number "+i+":\n"+m);
-            }
-
-            i++;
-        }
-
-        return cardList;
+        Gson gson = new Gson();
+        return gson.fromJson(string, CardGoldenList);
     }
 
     /**
-     * Method splits provided string using CARD_OVER separator keyword and feeds the substrings to deserializeCardStarter().
-     * Then it puts the serialized cards into a Map and returns the map.
-     * @param jsonString    String containing Json to deserialize.
-     * @return  List containing Starter Cards deserialized from input string.
+     * Deserializes a JSON string into a list of {@link Model.Cards.CardStarter} objects.
+     *
+     * @param string The JSON string to be deserialized.
+     * @return The deserialized list of {@link Model.Cards.CardStarter} objects.
      */
-    public static List<Card> deserializeCardStarterList(String jsonString){
-        if(jsonString == null)
-            throw new IllegalArgumentException("Provided string is null.");
+    public static List<CardStarter> deserializeCardStarterList(String string){
+        Type CardStarterList = new TypeToken<List<CardStarter>>(){}.getType();
 
-        List<Card> cardList = new ArrayList<>();
-
-        String[] cardStrings = jsonString.split("CARD_OVER");
-
-        int i = 0;
-        for (String cardString : cardStrings) {
-            try{
-                if(cardStrings.length > 1 && cardString.trim().isEmpty())
-                    throw new JsonSyntaxException("Missing card object after CARD_OVER");
-
-                cardList.add(deserializeCardStarter(cardString.trim()));
-            }
-            catch (IllegalArgumentException m){
-                throw new IllegalArgumentException("Exception thrown reading card number "+i+":\n"+m);
-            }
-            catch (JsonSyntaxException m){
-                throw new JsonSyntaxException("Exception thrown reading card number "+i+":\n"+m);
-            }
-            catch (NullPointerException m){
-                throw new NullPointerException("Exception thrown reading card number "+i+":\n"+m);
-            }
-
-            i++;
-        }
-
-        return cardList;
+        Gson gson = new Gson();
+        return gson.fromJson(string, CardStarterList);
     }
 }

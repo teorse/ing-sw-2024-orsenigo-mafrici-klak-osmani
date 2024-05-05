@@ -4,7 +4,7 @@ import Model.Cards.*;
 import Model.Utility.Artifacts;
 
 import Model.Utility.Coordinates;
-import Model.Utility.JsonParser.CardJsonSerializer;
+import Model.Utility.JsonParser.CardJsonSerializerDebug;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -48,9 +48,9 @@ public class CardMapTest {
                 System.out.println(m);
             }
 
-            resourceCards = CardJsonSerializer.deserializeCardResourceList(resourceCardsJson);
-            goldenCards = CardJsonSerializer.deserializeCardGoldenList(goldenCardsJson);
-            starterCards = CardJsonSerializer.deserializeCardStarterList(starterCardsJson);
+            resourceCards = CardJsonSerializerDebug.deserializeCardResourceList(resourceCardsJson);
+            goldenCards = CardJsonSerializerDebug.deserializeCardGoldenList(goldenCardsJson);
+            starterCards = CardJsonSerializerDebug.deserializeCardStarterList(starterCardsJson);
         }
 
         @Test
@@ -600,7 +600,7 @@ public class CardMapTest {
                 System.out.println(m);
             }
 
-            defaultResourceCards = CardJsonSerializer.deserializeCardResourceList(defaultResourceCardsJson);
+            defaultResourceCards = CardJsonSerializerDebug.deserializeCardResourceList(defaultResourceCardsJson);
 
             setUpScenario0();
             setUpScenario1();

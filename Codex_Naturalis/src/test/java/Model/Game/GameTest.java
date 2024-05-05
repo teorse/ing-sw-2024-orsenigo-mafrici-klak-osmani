@@ -4,8 +4,7 @@ import Model.Cards.Card;
 import Model.Objectives.Objective;
 import Model.Objectives.ObjectiveNumeric;
 import Model.Player.Player;
-import Model.Utility.JsonParser.CardJsonSerializer;
-import Server.Model.Lobby.Lobby;
+import Model.Utility.JsonParser.CardJsonSerializerDebug;
 import Server.Model.Lobby.LobbyRoles;
 import Server.Model.Lobby.LobbyUser;
 import Server.Model.ServerUser;
@@ -53,7 +52,7 @@ class GameTest {
             }
 
             for(int i = 0; i<6; i++){
-                sampleCards.add(CardJsonSerializer.deserializeCardResourceList(cardJson));
+                sampleCards.add(CardJsonSerializerDebug.deserializeCardResourceList(cardJson));
             }
 
             List<Objective> sampleObjectives1 = new ArrayList<>(){{
@@ -110,8 +109,8 @@ class GameTest {
             catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            sampleCards1 = CardJsonSerializer.deserializeCardResourceList(cardJson);
-            sampleCards2 = CardJsonSerializer.deserializeCardResourceList(cardJson);
+            sampleCards1 = CardJsonSerializerDebug.deserializeCardResourceList(cardJson);
+            sampleCards2 = CardJsonSerializerDebug.deserializeCardResourceList(cardJson);
 
 
             List<Player> players;
@@ -176,8 +175,8 @@ class GameTest {
             catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            sampleCards1 = CardJsonSerializer.deserializeCardResourceList(cardJson);
-            sampleCards2 = CardJsonSerializer.deserializeCardResourceList(cardJson);
+            sampleCards1 = CardJsonSerializerDebug.deserializeCardResourceList(cardJson);
+            sampleCards2 = CardJsonSerializerDebug.deserializeCardResourceList(cardJson);
 
 
 
@@ -243,8 +242,8 @@ class GameTest {
             catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            sampleCards1 = CardJsonSerializer.deserializeCardResourceList(cardJson);
-            sampleCards2 = CardJsonSerializer.deserializeCardResourceList(cardJson);
+            sampleCards1 = CardJsonSerializerDebug.deserializeCardResourceList(cardJson);
+            sampleCards2 = CardJsonSerializerDebug.deserializeCardResourceList(cardJson);
 
 
 
@@ -310,8 +309,8 @@ class GameTest {
             catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            sampleCards1 = CardJsonSerializer.deserializeCardResourceList(cardJson);
-            sampleCards2 = CardJsonSerializer.deserializeCardResourceList(cardJson);
+            sampleCards1 = CardJsonSerializerDebug.deserializeCardResourceList(cardJson);
+            sampleCards2 = CardJsonSerializerDebug.deserializeCardResourceList(cardJson);
 
 
 
@@ -380,8 +379,8 @@ class GameTest {
             catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            sampleCards1 = CardJsonSerializer.deserializeCardResourceList(cardJson);
-            sampleCards2 = CardJsonSerializer.deserializeCardResourceList(cardJson);
+            sampleCards1 = CardJsonSerializerDebug.deserializeCardResourceList(cardJson);
+            sampleCards2 = CardJsonSerializerDebug.deserializeCardResourceList(cardJson);
 
 
 
@@ -454,8 +453,8 @@ class GameTest {
             catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            sampleCards1 = CardJsonSerializer.deserializeCardResourceList(cardJson);
-            sampleCards2 = CardJsonSerializer.deserializeCardResourceList(cardJson);
+            sampleCards1 = CardJsonSerializerDebug.deserializeCardResourceList(cardJson);
+            sampleCards2 = CardJsonSerializerDebug.deserializeCardResourceList(cardJson);
 
 
 
@@ -556,7 +555,7 @@ class GameTest {
             }
 
             for (int i = 0; i < 6; i++) {
-                sampleCards.add(CardJsonSerializer.deserializeCardResourceList(cardJson));
+                sampleCards.add(CardJsonSerializerDebug.deserializeCardResourceList(cardJson));
             }
 
             List<Objective> sampleObjectives1 = new ArrayList<>() {{
