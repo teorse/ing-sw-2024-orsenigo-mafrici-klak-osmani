@@ -1,6 +1,10 @@
 package Model.Game.States;
 
 import Model.Cards.Card;
+import Model.Game.Exceptions.InvalidActionForGameStateException;
+import Model.Game.Exceptions.InvalidActionForPlayerStateException;
+import Model.Game.Exceptions.MoveAttemptOnWaitStateException;
+import Model.Game.Exceptions.NotYourTurnException;
 import Model.Game.Game;
 import Model.Game.CardPoolTypes;
 import Model.Game.Table;
@@ -8,6 +12,7 @@ import Model.Player.Player;
 import Model.Player.PlayerColors;
 import Model.Player.PlayerConnectionStatus;
 import Model.Player.PlayerStates;
+import Server.Controller.InputHandler.Exceptions.NotInLobbyException;
 import Server.Interfaces.LayerUser;
 import Server.Model.Lobby.Lobby;
 import Server.Model.Lobby.LobbyUser;
@@ -54,64 +59,60 @@ public class MainLoop implements GameState{
 
 
     //STATE PATTERN METHODS
+
     /**
      * {@inheritDoc}
+     *
+     * @param player          The player who is placing the card.
+     * @param cardIndex       The index of the card in the player's hand.
+     * @param coordinateIndex The index of the available coordinate in the cardMap where the card will be placed.
+     * @param faceUp          True if the card should be placed face up, false if face down.
+     * @throws NotYourTurnException                 Thrown if the player attempts to place a card out of turn.
+     * @throws InvalidActionForPlayerStateException Thrown if the player attempts an invalid action in their current state.
      */
     @Override
-    public void placeCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) {
-        int points;
+    public void placeCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws NotYourTurnException, InvalidActionForPlayerStateException {
 
-        try {
-            //Throws exception if the player has already performed all his moves for this turn.
-            if (player.getPlayerState().equals(PlayerStates.WAIT))
-                throw new RuntimeException("You have already performed all moves for this turn.");
+        //Throws exception if it's not the player's turn.
+        if (!players.get(currentPlayerIndex).equals(player))
+            throw new NotYourTurnException("Wait for your turn!");
 
-            //Throws exception if it's not the player's turn.
-            else if (!players.get(currentPlayerIndex).equals(player)) {
-                throw new RuntimeException("Wait for your turn.");
-            }
+        //Throws exception if the player can't perform this move.
+        else if (!player.getPlayerState().equals(PlayerStates.PLACE))
+            throw new InvalidActionForPlayerStateException("You can't perform this move in your current state, please perform a DRAW action.");
 
-            //Throws exception if the player can't perform this move.
-            else if (!player.getPlayerState().equals(PlayerStates.PLACE))
-                throw new RuntimeException("You can't perform this move at the moment.");
+        //The rest of the method is executed if the player is actually allowed to perform the move.
+        player.playCard(cardIndex, coordinateIndex, faceUp);
+        player.setPlayerState(PlayerStates.DRAW);
 
-            //The rest of the method is executed if the player is actually allowed to perform the move.
-            player.playCard(cardIndex, coordinateIndex, faceUp);
-            player.setPlayerState(PlayerStates.DRAW);
-        }
-        catch (RuntimeException e){
-            System.out.println(e);
-        }
+
         game.checkGameEndingConditions();
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @param player       The player who is drawing the card.
+     * @param cardPoolType The type of card pool from which the card will be drawn.
+     * @param index        The index of the card in the card pool.
+     * @throws NotYourTurnException                 Thrown if the player attempts to draw a card out of turn.
+     * @throws InvalidActionForPlayerStateException Thrown if the player attempts an invalid action in their current state.
      */
     @Override
-    public void drawCard(Player player, CardPoolTypes cardPoolType, int index) {
-        try{
-            //Throws exception if the player has already performed all his moves for this turn.
-            if (player.getPlayerState().equals(PlayerStates.WAIT))
-                throw new RuntimeException("You have already performed all moves for this turn.");
+    public void drawCard(Player player, CardPoolTypes cardPoolType, int index) throws NotYourTurnException, InvalidActionForPlayerStateException{
+        //Throws exception if it's not the player's turn.
+        if (!players.get(currentPlayerIndex).equals(player))
+            throw new NotYourTurnException("Wait for your turn!");
 
-            //Throws exception if it's not the player's turn.
-            else if (!players.get(currentPlayerIndex).equals(player)) {
-                throw new RuntimeException("Wait for your turn.");
-            }
+        //Throws exception if the player can't perform this move.
+        else if (!player.getPlayerState().equals(PlayerStates.DRAW))
+            throw new InvalidActionForPlayerStateException("You can't perform this move in your current state, please perform a PLACE action.");
 
-            //Throws exception if the player can't perform this move.
-            else if (!player.getPlayerState().equals(PlayerStates.DRAW))
-                throw new RuntimeException("You can't perform this move at the moment.");
+        //The rest of the method is executed if the player is actually allowed to perform the move.
 
-            //The rest of the method is executed if the player is actually allowed to perform the move.
+        Card cardDrawn = table.drawCard(cardPoolType, index);
+        player.addCardHeld(cardDrawn);
 
-            Card cardDrawn = table.drawCard(cardPoolType, index);
-            player.addCardHeld(cardDrawn);
-        }
-        catch(RuntimeException e){
-            System.out.println(e);
-        }
         player.setPlayerState(PlayerStates.WAIT);
 
         game.checkGameEndingConditions();
@@ -119,19 +120,27 @@ public class MainLoop implements GameState{
     }
 
     /**
-     * The method notifies the player that they are not allowed to perform this move during this state of the game.
+     * The method throws an exception as players are not allowed to perform this move during this state of the game.
+     *
+     * @param player The player who is picking the color.
+     * @param color  The color chosen by the player.
+     * @throws InvalidActionForGameStateException   Always thrown as players are not allowed to pick colors in the main loop state.
      */
     @Override
-    public void pickPlayerColor(Player player, PlayerColors color) {
-        throw new RuntimeException("You can't pick your character color in this state");
+    public void pickPlayerColor(Player player, PlayerColors color) throws InvalidActionForGameStateException {
+        throw new InvalidActionForGameStateException("You can't pick your character color in this game state");
     }
 
     /**
-     * The method notifies the player that they are not allowed to perform this move during this state of the game.
+     * The method throws an exception as players are not allowed to perform this move during this state of the game.
+     *
+     * @param player        The player who is picking the objective.
+     * @param objectiveIndex The index of the objective the player is picking.
+     * @throws InvalidActionForGameStateException   Always thrown as players are not allowed to pick objectives in the main loop state.
      */
     @Override
-    public void pickPlayerObjective(Player player, int objectiveIndex) {
-        throw new RuntimeException("You can't pick your secret objective in this state");
+    public void pickPlayerObjective(Player player, int objectiveIndex) throws InvalidActionForGameStateException {
+        throw new InvalidActionForGameStateException("You can't pick your secret objective in this game state");
     }
 
     /**

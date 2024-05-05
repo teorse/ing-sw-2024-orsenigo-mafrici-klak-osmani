@@ -1,6 +1,9 @@
 package Model.Game.States;
 
 import Model.Game.CardPoolTypes;
+import Model.Game.Exceptions.InvalidActionForGameStateException;
+import Model.Game.Exceptions.InvalidActionForPlayerStateException;
+import Model.Game.Exceptions.NotYourTurnException;
 import Model.Game.Table;
 import Model.Objectives.Objective;
 import Model.Player.*;
@@ -51,59 +54,70 @@ public class FinalRound implements GameState{
 
 
     //STATE PATTERN METHODS
+
     /**
      * {@inheritDoc}
+     *
+     * @param player          The player who is placing the card.
+     * @param cardIndex       The index of the card in the player's hand.
+     * @param coordinateIndex The index of the available coordinate in the cardMap where the card will be placed.
+     * @param faceUp          True if the card should be placed face up, false if face down.
+     * @throws NotYourTurnException                 Thrown if the player attempts to place a card out of turn.
+     * @throws InvalidActionForPlayerStateException Thrown if the player attempts an invalid action in their current state.
      */
     @Override
-    public void placeCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) {
-        int points;
+    public void placeCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws NotYourTurnException, InvalidActionForPlayerStateException {
+        //Throws exception if it's not the player's turn.
+        if (!players.get(currentPlayerIndex).equals(player))
+            throw new NotYourTurnException("Wait for your turn!");
 
-        try {
-            //Throws exception if the player has already performed all his moves for this turn.
-            if (player.getPlayerState().equals(PlayerStates.WAIT))
-                throw new RuntimeException("You have already performed all moves for this turn.");
+        //Throws exception if the player can't perform this move.
+        else if (!player.getPlayerState().equals(PlayerStates.PLACE))
+            throw new InvalidActionForPlayerStateException("You can't perform this move in your current state, please perform a DRAW action.");
 
-            //Throws exception if it's not the player's turn.
-            else if (!players.get(currentPlayerIndex).equals(player)) {
-                throw new RuntimeException("Wait for your turn.");
-            }
+        //The rest of the method is executed if the player is actually allowed to perform the move.
+        player.playCard(cardIndex, coordinateIndex, faceUp);
+        player.setPlayerState(PlayerStates.WAIT);
 
-            //Throws exception if the player can't perform this move.
-            else if (!player.getPlayerState().equals(PlayerStates.PLACE))
-                throw new RuntimeException("You can't perform this move at the moment.");
-
-            //The rest of the method is executed if the player is actually allowed to perform the move.
-            player.playCard(cardIndex, coordinateIndex, faceUp);
-            player.setPlayerState(PlayerStates.WAIT);
-        }
-        catch (RuntimeException e){
-            System.out.println(e);
-        }
         nextPlayer();
     }
 
     /**
-     * The method notifies the player that they are not allowed to perform this move during this state of the game.
+     * The method throws an exception as players are not allowed to perform this move during this state of the game.<br>
+     * (Drawing cards in the final round is useless as they are not going to be ever used as this is the last round)
+     *
+     * @param player       The player who is drawing the card.
+     * @param cardPoolType The type of card pool from which the card will be drawn.
+     * @param index        The index of the card in the card pool.
+     * @throws InvalidActionForGameStateException   Always thrown as players are not allowed to draw cards in the final round.
      */
     @Override
-    public void drawCard(Player player, CardPoolTypes cardPoolType, int index) {
-        throw new RuntimeException("You can't draw a new card during the final round");
+    public void drawCard(Player player, CardPoolTypes cardPoolType, int index) throws InvalidActionForGameStateException {
+        throw new InvalidActionForGameStateException("You don't need to draw a new card during the final round");
     }
 
     /**
-     * The method notifies the player that they are not allowed to perform this move during this state of the game.
+     * The method throws an exception as players are not allowed to perform this move during this state of the game.
+     *
+     * @param player The player who is picking the color.
+     * @param color  The color chosen by the player.
+     * @throws InvalidActionForGameStateException   Always thrown as players are not allowed to pick colors in the final round.
      */
     @Override
-    public void pickPlayerColor(Player player, PlayerColors color) {
-        throw new RuntimeException("You can't pick your character color in this state");
+    public void pickPlayerColor(Player player, PlayerColors color) throws InvalidActionForGameStateException {
+        throw new InvalidActionForGameStateException("You can't pick your character color in this state");
     }
 
     /**
-     * The method notifies the player that they are not allowed to perform this move during this state of the game.
+     * The method throws an exception as players are not allowed to perform this move during this state of the game.
+     *
+     * @param player        The player who is picking the objective.
+     * @param objectiveIndex The index of the objective the player is picking.
+     * @throws InvalidActionForGameStateException   Always thrown as players are not allowed to pick objectives in the final round.
      */
     @Override
-    public void pickPlayerObjective(Player player, int objectiveIndex) {
-        throw new RuntimeException("You can't pick your secret objective in this state");
+    public void pickPlayerObjective(Player player, int objectiveIndex) throws InvalidActionForGameStateException {
+        throw new InvalidActionForGameStateException("You can't pick your secret objective in this state");
     }
 
     /**

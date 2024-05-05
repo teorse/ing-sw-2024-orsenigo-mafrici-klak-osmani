@@ -1,6 +1,9 @@
 package Model.Game.States;
 
 import Model.Game.CardPoolTypes;
+import Model.Game.Exceptions.InvalidActionForGameStateException;
+import Model.Game.Exceptions.InvalidActionForPlayerStateException;
+import Model.Game.Exceptions.MoveAttemptOnWaitStateException;
 import Model.Game.Game;
 import Model.Game.Table;
 import Model.Player.Player;
@@ -73,54 +76,70 @@ public class ObjectivesSetup implements GameState{
 
 
     //STATE PATTERN ATTRIBUTES
+
     /**
-     * The method notifies the player that they are not allowed to perform this action during this state of the game.
+     * The method throws an exception as players are not allowed to perform this move during this state of the game.
+     *
+     * @param player          The player who is placing the card.
+     * @param cardIndex       The index of the card in the player's hand.
+     * @param coordinateIndex The index of the available coordinate in the cardMap where the card will be placed.
+     * @param faceUp          True if the card should be placed face up, false if face down.
+     * @throws InvalidActionForGameStateException   Always thrown as players are not allowed to place cards in this state.
      */
     @Override
-    public void placeCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) {
-        throw new RuntimeException("You can't place cards yet.");
+    public void placeCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws InvalidActionForGameStateException {
+        throw new InvalidActionForGameStateException("You can't place cards yet.");
     }
 
     /**
-     * The method notifies the player that they are not allowed to perform this action during this state of the game.
+     * The method throws an exception as players are not allowed to perform this move during this state of the game.
+     *
+     * @param player       The player who is drawing the card.
+     * @param cardPoolType The type of card pool from which the card will be drawn.
+     * @param index        The index of the card in the card pool.
+     * @throws InvalidActionForGameStateException   Always thrown as players are not allowed to draw cards in this state.
      */
     @Override
-    public void drawCard(Player player, CardPoolTypes cardPoolType, int index) {
-        throw new RuntimeException("You can't draw cards yet.");
+    public void drawCard(Player player, CardPoolTypes cardPoolType, int index) throws InvalidActionForGameStateException {
+        throw new InvalidActionForGameStateException("You can't draw cards yet.");
     }
 
     /**
-     * The method notifies the player that they are not allowed to perform this action during this state of the game.
+     * The method throws an exception as players are not allowed to perform this move during this state of the game.
+     *
+     * @param player The player who is picking the color.
+     * @param color  The color chosen by the player.
+     * @throws InvalidActionForGameStateException   Always thrown as players are not allowed to pick colors in this state.
      */
     @Override
-    public void pickPlayerColor(Player player, PlayerColors color) {
-        throw new RuntimeException("You can't pick your color at this game state.");
+    public void pickPlayerColor(Player player, PlayerColors color) throws InvalidActionForGameStateException {
+        throw new InvalidActionForGameStateException("You can't pick your color at this game state.");
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @param player        The player who is picking the objective.
+     * @param objectiveIndex The index of the objective the player is picking.
+     * @throws MoveAttemptOnWaitStateException      Thrown if the player attempts a move while in a "wait" state.
+     * @throws InvalidActionForPlayerStateException Thrown if the player attempts an action that is not valid in their current state.
      */
     @Override
-    public void pickPlayerObjective(Player player, int objectiveIndex) {
-        try{
-            //Throws exception if the player has already performed all his moves for this turn.
-            if (player.getPlayerState().equals(PlayerStates.WAIT))
-                throw new RuntimeException("You have already performed all moves for this turn.");
+    public void pickPlayerObjective(Player player, int objectiveIndex) throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException {
+        //Throws exception if the player has already performed all his moves for this turn.
+        if (player.getPlayerState().equals(PlayerStates.WAIT))
+            throw new MoveAttemptOnWaitStateException("You have already performed all moves for this turn.");
 
-            //Throws exception if the player can't perform this move.
-            else if (!player.getPlayerState().equals(PlayerStates.PICK_OBJECTIVE))
-                throw new RuntimeException("You can't perform this move at the moment.");
+        //Throws exception if the player can't perform this move.
+        else if (!player.getPlayerState().equals(PlayerStates.PICK_OBJECTIVE))
+            throw new InvalidActionForPlayerStateException("You can't perform this move at the moment.");
 
-            //The rest of the method is executed if the player is actually allowed to perform the move.
-            player.selectSecretObjective(objectiveIndex);
-            player.setPlayerState(PlayerStates.WAIT);
-            playerReadiness.put(player, true);
+        //The rest of the method is executed if the player is actually allowed to perform the move.
+        player.selectSecretObjective(objectiveIndex);
+        player.setPlayerState(PlayerStates.WAIT);
+        playerReadiness.put(player, true);
 
-            nextState();
-        }
-        catch (RuntimeException e){
-            System.out.println(e);
-        }
+        nextState();
     }
 
     /**

@@ -1,6 +1,7 @@
 package Model.Game.States;
 
 import Model.Game.CardPoolTypes;
+import Model.Game.Exceptions.*;
 import Model.Player.Player;
 import Model.Player.PlayerColors;
 import Server.Interfaces.LayerUser;
@@ -13,14 +14,18 @@ import Server.Model.Lobby.LobbyUser;
  */
 public interface GameState {
     /**
-     * Places a card on the player's cardMap at the specified coordinate and updates the game's points counter.
+     * Places a card on the player's cardMap at the specified coordinate and updates the player's points counter.
      *
      * @param player          The player who is placing the card.
      * @param cardIndex       The index of the card in the player's hand.
      * @param coordinateIndex The index of the available coordinate in the cardMap where the card will be placed.
      * @param faceUp          True if the card should be placed face up, false if face down.
+     * @throws MoveAttemptOnWaitStateException          If a player attempts a move while in a "wait" state.
+     * @throws NotYourTurnException                     If a player attempts to make a move when it is not their turn.
+     * @throws InvalidActionForPlayerStateException     If a player attempts an action that is not valid in their current state.
+     * @throws InvalidActionForGameStateException       If a player attempts an action that is not valid in the current game state.
      */
-    void placeCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp);
+    void placeCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws MoveAttemptOnWaitStateException, NotYourTurnException, InvalidActionForPlayerStateException, InvalidActionForGameStateException;
 
 
     /**
@@ -29,8 +34,14 @@ public interface GameState {
      * @param player       The player who is drawing the card.
      * @param cardPoolType The type of card pool from which the card will be drawn.
      * @param index        The index of the card in the card pool.
+     * @throws MoveAttemptOnWaitStateException          If a player attempts a move while in a "wait" state.
+     * @throws NotYourTurnException                     If a player attempts to make a move when it is not their turn.
+     * @throws InvalidActionForPlayerStateException     If a player attempts an action that is not valid in their current state.
+     * @throws InvalidActionForGameStateException       If a player attempts an action that is not valid in the current game state.
+     * @throws MaxGoldenCardsDrawnException             If a player attempts to draw an extra golden card beyond the maximum allowed during the cards setup state.
+     * @throws MaxResourceCardsDrawnException           If a player attempts to draw an extra resource card beyond the maximum allowed during the cards setup state.
      */
-    void drawCard(Player player, CardPoolTypes cardPoolType, int index);
+    void drawCard(Player player, CardPoolTypes cardPoolType, int index)throws MoveAttemptOnWaitStateException, NotYourTurnException, InvalidActionForPlayerStateException, InvalidActionForGameStateException, MaxGoldenCardsDrawnException, MaxResourceCardsDrawnException;
 
 
     /**
@@ -38,8 +49,11 @@ public interface GameState {
      *
      * @param player The player who is picking the color.
      * @param color  The color chosen by the player.
+     * @throws MoveAttemptOnWaitStateException      If a player attempts a move while in a "wait" state.
+     * @throws InvalidActionForPlayerStateException If a player attempts an action that is not valid in their current state.
+     * @throws InvalidActionForGameStateException   If a player attempts an action that is not valid in the current game state.
      */
-    void pickPlayerColor(Player player, PlayerColors color);
+    void pickPlayerColor(Player player, PlayerColors color)throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException;
 
 
     /**
@@ -47,8 +61,11 @@ public interface GameState {
      *
      * @param player        The player who is picking the objective.
      * @param objectiveIndex The index of the objective the player is picking.
+     * @throws MoveAttemptOnWaitStateException      If a player attempts a move while in a "wait" state.
+     * @throws InvalidActionForPlayerStateException If a player attempts an action that is not valid in their current state.
+     * @throws InvalidActionForGameStateException   If a player attempts an action that is not valid in the current game state.
      */
-    void pickPlayerObjective(Player player, int objectiveIndex);
+    void pickPlayerObjective(Player player, int objectiveIndex)throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException;
 
     /**
      * Determines if the player should be removed from the game upon disconnection.

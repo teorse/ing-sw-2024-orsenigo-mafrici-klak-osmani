@@ -1,6 +1,7 @@
 package Model.Game;
 
 import Model.Cards.Card;
+import Model.Game.Exceptions.*;
 import Model.Objectives.Objective;
 import Model.Player.Player;
 import Model.Game.States.*;
@@ -106,16 +107,16 @@ public class Game implements ServerModelLayer {
     public void setState(GameState state){
         this.state = state;
     }
-    public void placeCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp){
+    public void placeCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws NotYourTurnException, MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException {
         state.placeCard(player, cardIndex, coordinateIndex, faceUp);
     }
-    public void drawCard(Player player, CardPoolTypes cardPoolType, int index){
+    public void drawCard(Player player, CardPoolTypes cardPoolType, int index) throws NotYourTurnException, MoveAttemptOnWaitStateException, MaxResourceCardsDrawnException, InvalidActionForPlayerStateException, InvalidActionForGameStateException, MaxGoldenCardsDrawnException {
         state.drawCard(player, cardPoolType, index);
     }
-    public void pickPlayerColor(Player player, PlayerColors color){
+    public void pickPlayerColor(Player player, PlayerColors color) throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException {
         state.pickPlayerColor(player, color);
     }
-    public void pickPlayerObjective(Player player, int objectiveIndex){
+    public void pickPlayerObjective(Player player, int objectiveIndex) throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException {
         state.pickPlayerObjective(player, objectiveIndex);
     }
     public boolean shouldRemovePlayerOnDisconnect(){
