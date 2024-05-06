@@ -113,6 +113,10 @@ public class CardVisibility {
         return faceUp;
     }
 
+    public Card getCard() {
+        return card;
+    }
+
 
 
 

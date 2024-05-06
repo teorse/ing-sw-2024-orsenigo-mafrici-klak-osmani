@@ -1,5 +1,6 @@
 package Model.Cards;
 
+import Client.Model.CardView;
 import Model.Player.CardMap;
 import Model.Utility.*;
 
@@ -107,5 +108,12 @@ public class CardStarter extends Card {
     @Override
     public int hashCode() {
         return Objects.hash(centralArtifacts, this.getCorners());
+    }
+
+    @Override
+    public CardView toCardView() {
+        CardView cardView = super.toCardView();
+        cardView.setCentralArtifacts(centralArtifacts);
+        return cardView;
     }
 }

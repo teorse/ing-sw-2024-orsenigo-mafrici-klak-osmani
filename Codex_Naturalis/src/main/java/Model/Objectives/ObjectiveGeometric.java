@@ -1,5 +1,6 @@
 package Model.Objectives;
 
+import Client.Model.ObjectiveView;
 import Model.Player.CardMap;
 import Model.Utility.Coordinates;
 import Model.Utility.Artifacts;
@@ -70,6 +71,13 @@ public class ObjectiveGeometric extends Objective{
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), objectivePattern);
+    }
+
+    @Override
+    public ObjectiveView toObjectiveView() {
+        ObjectiveView objectiveView = super.toObjectiveView();
+        objectiveView.setGeometricPattern(objectivePattern);
+        return super.toObjectiveView();
     }
 }
 

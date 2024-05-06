@@ -1,5 +1,6 @@
 package Model.Cards;
 
+import Client.Model.CardView;
 import Model.Cards.Corner;
 import Model.Cards.CornerDirection;
 import Model.Cards.CornerOrientation;
@@ -96,4 +97,6 @@ public abstract class Card implements Serializable {
     public CornerType getCornerType(CornerDirection direction, boolean faceUp){
         return corners.get(new CornerOrientation(direction, faceUp)).getCornerType();
     }
+
+    public CardView toCardView() {return new CardView(Artifacts.NULL,0,corners,false,Artifacts.NULL,null,null);}
 }

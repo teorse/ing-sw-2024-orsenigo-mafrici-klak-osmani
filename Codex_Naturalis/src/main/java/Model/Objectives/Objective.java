@@ -1,5 +1,6 @@
 package Model.Objectives;
 
+import Client.Model.ObjectiveView;
 import Model.Player.CardMap;
 
 import java.io.Serial;
@@ -62,5 +63,9 @@ public abstract class Objective implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(description, points);
+    }
+
+    public ObjectiveView toObjectiveView() {
+        return new ObjectiveView(description,points,null,null);
     }
 }

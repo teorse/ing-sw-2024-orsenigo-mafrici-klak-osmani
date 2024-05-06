@@ -1,5 +1,7 @@
 package Model.Player;
 
+import Client.Model.PlayerView;
+import Client.Model.SecretPlayer;
 import Model.Cards.Card;
 import Model.Objectives.Objective;
 import Server.Interfaces.LayerUser;
@@ -203,6 +205,12 @@ public class Player implements LayerUser {
     public int hashCode() {
         return Objects.hashCode(user);
     }
+
+    public SecretPlayer toSecretPlayer() {
+        return new SecretPlayer(cardsHeld, secretObjectives.getFirst().toObjectiveView());
+    }
+
+    public PlayerView toPlayerView() {return new PlayerView(user.getUsername(), color, user.getConnectionStatus(), playerState, roundsCompleted, points, objectivesCompleted, cardMap.toCardMapView());}
 }
 
 

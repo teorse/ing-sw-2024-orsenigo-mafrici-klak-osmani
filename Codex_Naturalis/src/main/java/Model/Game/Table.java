@@ -1,5 +1,6 @@
 package Model.Game;
 
+import Client.Model.TableView;
 import Model.Cards.Card;
 import Model.Objectives.Objective;
 
@@ -103,4 +104,5 @@ public class Table {
         sharedObjectives.add(objectives.getLast());
     }
 
+    public TableView toTableView(){return new TableView(cardPools, sharedObjectives);}
 }

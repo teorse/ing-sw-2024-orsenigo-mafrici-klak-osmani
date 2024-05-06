@@ -1,6 +1,8 @@
 package Model.Game;
 
 import Exceptions.Game.*;
+import Client.Model.GameView;
+import Client.Model.PlayerView;
 import Model.Cards.Card;
 import Model.Objectives.Objective;
 import Model.Player.Player;
@@ -200,4 +202,14 @@ public class Game implements ServerModelLayer {
         //After all players are given their points the winner is calculated.
         gameOver = true;
     }
+
+    public List<PlayerView> toPlayerViewList() {
+        List<PlayerView> playerViews = new ArrayList<>();
+        for(Player player : players){
+            playerViews.add(player.toPlayerView());
+        }
+        return playerViews;
+    }
+
+    public GameView toGameView() {return new GameView(toPlayerViewList(), roundsCompleted, table.toTableView(), lastRoundFlag, gameOver, state);}
 }
