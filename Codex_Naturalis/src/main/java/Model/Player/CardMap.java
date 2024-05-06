@@ -396,6 +396,6 @@ public class CardMap {
     }
 
     public CardMapRecord toTransferableDataObject() {
-        return new CardMapRecord(cardsPlaced, availablePlacements, artifactsCounter);
+        return new CardMapRecord(cardsPlaced, availablePlacements, artifactsCounter, coordinatesPlaced);
     }
 }

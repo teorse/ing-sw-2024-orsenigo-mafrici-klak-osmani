@@ -5,8 +5,6 @@ import Model.Player.CardVisibility;
 import Model.Utility.Artifacts;
 import Model.Utility.Coordinates;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,11 +28,10 @@ import java.util.Map;
  * - The list of available placements.
  * - The artifact counter.
  *
- * @param cardsPlaced private CardView[][] map; Here the coordinates are from 0 to boardSide, shifted of sideLength
  * @see CardMap
  */
 public record CardMapRecord(Map<Coordinates, CardVisibility> cardsPlaced, List<Coordinates> availablePlacements,
-                            Map<Artifacts, Integer> artifactsCounter) {
+                            Map<Artifacts, Integer> artifactsCounter, List<Coordinates> coordinatesPlaced) {
     /**
      * Constructs a `CardMapView` with specific attributes.
      * <p>
@@ -51,27 +48,7 @@ public record CardMapRecord(Map<Coordinates, CardVisibility> cardsPlaced, List<C
      * @param availablePlacements The `List` of coordinates indicating available placements for new cards.
      * @param artifactsCounter    The `Map` tracking the count of various artifacts.
      */
-    public CardMapRecord(Map<Coordinates, CardVisibility> cardsPlaced, List<Coordinates> availablePlacements, Map<Artifacts, Integer> artifactsCounter) {
-        // Calculate half the board side to adjust coordinates
-        int sideLength = (boardSide - 1) / 2;
-
-        // Initialize HashMap for placed cards and ArrayList for available placements
-        this.cardsPlaced = new HashMap<>();
-        this.availablePlacements = new ArrayList<>();
-
-        // Adjust the coordinates of placed cards to the new board size and populate the map and cardsPlaced
-        for (Coordinates co : cardsPlaced.keySet()) {
-            Coordinates adjustedCoordinates = new Coordinates(co.getCoordX() + sideLength, co.getCoordY() + sideLength);
-            this.cardsPlaced.put(adjustedCoordinates, cardsPlaced.get(co));
-        }
-
-        // Adjust the coordinates for the available placements to the new board size
-        for (Coordinates co : availablePlacements) {
-            this.availablePlacements.add(new Coordinates(co.getCoordX() + sideLength, co.getCoordY() + sideLength));
-        }
-
-        this.artifactsCounter = artifactsCounter;
-        this.boardSide = boardSide;
+    public CardMapRecord {
     }
 
     public CardRecord getCard(Coordinates c) {
