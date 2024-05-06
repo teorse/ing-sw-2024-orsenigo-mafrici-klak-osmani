@@ -1,5 +1,6 @@
 package Model.Player;
 
+import Client.Model.CardMapView;
 import Model.Cards.Card;
 import Model.Cards.CornerDirection;
 import Model.Cards.CornerType;
@@ -392,5 +393,21 @@ public class CardMap {
         //Adding all the eligible candidates to the available placements list and removing the old coordinate.
         availablePlacements.remove(currentCoordinate);
         availablePlacements.addAll(candidates);
+    }
+
+    public CardMapView toCardMapView() {
+        return new CardMapView(cardsPlaced, availablePlacements, artifactsCounter, this.maxCoordinate());
+    }
+
+    /***
+     * This method returns the greater coordinate placed without sign
+     */
+    protected int maxCoordinate() {
+        int maxCoordinate = 0;
+        for(Coordinates coordinates : coordinatesPlaced) {
+            int max = Math.max(Math.abs(coordinates.getCoordY()),Math.abs(coordinates.getCoordY()));
+            if (max > maxCoordinate) maxCoordinate = max;
+        }
+        return maxCoordinate;
     }
 }

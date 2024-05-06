@@ -1,5 +1,6 @@
 package Model.Cards;
 
+import Client.Model.CardView;
 import Model.Player.CardMap;
 import Model.Utility.*;
 
@@ -110,5 +111,14 @@ public class CardGolden extends CardResource {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), requiresCorner, requiredArtifact, constraint);
+    }
+
+    @Override
+    public CardView toCardView() {
+        CardView cardView = super.toCardView();
+        cardView.setRequiresCorner(requiresCorner);
+        cardView.setRequiredArtifact(requiredArtifact);
+        cardView.setConstraint(constraint);
+        return cardView;
     }
 }

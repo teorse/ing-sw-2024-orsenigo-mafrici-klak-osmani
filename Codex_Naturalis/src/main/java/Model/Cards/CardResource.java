@@ -1,5 +1,6 @@
 package Model.Cards;
 
+import Client.Model.CardView;
 import Model.Player.CardMap;
 import Model.Utility.*;
 
@@ -107,5 +108,13 @@ public class CardResource extends Card {
     @Override
     public int hashCode() {
         return Objects.hash(cardColor, points, this.getCorners());
+    }
+
+    @Override
+    public CardView toCardView() {
+        CardView cardView = super.toCardView();
+        cardView.setCardColor(cardColor);
+        cardView.setPoints(points);
+        return cardView;
     }
 }

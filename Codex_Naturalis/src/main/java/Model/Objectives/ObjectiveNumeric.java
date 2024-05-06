@@ -1,5 +1,6 @@
 package Model.Objectives;
 
+import Client.Model.ObjectiveView;
 import Model.Player.CardMap;
 import Model.Utility.Artifacts;
 
@@ -118,5 +119,12 @@ public class ObjectiveNumeric extends Objective{
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), requiredItems);
+    }
+
+    @Override
+    public ObjectiveView toObjectiveView() {
+        ObjectiveView objectiveView = super.toObjectiveView();
+        objectiveView.setNumericRequirements(requiredItems);
+        return objectiveView;
     }
 }
