@@ -1,6 +1,7 @@
-package Network.ServerClientPacket;
+package Network.ServerClientPacket.Demo;
 
-import Client.Controller.ClientController;
+import Network.ServerClientPacket.ServerClientPacket;
+import Network.ServerMessageExecutor;
 
 import java.io.Serial;
 
@@ -40,7 +41,7 @@ public class SCPPrintPlaceholder implements ServerClientPacket {
      * @param clientController The ClientController object on the client side to execute the message.
      */
     @Override
-    public void execute(ClientController clientController) {
+    public void execute(ServerMessageExecutor clientController) {
         System.out.println(text);
     }
 }

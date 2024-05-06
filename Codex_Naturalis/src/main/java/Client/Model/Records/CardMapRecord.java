@@ -5,6 +5,7 @@ import Model.Player.CardVisibility;
 import Model.Utility.Artifacts;
 import Model.Utility.Coordinates;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ import java.util.Map;
  * @see CardMap
  */
 public record CardMapRecord(Map<Coordinates, CardVisibility> cardsPlaced, List<Coordinates> availablePlacements,
-                            Map<Artifacts, Integer> artifactsCounter, List<Coordinates> coordinatesPlaced) {
+                            Map<Artifacts, Integer> artifactsCounter, List<Coordinates> coordinatesPlaced) implements Serializable {
     /**
      * Constructs a `CardMapView` with specific attributes.
      * <p>

@@ -2,7 +2,7 @@ package Server.Model;
 
 import Exceptions.Server.LobbyNameAlreadyTakenException;
 import Exceptions.Server.LobbyNotFoundException;
-import Network.ServerClientPacket.SCPPrintPlaceholder;
+import Network.ServerClientPacket.Demo.SCPPrintPlaceholder;
 import Server.Controller.LobbyController;
 import Exceptions.Server.LogInExceptions.AccountAlreadyExistsException;
 import Exceptions.Server.LogInExceptions.AccountAlreadyLoggedInException;
@@ -14,7 +14,6 @@ import Exceptions.Server.LobbyExceptions.InvalidLobbySettingsException;
 import Exceptions.Server.LobbyExceptions.LobbyClosedException;
 import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
 import Server.Model.Lobby.Lobby;
-import Client.Model.Records.LobbyPreviewRecord;
 import Server.Network.ClientHandler.ClientHandler;
 
 import java.util.HashMap;
@@ -30,7 +29,6 @@ public class ServerModel implements ServerModelLayer {
     private final Map<ClientHandler, String> connectionsUser;
     private final Map<String, LobbyController> lobbiesMap;
 
-    private final Map<String, LobbyPreviewRecord> lobbyPreviewMap;
     private final LobbyPreviewObserverRelay lobbyPreviewObserverRelay;
 
 
@@ -48,8 +46,7 @@ public class ServerModel implements ServerModelLayer {
         userConnections = new HashMap<>();
         connectionsUser = new HashMap<>();
         lobbiesMap = new HashMap<>();
-        lobbyPreviewMap = new HashMap<>();
-        lobbyPreviewObserverRelay = new LobbyPreviewObserverRelay(lobbyPreviewMap);
+        lobbyPreviewObserverRelay = new LobbyPreviewObserverRelay();
     }
 
 
@@ -155,7 +152,6 @@ public class ServerModel implements ServerModelLayer {
 
         LobbyController lobbyController = new LobbyController(lobby);
         lobbiesMap.put(lobby.getLobbyName(), lobbyController);
-        lobbyPreviewMap.put(lobby.getLobbyName(), lobby.getLobbyPreview());
 
         System.out.println("User "+serverUser.getUsername()+" created lobby: "+lobbyName);
 

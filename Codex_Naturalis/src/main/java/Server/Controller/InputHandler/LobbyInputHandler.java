@@ -4,7 +4,7 @@ import Exceptions.Server.LobbyExceptions.UnavailableLobbyUserColorException;
 import Network.ClientServerPacket.ClientServerPacket;
 import Network.ClientServerPacket.CommandTypes;
 import Network.ClientServerPacket.LobbyCommands;
-import Network.ServerClientPacket.SCPPrintPlaceholder;
+import Network.ServerClientPacket.Demo.SCPPrintPlaceholder;
 import Server.Controller.GameController;
 import Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.GameRequiredException;
 import Exceptions.Server.InputHandlerExceptions.InputExceptions.WrongServerLayerException;

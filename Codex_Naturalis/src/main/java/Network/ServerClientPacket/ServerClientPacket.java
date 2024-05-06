@@ -1,6 +1,7 @@
 package Network.ServerClientPacket;
 
 import Client.Controller.ClientController;
+import Network.ServerMessageExecutor;
 
 import java.io.Serializable;
 
@@ -16,5 +17,5 @@ public interface ServerClientPacket extends Serializable {
      *
      * @param clientController The ClientController object on the client side to execute the message.
      */
-    void execute(ClientController clientController);
+    void execute(ServerMessageExecutor clientController);
 }

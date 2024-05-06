@@ -1,7 +1,7 @@
 package Server.Network.ClientHandler;
 
 import Network.ClientServerPacket.ClientServerPacket;
-import Network.ServerClientPacket.SCPPrintPlaceholder;
+import Network.ServerClientPacket.Demo.SCPPrintPlaceholder;
 import Network.ServerClientPacket.ServerClientPacket;
 import Server.Controller.InputHandler.InputHandler;
 

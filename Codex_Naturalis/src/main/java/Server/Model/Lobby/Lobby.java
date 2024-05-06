@@ -3,7 +3,7 @@ package Server.Model.Lobby;
 import Client.Model.Records.LobbyPreviewRecord;
 import Exceptions.Server.LobbyExceptions.UnavailableLobbyUserColorException;
 import Model.Game.GameLoader;
-import Network.ServerClientPacket.SCPPrintPlaceholder;
+import Network.ServerClientPacket.Demo.SCPPrintPlaceholder;
 import Network.ServerClientPacket.ServerClientPacket;
 import Server.Controller.GameController;
 import Server.Controller.InputHandler.LobbyInputHandler;
@@ -41,9 +41,6 @@ public class Lobby implements ServerModelLayer {
     //Lock for this group of Attributes
     private final Object usersLock = new Object();
 
-
-    private final LobbyPreviewRecord preview;
-
     private GameController gameController;
     private Model.Game.Game game;
     private boolean gameStarted;
@@ -51,6 +48,7 @@ public class Lobby implements ServerModelLayer {
 
     //LISTENERS
     private final List<LobbyInputHandler> gameControllerObservers;
+    private final LobbyPreviewObserverRelay lobbyPreviewObserverRelay;
     private final PropertyChangeSupport lobbyUsersChange;
 
     //DISCONNECTION TIMER
@@ -81,6 +79,7 @@ public class Lobby implements ServerModelLayer {
         this.targetNumberUsers = targetNumberUsers;
         this.lobbyName = lobbyName;
         this.lobbyUsers = new ArrayList<>();
+        this.lobbyPreviewObserverRelay = lobbyPreviewObserverRelay;
 
         availableUserColors = new ArrayList<>(){{
            add(LobbyUserColors.RED);
@@ -104,9 +103,6 @@ public class Lobby implements ServerModelLayer {
 
         reconnectionTimers = new HashMap<>();
 
-        preview = new LobbyPreviewRecord(lobbyName);
-        preview.addObserver(lobbyPreviewObserverRelay);
-
         LobbyUser lobbyUser = new LobbyUser(serverUser, LobbyRoles.ADMIN);
         addLobbyUserToLobby(serverUser, ch, lobbyUser);
 
@@ -128,8 +124,6 @@ public class Lobby implements ServerModelLayer {
             //Links the lobby layer with the output channel of the user to be able to directly send messages to the
             //user from this layer without needing to go up to the server level and occupy that level's resources.
             lobbyUserConnection.put(lobbyUser, ch);
-
-            preview.setUsers(lobbyUsers.size());
         }
 
         //Pick random color for the user
@@ -139,6 +133,7 @@ public class Lobby implements ServerModelLayer {
             lobbyUser.setColor(availableUserColors.remove(random));
         }
 
+        updateLobbyPreview();
 
         lobbyUsersChange.firePropertyChange("LobbyUsersChange", null, lobbyUsers);
     }
@@ -294,7 +289,7 @@ public class Lobby implements ServerModelLayer {
             ServerUser serverUser = lobbyUserToServerUser.remove(lobbyUser);
             serverUserToLobbyUser.remove(serverUser);
 
-            preview.setUsers(lobbyUsers.size());
+            updateLobbyPreview();
         }
 
         //If a user leaves the lobby while the game has not yet started then the lobby becomes joinable again
@@ -324,7 +319,7 @@ public class Lobby implements ServerModelLayer {
         gameStarted = true;
         lobbyClosed = true;
 
-        preview.setGameStarted(true);
+        updateLobbyPreview();
     }
 
     /**
@@ -372,10 +367,6 @@ public class Lobby implements ServerModelLayer {
     public LobbyUser getLobbyUserByServerUser(LayerUser user){
         ServerUser serverUser = (ServerUser) user;
         return serverUserToLobbyUser.get(serverUser);
-    }
-
-    public LobbyPreviewRecord getLobbyPreview(){
-        return this.preview;
     }
 
 
@@ -455,6 +446,11 @@ public class Lobby implements ServerModelLayer {
         for(LobbyInputHandler observer : gameControllerObservers){
             observer.updateGameController(newGameController);
         }
+    }
+
+    private void updateLobbyPreview(){
+        LobbyPreviewRecord preview = new LobbyPreviewRecord(lobbyName, lobbyUsers.size(), targetNumberUsers, gameStarted);
+        lobbyPreviewObserverRelay.updateLobbyPreview(preview);
     }
 
     public void addGameControllerObserver(LobbyInputHandler observer){

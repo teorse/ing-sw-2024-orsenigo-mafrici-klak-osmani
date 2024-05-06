@@ -1,6 +1,6 @@
 package Server.Model.Lobby;
 
-import Network.ServerClientPacket.SCPUpdateLobbyUsers;
+import Network.ServerClientPacket.Demo.SCPUpdateLobbyUsers;
 import Network.ServerClientPacket.ServerClientPacket;
 
 import java.beans.PropertyChangeEvent;

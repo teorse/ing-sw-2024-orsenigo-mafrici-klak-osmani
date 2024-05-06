@@ -5,7 +5,7 @@ import Exceptions.Game.GameException;
 import Network.ClientServerPacket.ClientServerPacket;
 import Network.ClientServerPacket.CommandTypes;
 import Network.ClientServerPacket.GameCommands;
-import Network.ServerClientPacket.SCPPrintPlaceholder;
+import Network.ServerClientPacket.Demo.SCPPrintPlaceholder;
 import Server.Controller.GameController;
 import Model.Player.Player;
 import Server.Model.Lobby.LobbyUser;

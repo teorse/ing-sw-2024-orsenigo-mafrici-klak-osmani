@@ -1,5 +1,7 @@
 package Client.Model.Records;
 
+import java.io.Serializable;
+
 /**
  * Represents a view of an objective in a game, providing information about its description, points, and requirements.
  * <p>
@@ -17,7 +19,7 @@ package Client.Model.Records;
  *
  * @param description ATTRIBUTES
  */
-public record ObjectiveRecord(String description, int points) {
+public record ObjectiveRecord(String description, int points) implements Serializable {
     /**
      * Constructs an `ObjectiveView` object with a specified description, points, geometric pattern, and numeric requirements.
      * <p>

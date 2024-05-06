@@ -4,6 +4,8 @@ import Model.Player.PlayerStates;
 import Server.Model.Lobby.LobbyUserColors;
 import Server.Model.Lobby.LobbyUserConnectionStates;
 
+import java.io.Serializable;
+
 /**
  * Represents a view of a player's state for display in the user interface.
  * <p>
@@ -25,6 +27,6 @@ import Server.Model.Lobby.LobbyUserConnectionStates;
  * @param nickname ATTRIBUTES
  */
 public record PlayerRecord(String nickname, LobbyUserColors color, LobbyUserConnectionStates connectionStatus,
-                           PlayerStates playerState, int roundsCompleted, int points, int objectivesCompleted) {
+                           PlayerStates playerState, int roundsCompleted, int points, int objectivesCompleted) implements Serializable {
     //CONSTRUCTOR
 }

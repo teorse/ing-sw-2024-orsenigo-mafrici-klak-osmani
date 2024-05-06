@@ -2,6 +2,7 @@ package Client.Model.Records;
 
 import Model.Utility.Artifacts;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ import java.util.List;
  * @param topDeckResource ATTRIBUTES
  */
 public record TableRecord(Artifacts topDeckResource, Artifacts topDeckGolden, List<CardRecord> visibleCardRecordResource,
-                          List<CardRecord> visibleCardRecordGolden, List<ObjectiveRecord> sharedObjectives) {
+                          List<CardRecord> visibleCardRecordGolden, List<ObjectiveRecord> sharedObjectives) implements Serializable {
 
     //CONSTRUCTOR
     /**

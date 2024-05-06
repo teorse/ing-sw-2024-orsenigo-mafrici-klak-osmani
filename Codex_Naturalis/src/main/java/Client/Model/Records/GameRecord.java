@@ -3,6 +3,7 @@ package Client.Model.Records;
 
 import Model.Game.States.GameState;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ import java.util.List;
  * @param playerRecords ATTRIBUTES
  */
 public record GameRecord(List<PlayerRecord> playerRecords, int roundsCompleted, TableRecord tableRecord, boolean lastRoundFlag,
-                         boolean gameOver, GameState currentState) {
+                         boolean gameOver, GameState currentState) implements Serializable {
     /**
      * Constructs a `GameView` instance with the given game attributes.
      * <p>

@@ -5,6 +5,7 @@ import Model.Cards.Corner;
 import Model.Cards.CornerOrientation;
 import Model.Utility.Artifacts;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -34,7 +35,7 @@ import java.util.Map;
 
 public record CardRecord(Artifacts cardColor, int points, Map<CornerOrientation, Corner> corners, boolean requiresCorner,
                          Artifacts requiredArtifact, Map<Artifacts, Integer> constraint,
-                         Map<Artifacts, Integer> centralArtifacts) {
+                         Map<Artifacts, Integer> centralArtifacts)implements Serializable {
     /**
      * Constructs a CardView object that represents the visual attributes of a card.
      * <p>
