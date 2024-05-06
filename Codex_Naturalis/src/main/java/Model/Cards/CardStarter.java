@@ -1,6 +1,6 @@
 package Model.Cards;
 
-import Client.Model.CardView;
+import Client.Model.Records.CardRecord;
 import Model.Player.CardMap;
 import Model.Utility.*;
 
@@ -111,9 +111,7 @@ public class CardStarter extends Card {
     }
 
     @Override
-    public CardView toCardView() {
-        CardView cardView = super.toCardView();
-        cardView.setCentralArtifacts(centralArtifacts);
-        return cardView;
+    public CardRecord toRecord() {
+        return new CardRecord(null, 0, super.getCorners(), false, null, null, centralArtifacts);
     }
 }

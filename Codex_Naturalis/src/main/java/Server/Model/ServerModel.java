@@ -14,7 +14,7 @@ import Exceptions.Server.LobbyExceptions.InvalidLobbySettingsException;
 import Exceptions.Server.LobbyExceptions.LobbyClosedException;
 import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
 import Server.Model.Lobby.Lobby;
-import Server.Model.Lobby.LobbyPreview;
+import Client.Model.Records.LobbyPreviewRecord;
 import Server.Network.ClientHandler.ClientHandler;
 
 import java.util.HashMap;
@@ -30,7 +30,7 @@ public class ServerModel implements ServerModelLayer {
     private final Map<ClientHandler, String> connectionsUser;
     private final Map<String, LobbyController> lobbiesMap;
 
-    private final Map<String, LobbyPreview> lobbyPreviewMap;
+    private final Map<String, LobbyPreviewRecord> lobbyPreviewMap;
     private final LobbyPreviewObserverRelay lobbyPreviewObserverRelay;
 
 

@@ -2,7 +2,7 @@ package Server.Model;
 
 import Network.ServerClientPacket.SCPUpdateLobbyPreviews;
 import Network.ServerClientPacket.ServerClientPacket;
-import Server.Model.Lobby.LobbyPreview;
+import Client.Model.Records.LobbyPreviewRecord;
 import Server.Network.ClientHandler.ClientHandler;
 
 import java.beans.PropertyChangeEvent;
@@ -19,7 +19,7 @@ import java.util.Map;
 public class LobbyPreviewObserverRelay implements PropertyChangeListener {
     //ATTRIBUTES
     private final List<ClientHandler> observers;
-    private final Map<String, LobbyPreview> lobbyPreviewMap;
+    private final Map<String, LobbyPreviewRecord> lobbyPreviewMap;
 
 
 
@@ -31,7 +31,7 @@ public class LobbyPreviewObserverRelay implements PropertyChangeListener {
      *
      * @param lobbyPreviewMap The map containing lobby previews to observe.
      */
-    public LobbyPreviewObserverRelay(Map<String, LobbyPreview> lobbyPreviewMap){
+    public LobbyPreviewObserverRelay(Map<String, LobbyPreviewRecord> lobbyPreviewMap){
         observers = new ArrayList<>();
         this.lobbyPreviewMap = lobbyPreviewMap;
     }

@@ -1,12 +1,12 @@
 package Model.Player;
 
-import Client.Model.PlayerView;
-import Client.Model.SecretPlayer;
+import Client.Model.Records.CardRecord;
+import Client.Model.Records.PlayerRecord;
+import Client.Model.Records.PlayerSecretInfoRecord;
 import Model.Cards.Card;
 import Model.Objectives.Objective;
 import Server.Interfaces.LayerUser;
 import Server.Model.Lobby.LobbyUser;
-import Server.Model.Lobby.LobbyUserColors;
 import Server.Model.Lobby.LobbyUserConnectionStates;
 
 import java.util.*;
@@ -206,11 +206,16 @@ public class Player implements LayerUser {
         return Objects.hashCode(user);
     }
 
-    public SecretPlayer toSecretPlayer() {
-        return new SecretPlayer(cardsHeld, secretObjectives.getFirst().toObjectiveView());
+    public PlayerSecretInfoRecord toSecretPlayer() {
+        Map<CardRecord, Boolean> cardsHeld = new HashMap<>();
+        for (CardPlayability cardPlayability : this.cardsHeld) {
+            cardsHeld.put(cardPlayability.getCard().toRecord(), cardPlayability.getPlayability());
+        }
+
+        return new PlayerSecretInfoRecord(cardsHeld, secretObjectives.getFirst().toRecord());
     }
 
-    public PlayerView toPlayerView() {return new PlayerView(user.getUsername(), color, user.getConnectionStatus(), playerState, roundsCompleted, points, objectivesCompleted, cardMap.toCardMapView());}
+    public PlayerRecord toTransferableDataObject() {return new PlayerRecord(user.getUsername(), user.getColor(), user.getConnectionStatus(), playerState, roundsCompleted, points, objectivesCompleted);}
 }
 
 

@@ -1,7 +1,7 @@
 package Network.ServerClientPacket;
 
 import Client.Controller.ClientController;
-import Server.Model.Lobby.LobbyPreview;
+import Client.Model.Records.LobbyPreviewRecord;
 
 import java.io.*;
 import java.util.HashMap;
@@ -11,7 +11,7 @@ public class SCPUpdateLobbyPreviews implements ServerClientPacket, Serializable 
 
     byte [] data;
 
-    public SCPUpdateLobbyPreviews(Map<String, LobbyPreview> lobbyPreviewMap){
+    public SCPUpdateLobbyPreviews(Map<String, LobbyPreviewRecord> lobbyPreviewMap){
         try {
             //Storing the array as byte stream to solve problems on the client side
             //If storing the array normally, on client side the values would not update after de-serialization of message.
@@ -28,12 +28,12 @@ public class SCPUpdateLobbyPreviews implements ServerClientPacket, Serializable 
 
     @Override
     public void execute(ClientController clientController) {
-        Map<String, LobbyPreview> lobbyPreviewMap = new HashMap<>();
+        Map<String, LobbyPreviewRecord> lobbyPreviewMap = new HashMap<>();
         try {
             //List is deserialized from the byte stream
             ByteArrayInputStream bis = new ByteArrayInputStream(data);
             ObjectInput in = new ObjectInputStream(bis);
-            lobbyPreviewMap = (Map<String, LobbyPreview>) in.readObject();
+            lobbyPreviewMap = (Map<String, LobbyPreviewRecord>) in.readObject();
         }
         catch (IOException | ClassNotFoundException e){
             System.out.println(e);
@@ -41,8 +41,8 @@ public class SCPUpdateLobbyPreviews implements ServerClientPacket, Serializable 
 
         String lobbyPreview = "\nLobby preview:\n";
 
-        for(Map.Entry<String, LobbyPreview> entry : lobbyPreviewMap.entrySet()){
-            LobbyPreview preview = entry.getValue();
+        for(Map.Entry<String, LobbyPreviewRecord> entry : lobbyPreviewMap.entrySet()){
+            LobbyPreviewRecord preview = entry.getValue();
             lobbyPreview = lobbyPreview + "Lobby name: "+preview.getLobbyName()+"\n" +
                     "Participants: "+preview.getUsers()+"/4\n"+
                     "Game started: "+preview.isGameStarted()+"\n\n";

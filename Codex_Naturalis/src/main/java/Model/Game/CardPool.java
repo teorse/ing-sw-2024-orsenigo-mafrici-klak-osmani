@@ -1,5 +1,6 @@
 package Model.Game;
 
+import Client.Model.Records.CardRecord;
 import Model.Cards.Card;
 
 import java.util.ArrayList;
@@ -12,8 +13,8 @@ import java.util.List;
 public class CardPool {
 
     //ATTRIBUTES
-    private Deck deck;
-    private List<Card> visibleCards;
+    private final Deck deck;
+    private final List<Card> visibleCards;
 
 
 
@@ -63,5 +64,23 @@ public class CardPool {
      */
     public int getAmountLeftInDeck(){
         return deck.cardsLeft();
+    }
+
+
+
+
+
+    //MODEL CLIENT CONVERSION
+    protected List<CardRecord> toRecord(){
+        List<CardRecord> cardRecords = new ArrayList<>();
+
+        CardRecord deckView = deck.toRecord();
+        if(deckView != null)
+            cardRecords.add(deckView);
+
+        for(Card card : visibleCards)
+            cardRecords.add(card.toRecord());
+
+        return cardRecords;
     }
 }

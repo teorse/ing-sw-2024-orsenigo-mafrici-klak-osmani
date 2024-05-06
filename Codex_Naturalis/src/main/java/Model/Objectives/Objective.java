@@ -1,11 +1,10 @@
 package Model.Objectives;
 
-import Client.Model.ObjectiveView;
+import Client.Model.Records.ObjectiveRecord;
 import Model.Player.CardMap;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Map;
 import java.util.Objects;
 
 public abstract class Objective implements Serializable {
@@ -14,12 +13,12 @@ public abstract class Objective implements Serializable {
     /**
      * String containing the textual description of the objective.
      */
-    private String description;
+    private final String description;
     /**
      * Integer containing the amount of points held by the objective.<br>
      * For each separate instance of completion of the objective, the same player can be given the points multiple times.
      */
-    private int points;
+    private final int points;
 
     /**
      * Default Constructor.<br>
@@ -65,7 +64,7 @@ public abstract class Objective implements Serializable {
         return Objects.hash(description, points);
     }
 
-    public ObjectiveView toObjectiveView() {
-        return new ObjectiveView(description,points,null,null);
+    public ObjectiveRecord toRecord() {
+        return new ObjectiveRecord(description,points);
     }
 }

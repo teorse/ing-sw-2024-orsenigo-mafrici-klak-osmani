@@ -1,6 +1,5 @@
 package Model.Objectives;
 
-import Client.Model.ObjectiveView;
 import Model.Player.CardMap;
 import Model.Utility.Artifacts;
 
@@ -17,7 +16,7 @@ public class ObjectiveNumeric extends Objective{
      * Map containing the required resources to satisfy the objective.<br>
      * The Keys of the map are the items and the Values are the number of units required.
      */
-    private Map<Artifacts, Integer> requiredItems;
+    private final Map<Artifacts, Integer> requiredItems;
 
     /**
      * Default Constructor.<br>
@@ -65,7 +64,6 @@ public class ObjectiveNumeric extends Objective{
             /*Finds the amount of times the artifact was found in the cardMap
             and divides it by the number you need to create a pattern.*/
             itemPatternCounter = cardMap.getAmountOfArtifacts(requiredArtifact) / requiredItems.get(requiredArtifact);
-            return getPoints()*itemPatternCounter;
         }else{
             // List that contains how many times each artifact can be found in the specific CardMap.
             List<Integer> numberOfItems = new ArrayList<>();
@@ -79,8 +77,8 @@ public class ObjectiveNumeric extends Objective{
                 is the amount of times that the pattern has been repeated.
             */
             itemPatternCounter = findMin(numberOfItems);
-            return getPoints()*itemPatternCounter;
         }
+        return getPoints()*itemPatternCounter;
 
     }
 
@@ -119,12 +117,5 @@ public class ObjectiveNumeric extends Objective{
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), requiredItems);
-    }
-
-    @Override
-    public ObjectiveView toObjectiveView() {
-        ObjectiveView objectiveView = super.toObjectiveView();
-        objectiveView.setNumericRequirements(requiredItems);
-        return objectiveView;
     }
 }

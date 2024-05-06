@@ -1,4 +1,4 @@
-package Server.Model.Lobby;
+package Client.Model.Records;
 
 import Server.Model.LobbyPreviewObserverRelay;
 
@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * This class represents a preview of a lobby, providing an overview of its statistics without querying the lobby directly.
  */
-public class LobbyPreview implements Serializable {
+public class LobbyPreviewRecord implements Serializable {
     //ATTRIBUTES
     @Serial
     private static final long serialVersionUID = -2700460455118777031L;
@@ -28,7 +28,7 @@ public class LobbyPreview implements Serializable {
      *
      * @param lobbyName The name of the lobby.
      */
-    public LobbyPreview(String lobbyName){
+    public LobbyPreviewRecord(String lobbyName){
         pcs = new PropertyChangeSupport(this);
         this.lobbyName = lobbyName;
         users = 0;

@@ -1,6 +1,6 @@
 package Model.Player;
 
-import Client.Model.CardMapView;
+import Client.Model.Records.CardMapRecord;
 import Model.Cards.Card;
 import Model.Cards.CornerDirection;
 import Model.Cards.CornerType;
@@ -395,19 +395,7 @@ public class CardMap {
         availablePlacements.addAll(candidates);
     }
 
-    public CardMapView toCardMapView() {
-        return new CardMapView(cardsPlaced, availablePlacements, artifactsCounter, this.maxCoordinate());
-    }
-
-    /***
-     * This method returns the greater coordinate placed without sign
-     */
-    protected int maxCoordinate() {
-        int maxCoordinate = 0;
-        for(Coordinates coordinates : coordinatesPlaced) {
-            int max = Math.max(Math.abs(coordinates.getCoordY()),Math.abs(coordinates.getCoordY()));
-            if (max > maxCoordinate) maxCoordinate = max;
-        }
-        return maxCoordinate;
+    public CardMapRecord toTransferableDataObject() {
+        return new CardMapRecord(cardsPlaced, availablePlacements, artifactsCounter);
     }
 }

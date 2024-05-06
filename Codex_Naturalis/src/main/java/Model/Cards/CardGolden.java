@@ -1,6 +1,6 @@
 package Model.Cards;
 
-import Client.Model.CardView;
+import Client.Model.Records.CardRecord;
 import Model.Player.CardMap;
 import Model.Utility.*;
 
@@ -14,7 +14,7 @@ public class CardGolden extends CardResource {
     @Serial
     private static final long serialVersionUID = -4619796469655619377L;
     /**
-     * If this attribute is true than requiredArtifact is set to Artifacts.NULL
+     * If this attribute is true then requiredArtifact is set to Artifacts.NULL.
      */
     private boolean requiresCorner;
     private Artifacts requiredArtifact;
@@ -114,11 +114,8 @@ public class CardGolden extends CardResource {
     }
 
     @Override
-    public CardView toCardView() {
-        CardView cardView = super.toCardView();
-        cardView.setRequiresCorner(requiresCorner);
-        cardView.setRequiredArtifact(requiredArtifact);
-        cardView.setConstraint(constraint);
-        return cardView;
+    public CardRecord toRecord() {
+
+        return new CardRecord(super.getCardColor(), super.getPoints(), super.getCorners(), requiresCorner, requiredArtifact, constraint, null);
     }
 }

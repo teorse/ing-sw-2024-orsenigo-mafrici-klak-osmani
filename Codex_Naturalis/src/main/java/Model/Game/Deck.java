@@ -1,8 +1,8 @@
 package Model.Game;
 
+import Client.Model.Records.CardRecord;
 import Model.Cards.Card;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public class Deck {
 
     //ATTRIBUTES
-    private List<Card> deck;
+    private final List<Card> deck;
 
 
 
@@ -54,5 +54,16 @@ public class Deck {
      */
     public int cardsLeft(){
         return deck.size();
+    }
+
+
+
+
+
+    //MODEL CLIENT CONVERSION
+    protected CardRecord toRecord(){
+        if(!deck.isEmpty())
+            return deck.getFirst().toRecord();
+        return null;
     }
 }

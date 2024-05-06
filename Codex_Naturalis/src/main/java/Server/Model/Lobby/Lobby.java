@@ -1,5 +1,6 @@
 package Server.Model.Lobby;
 
+import Client.Model.Records.LobbyPreviewRecord;
 import Exceptions.Server.LobbyExceptions.UnavailableLobbyUserColorException;
 import Model.Game.GameLoader;
 import Network.ServerClientPacket.SCPPrintPlaceholder;
@@ -41,7 +42,7 @@ public class Lobby implements ServerModelLayer {
     private final Object usersLock = new Object();
 
 
-    private final LobbyPreview preview;
+    private final LobbyPreviewRecord preview;
 
     private GameController gameController;
     private Model.Game.Game game;
@@ -103,7 +104,7 @@ public class Lobby implements ServerModelLayer {
 
         reconnectionTimers = new HashMap<>();
 
-        preview = new LobbyPreview(lobbyName);
+        preview = new LobbyPreviewRecord(lobbyName);
         preview.addObserver(lobbyPreviewObserverRelay);
 
         LobbyUser lobbyUser = new LobbyUser(serverUser, LobbyRoles.ADMIN);
@@ -373,7 +374,7 @@ public class Lobby implements ServerModelLayer {
         return serverUserToLobbyUser.get(serverUser);
     }
 
-    public LobbyPreview getLobbyPreview(){
+    public LobbyPreviewRecord getLobbyPreview(){
         return this.preview;
     }
 

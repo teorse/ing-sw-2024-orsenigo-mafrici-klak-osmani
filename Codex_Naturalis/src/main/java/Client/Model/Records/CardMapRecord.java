@@ -1,4 +1,4 @@
-package Client.Model;
+package Client.Model.Records;
 
 import Model.Player.CardMap;
 import Model.Player.CardVisibility;
@@ -30,15 +30,11 @@ import java.util.Map;
  * - The list of available placements.
  * - The artifact counter.
  *
+ * @param cardsPlaced private CardView[][] map; Here the coordinates are from 0 to boardSide, shifted of sideLength
  * @see CardMap
  */
-public class CardMapView {
-//    private CardView[][] map;
-    private Map<Coordinates, CardVisibility> cardsPlaced; // Here the coordinates are from 0 to boardSide, shifted of sideLength
-    private List<Coordinates> availablePlacements;
-    private Map<Artifacts, Integer> artifactsCounter;
-    private int boardSide;
-
+public record CardMapRecord(Map<Coordinates, CardVisibility> cardsPlaced, List<Coordinates> availablePlacements,
+                            Map<Artifacts, Integer> artifactsCounter) {
     /**
      * Constructs a `CardMapView` with specific attributes.
      * <p>
@@ -51,12 +47,11 @@ public class CardMapView {
      * It also adjusts the coordinates of the placed cards and available placements to fit the specified board side,
      * ensuring proper alignment for visualization.
      *
-     * @param cardsPlaced The `Map` of coordinates to `CardVisibility` representing the current card placements.
+     * @param cardsPlaced         The `Map` of coordinates to `CardVisibility` representing the current card placements.
      * @param availablePlacements The `List` of coordinates indicating available placements for new cards.
-     * @param artifactsCounter The `Map` tracking the count of various artifacts.
-     * @param boardSide The size of the board, used to adjust the map and coordinates accordingly.
+     * @param artifactsCounter    The `Map` tracking the count of various artifacts.
      */
-    public CardMapView(Map<Coordinates, CardVisibility> cardsPlaced, List<Coordinates> availablePlacements, Map<Artifacts, Integer> artifactsCounter, int boardSide) {
+    public CardMapRecord(Map<Coordinates, CardVisibility> cardsPlaced, List<Coordinates> availablePlacements, Map<Artifacts, Integer> artifactsCounter) {
         // Calculate half the board side to adjust coordinates
         int sideLength = (boardSide - 1) / 2;
 
@@ -79,24 +74,7 @@ public class CardMapView {
         this.boardSide = boardSide;
     }
 
-    //GETTERS
-    public Map<Coordinates, CardVisibility> getCardsPlaced() {
-        return cardsPlaced;
-    }
-
-    public List<Coordinates> getAvailablePlacements() {
-        return availablePlacements;
-    }
-
-    public Map<Artifacts, Integer> getArtifactsCounter() {
-        return artifactsCounter;
-    }
-
-    public int getBoardSide() {
-        return boardSide;
-    }
-
-    public CardView getCard(Coordinates c) {
-        return this.cardsPlaced.get(c).getCard().toCardView();
+    public CardRecord getCard(Coordinates c) {
+        return this.cardsPlaced.get(c).getCard().toRecord();
     }
 }

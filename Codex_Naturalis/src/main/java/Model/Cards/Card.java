@@ -1,16 +1,12 @@
 package Model.Cards;
 
-import Client.Model.CardView;
-import Model.Cards.Corner;
-import Model.Cards.CornerDirection;
-import Model.Cards.CornerOrientation;
+import Client.Model.Records.CardRecord;
 import Model.Player.CardMap;
 import Model.Utility.*;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
-import java.util.Objects;
 
 public abstract class Card implements Serializable {
 
@@ -35,7 +31,7 @@ public abstract class Card implements Serializable {
     //GETTER
     public abstract Artifacts getCardColor();
     public abstract int getPoints();
-    public Map<CornerOrientation, Corner> getCorners() {
+    protected Map<CornerOrientation, Corner> getCorners() {
         return corners;
     }
 
@@ -98,5 +94,5 @@ public abstract class Card implements Serializable {
         return corners.get(new CornerOrientation(direction, faceUp)).getCornerType();
     }
 
-    public CardView toCardView() {return new CardView(Artifacts.NULL,0,corners,false,Artifacts.NULL,null,null);}
+    public abstract CardRecord toRecord();
 }

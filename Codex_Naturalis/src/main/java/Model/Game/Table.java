@@ -1,8 +1,11 @@
 package Model.Game;
 
-import Client.Model.TableView;
+import Client.Model.Records.CardRecord;
+import Client.Model.Records.ObjectiveRecord;
+import Client.Model.Records.TableRecord;
 import Model.Cards.Card;
 import Model.Objectives.Objective;
+import Model.Utility.Artifacts;
 
 import java.util.*;
 
@@ -12,10 +15,10 @@ import java.util.*;
  */
 public class Table {
     //ATTRIBUTES
-    private Map<CardPoolTypes, CardPool> cardPools;
-    private Deck starterCards;
-    private List<Objective> objectives;
-    private List<Objective> sharedObjectives;
+    private final Map<CardPoolTypes, CardPool> cardPools;
+    private final Deck starterCards;
+    private final List<Objective> objectives;
+    private final List<Objective> sharedObjectives;
 
 
 
@@ -104,5 +107,47 @@ public class Table {
         sharedObjectives.add(objectives.getLast());
     }
 
-    public TableView toTableView(){return new TableView(cardPools, sharedObjectives);}
+
+
+
+
+    //DATA TRANSFER OBJECT
+    public TableRecord toRecord(){
+        Artifacts topDeckResource;
+        Artifacts topDeckGolden;
+        List<CardRecord> visibleCardRecordResource;
+        List<CardRecord> visibleCardRecordGolden;
+        List<ObjectiveRecord> sharedObjectives;
+
+
+        //Handle the resource deck
+        CardPool cardPoolResource = cardPools.get(CardPoolTypes.RESOURCE);
+        visibleCardRecordResource = cardPoolResource.toRecord();
+
+        if(cardPoolResource.getAmountLeftInDeck() == 0)
+            topDeckResource = Artifacts.NULL;
+        else
+            topDeckResource = visibleCardRecordResource.removeFirst().cardColor();
+
+
+
+        //Handle the golden deck
+        CardPool cardPoolGolden = cardPools.get(CardPoolTypes.GOLDEN);
+        visibleCardRecordGolden = cardPoolGolden.toRecord();
+
+        if(cardPoolGolden.getAmountLeftInDeck() == 0)
+            topDeckGolden = Artifacts.NULL;
+        else
+            topDeckGolden = visibleCardRecordGolden.removeFirst().cardColor();
+
+
+
+        //Handle objectives
+        sharedObjectives = new ArrayList<>();
+        for(Objective objective : this.sharedObjectives)
+            sharedObjectives.add(objective.toRecord());
+
+
+        return new TableRecord(topDeckResource, topDeckGolden, visibleCardRecordResource, visibleCardRecordGolden, sharedObjectives);
+    }
 }

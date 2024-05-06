@@ -1,13 +1,10 @@
 package Model.Objectives;
 
-import Client.Model.ObjectiveView;
 import Model.Player.CardMap;
 import Model.Utility.Coordinates;
 import Model.Utility.Artifacts;
 
 import java.io.Serial;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -18,7 +15,7 @@ public class ObjectiveGeometric extends Objective{
      * Map containing the required pattern to satisfy the objective.<br>
      * The Keys of the map are the coordinates of the pattern and the Values are the Resource/Color of the pattern.
      */
-    private Map<Coordinates, Artifacts> objectivePattern;
+    private final Map<Coordinates, Artifacts> objectivePattern;
 
 
 
@@ -71,13 +68,6 @@ public class ObjectiveGeometric extends Objective{
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), objectivePattern);
-    }
-
-    @Override
-    public ObjectiveView toObjectiveView() {
-        ObjectiveView objectiveView = super.toObjectiveView();
-        objectiveView.setGeometricPattern(objectivePattern);
-        return super.toObjectiveView();
     }
 }
 

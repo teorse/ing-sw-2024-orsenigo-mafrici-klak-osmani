@@ -1,13 +1,12 @@
 package Model.Game;
 
 import Exceptions.Game.*;
-import Client.Model.GameView;
-import Client.Model.PlayerView;
+import Client.Model.Records.GameRecord;
+import Client.Model.Records.PlayerRecord;
 import Model.Cards.Card;
 import Model.Objectives.Objective;
 import Model.Player.Player;
 import Model.Game.States.*;
-import Server.Model.Lobby.LobbyUserColors;
 import Server.Interfaces.LayerUser;
 import Server.Interfaces.ServerModelLayer;
 import Server.Model.Lobby.Lobby;
@@ -203,13 +202,13 @@ public class Game implements ServerModelLayer {
         gameOver = true;
     }
 
-    public List<PlayerView> toPlayerViewList() {
-        List<PlayerView> playerViews = new ArrayList<>();
+    public List<PlayerRecord> toPlayerViewList() {
+        List<PlayerRecord> playerRecords = new ArrayList<>();
         for(Player player : players){
-            playerViews.add(player.toPlayerView());
+            playerRecords.add(player.toTransferableDataObject());
         }
-        return playerViews;
+        return playerRecords;
     }
 
-    public GameView toGameView() {return new GameView(toPlayerViewList(), roundsCompleted, table.toTableView(), lastRoundFlag, gameOver, state);}
+    public GameRecord toRecord() {return new GameRecord(toPlayerViewList(), roundsCompleted, table.toRecord(), lastRoundFlag, gameOver, state);}
 }

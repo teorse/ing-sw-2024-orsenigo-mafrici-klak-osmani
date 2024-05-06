@@ -1,6 +1,6 @@
 package Model.Cards;
 
-import Client.Model.CardView;
+import Client.Model.Records.CardRecord;
 import Model.Player.CardMap;
 import Model.Utility.*;
 
@@ -47,10 +47,10 @@ public class CardResource extends Card {
     public int getPoints(){
         return points;
     };
-
-
-
-
+    @Override
+    protected Map<CornerOrientation, Corner> getCorners() {
+        return super.getCorners();
+    }
 
     //ABSTRACT CLASS METHODS
     public int countPoints(CardMap cardMap, Coordinates coordinates, boolean faceUp) {
@@ -111,10 +111,7 @@ public class CardResource extends Card {
     }
 
     @Override
-    public CardView toCardView() {
-        CardView cardView = super.toCardView();
-        cardView.setCardColor(cardColor);
-        cardView.setPoints(points);
-        return cardView;
+    public CardRecord toRecord() {
+        return new CardRecord(getCardColor(), getPoints(), super.getCorners(), false, null, null, null);
     }
 }
