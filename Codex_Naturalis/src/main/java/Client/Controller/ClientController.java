@@ -10,17 +10,17 @@ import java.util.Map;
 public class ClientController implements ServerMessageExecutor {
 
     @Override
-    public void connectionAck(ServerNotificationRecord notification) {
+    public void connectionAck(String serverNotification) {
         //todo
     }
 
     @Override
-    public void loginFailed(ServerNotificationRecord notification) {
+    public void loginFailed(String serverNotification) {
         //todo
     }
 
     @Override
-    public void loginSuccess(ServerNotificationRecord notification, String username) {
+    public void loginSuccess(String serverNotification, String username) {
         //todo
     }
 
@@ -30,17 +30,17 @@ public class ClientController implements ServerMessageExecutor {
     }
 
     @Override
-    public void joinLobbySuccessful(LobbyRecord lobbyRecord, ServerNotificationRecord notification) {
+    public void joinLobbySuccessful(LobbyRecord lobbyRecord, List<LobbyUserRecord> lobbyUsers, String notification) {
         //todo
     }
 
     @Override
-    public void joinLobbyFailed(ServerNotificationRecord notification) {
+    public void joinLobbyFailed(String notification) {
         //todo
     }
 
     @Override
-    public void updateLobbyView(LobbyRecord lobbyRecord) {
+    public void updateLobbyUsers(List<LobbyUserRecord> lobbyUsers) {
         //todo
     }
 
@@ -55,7 +55,7 @@ public class ClientController implements ServerMessageExecutor {
     }
 
     @Override
-    public void updatePlayer(PlayerRecord player) {
+    public void updateSpecificPlayer(PlayerRecord player) {
         //todo
     }
 
