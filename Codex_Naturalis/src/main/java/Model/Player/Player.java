@@ -4,6 +4,7 @@ import Model.Cards.Card;
 import Model.Objectives.Objective;
 import Server.Interfaces.LayerUser;
 import Server.Model.Lobby.LobbyUser;
+import Server.Model.Lobby.LobbyUserColors;
 import Server.Model.Lobby.LobbyUserConnectionStates;
 
 import java.util.*;
@@ -16,7 +17,6 @@ public class Player implements LayerUser {
 
     //ATTRIBUTES
     private final LobbyUser user;
-    private PlayerColors color;
     private int roundsCompleted;
     private final List<CardPlayability> cardsHeld;
     private final List<Objective> secretObjectiveCandidates;
@@ -55,9 +55,6 @@ public class Player implements LayerUser {
     public LobbyUser getLobbyUser(){
         return user;
     }
-    public PlayerColors getColor() {
-        return color;
-    }
     public int getRoundsCompleted() {
         return roundsCompleted;
     }
@@ -79,9 +76,6 @@ public class Player implements LayerUser {
 
 
     //SETTERS
-    public void setColor(PlayerColors playerColors) {
-        this.color = playerColors;
-    }
     public void setPlayerState(PlayerStates playerState){
         this.playerState = playerState;
     }

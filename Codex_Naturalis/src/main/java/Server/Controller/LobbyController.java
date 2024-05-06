@@ -1,11 +1,13 @@
 package Server.Controller;
 
+import Exceptions.Server.LobbyExceptions.UnavailableLobbyUserColorException;
 import Server.Controller.InputHandler.LobbyInputHandler;
 import Server.Interfaces.LayerUser;
-import Server.Model.Lobby.Exceptions.LobbyClosedException;
-import Server.Model.Lobby.Exceptions.LobbyUserAlreadyConnectedException;
+import Exceptions.Server.LobbyExceptions.LobbyClosedException;
+import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
 import Server.Model.Lobby.Lobby;
 import Server.Model.Lobby.LobbyUser;
+import Server.Model.Lobby.LobbyUserColors;
 import Server.Model.ServerUser;
 import Server.Network.ClientHandler.ClientHandler;
 
@@ -101,6 +103,10 @@ public class LobbyController {
      */
     public void startGame(){
         model.startGame();
+    }
+
+    public void changeColor(LobbyUser user, LobbyUserColors newColor) throws UnavailableLobbyUserColorException{
+        model.changeColor(user, newColor);
     }
 
 

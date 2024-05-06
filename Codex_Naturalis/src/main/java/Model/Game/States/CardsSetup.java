@@ -1,12 +1,11 @@
 package Model.Game.States;
 
+import Exceptions.Game.*;
 import Model.Game.CardPoolTypes;
-import Model.Game.Exceptions.*;
 import Model.Game.Game;
 import Model.Player.Player;
-import Model.Player.PlayerColors;
+import Server.Model.Lobby.LobbyUserColors;
 import Model.Game.Table;
-import Server.Model.Lobby.LobbyUserConnectionStates;
 import Model.Player.PlayerStates;
 import Server.Interfaces.LayerUser;
 import Server.Model.Lobby.Lobby;
@@ -117,7 +116,7 @@ public class CardsSetup implements GameState{
 
         //The rest of the method is executed if the player is actually allowed to perform the move.
         player.playCard(cardIndex, coordinateIndex, faceUp);
-        player.setPlayerState(PlayerStates.PICK_COLOR);
+        player.setPlayerState(PlayerStates.DRAW);
     }
 
     /**
@@ -179,38 +178,6 @@ public class CardsSetup implements GameState{
         }
 
         nextState();
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param player The player who is picking the color.
-     * @param color  The color chosen by the player.
-     * @throws MoveAttemptOnWaitStateException      Thrown if the player attempts a move while in a "wait" state.
-     * @throws InvalidActionForPlayerStateException Thrown if the player attempts an action that is not valid in their current state.
-     */
-    @Override
-    public void pickPlayerColor(Player player, PlayerColors color) throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException {
-        //Throws exception if the player has already performed all his moves for this turn.
-        if (player.getPlayerState().equals(PlayerStates.WAIT))
-            throw new MoveAttemptOnWaitStateException("You have already performed all moves for this turn.");
-
-        //Throws exception if the player can't perform this move.
-        else if (!player.getPlayerState().equals(PlayerStates.PICK_COLOR))
-            throw new InvalidActionForPlayerStateException("You can't perform this move at the moment.");
-
-        //The rest of the method is executed if the player is actually allowed to perform the move.
-
-        //todo move color selection from game state to joinLobby.
-
-        //Checks if the color is not already used by another player.
-        for(Player rival : players){
-            if(rival.getColor().equals(color))
-                throw new RuntimeException("Color is already used by another player");
-        }
-
-        player.setColor(color);
-        player.setPlayerState(PlayerStates.DRAW);
     }
 
     /**

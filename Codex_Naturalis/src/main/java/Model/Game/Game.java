@@ -1,11 +1,11 @@
 package Model.Game;
 
+import Exceptions.Game.*;
 import Model.Cards.Card;
-import Model.Game.Exceptions.*;
 import Model.Objectives.Objective;
 import Model.Player.Player;
 import Model.Game.States.*;
-import Model.Player.PlayerColors;
+import Server.Model.Lobby.LobbyUserColors;
 import Server.Interfaces.LayerUser;
 import Server.Interfaces.ServerModelLayer;
 import Server.Model.Lobby.Lobby;
@@ -123,9 +123,6 @@ public class Game implements ServerModelLayer {
     }
     public void drawCard(Player player, CardPoolTypes cardPoolType, int index) throws NotYourTurnException, MoveAttemptOnWaitStateException, MaxResourceCardsDrawnException, InvalidActionForPlayerStateException, InvalidActionForGameStateException, MaxGoldenCardsDrawnException {
         state.drawCard(player, cardPoolType, index);
-    }
-    public void pickPlayerColor(Player player, PlayerColors color) throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException {
-        state.pickPlayerColor(player, color);
     }
     public void pickPlayerObjective(Player player, int objectiveIndex) throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException {
         state.pickPlayerObjective(player, objectiveIndex);

@@ -1,14 +1,14 @@
 package Model.Game.States;
 
 import Model.Cards.Card;
-import Model.Game.Exceptions.InvalidActionForGameStateException;
-import Model.Game.Exceptions.InvalidActionForPlayerStateException;
-import Model.Game.Exceptions.NotYourTurnException;
+import Exceptions.Game.InvalidActionForGameStateException;
+import Exceptions.Game.InvalidActionForPlayerStateException;
+import Exceptions.Game.NotYourTurnException;
 import Model.Game.Game;
 import Model.Game.CardPoolTypes;
 import Model.Game.Table;
 import Model.Player.Player;
-import Model.Player.PlayerColors;
+import Server.Model.Lobby.LobbyUserColors;
 import Server.Model.Lobby.LobbyUserConnectionStates;
 import Model.Player.PlayerStates;
 import Server.Interfaces.LayerUser;
@@ -115,18 +115,6 @@ public class MainLoop implements GameState{
 
         game.checkGameEndingConditions();
         nextPlayer();
-    }
-
-    /**
-     * The method throws an exception as players are not allowed to perform this move during this state of the game.
-     *
-     * @param player The player who is picking the color.
-     * @param color  The color chosen by the player.
-     * @throws InvalidActionForGameStateException   Always thrown as players are not allowed to pick colors in the main loop state.
-     */
-    @Override
-    public void pickPlayerColor(Player player, PlayerColors color) throws InvalidActionForGameStateException {
-        throw new InvalidActionForGameStateException("You can't pick your character color in this game state");
     }
 
     /**

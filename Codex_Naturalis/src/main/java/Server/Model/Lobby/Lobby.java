@@ -1,6 +1,6 @@
 package Server.Model.Lobby;
 
-import Model.Game.Game;
+import Exceptions.Server.LobbyExceptions.UnavailableLobbyUserColorException;
 import Model.Game.GameLoader;
 import Network.ServerClientPacket.SCPPrintPlaceholder;
 import Network.ServerClientPacket.ServerClientPacket;
@@ -8,18 +8,15 @@ import Server.Controller.GameController;
 import Server.Controller.InputHandler.LobbyInputHandler;
 import Server.Interfaces.LayerUser;
 import Server.Interfaces.ServerModelLayer;
-import Server.Model.Lobby.Exceptions.LobbyClosedException;
-import Server.Model.Lobby.Exceptions.InvalidLobbySettingsException;
-import Server.Model.Lobby.Exceptions.LobbyUserAlreadyConnectedException;
+import Exceptions.Server.LobbyExceptions.LobbyClosedException;
+import Exceptions.Server.LobbyExceptions.InvalidLobbySettingsException;
+import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
 import Server.Model.LobbyPreviewObserverRelay;
 import Server.Model.ServerUser;
 import Server.Network.ClientHandler.ClientHandler;
 
 import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class represents a lobby in the server, managing user connections, game control, and messaging within the lobby.
@@ -28,6 +25,8 @@ public class Lobby implements ServerModelLayer {
     //ATTRIBUTES
     private final String lobbyName;
     private final int targetNumberUsers;
+    private final List<LobbyUserColors> availableUserColors;
+    private final Object colorsLock = new Object();
 
 
 
@@ -40,7 +39,6 @@ public class Lobby implements ServerModelLayer {
     private boolean lobbyClosed;
     //Lock for this group of Attributes
     private final Object usersLock = new Object();
-
 
 
     private final LobbyPreview preview;
@@ -82,6 +80,14 @@ public class Lobby implements ServerModelLayer {
         this.targetNumberUsers = targetNumberUsers;
         this.lobbyName = lobbyName;
         this.lobbyUsers = new ArrayList<>();
+
+        availableUserColors = new ArrayList<>(){{
+           add(LobbyUserColors.RED);
+           add(LobbyUserColors.BLUE);
+           add(LobbyUserColors.GREEN);
+           add(LobbyUserColors.YELLOW);
+        }};
+
         lobbyUserConnection = new HashMap<>();
         serverUserToLobbyUser = new HashMap<>();
         lobbyUserToServerUser = new HashMap<>();
@@ -124,6 +130,14 @@ public class Lobby implements ServerModelLayer {
 
             preview.setUsers(lobbyUsers.size());
         }
+
+        //Pick random color for the user
+        synchronized (colorsLock) {
+            Random rand = new Random();
+            int random = rand.nextInt(0, availableUserColors.size());
+            lobbyUser.setColor(availableUserColors.remove(random));
+        }
+
 
         lobbyUsersChange.firePropertyChange("LobbyUsersChange", null, lobbyUsers);
     }
@@ -310,6 +324,31 @@ public class Lobby implements ServerModelLayer {
         lobbyClosed = true;
 
         preview.setGameStarted(true);
+    }
+
+    /**
+     * Allows the user to change their color to any of the other available colors in the Lobby.
+     *
+     * @param user      User that wants to change their color.
+     * @param newColor  Color which the user wants to change to.
+     * @throws UnavailableLobbyUserColorException   If a user selects a color that is not available.
+     */
+    public void changeColor(LobbyUser user, LobbyUserColors newColor) throws UnavailableLobbyUserColorException {
+        synchronized (colorsLock){
+            LobbyUserColors oldColor = user.getColor();
+
+            if(oldColor.equals(newColor))
+                return;
+
+            if(availableUserColors.contains(newColor)){
+                availableUserColors.remove(newColor);
+                user.setColor(newColor);
+                availableUserColors.add(oldColor);
+            }
+            else
+                throw new UnavailableLobbyUserColorException("Color is not available");
+        }
+        lobbyUsersChange.firePropertyChange("LobbyUsersChange", null, lobbyUsers);
     }
 
 

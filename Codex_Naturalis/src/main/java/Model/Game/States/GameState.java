@@ -1,9 +1,9 @@
 package Model.Game.States;
 
+import Exceptions.Game.*;
 import Model.Game.CardPoolTypes;
-import Model.Game.Exceptions.*;
 import Model.Player.Player;
-import Model.Player.PlayerColors;
+import Server.Model.Lobby.LobbyUserColors;
 import Server.Interfaces.LayerUser;
 import Server.Model.Lobby.LobbyUser;
 
@@ -42,19 +42,6 @@ public interface GameState {
      * @throws MaxResourceCardsDrawnException           If a player attempts to draw an extra resource card beyond the maximum allowed during the cards setup state.
      */
     void drawCard(Player player, CardPoolTypes cardPoolType, int index)throws MoveAttemptOnWaitStateException, NotYourTurnException, InvalidActionForPlayerStateException, InvalidActionForGameStateException, MaxGoldenCardsDrawnException, MaxResourceCardsDrawnException;
-
-
-    /**
-     * Allows the player to pick a color for themselves.
-     *
-     * @param player The player who is picking the color.
-     * @param color  The color chosen by the player.
-     * @throws MoveAttemptOnWaitStateException      If a player attempts a move while in a "wait" state.
-     * @throws InvalidActionForPlayerStateException If a player attempts an action that is not valid in their current state.
-     * @throws InvalidActionForGameStateException   If a player attempts an action that is not valid in the current game state.
-     */
-    void pickPlayerColor(Player player, PlayerColors color)throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException;
-
 
     /**
      * Allows the player to pick which objective they want to keep.

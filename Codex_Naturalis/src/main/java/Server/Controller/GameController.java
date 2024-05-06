@@ -1,10 +1,10 @@
 package Server.Controller;
 
+import Exceptions.Game.*;
 import Model.Game.CardPoolTypes;
-import Model.Game.Exceptions.*;
 import Model.Game.Game;
 import Model.Player.Player;
-import Model.Player.PlayerColors;
+import Server.Model.Lobby.LobbyUserColors;
 import Server.Model.Lobby.LobbyUser;
 
 /**
@@ -39,9 +39,6 @@ public class GameController {
     }
     public void drawCard(Player player, CardPoolTypes cardPoolType, int index) throws NotYourTurnException, MoveAttemptOnWaitStateException, MaxResourceCardsDrawnException, InvalidActionForPlayerStateException, InvalidActionForGameStateException, MaxGoldenCardsDrawnException {
         model.drawCard(player, cardPoolType, index);
-    }
-    public void pickPlayerColor(Player player, PlayerColors color) throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException {
-        model.pickPlayerColor(player, color);
     }
     public void pickPlayerObjective(Player player, int objectiveIndex) throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException {
         model.pickPlayerObjective(player, objectiveIndex);

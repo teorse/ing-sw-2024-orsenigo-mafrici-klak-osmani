@@ -1,7 +1,7 @@
 package Server.Controller.InputHandler;
 
 import Model.Game.CardPoolTypes;
-import Model.Game.Exceptions.GameException;
+import Exceptions.Game.GameException;
 import Network.ClientServerPacket.ClientServerPacket;
 import Network.ClientServerPacket.CommandTypes;
 import Network.ClientServerPacket.GameCommands;

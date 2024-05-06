@@ -56,7 +56,7 @@ public class SCPUpdateLobbyUsers implements ServerClientPacket, Serializable {
 
         StringBuilder usersStatus = new StringBuilder("USERS IN LOBBY:");
         for(LobbyUser lobbyUser : lobbyUsers){
-            usersStatus.append("\n").append(lobbyUser.getUsername()).append(" : ").append(lobbyUser.getConnectionStatus());
+            usersStatus.append("\n").append(lobbyUser.getColor()).append(" ").append(lobbyUser.getUsername()).append(" : ").append(lobbyUser.getConnectionStatus());
         }
         System.out.println(usersStatus);
     }

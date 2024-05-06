@@ -1,14 +1,13 @@
 package Model.Game.States;
 
 import Model.Game.CardPoolTypes;
-import Model.Game.Exceptions.InvalidActionForGameStateException;
-import Model.Game.Exceptions.InvalidActionForPlayerStateException;
-import Model.Game.Exceptions.MoveAttemptOnWaitStateException;
+import Exceptions.Game.InvalidActionForGameStateException;
+import Exceptions.Game.InvalidActionForPlayerStateException;
+import Exceptions.Game.MoveAttemptOnWaitStateException;
 import Model.Game.Game;
 import Model.Game.Table;
 import Model.Player.Player;
-import Model.Player.PlayerColors;
-import Server.Model.Lobby.LobbyUserConnectionStates;
+import Server.Model.Lobby.LobbyUserColors;
 import Model.Player.PlayerStates;
 import Server.Interfaces.LayerUser;
 import Server.Model.Lobby.Lobby;
@@ -102,18 +101,6 @@ public class ObjectivesSetup implements GameState{
     @Override
     public void drawCard(Player player, CardPoolTypes cardPoolType, int index) throws InvalidActionForGameStateException {
         throw new InvalidActionForGameStateException("You can't draw cards yet.");
-    }
-
-    /**
-     * The method throws an exception as players are not allowed to perform this move during this state of the game.
-     *
-     * @param player The player who is picking the color.
-     * @param color  The color chosen by the player.
-     * @throws InvalidActionForGameStateException   Always thrown as players are not allowed to pick colors in this state.
-     */
-    @Override
-    public void pickPlayerColor(Player player, PlayerColors color) throws InvalidActionForGameStateException {
-        throw new InvalidActionForGameStateException("You can't pick your color at this game state.");
     }
 
     /**

@@ -21,11 +21,6 @@ public enum PlayerStates {
     WAIT,
 
     /**
-     * State representing the phase where the player is picking a color for themselves in the game.
-     */
-    PICK_COLOR,
-
-    /**
      * State representing the phase where the player is picking an objective card.
      */
     PICK_OBJECTIVE}

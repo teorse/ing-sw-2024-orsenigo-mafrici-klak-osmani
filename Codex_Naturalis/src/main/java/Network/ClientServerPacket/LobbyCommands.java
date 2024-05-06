@@ -7,6 +7,7 @@ package Network.ClientServerPacket;
 public enum LobbyCommands {
     START_GAME,
     QUIT,
+    CHANGE_COLOR,
 
     //DEMO PURPOSES
     COMMAND1,

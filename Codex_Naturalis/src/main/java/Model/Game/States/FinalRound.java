@@ -1,15 +1,16 @@
 package Model.Game.States;
 
 import Model.Game.CardPoolTypes;
-import Model.Game.Exceptions.InvalidActionForGameStateException;
-import Model.Game.Exceptions.InvalidActionForPlayerStateException;
-import Model.Game.Exceptions.NotYourTurnException;
+import Exceptions.Game.InvalidActionForGameStateException;
+import Exceptions.Game.InvalidActionForPlayerStateException;
+import Exceptions.Game.NotYourTurnException;
 import Model.Game.Table;
 import Model.Player.*;
 import Model.Game.Game;
 import Server.Interfaces.LayerUser;
 import Server.Model.Lobby.Lobby;
 import Server.Model.Lobby.LobbyUser;
+import Server.Model.Lobby.LobbyUserColors;
 import Server.Model.Lobby.LobbyUserConnectionStates;
 
 import java.util.List;
@@ -94,18 +95,6 @@ public class FinalRound implements GameState{
     @Override
     public void drawCard(Player player, CardPoolTypes cardPoolType, int index) throws InvalidActionForGameStateException {
         throw new InvalidActionForGameStateException("You don't need to draw a new card during the final round");
-    }
-
-    /**
-     * The method throws an exception as players are not allowed to perform this move during this state of the game.
-     *
-     * @param player The player who is picking the color.
-     * @param color  The color chosen by the player.
-     * @throws InvalidActionForGameStateException   Always thrown as players are not allowed to pick colors in the final round.
-     */
-    @Override
-    public void pickPlayerColor(Player player, PlayerColors color) throws InvalidActionForGameStateException {
-        throw new InvalidActionForGameStateException("You can't pick your character color in this state");
     }
 
     /**

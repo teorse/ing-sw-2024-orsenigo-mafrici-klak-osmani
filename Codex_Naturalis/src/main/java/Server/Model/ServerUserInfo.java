@@ -1,6 +1,6 @@
 package Server.Model;
 
-import Server.Exceptions.IncorrectPasswordException;
+import Exceptions.Server.LogInExceptions.IncorrectPasswordException;
 
 /**
  * This class stores the hashed password and salt information associated with a user's login,

@@ -1,19 +1,24 @@
 package Server.Controller.InputHandler;
 
+import Exceptions.Server.LobbyNameAlreadyTakenException;
+import Exceptions.Server.LobbyNotFoundException;
 import Network.ClientServerPacket.ClientServerPacket;
 import Network.ClientServerPacket.CommandTypes;
 import Network.ClientServerPacket.ServerCommands;
 import Network.ServerClientPacket.SCPPrintPlaceholder;
-import Server.Controller.InputHandler.Exceptions.AlreadyInLobbyException;
-import Server.Controller.InputHandler.Exceptions.LogInRequiredException;
-import Server.Controller.InputHandler.Exceptions.MultipleLoginViolationException;
-import Server.Controller.InputHandler.Exceptions.NotInLobbyException;
+import Exceptions.Server.InputHandlerExceptions.MultipleAccessExceptions.MultipleLobbiesException;
+import Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.LogInRequiredException;
+import Exceptions.Server.InputHandlerExceptions.MultipleAccessExceptions.MultipleLoginViolationException;
+import Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.LobbyRequiredException;
 import Server.Controller.LobbyController;
 import Server.Controller.ServerController;
-import Server.Exceptions.*;
-import Server.Model.Lobby.Exceptions.InvalidLobbySettingsException;
-import Server.Model.Lobby.Exceptions.LobbyClosedException;
-import Server.Model.Lobby.Exceptions.LobbyUserAlreadyConnectedException;
+import Exceptions.Server.LogInExceptions.AccountAlreadyExistsException;
+import Exceptions.Server.LogInExceptions.AccountAlreadyLoggedInException;
+import Exceptions.Server.LogInExceptions.AccountNotFoundException;
+import Exceptions.Server.LogInExceptions.IncorrectPasswordException;
+import Exceptions.Server.LobbyExceptions.InvalidLobbySettingsException;
+import Exceptions.Server.LobbyExceptions.LobbyClosedException;
+import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
 import Server.Model.ServerUser;
 import Server.Network.ClientHandler.ClientHandler;
 
@@ -70,12 +75,12 @@ public class ServerInputHandler implements InputHandler{
                         throw new LogInRequiredException("You need to be logged in to perform this action");
                     }
                     else if (lobbyInputHandler == null || !lobbyInputHandler.isBound()) {
-                        throw new NotInLobbyException("You need to be in a Lobby to perform this action");
+                        throw new LobbyRequiredException("You need to be in a Lobby to perform this action");
                     }
                     else
                         lobbyInputHandler.handleInput(message);
                 }
-                catch (LogInRequiredException | NotInLobbyException e){
+                catch (LogInRequiredException | LobbyRequiredException e){
                     connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
                 }
             }
@@ -201,7 +206,7 @@ public class ServerInputHandler implements InputHandler{
             if (serverUser == null) {
                 throw new LogInRequiredException("");
             } else if (lobbyInputHandler != null && lobbyInputHandler.isBound()) {
-                throw new AlreadyInLobbyException("");
+                throw new MultipleLobbiesException("");
             } else {
                 LobbyController lobbyController = serverController.createNewLobby(lobbyName, targetNumberUsers, serverUser, connection);
                 lobbyInputHandler = new LobbyInputHandler(connection, lobbyController, serverUser);
@@ -210,7 +215,7 @@ public class ServerInputHandler implements InputHandler{
         catch (LogInRequiredException e){
             connection.sendPacket(new SCPPrintPlaceholder("You have to be logged in to perform this action"));
         }
-        catch (AlreadyInLobbyException e){
+        catch (MultipleLobbiesException e){
             connection.sendPacket(new SCPPrintPlaceholder("Can't create new lobby, you already are in a lobby"));
         }
         catch (LobbyNameAlreadyTakenException e){
@@ -226,7 +231,7 @@ public class ServerInputHandler implements InputHandler{
             if (serverUser == null) {
                 throw new LogInRequiredException("");
             } else if (lobbyInputHandler != null && lobbyInputHandler.isBound()) {
-                throw new AlreadyInLobbyException("");
+                throw new MultipleLobbiesException("");
             } else {
                 LobbyController lobbyController = serverController.joinLobby(lobbyName, serverUser, connection);
                 lobbyInputHandler = new LobbyInputHandler(connection, lobbyController, serverUser);
@@ -235,7 +240,7 @@ public class ServerInputHandler implements InputHandler{
         catch (LogInRequiredException e){
             connection.sendPacket(new SCPPrintPlaceholder("You have to be logged in to perform this action"));
         }
-        catch (AlreadyInLobbyException e){
+        catch (MultipleLobbiesException e){
             connection.sendPacket(new SCPPrintPlaceholder("Can't create new lobby, you already are in a lobby"));
         }
         catch (LobbyNotFoundException e){

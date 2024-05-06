@@ -1,14 +1,16 @@
 package Server.Controller.InputHandler;
 
+import Exceptions.Server.LobbyExceptions.UnavailableLobbyUserColorException;
 import Network.ClientServerPacket.ClientServerPacket;
 import Network.ClientServerPacket.CommandTypes;
 import Network.ClientServerPacket.LobbyCommands;
 import Network.ServerClientPacket.SCPPrintPlaceholder;
 import Server.Controller.GameController;
-import Server.Controller.InputHandler.Exceptions.NotInGameException;
-import Server.Controller.InputHandler.Exceptions.WrongServerLayerException;
+import Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.GameRequiredException;
+import Exceptions.Server.InputHandlerExceptions.InputExceptions.WrongServerLayerException;
 import Server.Controller.LobbyController;
 import Server.Model.Lobby.LobbyUser;
+import Server.Model.Lobby.LobbyUserColors;
 import Server.Model.ServerUser;
 import Server.Network.ClientHandler.ClientHandler;
 
@@ -72,12 +74,12 @@ public class LobbyInputHandler implements InputHandler{
             case GAME -> {
                 try {
                     if (gameInputHandler == null || !gameInputHandler.isBound()) {
-                        throw new NotInGameException("You have to be in a game to perform this action");
+                        throw new GameRequiredException("You have to be in a game to perform this action");
                     } else {
                         gameInputHandler.handleInput(message);
                     }
                 }
-                catch (NotInGameException e){
+                catch (GameRequiredException e){
                     connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
                 }
             }
@@ -99,6 +101,8 @@ public class LobbyInputHandler implements InputHandler{
                 switch (LobbyCommands.valueOf(command)){
                     case START_GAME -> startGame();
                     case QUIT -> logOut();
+
+                    case CHANGE_COLOR -> changeColor(payload);
 
                     case COMMAND1 -> Command1();
                     case COMMAND2 -> Command2();
@@ -155,6 +159,17 @@ public class LobbyInputHandler implements InputHandler{
     //PACKET HANDLING METHODS
     private void startGame(){
         lobbyController.startGame();
+    }
+
+    private void changeColor(List<String> payload){
+        LobbyUserColors newColor = LobbyUserColors.valueOf(payload.getFirst());
+
+        try {
+            lobbyController.changeColor(lobbyUser, newColor);
+        }
+        catch (UnavailableLobbyUserColorException e){
+            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+        }
     }
 
     private void Command1(){

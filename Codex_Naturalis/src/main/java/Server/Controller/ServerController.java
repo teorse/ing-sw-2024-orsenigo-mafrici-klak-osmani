@@ -1,10 +1,15 @@
 package Server.Controller;
 
-import Server.Exceptions.*;
+import Exceptions.Server.LobbyNameAlreadyTakenException;
+import Exceptions.Server.LobbyNotFoundException;
+import Exceptions.Server.LogInExceptions.AccountAlreadyExistsException;
+import Exceptions.Server.LogInExceptions.AccountAlreadyLoggedInException;
+import Exceptions.Server.LogInExceptions.AccountNotFoundException;
+import Exceptions.Server.LogInExceptions.IncorrectPasswordException;
 import Server.Interfaces.LayerUser;
-import Server.Model.Lobby.Exceptions.InvalidLobbySettingsException;
-import Server.Model.Lobby.Exceptions.LobbyClosedException;
-import Server.Model.Lobby.Exceptions.LobbyUserAlreadyConnectedException;
+import Exceptions.Server.LobbyExceptions.InvalidLobbySettingsException;
+import Exceptions.Server.LobbyExceptions.LobbyClosedException;
+import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
 import Server.Model.ServerModel;
 import Server.Model.ServerUser;
 import Server.Network.ClientHandler.ClientHandler;
