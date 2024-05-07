@@ -65,8 +65,8 @@ class GameTest {
                 add(new ObjectiveNumeric("Sample", 1, null));
             }};
 
-            Game game = new Game(null, sampleCards.get(0), sampleCards.get(1),sampleCards.get(2),sampleObjectives1, new ArrayList<>());
-            Table table = new Table(sampleCards.get(3), sampleCards.get(4), sampleCards.get(5),sampleObjectives2);
+            Game game = new Game(null, sampleCards.get(0), sampleCards.get(1),sampleCards.get(2),sampleObjectives1, new ArrayList<>(), null);
+            Table table = new Table(sampleCards.get(3), sampleCards.get(4), sampleCards.get(5),sampleObjectives2, null);
 
             Field cardPoolsField;
             Field tableField;
@@ -119,13 +119,13 @@ class GameTest {
                 points.setAccessible(true);
 
                 //Setting up the list of players.
-                Player player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN));
+                Player player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN), null);
                 points.set(player1, 15);
-                Player player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN));
+                Player player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN), null);
                 points.set(player2, 15);
-                Player player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN));
+                Player player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN), null);
                 points.set(player3, 15);
-                Player player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN));
+                Player player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN), null);
                 points.set(player4, 15);
 
                 players = new ArrayList<>() {{
@@ -186,13 +186,13 @@ class GameTest {
                 points.setAccessible(true);
 
                 //Setting up the list of players.
-                Player player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN));
+                Player player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN), null);
                 points.set(player1, 24);
-                Player player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN));
+                Player player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN), null);
                 points.set(player2, 15);
-                Player player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN));
+                Player player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN), null);
                 points.set(player3, 15);
-                Player player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN));
+                Player player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN), null);
                 points.set(player4, 15);
 
                 players = new ArrayList<>() {{
@@ -253,13 +253,13 @@ class GameTest {
                 points.setAccessible(true);
 
                 //Setting up the list of players.
-                Player player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN));
+                Player player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN), null);
                 points.set(player1, 15);
-                Player player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN));
+                Player player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN), null);
                 points.set(player2, 15);
-                Player player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN));
+                Player player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN), null);
                 points.set(player3, 20);
-                Player player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN));
+                Player player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN), null);
                 points.set(player4, 15);
 
                 players = new ArrayList<>() {{
@@ -320,13 +320,13 @@ class GameTest {
                 points.setAccessible(true);
 
                 //Setting up the list of players.
-                Player player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN));
+                Player player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN), null);
                 points.set(player1, 15);
-                Player player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN));
+                Player player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN), null);
                 points.set(player2, 15);
-                Player player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN));
+                Player player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN), null);
                 points.set(player3, 15);
-                Player player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN));
+                Player player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN), null);
                 points.set(player4, 15);
 
                 players = new ArrayList<>() {{
@@ -390,13 +390,13 @@ class GameTest {
                 points.setAccessible(true);
 
                 //Setting up the list of players.
-                Player player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN));
+                Player player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN), null);
                 points.set(player1, 15);
-                Player player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN));
+                Player player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN), null);
                 points.set(player2, 15);
-                Player player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN));
+                Player player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN), null);
                 points.set(player3, 15);
-                Player player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN));
+                Player player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN), null);
                 points.set(player4, 15);
 
                 players = new ArrayList<>() {{
@@ -464,13 +464,13 @@ class GameTest {
                 points.setAccessible(true);
 
                 //Setting up the list of players.
-                Player player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN));
+                Player player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN), null);
                 points.set(player1, 15);
-                Player player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN));
+                Player player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN), null);
                 points.set(player2, 15);
-                Player player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN));
+                Player player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN), null);
                 points.set(player3, 27);
-                Player player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN));
+                Player player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN), null);
                 points.set(player4, 15);
 
                 players = new ArrayList<>() {{
@@ -563,7 +563,7 @@ class GameTest {
                 add(new ObjectiveNumeric("Sample", 1, null));
             }};
 
-            Game game = new Game(null, sampleCards.get(0), sampleCards.get(1), sampleCards.get(2), sampleObjectives1, new ArrayList<>());
+            Game game = new Game(null, sampleCards.get(0), sampleCards.get(1), sampleCards.get(2), sampleObjectives1, new ArrayList<>(), null);
 
             try{
                 Field players = Game.class.getDeclaredField("players");
@@ -607,16 +607,16 @@ class GameTest {
                 players.setAccessible(true);
 
                 //Setting up the list of players.
-                player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN));
+                player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN), null);
                 points.set(player1, 15);
                 objectivesCompleted.set(player1, 1);
-                player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN));
+                player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN), null);
                 points.set(player2, 15);
                 objectivesCompleted.set(player2, 1);
-                player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN));
+                player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN), null);
                 points.set(player3, 15);
                 objectivesCompleted.set(player3, 1);
-                player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN));
+                player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN), null);
                 points.set(player4, 15);
                 objectivesCompleted.set(player4, 1);
 
@@ -661,16 +661,16 @@ class GameTest {
                 players.setAccessible(true);
 
                 //Setting up the list of players.
-                player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN));
+                player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN), null);
                 points.set(player1, 20);
                 objectivesCompleted.set(player1, 2);
-                player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN));
+                player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN), null);
                 points.set(player2, 15);
                 objectivesCompleted.set(player2, 1);
-                player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN));
+                player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN), null);
                 points.set(player3, 18);
                 objectivesCompleted.set(player3, 3);
-                player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN));
+                player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN), null);
                 points.set(player4, 10);
                 objectivesCompleted.set(player4, 0);
 
@@ -712,16 +712,16 @@ class GameTest {
                 players.setAccessible(true);
 
                 //Setting up the list of players.
-                player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN));
+                player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN), null);
                 points.set(player1, 20);
                 objectivesCompleted.set(player1, 2);
-                player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN));
+                player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN), null);
                 points.set(player2, 20);
                 objectivesCompleted.set(player2, 1);
-                player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN));
+                player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN), null);
                 points.set(player3, 15);
                 objectivesCompleted.set(player3, 3);
-                player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN));
+                player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN), null);
                 points.set(player4, 10);
                 objectivesCompleted.set(player4, 0);
 
@@ -763,16 +763,16 @@ class GameTest {
                 players.setAccessible(true);
 
                 //Setting up the list of players.
-                player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN));
+                player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN), null);
                 points.set(player1, 15);
                 objectivesCompleted.set(player1, 2);
-                player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN));
+                player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN), null);
                 points.set(player2, 15);
                 objectivesCompleted.set(player2, 3);
-                player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN));
+                player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN), null);
                 points.set(player3, 18);
                 objectivesCompleted.set(player3, 2);
-                player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN));
+                player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN), null);
                 points.set(player4, 20);
                 objectivesCompleted.set(player4, 2);
 
@@ -814,16 +814,16 @@ class GameTest {
                 players.setAccessible(true);
 
                 //Setting up the list of players.
-                player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN));
+                player1 = new Player(new LobbyUser(new ServerUser("Leeroy1"), LobbyRoles.ADMIN), null);
                 points.set(player1, 20);
                 objectivesCompleted.set(player1, 2);
-                player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN));
+                player2 = new Player(new LobbyUser(new ServerUser("Leeroy2"), LobbyRoles.ADMIN), null);
                 points.set(player2, 15);
                 objectivesCompleted.set(player2, 1);
-                player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN));
+                player3 = new Player(new LobbyUser(new ServerUser("Leeroy3"), LobbyRoles.ADMIN), null);
                 points.set(player3, 20);
                 objectivesCompleted.set(player3, 2);
-                player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN));
+                player4 = new Player(new LobbyUser(new ServerUser("Leeroy4"), LobbyRoles.ADMIN), null);
                 points.set(player4, 15);
                 objectivesCompleted.set(player4, 1);
 

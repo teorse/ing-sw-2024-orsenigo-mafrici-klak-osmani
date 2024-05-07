@@ -33,7 +33,7 @@ public class CardMapTest {
         @BeforeEach
         void setUp() {
 
-            cardMap = new CardMap();
+            cardMap = new CardMap(null, "");
 
             String resourceCardsJson = "";
             String goldenCardsJson = "";
@@ -252,7 +252,7 @@ public class CardMapTest {
         @BeforeEach
         void setUp() {
 
-            cardMap = new CardMap();
+            cardMap = new CardMap(null, "");
             cardMap.changeArtifactAmount(Artifacts.ANIMAL, 2);
             cardMap.changeArtifactAmount(Artifacts.INSECT, 0);
 
@@ -303,7 +303,7 @@ public class CardMapTest {
 
         @BeforeEach
         void setUp() {
-            cardMap = new CardMap();
+            cardMap = new CardMap(null, "");
 
             Map<Coordinates, CardVisibility> cardsPlacedValue = new HashMap<>();
             Map<Artifacts, Integer> artifactsCounterValue = new HashMap<>();
@@ -379,7 +379,7 @@ public class CardMapTest {
 
         public CardMap CardMapReflectionBuilder(Map<Coordinates, CardVisibility> cardsPlacedValue, Map<Artifacts, Integer> artifactsCounterValue){
             //Creating using the usual constructor a normal CardMap object.
-            CardMap cardMap = new CardMap();
+            CardMap cardMap = new CardMap(null, "");
 
             //Defining two field type object
             Field field0;
@@ -457,7 +457,7 @@ public class CardMapTest {
             Map<Coordinates, CardVisibility> cardsPlacedValue = new HashMap<>();
             Map<Artifacts, Integer> artifactsCounterValue = new HashMap<>();
 
-            cardMap = new CardMap();
+            cardMap = new CardMap(null, "");
 
             cardsPlacedValue.put(new Coordinates(3, 2), new CardVisibility(cardResource, true));
             cardsPlacedValue.put(new Coordinates(1, 1), new CardVisibility(cardResource, true));
@@ -470,7 +470,7 @@ public class CardMapTest {
 
         public CardMap CardMapReflectionBuilder(Map<Coordinates, CardVisibility> cardsPlacedValue, Map<Artifacts, Integer> artifactsCounterValue){
             //Creating using the usual constructor a normal CardMap object.
-            CardMap cardMap = new CardMap();
+            CardMap cardMap = new CardMap(null, "");
 
             //Defining two field type object
             Field field0;
@@ -619,7 +619,7 @@ public class CardMapTest {
         }
         void scenarioBuilder(Map<Coordinates, CardVisibility> cardsPlaced0, List<Coordinates> availablePlacements0, List<Coordinates> expectedAvailablePlacements0, int coordinatesIndex, CardVisibility cardToPlace){
             //setting up cardMap class that will store the scenario
-            CardMap cardMap0 = new CardMap();
+            CardMap cardMap0 = new CardMap(null, "");
 
             //Using reflection to put cardsPlaced and availablePlacements into the cardMap object
             Field cardsPlaced;
@@ -1169,7 +1169,7 @@ public class CardMapTest {
                 for(int i = 0; i < maps.size(); i++){
                     Map<Coordinates, CardVisibility> map = maps.get(i);
 
-                    CardMap cardMap = new CardMap();
+                    CardMap cardMap = new CardMap(null, "");
                     cardPlacedField.set(cardMap, map);
 
                     cardMaps.add(cardMap);

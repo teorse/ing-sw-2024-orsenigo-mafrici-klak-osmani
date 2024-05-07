@@ -1,11 +1,16 @@
 package Model.Player;
 
+import Client.Model.Records.CardMapRecord;
 import Client.Model.Records.CardRecord;
 import Client.Model.Records.PlayerRecord;
 import Client.Model.Records.PlayerSecretInfoRecord;
 import Model.Cards.Card;
 import Model.Objectives.Objective;
+import Network.ServerClientPacket.SCPUpdateSecret;
+import Network.ServerClientPacket.SCPUpdateSpecificPlayer;
 import Server.Interfaces.LayerUser;
+import Server.Model.Lobby.Game.GameModelUpdatesSender;
+import Server.Model.Lobby.Lobby;
 import Server.Model.Lobby.LobbyUser;
 import Server.Model.Lobby.LobbyUserConnectionStates;
 
@@ -28,14 +33,17 @@ public class Player implements LayerUser {
     private int points;
     private int objectivesCompleted;
 
+    private final GameModelUpdatesSender sender;
+
 
 
 
 
     //CONSTRUCTOR
-    public Player(LobbyUser user) {
+    public Player(LobbyUser user, GameModelUpdatesSender sender) {
         this.user = user;
-        this.cardMap = new CardMap();
+        this.sender = sender;
+        this.cardMap = new CardMap(sender, user.getUsername());
         this.cardsHeld = new ArrayList<>();
         this.secretObjectiveCandidates = new ArrayList<>();
         this.secretObjectives = new ArrayList<>();
@@ -80,6 +88,10 @@ public class Player implements LayerUser {
     //SETTERS
     public void setPlayerState(PlayerStates playerState){
         this.playerState = playerState;
+
+        //todo
+        if(sender != null)
+            sender.updateClientGameModel(new SCPUpdateSpecificPlayer(this.toTransferableDataObject()));
     }
 
 
@@ -90,6 +102,10 @@ public class Player implements LayerUser {
 
     public void addSecretObjectiveCandidate(Objective objective){
         secretObjectiveCandidates.add(objective);
+
+        //todo
+        if(sender != null)
+            sender.updateClientGameModel(this, new SCPUpdateSecret(this.toSecretPlayer()));
     }
 
     /**
@@ -100,6 +116,10 @@ public class Player implements LayerUser {
     public void selectSecretObjective(int index){
         Objective selectedObjective = secretObjectiveCandidates.get(index);
         secretObjectives.add(selectedObjective);
+
+        //todo
+        if(sender != null)
+            sender.updateClientGameModel(this, new SCPUpdateSecret(this.toSecretPlayer()));
     }
 
     public void incrementRoundsCompleted() {
@@ -119,6 +139,8 @@ public class Player implements LayerUser {
         CardPlayability CP = new CardPlayability(card,false);
         CP.updatePlayability(cardMap);
         cardsHeld.add(CP);
+
+        sender.updateClientGameModel(this, new SCPUpdateSecret(this.toSecretPlayer()));
     }
 
     /**
@@ -164,6 +186,8 @@ public class Player implements LayerUser {
 
         //Updates the playable sides of the remaining cards held after placing the card in the card map.
         updatePlayableSides();
+
+        sender.updateClientGameModel(new SCPUpdateSpecificPlayer(this.toTransferableDataObject()));
     }
 
     /**
@@ -216,6 +240,10 @@ public class Player implements LayerUser {
     }
 
     public PlayerRecord toTransferableDataObject() {return new PlayerRecord(user.getUsername(), user.getColor(), user.getConnectionStatus(), playerState, roundsCompleted, points, objectivesCompleted);}
+
+    public Map.Entry<PlayerRecord, CardMapRecord> toPlayerCardMapView(){
+        return new AbstractMap.SimpleEntry<PlayerRecord, CardMapRecord>(toTransferableDataObject(), cardMap.toTransferableDataObject());
+    }
 }
 
 

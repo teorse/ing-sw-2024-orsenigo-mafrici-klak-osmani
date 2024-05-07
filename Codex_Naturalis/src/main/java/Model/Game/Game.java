@@ -1,14 +1,17 @@
 package Model.Game;
 
+import Client.Model.Records.*;
 import Exceptions.Game.*;
-import Client.Model.Records.GameRecord;
-import Client.Model.Records.PlayerRecord;
 import Model.Cards.Card;
 import Model.Objectives.Objective;
 import Model.Player.Player;
 import Model.Game.States.*;
+import Network.ServerClientPacket.SCPGameStarted;
+import Network.ServerClientPacket.SCPUpdateGame;
+import Network.ServerClientPacket.SCPUpdatePlayers;
 import Server.Interfaces.LayerUser;
 import Server.Interfaces.ServerModelLayer;
+import Server.Model.Lobby.Game.GameModelUpdatesSender;
 import Server.Model.Lobby.Lobby;
 import Server.Model.Lobby.LobbyUser;
 
@@ -25,6 +28,7 @@ public class Game implements ServerModelLayer {
     private List<Player> players;
     private final Map<LobbyUser, Player> lobbyUserToPlayerMap;
     private final Lobby lobby;
+    private final GameModelUpdatesSender sender;
 
     private final Table table;
     private boolean lastRoundFlag;
@@ -57,12 +61,13 @@ public class Game implements ServerModelLayer {
      * @param objectives    List of Objectives to use during this game.
      * @param lobbyUsers    List of lobby users taking part to this game.
      */
-    public Game(Lobby lobby, List<Card> goldenCards, List<Card> resourceCards, List<Card> starterCards, List<Objective> objectives, List<LobbyUser> lobbyUsers) {
+    public Game(Lobby lobby, List<Card> goldenCards, List<Card> resourceCards, List<Card> starterCards, List<Objective> objectives, List<LobbyUser> lobbyUsers, GameModelUpdatesSender sender) {
         lobbyUserToPlayerMap = new HashMap<>();
         this.lobby = lobby;
+        this.sender = sender;
         players = new ArrayList<>();
         for(LobbyUser lobbyUser : lobbyUsers){
-            Player player = new Player(lobbyUser);
+            Player player = new Player(lobbyUser, sender);
             //todo add listeners
 
             lobbyUserToPlayerMap.put(lobbyUser, player);
@@ -70,7 +75,7 @@ public class Game implements ServerModelLayer {
         }
 
         Collections.shuffle(this.players);
-        this.table = new Table(goldenCards, resourceCards, starterCards, objectives);
+        this.table = new Table(goldenCards, resourceCards, starterCards, objectives, sender);
         this.lastRoundFlag = false;
         this.gameOver = false;
         winners = new ArrayList<>();
@@ -82,6 +87,18 @@ public class Game implements ServerModelLayer {
         System.out.println("starterCards: "+starterCards.size());
         System.out.println("objectives: "+objectives.size());
         System.out.println("players: "+players.size());
+
+
+        Map<PlayerRecord, CardMapRecord> playerRecordCardMapRecordMap = this.toPlayerViewList();
+        TableRecord tableRecord = table.toRecord();
+        GameRecord gameRecord = this.toRecord();
+        PlayerSecretInfoRecord secretInfoRecord;
+        for(Player player : players) {
+            secretInfoRecord = player.toSecretPlayer();
+
+            if(sender != null)
+                sender.updateClientGameModel(player, new SCPGameStarted(playerRecordCardMapRecordMap, secretInfoRecord, tableRecord, gameRecord));
+        }
     }
 
 
@@ -118,6 +135,8 @@ public class Game implements ServerModelLayer {
     //STATE PATTERN METHODS
     public void setState(GameState state){
         this.state = state;
+        if(sender != null)
+            sender.updateClientGameModel(new SCPUpdateGame(this.toRecord()));
     }
     public void playCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws NotYourTurnException, MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException {
         state.playCard(player, cardIndex, coordinateIndex, faceUp);
@@ -133,6 +152,9 @@ public class Game implements ServerModelLayer {
     }
     public void removePlayer(LobbyUser lobbyUser){
         state.removePlayer(lobbyUser);
+
+        if(sender != null)
+            sender.updateClientGameModel(new SCPUpdatePlayers(this.toPlayerViewList()));
     }
     @Override
     public void userDisconnectionProcedure(LayerUser user) {
@@ -150,6 +172,9 @@ public class Game implements ServerModelLayer {
     //METHODS
     public void incrementRoundsCompleted(){
         this.roundsCompleted++;
+
+        if(sender != null)
+            sender.updateClientGameModel(new SCPUpdateGame(toRecord()));
     }
 
     /**
@@ -202,13 +227,20 @@ public class Game implements ServerModelLayer {
         gameOver = true;
     }
 
-    public List<PlayerRecord> toPlayerViewList() {
-        List<PlayerRecord> playerRecords = new ArrayList<>();
+
+
+
+
+
+    //OBSERVERS
+    public Map<PlayerRecord, CardMapRecord> toPlayerViewList() {
+        Map<PlayerRecord, CardMapRecord> playerViewList = new HashMap<>();
         for(Player player : players){
-            playerRecords.add(player.toTransferableDataObject());
+            Map.Entry<PlayerRecord, CardMapRecord> entry = player.toPlayerCardMapView();
+            playerViewList.put(entry.getKey(), entry.getValue());
         }
-        return playerRecords;
+        return playerViewList;
     }
 
-    public GameRecord toRecord() {return new GameRecord(toPlayerViewList(), roundsCompleted, table.toRecord(), lastRoundFlag, gameOver, state);}
+    public GameRecord toRecord() {return new GameRecord(roundsCompleted, lastRoundFlag, gameOver, state);}
 }

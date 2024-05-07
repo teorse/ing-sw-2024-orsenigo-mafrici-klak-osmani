@@ -25,7 +25,7 @@ public class CardGoldenTest {
 
     @BeforeEach
     public void setUp() {
-        CM = new CardMap();
+        CM = new CardMap(null, "");
         constraint = new HashMap<>();
         corners = new HashMap<>();
     }
@@ -100,7 +100,7 @@ public class CardGoldenTest {
     }
 
     public CardMap CardMapReflectionBuilder(Map<Coordinates, CardVisibility> cardsPlacedValue){
-        CardMap cardMap = new CardMap();
+        CardMap cardMap = new CardMap(null, "");
         Field field0;
         try{
             field0 = CardMap.class.getDeclaredField("cardsPlaced");
