@@ -2,6 +2,7 @@ package Model.Game;
 
 import Model.Cards.Card;
 import Model.Objectives.Objective;
+import Server.Model.Lobby.Game.GameModelUpdatesSender;
 import Server.Model.Lobby.Lobby;
 import Server.Model.Lobby.LobbyUser;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class GameLoader {
 
-    public static Game startNewGame(List<LobbyUser> lobbyUsers, Lobby lobby){
+    public static Game startNewGame(List<LobbyUser> lobbyUsers, Lobby lobby, GameModelUpdatesSender sender){
         List<Objective> objectives = null;
         List<Card> cardsResource = null;
         List<Card> cardsGolden = null;
@@ -51,7 +52,7 @@ public class GameLoader {
 
 
         //Start the game
-        Game game = new Game(lobby, cardsGolden, cardsResource, cardsStarter, objectives, lobbyUsers);
+        Game game = new Game(lobby, cardsGolden, cardsResource, cardsStarter, objectives, lobbyUsers, sender);
 
         return game;
     }

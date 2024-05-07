@@ -3,7 +3,9 @@ package Server.Model.Lobby;
 import Client.Model.Records.LobbyPreviewRecord;
 import Exceptions.Server.LobbyExceptions.UnavailableLobbyUserColorException;
 import Model.Game.GameLoader;
+import Model.Player.Player;
 import Network.ServerClientPacket.Demo.SCPPrintPlaceholder;
+import Network.ServerClientPacket.SCPJoinLobbySuccessful;
 import Network.ServerClientPacket.ServerClientPacket;
 import Server.Controller.GameController;
 import Server.Controller.InputHandler.LobbyInputHandler;
@@ -12,10 +14,12 @@ import Server.Interfaces.ServerModelLayer;
 import Exceptions.Server.LobbyExceptions.LobbyClosedException;
 import Exceptions.Server.LobbyExceptions.InvalidLobbySettingsException;
 import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
+import Server.Model.Lobby.Game.GameModelUpdatesSender;
 import Server.Model.LobbyPreviewObserverRelay;
 import Server.Model.ServerUser;
 import Server.Network.ClientHandler.ClientHandler;
 
+import javax.swing.*;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
 
@@ -106,6 +110,7 @@ public class Lobby implements ServerModelLayer {
         LobbyUser lobbyUser = new LobbyUser(serverUser, LobbyRoles.ADMIN);
         addLobbyUserToLobby(serverUser, ch, lobbyUser);
 
+        //todo
         sendPacket(lobbyUser, new SCPPrintPlaceholder("You have started the lobby "+lobbyName));
     }
 
@@ -134,7 +139,6 @@ public class Lobby implements ServerModelLayer {
         }
 
         updateLobbyPreview();
-
         lobbyUsersChange.firePropertyChange("LobbyUsersChange", null, lobbyUsers);
     }
 
@@ -309,7 +313,7 @@ public class Lobby implements ServerModelLayer {
      * Starts the game in the lobby.
      */
     public void startGame(){
-        game = GameLoader.startNewGame(lobbyUsers, this);
+        game = GameLoader.startNewGame(lobbyUsers, this, new GameModelUpdatesSender(lobbyUserConnection));
         updateGameController(new GameController(game));
 
         System.out.println("Game started in lobby: "+lobbyName);

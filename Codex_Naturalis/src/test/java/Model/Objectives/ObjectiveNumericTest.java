@@ -19,7 +19,7 @@ class ObjectiveNumericTest {
 
     public CardMap CardMapReflectionBuilder(Map<Coordinates, CardVisibility> cardsPlacedValue, Map<Artifacts, Integer> artifactsCounterValue, List<Coordinates> coordinatesPlacedValue){
         //Creating using the usual constructor a normal CardMap object.
-        CardMap cardMap = new CardMap();
+        CardMap cardMap = new CardMap(null, "");
 
         //Defining two field type object
         Field field0;

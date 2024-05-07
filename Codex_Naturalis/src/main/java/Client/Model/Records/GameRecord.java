@@ -19,10 +19,8 @@ import java.util.List;
  * <p>
  * This class is useful for generating a high-level view of a game for display purposes in a user interface
  * or other forms of game output.
- *
- * @param playerRecords ATTRIBUTES
  */
-public record GameRecord(List<PlayerRecord> playerRecords, int roundsCompleted, TableRecord tableRecord, boolean lastRoundFlag,
+public record GameRecord(int roundsCompleted, boolean lastRoundFlag,
                          boolean gameOver, GameState currentState) implements Serializable {
     /**
      * Constructs a `GameView` instance with the given game attributes.
@@ -37,7 +35,6 @@ public record GameRecord(List<PlayerRecord> playerRecords, int roundsCompleted, 
      *
      * @param playerRecords     The list of `PlayerView` objects representing the players in the game.
      * @param roundsCompleted The number of rounds completed in the game.
-     * @param tableRecord       The `TableView` representing the visual representation of the game table.
      * @param lastRoundFlag   Boolean flag indicating whether the game has reached the last round.
      * @param gameOver        Boolean flag indicating whether the game has ended.
      * @param currentState    The current `GameState` of the game.
