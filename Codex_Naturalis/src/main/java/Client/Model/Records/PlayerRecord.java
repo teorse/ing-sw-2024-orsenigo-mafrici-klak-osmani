@@ -13,14 +13,13 @@ import java.io.Serializable;
  *
  * <p>This record implements the {@code Serializable} interface to support serialization.
  */
-public record PlayerRecord(String nickname, LobbyUserColors color, PlayerStates playerState,
+public record PlayerRecord(String nickname, PlayerStates playerState,
                            int roundsCompleted, int points, int objectivesCompleted) implements Serializable {
 
     /**
      * Constructs a new {@code PlayerRecord} with the specified parameters.
      *
      * @param nickname the nickname of the player
-     * @param color the color assigned to the player
      * @param playerState the state of the player
      * @param roundsCompleted the number of rounds completed by the player
      * @param points the points earned by the player

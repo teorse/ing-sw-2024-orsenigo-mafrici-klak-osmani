@@ -239,7 +239,7 @@ public class Player implements LayerUser {
         return new PlayerSecretInfoRecord(cardsHeld, secretObjectives.getFirst().toRecord());
     }
 
-    public PlayerRecord toTransferableDataObject() {return new PlayerRecord(user.getUsername(), user.getColor(), playerState, roundsCompleted, points, objectivesCompleted);}
+    public PlayerRecord toTransferableDataObject() {return new PlayerRecord(user.getUsername(), playerState, roundsCompleted, points, objectivesCompleted);}
 
     public Map.Entry<PlayerRecord, CardMapRecord> toPlayerCardMapView(){
         return new AbstractMap.SimpleEntry<PlayerRecord, CardMapRecord>(toTransferableDataObject(), cardMap.toTransferableDataObject());
