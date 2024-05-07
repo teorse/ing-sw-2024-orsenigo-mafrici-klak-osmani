@@ -3,35 +3,21 @@ package Client.Model.Records;
 import java.io.Serializable;
 
 /**
- * Represents a view of an objective in a game, providing information about its description, points, and requirements.
- * <p>
- * The `ObjectiveView` class is designed to represent the visual aspects of an `Objective`.
- * It can hold details such as:
- * - A textual description of the objective.
- * - The number of points the objective is worth.
- * - A geometric pattern, if applicable.
- * - Numeric requirements, if applicable.
- * <p>
- * The constructor determines whether the `Objective` is geometric or numeric, and initializes the appropriate
- * attributes accordingly.
- * <p>
- * This class is useful for displaying objective information in a user interface or other output formats.
+ * Represents a record containing information about an objective in a game.
  *
- * @param description ATTRIBUTES
+ * <p>An {@code ObjectiveRecord} contains details such as the description and the points associated with the objective.
+ *
+ * <p>This record implements the {@code Serializable} interface to support serialization.
  */
 public record ObjectiveRecord(String description, int points) implements Serializable {
+
     /**
-     * Constructs an `ObjectiveView` object with a specified description, points, geometric pattern, and numeric requirements.
-     * <p>
-     * This constructor initializes:
-     * - The description of the objective.
-     * - The points awarded by the objective.
-     * - The geometric pattern, if applicable.
-     * - The numeric requirements, if applicable.
-     * The geometric pattern and numeric requirements are mutually exclusive; only one can be non-null at a time.
+     * Constructs a new {@code ObjectiveRecord} with the specified parameters.
      *
-     * @param description The text description of the objective.
-     * @param points      The number of points awarded by the objective.
+     * @param description the description of the objective
+     * @param points the points associated with the objective
      */
-    public ObjectiveRecord {}
+    public ObjectiveRecord {
+        // No additional implementation needed as records automatically generate a constructor
+    }
 }
