@@ -69,10 +69,10 @@ public class Corner implements Serializable {
 
 
     //GETTERS
-    protected CornerType getCornerType() {
+    public CornerType getCornerType() {
         return cornerType;
     }
-    protected Artifacts getArtifact() {
+    public Artifacts getArtifact() {
         return artifact;
     }
 
