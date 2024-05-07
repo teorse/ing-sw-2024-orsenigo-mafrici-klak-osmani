@@ -32,7 +32,7 @@ import java.util.Map;
  * @see CardMap
  */
 public record CardMapRecord(Map<Coordinates, CardVisibility> cardsPlaced, List<Coordinates> availablePlacements,
-                            Map<Artifacts, Integer> artifactsCounter, List<Coordinates> coordinatesPlaced) implements Serializable {
+                            Map<Artifacts, Integer> artifactsCounter, List<Coordinates> coordinatesPlaced, int maxCoordinate) implements Serializable {
     /**
      * Constructs a `CardMapView` with specific attributes.
      * <p>
