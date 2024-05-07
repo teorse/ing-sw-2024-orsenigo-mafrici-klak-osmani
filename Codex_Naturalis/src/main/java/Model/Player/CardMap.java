@@ -395,19 +395,7 @@ public class CardMap {
         availablePlacements.addAll(candidates);
     }
 
-    /***
-     * This method returns the greater coordinate placed without sign
-     */
-    protected int maxCoordinate() {
-        int maxCoordinate = 0;
-        for(Coordinates coordinates : coordinatesPlaced) {
-            int max = Math.max(Math.abs(coordinates.getCoordY()),Math.abs(coordinates.getCoordY()));
-            if (max > maxCoordinate) maxCoordinate = max;
-        }
-        return maxCoordinate;
-    }
-
     public CardMapRecord toTransferableDataObject() {
-        return new CardMapRecord(cardsPlaced, availablePlacements, artifactsCounter, coordinatesPlaced, this.maxCoordinate());
+        return new CardMapRecord(cardsPlaced, availablePlacements, artifactsCounter, coordinatesPlaced);
     }
 }
