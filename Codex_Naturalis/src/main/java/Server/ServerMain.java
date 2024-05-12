@@ -1,8 +1,14 @@
 package Server;
 
+import Network.NetworkConstants;
 import Server.Controller.ServerController;
 import Server.Model.ServerModel;
+import Server.Network.Listener.ListenerRMI;
 import Server.Network.Listener.ListenerSocket;
+
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 /**
  * The main class to start the server application.<br>
@@ -11,7 +17,7 @@ import Server.Network.Listener.ListenerSocket;
 public class ServerMain {
     /**
      * The main method to start the server application.<br>
-     * It initializes the server model, controller, and starts the server socket listener.
+     * It initializes the server model, controller, initializes the local RMI registry, and starts the server socket and RMI listeners.
      *
      * @param args The command-line arguments (not used in this application).
      */
@@ -29,8 +35,14 @@ public class ServerMain {
         System.out.println("Creating Server socket Listener");
         ListenerSocket listenerSocket = new ListenerSocket(serverController);
 
-        // Starting the server socket listener in a new thread
-        Thread thread = new Thread(listenerSocket);
-        thread.start();
+        //Creating the server RMI listener and passing the server controller
+        System.out.println("Creating Server RMI Listener");
+        ListenerRMI listenerRMI = new ListenerRMI(serverController);
+
+        // Starting the server listener threads
+        Thread socketThread = new Thread(listenerSocket);
+        Thread RMIThread = new Thread(listenerRMI);
+        socketThread.start();
+        RMIThread.start();
     }
 }

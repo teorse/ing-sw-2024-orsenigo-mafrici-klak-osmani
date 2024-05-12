@@ -1,6 +1,6 @@
 package Client.Controller;
 
-import Client.Network.ServerHandler;
+import Client.Network.ClientConnector;
 import Network.ClientServerPacket.ClientServerPacket;
 
 import java.util.ArrayList;
@@ -8,11 +8,11 @@ import java.util.List;
 
 public class UserInputInterpreter implements Runnable{
     private String input;
-    private ServerHandler serverHandler;
+    private ClientConnector clientConnector;
 
-    public UserInputInterpreter(String input, ServerHandler serverHandler){
+    public UserInputInterpreter(String input, ClientConnector clientConnector){
         this.input = input;
-        this.serverHandler = serverHandler;
+        this.clientConnector = clientConnector;
     }
 
     @Override
@@ -29,6 +29,6 @@ public class UserInputInterpreter implements Runnable{
             payload.add(inputSplit[i]);
 
         ClientServerPacket message = new ClientServerPacket(header, payload);
-        serverHandler.sendPacket(message);
+        clientConnector.sendPacket(message);
     }
 }

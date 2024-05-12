@@ -3,10 +3,10 @@ package Client.Network;
 import Network.ClientServerPacket.ClientServerPacket;
 
 /**
- * The ServerHandler interface represents the client-side component responsible for establishing a connection with the server,
+ * The ClientConnector interface represents the client-side component responsible for establishing a connection with the server,
  * listening for packets from the server, and sending packets to the server.
  */
-public interface ServerHandler extends Runnable {
+public interface ClientConnector extends Runnable {
 
     /**
      * Sends a packet to the server.

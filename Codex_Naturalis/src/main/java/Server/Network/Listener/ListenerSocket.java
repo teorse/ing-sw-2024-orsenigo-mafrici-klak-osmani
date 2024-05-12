@@ -57,23 +57,23 @@ public class ListenerSocket implements Runnable{
 
             //Running infinite loop to accept client requests.
             while (!serverSocket.isClosed()) {
-                System.out.println("Server is Listening...");
+                System.out.println("Server is Listening on socket...");
 
                 // Accept incoming request
                 Socket socket = serverSocket.accept();
-                System.out.println("New client request received: " + socket);
+                System.out.println("New client request received on socket: " + socket);
 
-                System.out.println("Creating a new handler for this client...");
+                System.out.println("Creating a new socket handler for this client...");
                 ClientHandler handler = new ClientHandlerSocket(socket);
 
                 //Giving the ClientHandler an Input interpreter to interact with the server
                 handler.setInputHandler(new ServerInputHandler(serverController, handler));
-                System.out.println("Handler Created");
+                System.out.println("Socket Handler Created");
 
                 // Start the thread for the new clientHandler.
                 Thread thread = new Thread(handler);
                 thread.start();
-                System.out.println("Handler Thread started");
+                System.out.println("Socket Handler Thread started");
             }
         }
         catch (IOException e) {

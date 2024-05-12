@@ -11,11 +11,12 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
- * The ServerHandlerSocket class is an implementation of the ServerHandler interface using sockets.<br>
+ * The ClientConnectorSocket class is an implementation of the ClientConnector interface using sockets.<br>
  * It is responsible for establishing a connection with the server, listening for packets from the server,
  * and sending packets to the server.
  */
-public class ServerHandlerSocket implements ServerHandler {
+public class ClientConnectorSocket implements ClientConnector {
+    //ATTRIBUTES
     private Socket socket;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
@@ -27,15 +28,15 @@ public class ServerHandlerSocket implements ServerHandler {
 
     //CONSTRUCTOR
     /**
-     * Constructs a ServerHandlerSocket object with the specified server IP and client controller.
+     * Constructs a ClientConnectorSocket object with the specified server IP and client controller.
      *
      * @param serverIp    The IP address of the server to connect to.
      * @param controller  The ClientController to interact with this client's local model.
      */
-    public ServerHandlerSocket(String serverIp, ClientController controller){
+    public ClientConnectorSocket(String serverIp, ClientController controller){
+        System.out.println("Initializing server handler");
         this.controller = controller;
         try {
-            //ATTRIBUTES
             int serverPort = NetworkConstants.ServerSocketListenerPort;
             socket = new Socket(serverIp, serverPort);
             oos = new ObjectOutputStream(socket.getOutputStream());
