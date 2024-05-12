@@ -1,5 +1,6 @@
 package Server.Network.Listener;
 
+import Network.LanIpFinder;
 import Network.NetworkConstants;
 import Network.RMI.ServerRemoteInterfaces.RMIServerListenerConnection;
 import Server.Controller.InputHandler.ServerInputHandler;
@@ -40,6 +41,13 @@ public class ListenerRMI implements Runnable, RMIServerListenerConnection{
      */
     public ListenerRMI(ServerController serverController){
         this.serverController = serverController;
+
+        //Locating the ip address and configuring the rmi server hostname
+        //This configuration prevents the "host refused connection" error.
+        String lanIP = LanIpFinder.getLAN_IP();
+        System.setProperty("java.rmi.server.hostname", lanIP);
+
+        System.out.println("My Ip address is: "+lanIP);
 
         //Create the server registry
         try {

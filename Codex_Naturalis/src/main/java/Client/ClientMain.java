@@ -13,9 +13,17 @@ public class ClientMain {
     public static void main(String[] args) {
         ClientModel model = new ClientModel();
         ClientController controller = new ClientController();
+        String serverIp;
 
         Scanner scanner = new Scanner(System.in);
         String input = "";
+
+        System.out.println("Type the ip address of the server, leave empty for localhost");
+        input = scanner.nextLine();
+        if(input.equals(""))
+            serverIp = "127.0.0.1";
+        else
+            serverIp = input;
 
         System.out.println("Socket or RMI?");
         input = scanner.nextLine();
@@ -23,10 +31,10 @@ public class ClientMain {
         ClientConnector clientConnector = null;
 
         if(input.equals("Socket"))
-            clientConnector = new ClientConnectorSocket("127.0.0.1", controller);
+            clientConnector = new ClientConnectorSocket(serverIp, controller);
 
         if(input.equals("RMI"))
-            clientConnector = new ClientConnectorRMI("127.0.0.1", controller);
+            clientConnector = new ClientConnectorRMI(serverIp, controller);
 
         Thread handler = new Thread(clientConnector);
         handler.start();

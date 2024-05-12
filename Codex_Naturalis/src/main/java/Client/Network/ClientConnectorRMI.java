@@ -2,6 +2,7 @@ package Client.Network;
 
 import Client.Controller.ClientController;
 import Network.ClientServerPacket.ClientServerPacket;
+import Network.LanIpFinder;
 import Network.NetworkConstants;
 import Network.RMI.ClientRemoteInterfaces.RMIClientConnector;
 import Network.RMI.ServerRemoteInterfaces.RMIClientHandlerConnection;
@@ -35,6 +36,7 @@ public class ClientConnectorRMI implements ClientConnector, RMIClientConnector {
      * The client's RMI register (the server looks it up to communicate with the client).
      */
     private final Registry clientRegistry;
+    private Registry serverRegistry;
     /**
      * The unique identifier for this client connector.<br>
      * This identifier is the one used to bind it in the client RMI register
@@ -79,7 +81,16 @@ public class ClientConnectorRMI implements ClientConnector, RMIClientConnector {
         catch (RemoteException e) {
             System.out.println("No registry detected, creating new registry");
             try {
+
+                //Locating the ip address and configuring the rmi client hostname
+                //This configuration prevents the "host refused connection" error.
+                String ipAddr = LanIpFinder.getLAN_IP();
+                System.setProperty("java.rmi.server.hostname", ipAddr);
+                System.out.println("My Ip address is: "+ipAddr);
+
+                //Creating new register.
                 clientRegistry1 = LocateRegistry.createRegistry(NetworkConstants.RMIClientRegistryPort);
+
             } catch (RemoteException ex) {
                 System.out.println("Could not even create a new registry :(");
                 throw new RuntimeException();
@@ -107,7 +118,7 @@ public class ClientConnectorRMI implements ClientConnector, RMIClientConnector {
                 System.out.println("Couldn't bind client to registry, Remote Exception thrown");
                 throw new RuntimeException(e);
             } catch (AlreadyBoundException e) {
-                System.out.println("Client id was already bound, try with a different id");
+                System.out.println("Client id was already bound, trying with a different id");
                 throw new RuntimeException(e);
             }
         }
@@ -118,7 +129,7 @@ public class ClientConnectorRMI implements ClientConnector, RMIClientConnector {
         String clientHandlerID = getClientHandlerID(serverIp);
         System.out.println("Client handler id received: "+clientHandlerID);
 
-        ClientHandlerStub = connectToClientHandler(serverIp, clientHandlerID);
+        ClientHandlerStub = connectToClientHandler(clientHandlerID);
     }
 
 
@@ -136,7 +147,7 @@ public class ClientConnectorRMI implements ClientConnector, RMIClientConnector {
         try {
             //Requesting dedicated connection from the server
             System.out.println("Trying to connect to server");
-            Registry serverRegistry = LocateRegistry.getRegistry(serverIp, NetworkConstants.RMIServerRegistryPort);
+            serverRegistry = LocateRegistry.getRegistry(serverIp, NetworkConstants.RMIServerRegistryPort);
             RMIServerListenerConnection serverListenerStub = (RMIServerListenerConnection) serverRegistry.lookup(NetworkConstants.RMIListenerStubName);
             System.out.println("Connection successful");
 
@@ -150,17 +161,17 @@ public class ClientConnectorRMI implements ClientConnector, RMIClientConnector {
     /**
      * Connects to the client handler with the given ID on the server.
      *
-     * @param serverIp       The IP address of the server.
      * @param clientHandlerID The ID of the client handler.
      * @return The client handler stub.
      */
-    private RMIClientHandlerConnection connectToClientHandler(String serverIp, String clientHandlerID) {
+    private RMIClientHandlerConnection connectToClientHandler(String clientHandlerID) {
         try {
             //Connect to the newly created clientHandler
             System.out.println("Connecting to client handler");
-            Registry serverRegistry = LocateRegistry.getRegistry(serverIp, NetworkConstants.RMIServerRegistryPort);
             RMIClientHandlerConnection clientHandlerStub = (RMIClientHandlerConnection) serverRegistry.lookup(NetworkConstants.RMIClientHandlerDirectory + clientHandlerID);
+            System.out.println("Client Handler Stub obtained, attempting handshake with client handler.");
             clientHandlerStub.handShake();
+            System.out.println("HandShake successful");
 
             return clientHandlerStub;
 
