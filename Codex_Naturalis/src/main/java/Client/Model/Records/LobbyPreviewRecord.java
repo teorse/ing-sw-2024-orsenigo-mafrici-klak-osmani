@@ -3,17 +3,25 @@ package Client.Model.Records;
 import java.io.Serializable;
 
 /**
- * This class represents a preview of a lobby, providing an overview of its statistics without querying the lobby directly.
+ * Represents a record containing a preview of a lobby in a game.
  *
- * @param lobbyName ATTRIBUTES
+ * <p>A {@code LobbyPreviewRecord} provides basic information about a lobby, such as its name, the number of
+ * current users, the maximum number of users allowed, and whether a game has started in the lobby.
+ *
+ * <p>This record implements the {@code Serializable} interface to support serialization.
  */
-public record LobbyPreviewRecord(String lobbyName, int currentUsers, int maxUsers, boolean gameStarted)implements Serializable {
+public record LobbyPreviewRecord(String lobbyName, int currentUsers, int maxUsers, boolean gameStarted)
+        implements Serializable {
 
     /**
-     * Constructs a new LobbyPreview object with the given lobby name.
+     * Constructs a new {@code LobbyPreviewRecord} with the specified parameters.
      *
-     * @param lobbyName The name of the lobby.
+     * @param lobbyName the name of the lobby
+     * @param currentUsers the number of current users in the lobby
+     * @param maxUsers the maximum number of users allowed in the lobby
+     * @param gameStarted indicates whether a game has started in the lobby
      */
     public LobbyPreviewRecord {
+        // No additional implementation needed as records automatically generate a constructor
     }
 }
