@@ -19,7 +19,6 @@ import Exceptions.Server.LogInExceptions.IncorrectPasswordException;
 import Exceptions.Server.LobbyExceptions.InvalidLobbySettingsException;
 import Exceptions.Server.LobbyExceptions.LobbyClosedException;
 import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
-import Server.Model.ServerUser;
 import Server.Network.ClientHandler.ClientHandler;
 
 import java.util.List;
@@ -31,9 +30,10 @@ import java.util.List;
 public class ServerInputHandler implements InputHandler{
     //ATTRIBUTES
     private final ClientHandler connection;
-    private ServerUser serverUser;
+    private String username;
     private final ServerController serverController;
     private InputHandler lobbyInputHandler;
+    private boolean loggedIn;
 
 
 
@@ -49,8 +49,8 @@ public class ServerInputHandler implements InputHandler{
     public ServerInputHandler(ServerController serverController, ClientHandler connection){
         this.serverController = serverController;
         this.connection = connection;
-        serverUser = null;
         lobbyInputHandler = null;
+        loggedIn = false;
     }
 
 
@@ -71,7 +71,7 @@ public class ServerInputHandler implements InputHandler{
         switch (CommandTypes.valueOf(commandType)){
             case LOBBY, GAME -> {
                 try {
-                    if (serverUser == null) {
+                    if (!loggedIn) {
                         throw new LogInRequiredException("You need to be logged in to perform this action");
                     }
                     else if (lobbyInputHandler == null || !lobbyInputHandler.isBound()) {
@@ -129,13 +129,13 @@ public class ServerInputHandler implements InputHandler{
      */
     @Override
     public void clientDisconnectionProcedure() {
-        if(serverUser == null)
+        if(!loggedIn)
             return;
 
         if(lobbyInputHandler != null){
             lobbyInputHandler.clientDisconnectionProcedure();
         }
-        serverController.userDisconnectionProcedure(serverUser);
+        serverController.userDisconnectionProcedure(username);
     }
 
     /**
@@ -143,14 +143,15 @@ public class ServerInputHandler implements InputHandler{
      */
     @Override
     public void logOut(){
-        if(serverUser == null)
+        if(!loggedIn)
             return;
         if(lobbyInputHandler != null){
             lobbyInputHandler.logOut();
         }
-        serverController.quitLayer(serverUser);
+        serverController.quitLayer(username);
         lobbyInputHandler = null;
-        serverUser = null;
+        loggedIn = false;
+        username = null;
     }
 
     /**
@@ -168,48 +169,56 @@ public class ServerInputHandler implements InputHandler{
 
     //PACKET HANDLING METHODS
     public void signUp(String username, String password){
-        if(serverUser != null){
+        if(loggedIn){
             connection.sendPacket(new SCPPrintPlaceholder("You are already logged in"));
             return;
         }
         try {
-            serverUser = serverController.signUp(connection, username, password);
+             this.username = serverController.signUp(connection, username, password);
+             loggedIn = true;
         }
         catch (AccountAlreadyExistsException e){
             connection.sendPacket(new SCPPrintPlaceholder("The username you provided is already taken"));
+            loggedIn = false;
         }
     }
 
     public void login(String username, String password){
         try{
-            if(serverUser != null){
-                throw new MultipleLoginViolationException(connection, serverUser.getUsername(), username, "");
+            if(loggedIn){
+                //todo
+                throw new MultipleLoginViolationException(connection, "placeholder", username, "");
             }
-            serverUser = serverController.login(connection, username, password);
+            this.username = serverController.login(connection, username, password);
+            loggedIn = true;
         }
         catch(MultipleLoginViolationException e){
             connection.sendPacket(new SCPPrintPlaceholder("You are already logged in"));
+            loggedIn = false;
         }
         catch (IncorrectPasswordException e){
             connection.sendPacket(new SCPPrintPlaceholder("Wrong password"));
+            loggedIn = false;
         }
         catch (AccountNotFoundException e){
             connection.sendPacket(new SCPPrintPlaceholder("Username not found"));
+            loggedIn = false;
         }
         catch (AccountAlreadyLoggedInException e){
             connection.sendPacket(new SCPPrintPlaceholder("Someone has already logged into this account"));
+            loggedIn = false;
         }
     }
 
     private void createNewLobby(String lobbyName, int targetNumberUsers){
         try {
-            if (serverUser == null) {
+            if (!loggedIn) {
                 throw new LogInRequiredException("");
             } else if (lobbyInputHandler != null && lobbyInputHandler.isBound()) {
                 throw new MultipleLobbiesException("");
             } else {
-                LobbyController lobbyController = serverController.createNewLobby(lobbyName, targetNumberUsers, serverUser, connection);
-                lobbyInputHandler = new LobbyInputHandler(connection, lobbyController, serverUser);
+                LobbyController lobbyController = serverController.createNewLobby(lobbyName, username, targetNumberUsers, connection);
+                lobbyInputHandler = new LobbyInputHandler(connection, username, lobbyController);
             }
         }
         catch (LogInRequiredException e){
@@ -228,13 +237,13 @@ public class ServerInputHandler implements InputHandler{
 
     private void joinLobby(String lobbyName){
         try {
-            if (serverUser == null) {
+            if (!loggedIn) {
                 throw new LogInRequiredException("");
             } else if (lobbyInputHandler != null && lobbyInputHandler.isBound()) {
                 throw new MultipleLobbiesException("");
             } else {
-                LobbyController lobbyController = serverController.joinLobby(lobbyName, serverUser, connection);
-                lobbyInputHandler = new LobbyInputHandler(connection, lobbyController, serverUser);
+                LobbyController lobbyController = serverController.joinLobby(lobbyName, username, connection);
+                lobbyInputHandler = new LobbyInputHandler(connection, username, lobbyController);
             }
         }
         catch (LogInRequiredException e){
@@ -256,10 +265,10 @@ public class ServerInputHandler implements InputHandler{
 
     private void viewLobbyPreviews() {
         try {
-            if (serverUser == null) {
+            if (!loggedIn) {
                 throw new LogInRequiredException("You need to be logged in to perform this action");
             }
-            serverController.addLobbyPreviewObserver(connection);
+            serverController.addLobbyPreviewObserver(username, connection);
         } catch (LogInRequiredException e) {
             connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
         }
@@ -267,10 +276,10 @@ public class ServerInputHandler implements InputHandler{
 
     private void stopViewingLobbyPreviews() {
         try {
-            if (serverUser == null) {
+            if (!loggedIn) {
                 throw new LogInRequiredException("You need to be logged in to perform this action");
             }
-            serverController.removeLobbyPreviewObserver(connection);
+            serverController.removeLobbyPreviewObserver(username);
         }
         catch (LogInRequiredException e) {
             connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));

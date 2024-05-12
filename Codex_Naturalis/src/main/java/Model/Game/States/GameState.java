@@ -64,9 +64,9 @@ public interface GameState {
     /**
      * Removes a player from the game.
      *
-     * @param lobbyUser The lobby user representing the player to be removed.
+     * @param player The lobby user representing the player to be removed.
      */
-    void removePlayer(LobbyUser lobbyUser);
+    void removePlayer(Player player);
 
     /**
      * Handles disconnection of a user from the game.<br>
@@ -74,14 +74,14 @@ public interface GameState {
      * the remove method) or helps the game to not get stuck on a disconnected player by advancing the turn to the next
      * player (if we are in one of the states that returns false for shouldRemovePlayerOnDisconnect).
      *
-     * @param user The user who disconnected.
+     * @param player The user who disconnected.
      */
-    void userDisconnectionProcedure(LayerUser user);
+    void userDisconnectionProcedure(Player player);
 
     /**
      * Handles the quitting of a user from the game.
      *
-     * @param user The user who is quitting.
+     * @param player The user who is quitting.
      */
-    void quit(LayerUser user);
+    void quit(Player player);
 }

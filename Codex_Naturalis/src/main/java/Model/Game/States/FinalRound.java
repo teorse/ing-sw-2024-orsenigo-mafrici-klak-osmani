@@ -4,17 +4,11 @@ import Model.Game.CardPoolTypes;
 import Exceptions.Game.InvalidActionForGameStateException;
 import Exceptions.Game.InvalidActionForPlayerStateException;
 import Exceptions.Game.NotYourTurnException;
-import Model.Game.Table;
 import Model.Player.*;
 import Model.Game.Game;
-import Server.Interfaces.LayerUser;
-import Server.Model.Lobby.Lobby;
-import Server.Model.Lobby.LobbyUser;
-import Server.Model.Lobby.LobbyUserColors;
 import Server.Model.Lobby.LobbyUserConnectionStates;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents the final round state in the game, where players can only place cards but not draw new ones.
@@ -24,9 +18,6 @@ public class FinalRound implements GameState{
     //ATTRIBUTES
     private final Game game;
     private final List<Player> players;
-    private final Map<LobbyUser, Player> lobbyUserToPlayerMap;
-    private final Lobby lobby;
-    private final Table table;
 
     private int currentPlayerIndex;
 
@@ -43,9 +34,6 @@ public class FinalRound implements GameState{
     public FinalRound(Game game){
         this.game = game;
         players = game.getPlayers();
-        lobbyUserToPlayerMap = game.getLobbyUserToPlayerMap();
-        lobby = game.getLobby();
-        table = game.getTable();
 
         findFirstPlayer();
     }
@@ -121,8 +109,7 @@ public class FinalRound implements GameState{
      * {@inheritDoc}
      */
     @Override
-    public void removePlayer(LobbyUser lobbyUser) {
-        Player player = lobbyUserToPlayerMap.remove(lobbyUser);
+    public void removePlayer(Player player) {
 
         players.remove(player);
 
@@ -136,12 +123,12 @@ public class FinalRound implements GameState{
      * If the user that disconnected was the current player then it makes the next player the current to avoid
      * getting stuck on a disconnected player.
      *
-     * @param user The user who disconnected.
+     * @param player The user who disconnected.
      */
     @Override
-    public void userDisconnectionProcedure(LayerUser user) {
-        LobbyUser lobbyUser = (LobbyUser) user;
-        String username = lobbyUser.getUsername();
+    public void userDisconnectionProcedure(Player player) {
+
+        String username = player.getUsername();
 
         System.out.println("Player "+username+" has disconnected from the game," +
                 "They will skip all the turns they will miss until they reconnect.");
@@ -153,15 +140,14 @@ public class FinalRound implements GameState{
     /**
      * {@inheritDoc}
      *
-     * @param user The user who is quitting.
+     * @param player The user who is quitting.
      */
     @Override
-    public void quit(LayerUser user) {
-        LobbyUser lobbyUser = (LobbyUser) user;
-        String username = lobbyUser.getUsername();
+    public void quit(Player player) {
+        String username = player.getUsername();
 
         System.out.println("Player "+username+" has quit the game");
-        removePlayer(lobbyUser);
+        removePlayer(player);
     }
 
 

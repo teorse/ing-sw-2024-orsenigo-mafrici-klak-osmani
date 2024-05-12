@@ -6,12 +6,10 @@ import Exceptions.Server.LogInExceptions.AccountAlreadyExistsException;
 import Exceptions.Server.LogInExceptions.AccountAlreadyLoggedInException;
 import Exceptions.Server.LogInExceptions.AccountNotFoundException;
 import Exceptions.Server.LogInExceptions.IncorrectPasswordException;
-import Server.Interfaces.LayerUser;
 import Exceptions.Server.LobbyExceptions.InvalidLobbySettingsException;
 import Exceptions.Server.LobbyExceptions.LobbyClosedException;
 import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
 import Server.Model.ServerModel;
-import Server.Model.ServerUser;
 import Server.Network.ClientHandler.ClientHandler;
 
 /**
@@ -41,20 +39,20 @@ public class ServerController {
 
 
     //CONTROLLER METHODS
-    public ServerUser signUp(ClientHandler ch, String username, String password) throws AccountAlreadyExistsException {
+    public String signUp(ClientHandler ch, String username, String password) throws AccountAlreadyExistsException {
         return model.signUp(ch, username, password);
     }
 
-    public ServerUser login(ClientHandler ch, String username, String password) throws IncorrectPasswordException, AccountAlreadyLoggedInException, AccountNotFoundException {
+    public String login(ClientHandler ch, String username, String password) throws IncorrectPasswordException, AccountAlreadyLoggedInException, AccountNotFoundException {
         return model.login(ch, username, password);
     }
 
-    public void userDisconnectionProcedure(LayerUser user){
-         model.userDisconnectionProcedure(user);
+    public void userDisconnectionProcedure(String username){
+         model.userDisconnectionProcedure(username);
     }
 
-    public void quitLayer(LayerUser user){
-        model.quit(user);
+    public void quitLayer(String username){
+        model.quit(username);
     }
 
     /**
@@ -62,11 +60,10 @@ public class ServerController {
      *
      * @param lobbyName The name of the lobby to be created.
      * @param targetNumberUsers Number of players the admin wants to start a game with.
-     * @param user The client handler representing the owner of the lobby.
      * @return The LobbyController object associated with the newly created lobby.
      */
-    public LobbyController createNewLobby(String lobbyName, int targetNumberUsers, ServerUser user, ClientHandler ch) throws LobbyNameAlreadyTakenException, InvalidLobbySettingsException {
-        return model.createNewLobby(lobbyName, targetNumberUsers, user, ch);
+    public LobbyController createNewLobby(String lobbyName, String username, int targetNumberUsers, ClientHandler ch) throws LobbyNameAlreadyTakenException, InvalidLobbySettingsException {
+        return model.createNewLobby(lobbyName, username, targetNumberUsers, ch);
     }
 
     /**
@@ -74,11 +71,10 @@ public class ServerController {
      * Adds the user to the lobby and returns the controller for that lobby.
      *
      * @param lobbyName The lobbyName of the lobby to join.
-     * @param serverUser The client handler representing the user who wants to join the lobby.
      * @return The LobbyController object associated with the joined lobby.
      */
-    public LobbyController joinLobby(String lobbyName, ServerUser serverUser, ClientHandler connection) throws LobbyNotFoundException, LobbyClosedException, LobbyUserAlreadyConnectedException {
-        return model.joinLobby(lobbyName, serverUser, connection);
+    public LobbyController joinLobby(String lobbyName, String username, ClientHandler connection) throws LobbyNotFoundException, LobbyClosedException, LobbyUserAlreadyConnectedException {
+        return model.joinLobby(lobbyName, username, connection);
     }
 
 
@@ -86,11 +82,11 @@ public class ServerController {
 
 
     //OBSERVER METHODS
-    public void addLobbyPreviewObserver(ClientHandler ch){
-        model.addLobbyPreviewObserver(ch);
+    public void addLobbyPreviewObserver(String username, ClientHandler ch){
+        model.addLobbyPreviewObserver(username, ch);
     }
 
-    public void removeLobbyPreviewObserver(ClientHandler ch){
-        model.removeLobbyPreviewObserver(ch);
+    public void removeLobbyPreviewObserver(String username){
+        model.removeLobbyPreviewObserver(username);
     }
 }

@@ -7,8 +7,7 @@ import Model.Cards.CornerType;
 import Model.Utility.Coordinates;
 import Model.Utility.Artifacts;
 import Network.ServerClientPacket.SCPUpdateCardMap;
-import Server.Model.Lobby.Game.GameModelUpdatesSender;
-import Server.Model.Lobby.Lobby;
+import Server.Model.Lobby.ObserverRelay;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -52,7 +51,7 @@ public class CardMap {
      */
     private Map<Artifacts, Integer> artifactsCounter;
 
-    private final GameModelUpdatesSender sender;
+    private final ObserverRelay gameObserverRelay;
     private final String username;
 
 
@@ -65,13 +64,13 @@ public class CardMap {
      * Builds CardPlacement Object by initializing the two maps and the Array and adds to the Array
      * the first coordinate [0,0] to allow for the starter card to be placed.
      */
-    public CardMap(GameModelUpdatesSender sender, String username) {
+    public CardMap(ObserverRelay gameObserverRelay, String username) {
         cardsPlaced = new HashMap<>();
         availablePlacements = new ArrayList<>(){{add(new Coordinates(0, 0));}};
         coordinatesPlaced = new ArrayList<>();
         artifactsCounter = new HashMap<>();
 
-        this.sender = sender;
+        this.gameObserverRelay = gameObserverRelay;
         this.username = username;
     }
 
@@ -170,8 +169,8 @@ public class CardMap {
         coordinatesSorted = null;
 
         //todo
-        if(sender != null)
-            sender.updateClientGameModel(new SCPUpdateCardMap(username, this.toTransferableDataObject()));
+        if(gameObserverRelay != null)
+            gameObserverRelay.update(new SCPUpdateCardMap(username, this.toTransferableDataObject()));
 
         return points;
     }

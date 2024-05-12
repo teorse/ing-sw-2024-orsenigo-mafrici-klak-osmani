@@ -7,11 +7,7 @@ import Exceptions.Game.MoveAttemptOnWaitStateException;
 import Model.Game.Game;
 import Model.Game.Table;
 import Model.Player.Player;
-import Server.Model.Lobby.LobbyUserColors;
 import Model.Player.PlayerStates;
-import Server.Interfaces.LayerUser;
-import Server.Model.Lobby.Lobby;
-import Server.Model.Lobby.LobbyUser;
 
 import java.util.*;
 
@@ -24,8 +20,6 @@ public class ObjectivesSetup implements GameState{
     //ATTRIBUTES
     private final Game game;
     private final List<Player> players;
-    private final Map<LobbyUser, Player> lobbyUserToPlayerMap;
-    private final Lobby lobby;
     private final Table table;
 
     /**
@@ -47,8 +41,6 @@ public class ObjectivesSetup implements GameState{
     public ObjectivesSetup(Game game){
         this.game = game;
         players = game.getPlayers();
-        lobbyUserToPlayerMap = game.getLobbyUserToPlayerMap();
-        lobby = game.getLobby();
         table = game.getTable();
 
         playerReadiness = new HashMap<>();
@@ -141,8 +133,7 @@ public class ObjectivesSetup implements GameState{
      * {@inheritDoc}
      */
     @Override
-    public void removePlayer(LobbyUser lobbyUser) {
-        Player player = lobbyUserToPlayerMap.remove(lobbyUser);
+    public void removePlayer(Player player) {
 
         playerReadiness.remove(player);
         players.remove(player);
@@ -156,12 +147,11 @@ public class ObjectivesSetup implements GameState{
      * (the removal will be triggered by the outside lobby by calling
      * the remove method).
      *
-     * @param user The user who disconnected.
+     * @param player The user who disconnected.
      */
     @Override
-    public void userDisconnectionProcedure(LayerUser user) {
-        LobbyUser lobbyUser = (LobbyUser) user;
-        String username = lobbyUser.getUsername();
+    public void userDisconnectionProcedure(Player player) {
+        String username = player.getUsername();
 
         System.out.println("Player "+username+" has disconnected from the game," +
                 "They have 90 seconds to reconnect before being kicked from the game");
@@ -171,12 +161,8 @@ public class ObjectivesSetup implements GameState{
      * {@inheritDoc}
      */
     @Override
-    public void quit(LayerUser user) {
-        LobbyUser lobbyUser = (LobbyUser) user;
-        String username = lobbyUser.getUsername();
-
-        System.out.println("Player "+username+" has quit the game");
-        removePlayer(lobbyUser);
+    public void quit(Player player) {
+        removePlayer(player);
     }
 
 

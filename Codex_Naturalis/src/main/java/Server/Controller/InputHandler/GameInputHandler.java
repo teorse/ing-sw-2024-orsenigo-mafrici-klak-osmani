@@ -7,8 +7,6 @@ import Network.ClientServerPacket.CommandTypes;
 import Network.ClientServerPacket.GameCommands;
 import Network.ServerClientPacket.Demo.SCPPrintPlaceholder;
 import Server.Controller.GameController;
-import Model.Player.Player;
-import Server.Model.Lobby.LobbyUser;
 import Server.Network.ClientHandler.ClientHandler;
 
 import java.util.List;
@@ -19,9 +17,9 @@ import java.util.List;
  */
 public class GameInputHandler implements InputHandler{
     //ATTRIBUTES
+    private final String username;
     private final ClientHandler connection;
     private final GameController controller;
-    private final Player player;
 
 
 
@@ -31,13 +29,12 @@ public class GameInputHandler implements InputHandler{
     /**
      * Constructs a GameInputHandler object.
      *
-     * @param lobbyUser  The LobbyUser associated with the player at the lobby level.
      * @param controller The GameController managing the game.
      */
-    public GameInputHandler(ClientHandler connection, LobbyUser lobbyUser, GameController controller){
+    public GameInputHandler(String username, ClientHandler connection, GameController controller){
+        this.username = username;
         this.connection = connection;
         this.controller = controller;
-        player = controller.getPlayerByLobbyUser(lobbyUser);
     }
 
 
@@ -111,7 +108,7 @@ public class GameInputHandler implements InputHandler{
         boolean faceUp = Boolean.parseBoolean(payload.get(2));
 
         try {
-            controller.playCard(player, cardIndex, coordinateIndex, faceUp);
+            controller.playCard(username, cardIndex, coordinateIndex, faceUp);
         }
         catch (GameException e){
             connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
@@ -126,7 +123,7 @@ public class GameInputHandler implements InputHandler{
         int index = Integer.parseInt(payload.get(1));
 
         try {
-            controller.drawCard(player, cardPoolType, index);
+            controller.drawCard(username, cardPoolType, index);
         }
         catch (GameException e){
             connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
@@ -138,7 +135,7 @@ public class GameInputHandler implements InputHandler{
         int objectiveIndex = Integer.parseInt(payload.getFirst());
 
         try {
-            controller.pickPlayerObjective(player, objectiveIndex);
+            controller.pickPlayerObjective(username, objectiveIndex);
         }
         catch (GameException e){
             connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));

@@ -9,11 +9,10 @@ import Model.Game.States.*;
 import Network.ServerClientPacket.SCPGameStarted;
 import Network.ServerClientPacket.SCPUpdateGame;
 import Network.ServerClientPacket.SCPUpdatePlayers;
-import Server.Interfaces.LayerUser;
 import Server.Interfaces.ServerModelLayer;
-import Server.Model.Lobby.Game.GameModelUpdatesSender;
 import Server.Model.Lobby.Lobby;
 import Server.Model.Lobby.LobbyUser;
+import Server.Model.Lobby.ObserverRelay;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -26,9 +25,8 @@ import java.util.stream.Stream;
 public class Game implements ServerModelLayer {
     //ATTRIBUTES
     private List<Player> players;
-    private final Map<LobbyUser, Player> lobbyUserToPlayerMap;
     private final Lobby lobby;
-    private final GameModelUpdatesSender sender;
+    private final ObserverRelay gameObserverRelay;
 
     private final Table table;
     private boolean lastRoundFlag;
@@ -55,39 +53,31 @@ public class Game implements ServerModelLayer {
      * Default Constructor.<br>
      * Initializes a Model.Game.Game object by taking Players ArrayList, Golden and Resource Model.Game.Deck, and ArrayList of Objectives.<br>
      * Automatically
+     *
+     * @param lobbyUsers    List of lobby users taking part to this game.
      * @param goldenCards   List of Golden Cards to use during this game.
      * @param resourceCards List of Resource Cards to use during this game.
      * @param starterCards  List of Starter Cards to use during this game.
      * @param objectives    List of Objectives to use during this game.
-     * @param lobbyUsers    List of lobby users taking part to this game.
      */
-    public Game(Lobby lobby, List<Card> goldenCards, List<Card> resourceCards, List<Card> starterCards, List<Objective> objectives, List<LobbyUser> lobbyUsers, GameModelUpdatesSender sender) {
-        lobbyUserToPlayerMap = new HashMap<>();
+    public Game(Lobby lobby, List<LobbyUser> lobbyUsers, ObserverRelay gameObserverRelay, List<Card> goldenCards, List<Card> resourceCards, List<Card> starterCards, List<Objective> objectives) {
         this.lobby = lobby;
-        this.sender = sender;
+        this.gameObserverRelay = gameObserverRelay;
+
         players = new ArrayList<>();
         for(LobbyUser lobbyUser : lobbyUsers){
-            Player player = new Player(lobbyUser, sender);
-            //todo add listeners
-
-            lobbyUserToPlayerMap.put(lobbyUser, player);
+            Player player = new Player(lobbyUser, gameObserverRelay);
             players.add(player);
         }
 
         Collections.shuffle(this.players);
-        this.table = new Table(goldenCards, resourceCards, starterCards, objectives, sender);
+        this.table = new Table(goldenCards, resourceCards, starterCards, objectives, gameObserverRelay);
         this.lastRoundFlag = false;
         this.gameOver = false;
         winners = new ArrayList<>();
         state = new CardsSetup(this);
 
         System.out.println("Game has started, inside game class now!");
-        System.out.println("goldenCards: "+goldenCards.size());
-        System.out.println("resourceCards: "+resourceCards.size());
-        System.out.println("starterCards: "+starterCards.size());
-        System.out.println("objectives: "+objectives.size());
-        System.out.println("players: "+players.size());
-
 
         Map<PlayerRecord, CardMapRecord> playerRecordCardMapRecordMap = this.toPlayerViewList();
         TableRecord tableRecord = table.toRecord();
@@ -96,8 +86,8 @@ public class Game implements ServerModelLayer {
         for(Player player : players) {
             secretInfoRecord = player.toSecretPlayer();
 
-            if(sender != null)
-                sender.updateClientGameModel(player, new SCPGameStarted(playerRecordCardMapRecordMap, secretInfoRecord, tableRecord, gameRecord));
+            if(gameObserverRelay != null)
+                gameObserverRelay.update(player.getUsername(), new SCPGameStarted(playerRecordCardMapRecordMap, secretInfoRecord, tableRecord, gameRecord));
         }
     }
 
@@ -108,9 +98,6 @@ public class Game implements ServerModelLayer {
     //GETTERS
     public List<Player> getPlayers() {
         return players;
-    }
-    public Player getPlayerByLobbyUser(LobbyUser lobbyUser){
-        return lobbyUserToPlayerMap.get(lobbyUser);
     }
     public Table getTable() {
         return table;
@@ -124,10 +111,6 @@ public class Game implements ServerModelLayer {
     public Lobby getLobby(){
         return this.lobby;
     }
-    public Map<LobbyUser, Player> getLobbyUserToPlayerMap(){
-        return this.lobbyUserToPlayerMap;
-    }
-
 
 
 
@@ -135,34 +118,45 @@ public class Game implements ServerModelLayer {
     //STATE PATTERN METHODS
     public void setState(GameState state){
         this.state = state;
-        if(sender != null)
-            sender.updateClientGameModel(new SCPUpdateGame(this.toRecord()));
+        gameObserverRelay.update(new SCPUpdateGame(this.toRecord()));
     }
-    public void playCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws NotYourTurnException, MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException {
+    public void playCard(String username, int cardIndex, int coordinateIndex, boolean faceUp) throws NotYourTurnException, MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException {
+        Player player = getPlayerByUsername(username);
         state.playCard(player, cardIndex, coordinateIndex, faceUp);
     }
-    public void drawCard(Player player, CardPoolTypes cardPoolType, int index) throws NotYourTurnException, MoveAttemptOnWaitStateException, MaxResourceCardsDrawnException, InvalidActionForPlayerStateException, InvalidActionForGameStateException, MaxGoldenCardsDrawnException {
+    public void drawCard(String username, CardPoolTypes cardPoolType, int index) throws NotYourTurnException, MoveAttemptOnWaitStateException, MaxResourceCardsDrawnException, InvalidActionForPlayerStateException, InvalidActionForGameStateException, MaxGoldenCardsDrawnException {
+        Player player = getPlayerByUsername(username);
         state.drawCard(player, cardPoolType, index);
     }
-    public void pickPlayerObjective(Player player, int objectiveIndex) throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException {
+    public void pickPlayerObjective(String username, int objectiveIndex) throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException {
+        Player player = getPlayerByUsername(username);
         state.pickPlayerObjective(player, objectiveIndex);
     }
     public boolean shouldRemovePlayerOnDisconnect(){
         return state.shouldRemovePlayerOnDisconnect();
     }
-    public void removePlayer(LobbyUser lobbyUser){
-        state.removePlayer(lobbyUser);
-
-        if(sender != null)
-            sender.updateClientGameModel(new SCPUpdatePlayers(this.toPlayerViewList()));
+    public void removePlayer(String username){
+        Player player = getPlayerByUsername(username);
+        state.removePlayer(player);
+        gameObserverRelay.update(new SCPUpdatePlayers(this.toPlayerViewList()));
     }
     @Override
-    public void userDisconnectionProcedure(LayerUser user) {
-        state.userDisconnectionProcedure(user);
+    public void userDisconnectionProcedure(String username) {
+        Player player = getPlayerByUsername(username);
+        state.userDisconnectionProcedure(player);
     }
     @Override
-    public void quit(LayerUser user) {
-        state.quit(user);
+    public void quit(String username) {
+        Player player = getPlayerByUsername(username);
+        state.quit(player);
+    }
+    //HELPER METHODS
+    private Player getPlayerByUsername(String username){
+        for(Player player : players){
+            if(player.getUsername().equals(username))
+                return player;
+        }
+        throw new PlayerNotFoundException();
     }
 
 
@@ -173,8 +167,8 @@ public class Game implements ServerModelLayer {
     public void incrementRoundsCompleted(){
         this.roundsCompleted++;
 
-        if(sender != null)
-            sender.updateClientGameModel(new SCPUpdateGame(toRecord()));
+        if(gameObserverRelay != null)
+            gameObserverRelay.update(new SCPUpdateGame(toRecord()));
     }
 
     /**
@@ -193,13 +187,12 @@ public class Game implements ServerModelLayer {
                 return;
             }
         }
-        return;
     }
 
     protected void selectWinners(){
         //Comparator to sort players first by points and then by objectives completed
         Comparator<Player> comparator = Comparator.comparing(Player::getPoints);
-        comparator = comparator.thenComparing(Comparator.comparing(Player::getObjectivesCompleted));
+        comparator = comparator.thenComparing(Player::getObjectivesCompleted);
 
         //Sort players using above comparator
         Stream<Player> playerStream = players.stream().sorted(comparator);

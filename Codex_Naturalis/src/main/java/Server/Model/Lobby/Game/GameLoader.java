@@ -1,20 +1,21 @@
-package Model.Game;
+package Server.Model.Lobby.Game;
 
 import Model.Cards.Card;
+import Model.Game.Game;
 import Model.Objectives.Objective;
-import Server.Model.Lobby.Game.GameModelUpdatesSender;
 import Server.Model.Lobby.Lobby;
 import Server.Model.Lobby.LobbyUser;
+import Server.Model.Lobby.ObserverRelay;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.List;
+import java.util.Map;
 
 public class GameLoader {
 
-    public static Game startNewGame(List<LobbyUser> lobbyUsers, Lobby lobby, GameModelUpdatesSender sender){
+    public static Game startNewGame(List<LobbyUser> lobbyUsers, Lobby lobby, ObserverRelay updater){
         List<Objective> objectives = null;
         List<Card> cardsResource = null;
         List<Card> cardsGolden = null;
@@ -52,7 +53,7 @@ public class GameLoader {
 
 
         //Start the game
-        Game game = new Game(lobby, cardsGolden, cardsResource, cardsStarter, objectives, lobbyUsers, sender);
+        Game game = new Game(lobby, lobbyUsers, updater, cardsGolden, cardsResource, cardsStarter, objectives);
 
         return game;
     }

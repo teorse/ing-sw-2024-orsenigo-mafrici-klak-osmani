@@ -9,14 +9,14 @@ public interface ServerModelLayer {
     /**
      * Performs the necessary procedures when a user is accidentally disconnected from the layer.
      *
-     * @param user The identifier of the user who got disconnected.
+     * @param username The identifier of the user who got disconnected.
      */
-    void userDisconnectionProcedure(LayerUser user);
+    void userDisconnectionProcedure(String username);
 
     /**
      * Performs the necessary procedures when a user voluntarily logs out from the layer.
      *
-     * @param user The identifier of the user who logged out.
+     * @param username The identifier of the user who logged out.
      */
-    void quit(LayerUser user);
+    void quit(String username);
 }

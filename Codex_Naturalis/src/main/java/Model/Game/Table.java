@@ -7,8 +7,7 @@ import Model.Cards.Card;
 import Model.Objectives.Objective;
 import Model.Utility.Artifacts;
 import Network.ServerClientPacket.SCPUpdateTable;
-import Server.Model.Lobby.Game.GameModelUpdatesSender;
-import Server.Model.Lobby.Lobby;
+import Server.Model.Lobby.ObserverRelay;
 
 import java.util.*;
 
@@ -23,7 +22,7 @@ public class Table {
     private final List<Objective> objectives;
     private final List<Objective> sharedObjectives;
 
-    private final GameModelUpdatesSender sender;
+    private final ObserverRelay gameObserverRelay;
 
 
 
@@ -37,7 +36,7 @@ public class Table {
      * @param starterCards  List of Starter Cards to use during this game.
      * @param objectives    List of Objectives to use during this game.
      */
-    public Table(List<Card> goldenCards, List<Card> resourceCards, List<Card> starterCards, List<Objective> objectives, GameModelUpdatesSender sender){
+    public Table(List<Card> goldenCards, List<Card> resourceCards, List<Card> starterCards, List<Objective> objectives, ObserverRelay gameObserverRelay){
         this.cardPools = new HashMap<>(){{
             put(CardPoolTypes.RESOURCE, new CardPool(resourceCards));
             put(CardPoolTypes.GOLDEN, new CardPool(goldenCards));
@@ -50,7 +49,7 @@ public class Table {
 
         sharedObjectives = new ArrayList<>();
 
-        this.sender = sender;
+        this.gameObserverRelay = gameObserverRelay;
     }
 
 
@@ -71,8 +70,8 @@ public class Table {
         Card cardDrawn =  cardPools.get(cardPoolType).getCard(cardIndex);
 
         //todo
-        if(sender != null)
-            sender.updateClientGameModel(new SCPUpdateTable(this.toRecord()));
+        if(gameObserverRelay != null)
+            gameObserverRelay.update(new SCPUpdateTable(this.toRecord()));
 
         return cardDrawn;
     }

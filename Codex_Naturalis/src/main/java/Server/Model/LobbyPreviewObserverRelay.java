@@ -13,8 +13,8 @@ import java.util.*;
  */
 public class LobbyPreviewObserverRelay {
     //ATTRIBUTES
-    private final List<ClientHandler> observers;
-    private final Map<String, LobbyPreviewRecord> lobbyPreviewMap;
+    private final Map<String, ClientHandler> observers;
+    private final Set<LobbyPreviewRecord> lobbyPreviewSet;
 
 
 
@@ -23,12 +23,10 @@ public class LobbyPreviewObserverRelay {
     //CONSTRUCTOR
     /**
      * Constructs a new LobbyPreviewObserverRelay with the lobby preview map provided by the server.
-     *
-     * @param lobbyPreviewMap The map containing lobby previews to observe.
      */
     public LobbyPreviewObserverRelay(){
-        observers = new ArrayList<>();
-        lobbyPreviewMap = new HashMap<>();
+        observers = new HashMap<>();
+        lobbyPreviewSet = new HashSet<>();
     }
 
 
@@ -37,11 +35,11 @@ public class LobbyPreviewObserverRelay {
 
     //OBSERVER METHODS
     public void updateLobbyPreview(LobbyPreviewRecord preview){
-        String lobbyName = preview.lobbyName();
-        lobbyPreviewMap.put(lobbyName, preview);
+        lobbyPreviewSet.add(preview);
 
-        ServerClientPacket packet = new SCPUpdateLobbyPreviewsDemo(Collections.unmodifiableMap(lobbyPreviewMap));
-        for(ClientHandler observer : observers)
+        ServerClientPacket packet = new SCPUpdateLobbyPreviewsDemo(lobbyPreviewSet);
+
+        for(ClientHandler observer : observers.values())
             observer.sendPacket(packet);
     }
 
@@ -50,18 +48,18 @@ public class LobbyPreviewObserverRelay {
      *
      * @param observer The observer to add.
      */
-    public void addObserver(ClientHandler observer){
-        observers.add(observer);
-        ServerClientPacket packet = new SCPUpdateLobbyPreviewsDemo(Collections.unmodifiableMap(lobbyPreviewMap));
+    public void addObserver(String username, ClientHandler observer){
+        observers.put(username, observer);
+        ServerClientPacket packet = new SCPUpdateLobbyPreviewsDemo(lobbyPreviewSet);
         observer.sendPacket(packet);
     }
 
     /**
      * Removes an observer from the relay.
      *
-     * @param observer The observer to remove.
+     * @param username The observer to remove.
      */
-    public void removeObserver(ClientHandler observer){
-        observers.remove(observer);
+    public void removeObserver(String username){
+        observers.remove(username);
     }
 }

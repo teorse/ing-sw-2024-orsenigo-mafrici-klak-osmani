@@ -45,7 +45,7 @@ public class LobbyUser implements Serializable, LayerUser {
      * Sets the connection status of the user to online.
      */
     public void setOnline(){
-        connectionStatus = LobbyUserConnectionStates.OFFLINE;
+        connectionStatus = LobbyUserConnectionStates.ONLINE;
     }
 
     /**

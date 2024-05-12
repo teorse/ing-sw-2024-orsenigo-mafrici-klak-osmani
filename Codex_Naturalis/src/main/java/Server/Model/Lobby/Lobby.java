@@ -2,25 +2,20 @@ package Server.Model.Lobby;
 
 import Client.Model.Records.LobbyPreviewRecord;
 import Exceptions.Server.LobbyExceptions.UnavailableLobbyUserColorException;
-import Model.Game.GameLoader;
-import Model.Player.Player;
+import Model.Game.Game;
+import Network.ServerClientPacket.Demo.SCPUpdateLobbyUsers;
+import Server.Model.Lobby.Game.GameLoader;
 import Network.ServerClientPacket.Demo.SCPPrintPlaceholder;
-import Network.ServerClientPacket.SCPJoinLobbySuccessful;
-import Network.ServerClientPacket.ServerClientPacket;
 import Server.Controller.GameController;
 import Server.Controller.InputHandler.LobbyInputHandler;
-import Server.Interfaces.LayerUser;
 import Server.Interfaces.ServerModelLayer;
 import Exceptions.Server.LobbyExceptions.LobbyClosedException;
 import Exceptions.Server.LobbyExceptions.InvalidLobbySettingsException;
 import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
-import Server.Model.Lobby.Game.GameModelUpdatesSender;
 import Server.Model.LobbyPreviewObserverRelay;
 import Server.Model.ServerUser;
 import Server.Network.ClientHandler.ClientHandler;
 
-import javax.swing.*;
-import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 /**
@@ -30,30 +25,29 @@ public class Lobby implements ServerModelLayer {
     //ATTRIBUTES
     private final String lobbyName;
     private final int targetNumberUsers;
+
+
     private final List<LobbyUserColors> availableUserColors;
     private final Object colorsLock = new Object();
 
 
 
     //Attributes that should always be synchronized to usersLock
-    private final List<LobbyUser> lobbyUsers;
-    private final Map<ServerUser, LobbyUser> serverUserToLobbyUser;
-    private final Map<LobbyUser, ServerUser> lobbyUserToServerUser;
-    private final Map<LobbyUser, ClientHandler> lobbyUserConnection;
+    private final Map<String, LobbyUser> lobbyUsers;
     //the lobby is set to closed when the game starts or when the max player amount is reached.
     private boolean lobbyClosed;
     //Lock for this group of Attributes
     private final Object usersLock = new Object();
 
     private GameController gameController;
-    private Model.Game.Game game;
+    private Game game;
     private boolean gameStarted;
 
 
     //LISTENERS
     private final List<LobbyInputHandler> gameControllerObservers;
     private final LobbyPreviewObserverRelay lobbyPreviewObserverRelay;
-    private final PropertyChangeSupport lobbyUsersChange;
+    private final ObserverRelay lobbyObserver;
 
     //DISCONNECTION TIMER
     /**
@@ -82,8 +76,9 @@ public class Lobby implements ServerModelLayer {
 
         this.targetNumberUsers = targetNumberUsers;
         this.lobbyName = lobbyName;
-        this.lobbyUsers = new ArrayList<>();
+        this.lobbyUsers = new HashMap<>();
         this.lobbyPreviewObserverRelay = lobbyPreviewObserverRelay;
+        lobbyObserver = new ObserverRelay();
 
         availableUserColors = new ArrayList<>(){{
            add(LobbyUserColors.RED);
@@ -92,43 +87,30 @@ public class Lobby implements ServerModelLayer {
            add(LobbyUserColors.YELLOW);
         }};
 
-        lobbyUserConnection = new HashMap<>();
-        serverUserToLobbyUser = new HashMap<>();
-        lobbyUserToServerUser = new HashMap<>();
         gameControllerObservers = new ArrayList<>();
         gameStarted = false;
         lobbyClosed = false;
-
-        //Listens to changes in user connection stats and updates the views.
-        LobbyListener lobbyListener = new LobbyListener(this);
-        lobbyUsersChange = new PropertyChangeSupport(this);
-        lobbyUsersChange.addPropertyChangeListener(lobbyListener);
 
 
         reconnectionTimers = new HashMap<>();
 
         LobbyUser lobbyUser = new LobbyUser(serverUser, LobbyRoles.ADMIN);
-        addLobbyUserToLobby(serverUser, ch, lobbyUser);
+        addLobbyUserToLobby(ch, lobbyUser);
 
-        //todo
-        sendPacket(lobbyUser, new SCPPrintPlaceholder("You have started the lobby "+lobbyName));
+        lobbyObserver.update(lobbyUser.getUsername(), new SCPPrintPlaceholder("You have started the lobby "+lobbyName));
     }
 
-    private void addLobbyUserToLobby(ServerUser serverUser, ClientHandler ch, LobbyUser lobbyUser){
+    private void addLobbyUserToLobby(ClientHandler ch, LobbyUser lobbyUser){
 
         synchronized (usersLock) {
 
-            //Links the server and lobby layers of the user. The link will be used during the re-connection phase.
-            serverUserToLobbyUser.put(serverUser, lobbyUser);
-            lobbyUserToServerUser.put(lobbyUser, serverUser);
-            lobbyUsers.add(lobbyUser);
+            //Links the connection to the lobby user. The link will be used during the re-connection phase.
+            String username = lobbyUser.getUsername();
+            lobbyUsers.put(username, lobbyUser);
+            lobbyObserver.subscribe(username, ch);
 
             if (lobbyUsers.size() == targetNumberUsers)
                 lobbyClosed = true;
-
-            //Links the lobby layer with the output channel of the user to be able to directly send messages to the
-            //user from this layer without needing to go up to the server level and occupy that level's resources.
-            lobbyUserConnection.put(lobbyUser, ch);
         }
 
         //Pick random color for the user
@@ -138,8 +120,9 @@ public class Lobby implements ServerModelLayer {
             lobbyUser.setColor(availableUserColors.remove(random));
         }
 
+        //todo
         updateLobbyPreview();
-        lobbyUsersChange.firePropertyChange("LobbyUsersChange", null, lobbyUsers);
+        lobbyObserver.update(new SCPUpdateLobbyUsers(getUsers()));
     }
 
 
@@ -159,8 +142,9 @@ public class Lobby implements ServerModelLayer {
 
         //If the user was already in the lobby then call reconnection procedure
         synchronized (usersLock) {
-            if (serverUserToLobbyUser.containsKey(serverUser)) {
-                reconnect(serverUser, ch);
+            if (lobbyUsers.containsKey(serverUser.getUsername())){
+                LobbyUser lobbyUser = lobbyUsers.get(serverUser.getUsername());
+                reconnect(lobbyUser, ch);
                 return;
             }
         }
@@ -173,13 +157,12 @@ public class Lobby implements ServerModelLayer {
         //If none of the above scenarios were true then proceed to add new user to lobby
         LobbyUser lobbyUser = new LobbyUser(serverUser, LobbyRoles.GUEST);
 
-        addLobbyUserToLobby(serverUser, ch, lobbyUser);
+        addLobbyUserToLobby(ch, lobbyUser);
 
-        sendPacket(lobbyUser, new SCPPrintPlaceholder("You have joined lobby: "+lobbyName));
+        lobbyObserver.update(lobbyUser.getUsername(), new SCPPrintPlaceholder("You have joined lobby: "+lobbyName));
     }
 
-    private void reconnect(ServerUser serverUser, ClientHandler ch) throws LobbyUserAlreadyConnectedException {
-        LobbyUser lobbyUser = serverUserToLobbyUser.get(serverUser);
+    private void reconnect(LobbyUser lobbyUser, ClientHandler ch) throws LobbyUserAlreadyConnectedException {
 
         //If reconnecting to user that is not actually DISCONNECTED throw exception
         if(!lobbyUser.getConnectionStatus().equals(LobbyUserConnectionStates.OFFLINE)){
@@ -191,11 +174,11 @@ public class Lobby implements ServerModelLayer {
         reconnectionTimer.interrupt();
 
         //Update with new connection source and set them back online
-        lobbyUserConnection.put(lobbyUser, ch);
+        lobbyObserver.subscribe(lobbyUser.getUsername(), ch);
         lobbyUser.setOnline();
 
         //notify of user status change
-        lobbyUsersChange.firePropertyChange("LobbyUsersChange", null, lobbyUsers);
+        lobbyObserver.update(new SCPUpdateLobbyUsers(getUsers()));
     }
 
 
@@ -206,22 +189,20 @@ public class Lobby implements ServerModelLayer {
     /**
      * Handles the abrupt disconnection procedure for a user.
      *
-     * @param user The user disconnecting.
+     * @param username The user disconnecting.
      */
     @Override
-    public void userDisconnectionProcedure(LayerUser user) {
+    public void userDisconnectionProcedure(String username) {
 
-        LobbyUser lobbyUser = (LobbyUser) user;
-
-        String username = lobbyUser.getUsername();
+        LobbyUser lobbyUser = lobbyUsers.get(username);
 
         System.out.println("User "+username+" has disconnected from server");
         lobbyUser.setOffline();
         synchronized (usersLock) {
-            lobbyUserConnection.remove(lobbyUser);
+            lobbyObserver.unsubscribe(username);
         }
 
-        lobbyUsersChange.firePropertyChange("LobbyUsersChange", null, lobbyUsers);
+        lobbyObserver.update(new SCPUpdateLobbyUsers(getUsers()));
 
         //If the game has not started then the disconnection need to only be handled on the lobby level with the timer
         if(!gameStarted) {
@@ -232,30 +213,29 @@ public class Lobby implements ServerModelLayer {
             //activate the disconnection procedure in the game and start the timer thread, the thread will remove the
             //player both from the lobby and from the game.
             if(game.shouldRemovePlayerOnDisconnect()){
-                game.userDisconnectionProcedure(lobbyUser);
+                game.userDisconnectionProcedure(username);
                 timeOutDisconnection(lobbyUser);
             }
             //If the game has started and it is in a phase that does not allow for player removal then you DON'T
             //remove the player from the lobby and only start the user disconnection procedure in the game.
             else
-                game.userDisconnectionProcedure(lobbyUser);
+                game.userDisconnectionProcedure(username);
         }
     }
 
     /**
      * Allows a user to quit the lobby.
      *
-     * @param user The user quitting the lobby.
+     * @param username The user quitting the lobby.
      */
     @Override
-    public void quit(LayerUser user){
+    public void quit(String username){
 
-        LobbyUser lobbyUser = (LobbyUser) user;
-        String username = lobbyUser.getUsername();
+        LobbyUser lobbyUser = lobbyUsers.get(username);
 
         System.out.println("User "+username+" has quit from the lobby");
         if(gameStarted)
-            game.quit(lobbyUser);
+            game.quit(username);
         removeUser(lobbyUser);
     }
 
@@ -270,7 +250,7 @@ public class Lobby implements ServerModelLayer {
                 removeUser(lobbyUser);
 
                 if(gameStarted)
-                    game.removePlayer(lobbyUser);
+                    game.removePlayer(username);
 
                 reconnectionTimers.remove(lobbyUser);
                 System.out.println("User " + username + " has been removed from lobby after disconnection timeout");
@@ -287,21 +267,19 @@ public class Lobby implements ServerModelLayer {
     private void removeUser(LobbyUser lobbyUser){
 
         synchronized (usersLock) {
+            lobbyUsers.remove(lobbyUser.getUsername());
 
-            lobbyUsers.remove(lobbyUser);
-
-            ServerUser serverUser = lobbyUserToServerUser.remove(lobbyUser);
-            serverUserToLobbyUser.remove(serverUser);
+            lobbyObserver.unsubscribe(lobbyUser.getUsername());
 
             updateLobbyPreview();
         }
 
-        //If a user leaves the lobby while the game has not yet started then the lobby becomes joinable again
+        //If a user leaves the lobby while the game has not yet started then the lobby becomes join-able again
         //to meet the required max players
         if(!gameStarted)
             lobbyClosed = false;
 
-        lobbyUsersChange.firePropertyChange("LobbyUsersChange", null, lobbyUsers);
+        lobbyObserver.update(new SCPUpdateLobbyUsers(getUsers()));
     }
 
 
@@ -313,12 +291,12 @@ public class Lobby implements ServerModelLayer {
      * Starts the game in the lobby.
      */
     public void startGame(){
-        game = GameLoader.startNewGame(lobbyUsers, this, new GameModelUpdatesSender(lobbyUserConnection));
+        game = GameLoader.startNewGame(lobbyUsers.values().stream().toList(), this, lobbyObserver);
         updateGameController(new GameController(game));
 
         System.out.println("Game started in lobby: "+lobbyName);
 
-        broadcastPacket(new SCPPrintPlaceholder("Game has started"));
+        lobbyObserver.update(new SCPPrintPlaceholder("Game has started"));
 
         gameStarted = true;
         lobbyClosed = true;
@@ -329,12 +307,14 @@ public class Lobby implements ServerModelLayer {
     /**
      * Allows the user to change their color to any of the other available colors in the Lobby.
      *
-     * @param user      User that wants to change their color.
+     * @param username      User that wants to change their color.
      * @param newColor  Color which the user wants to change to.
      * @throws UnavailableLobbyUserColorException   If a user selects a color that is not available.
      */
-    public void changeColor(LobbyUser user, LobbyUserColors newColor) throws UnavailableLobbyUserColorException {
+    public void changeColor(String username, LobbyUserColors newColor) throws UnavailableLobbyUserColorException {
         synchronized (colorsLock){
+            LobbyUser user = lobbyUsers.get(username);
+
             LobbyUserColors oldColor = user.getColor();
 
             if(oldColor.equals(newColor))
@@ -348,7 +328,7 @@ public class Lobby implements ServerModelLayer {
             else
                 throw new UnavailableLobbyUserColorException("Color is not available");
         }
-        lobbyUsersChange.firePropertyChange("LobbyUsersChange", null, lobbyUsers);
+        lobbyObserver.update(new SCPUpdateLobbyUsers(getUsers()));
     }
 
 
@@ -361,78 +341,11 @@ public class Lobby implements ServerModelLayer {
     }
 
     protected List<LobbyUser> getUsers(){
-        return lobbyUsers;
+        return lobbyUsers.values().stream().toList();
     }
 
     public GameController getGameController(){
         return gameController;
-    }
-
-    public LobbyUser getLobbyUserByServerUser(LayerUser user){
-        ServerUser serverUser = (ServerUser) user;
-        return serverUserToLobbyUser.get(serverUser);
-    }
-
-
-
-
-
-    //NETWORKING METHODS
-    /**
-     * Sends a packet to a specific user in the lobby.
-     *
-     * @param lobbyUser The lobby user to whom the message will be sent.
-     * @param message   The message to send.
-     */
-    public void sendPacket(LobbyUser lobbyUser, ServerClientPacket message){
-
-        if(lobbyUser.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)) {
-            ClientHandler ch = lobbyUserConnection.get(lobbyUser);
-            ch.sendPacket(message);
-        }
-        else{
-            System.out.println("Message could not be sent as user is disconnected");
-        }
-    }
-
-    /**
-     * Broadcasts a packet to all users in the lobby.
-     *
-     * @param message The message to broadcast.
-     */
-    public void broadcastPacket(ServerClientPacket message){
-        for(LobbyUser lobbyUser : lobbyUsers){
-            if(lobbyUser.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)) {
-                ClientHandler ch = lobbyUserConnection.get(lobbyUser);
-                ch.sendPacket(message);
-            }
-        }
-    }
-
-
-
-
-
-    //DEMO METHODS
-    /**
-     * Executes command 1 as part of the lobby's demo functionality.
-     */
-    public void Command1(){
-        System.out.println("Command 1 executed in Lobby: "+lobbyName);
-    }
-
-    /**
-     * Executes command 2 as part of the lobby's demo functionality.
-     */
-    public void Command2(){
-        System.out.println("Command 2 executed in Lobby: "+lobbyName);
-    }
-
-    /**
-     * Executes command 3 as part of the lobby's demo functionality.
-     */
-    public void Command3(){
-        System.out.println("Command 3 executed in Lobby: "+lobbyName);
     }
 
 

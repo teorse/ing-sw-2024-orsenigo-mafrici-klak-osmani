@@ -9,9 +9,7 @@ import Server.Controller.GameController;
 import Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.GameRequiredException;
 import Exceptions.Server.InputHandlerExceptions.InputExceptions.WrongServerLayerException;
 import Server.Controller.LobbyController;
-import Server.Model.Lobby.LobbyUser;
 import Server.Model.Lobby.LobbyUserColors;
-import Server.Model.ServerUser;
 import Server.Network.ClientHandler.ClientHandler;
 
 import java.util.List;
@@ -23,8 +21,8 @@ import java.util.List;
 public class LobbyInputHandler implements InputHandler{
     //ATTRIBUTES
     private final ClientHandler connection;
+    private final String username;
     private LobbyController lobbyController;
-    private LobbyUser lobbyUser;
     private InputHandler gameInputHandler;
 
 
@@ -37,19 +35,17 @@ public class LobbyInputHandler implements InputHandler{
      *
      * @param connection    The ClientHandler associated with the client.
      * @param lobbyController The LobbyController managing the lobby.
-     * @param serverUser    The ServerUser associated with the client.
      */
-    public LobbyInputHandler(ClientHandler connection, LobbyController lobbyController, ServerUser serverUser){
+    public LobbyInputHandler(ClientHandler connection, String username, LobbyController lobbyController){
         this.connection = connection;
+        this.username = username;
         this.lobbyController = lobbyController;
-
-        lobbyUser = lobbyController.getLobbyUserByServerUser(serverUser);
 
         GameController gameController = lobbyController.getGameController();
         lobbyController.addGameControllerObserver(this);
 
         if(gameController != null)
-            gameInputHandler = new GameInputHandler(this.connection, lobbyUser, gameController);
+            gameInputHandler = new GameInputHandler(this.username, this.connection, gameController);
 
         else
             gameInputHandler = null;
@@ -103,10 +99,6 @@ public class LobbyInputHandler implements InputHandler{
                     case QUIT -> logOut();
 
                     case CHANGE_COLOR -> changeColor(payload);
-
-                    case COMMAND1 -> Command1();
-                    case COMMAND2 -> Command2();
-                    case COMMAND3 -> Command3();
                 }
             }
 
@@ -119,7 +111,7 @@ public class LobbyInputHandler implements InputHandler{
     @Override
     public void clientDisconnectionProcedure(){
         lobbyController.removeGameControllerObserver(this);
-        lobbyController.userDisconnectionProcedure(lobbyUser);
+        lobbyController.userDisconnectionProcedure(username);
         if(gameInputHandler != null){
             gameInputHandler.clientDisconnectionProcedure();
         }
@@ -132,14 +124,11 @@ public class LobbyInputHandler implements InputHandler{
     public void logOut(){
         if(lobbyController != null) {
             lobbyController.removeGameControllerObserver(this);
-            lobbyController.quitLobby(lobbyUser);
+            lobbyController.quitLobby(username);
             lobbyController = null;
         }
         if(gameInputHandler != null)
             gameInputHandler = null;
-
-        if(lobbyUser != null)
-            lobbyUser = null;
     }
 
     /**
@@ -149,7 +138,7 @@ public class LobbyInputHandler implements InputHandler{
      */
     @Override
     public boolean isBound() {
-        return lobbyController != null || lobbyUser != null;
+        return lobbyController != null;
     }
 
 
@@ -165,23 +154,11 @@ public class LobbyInputHandler implements InputHandler{
         LobbyUserColors newColor = LobbyUserColors.valueOf(payload.getFirst());
 
         try {
-            lobbyController.changeColor(lobbyUser, newColor);
+            lobbyController.changeColor(username, newColor);
         }
         catch (UnavailableLobbyUserColorException e){
             connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
         }
-    }
-
-    private void Command1(){
-        lobbyController.Command1();
-    }
-
-    private void Command2(){
-        lobbyController.Command2();
-    }
-
-    private void Command3(){
-        lobbyController.Command3();
     }
 
 
@@ -196,6 +173,6 @@ public class LobbyInputHandler implements InputHandler{
      * @param gameController The new GameController instance.
      */
     public void updateGameController(GameController gameController){
-        this.gameInputHandler = new GameInputHandler(connection, lobbyUser, gameController);
+        this.gameInputHandler = new GameInputHandler(username, connection, gameController);
     }
 }

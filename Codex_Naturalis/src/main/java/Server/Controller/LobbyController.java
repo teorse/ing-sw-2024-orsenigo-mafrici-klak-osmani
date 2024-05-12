@@ -2,11 +2,9 @@ package Server.Controller;
 
 import Exceptions.Server.LobbyExceptions.UnavailableLobbyUserColorException;
 import Server.Controller.InputHandler.LobbyInputHandler;
-import Server.Interfaces.LayerUser;
 import Exceptions.Server.LobbyExceptions.LobbyClosedException;
 import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
 import Server.Model.Lobby.Lobby;
-import Server.Model.Lobby.LobbyUser;
 import Server.Model.Lobby.LobbyUserColors;
 import Server.Model.ServerUser;
 import Server.Network.ClientHandler.ClientHandler;
@@ -47,12 +45,12 @@ public class LobbyController {
 
 
     //QUITTING METHODS
-    public void userDisconnectionProcedure(LayerUser user){
-        model.userDisconnectionProcedure(user);
+    public void userDisconnectionProcedure(String username){
+        model.userDisconnectionProcedure(username);
     }
 
-    public void quitLobby(LayerUser user){
-        model.quit(user);
+    public void quitLobby(String username){
+        model.quit(username);
     }
 
 
@@ -60,43 +58,13 @@ public class LobbyController {
 
 
     //GETTERS
-    public String getLobbyName(){
-        return model.getLobbyName();
-    }
-
     public GameController getGameController(){
         return model.getGameController();
     }
 
-    public LobbyUser getLobbyUserByServerUser(ServerUser serverUser){
-        return model.getLobbyUserByServerUser(serverUser);
-    }
 
 
 
-
-
-    //DEMO METHODS
-    /**
-     * Executes Command1 demo in the lobby.
-     */
-    public void Command1(){
-        model.Command1();
-    }
-
-    /**
-     * Executes Command2 demo in the lobby.
-     */
-    public void Command2(){
-        model.Command2();
-    }
-
-    /**
-     * Executes Command3 demo in the lobby.
-     */
-    public void Command3(){
-        model.Command3();
-    }
 
     /**
      * Starts the game associated with the lobby.
@@ -105,8 +73,8 @@ public class LobbyController {
         model.startGame();
     }
 
-    public void changeColor(LobbyUser user, LobbyUserColors newColor) throws UnavailableLobbyUserColorException{
-        model.changeColor(user, newColor);
+    public void changeColor(String username, LobbyUserColors newColor) throws UnavailableLobbyUserColorException{
+        model.changeColor(username, newColor);
     }
 
 

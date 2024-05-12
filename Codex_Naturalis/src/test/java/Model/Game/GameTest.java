@@ -65,7 +65,7 @@ class GameTest {
                 add(new ObjectiveNumeric("Sample", 1, null));
             }};
 
-            Game game = new Game(null, sampleCards.get(0), sampleCards.get(1),sampleCards.get(2),sampleObjectives1, new ArrayList<>(), null);
+            Game game = new Game(null, new ArrayList<>(), null, sampleCards.get(0), sampleCards.get(1),sampleCards.get(2),sampleObjectives1);
             Table table = new Table(sampleCards.get(3), sampleCards.get(4), sampleCards.get(5),sampleObjectives2, null);
 
             Field cardPoolsField;
@@ -563,7 +563,7 @@ class GameTest {
                 add(new ObjectiveNumeric("Sample", 1, null));
             }};
 
-            Game game = new Game(null, sampleCards.get(0), sampleCards.get(1), sampleCards.get(2), sampleObjectives1, new ArrayList<>(), null);
+            Game game = new Game(null, new ArrayList<>(), null, sampleCards.get(0), sampleCards.get(1), sampleCards.get(2), sampleObjectives1);
 
             try{
                 Field players = Game.class.getDeclaredField("players");

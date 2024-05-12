@@ -1,6 +1,7 @@
 package Client.Model.Records;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Represents a record containing a preview of a lobby in a game.
@@ -23,5 +24,27 @@ public record LobbyPreviewRecord(String lobbyName, int currentUsers, int maxUser
      */
     public LobbyPreviewRecord {
         // No additional implementation needed as records automatically generate a constructor
+    }
+
+
+
+
+
+    //EQUALS AND HASH
+
+    /**
+     *Two Lobby Previews are equal if they have the same lobby name.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LobbyPreviewRecord that = (LobbyPreviewRecord) o;
+        return Objects.equals(lobbyName, that.lobbyName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(lobbyName);
     }
 }
