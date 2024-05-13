@@ -17,9 +17,11 @@ import Exceptions.Server.LogInExceptions.AccountAlreadyExistsException;
 import Exceptions.Server.LogInExceptions.AccountAlreadyLoggedInException;
 import Exceptions.Server.LogInExceptions.AccountNotFoundException;
 import Exceptions.Server.LogInExceptions.IncorrectPasswordException;
+import Exceptions.Server.PermissionExceptions.AdminRoleRequiredException;
 import Model.Game.CardPoolTypes;
 import Network.ClientServer.Packets.ClientServerPacket;
 import Network.ServerClient.Demo.SCPPrintPlaceholder;
+import Network.ServerClient.Packets.*;
 import Server.Controller.GameController;
 import Server.Controller.LobbyController;
 import Server.Controller.ServerController;
@@ -74,32 +76,34 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
                 throw new MultipleLoginViolationException(connection, "placeholder", username, "");
             }
             this.username = serverController.login(connection, username, password);
+            connection.sendPacket(new SCPLogInSuccess(this.username));
         }
         catch(MultipleLoginViolationException e){
-            connection.sendPacket(new SCPPrintPlaceholder("You are already logged in"));
+            connection.sendPacket(new SCPLogInFailed(ErrorsDictionary.YOU_ARE_ALREADY_LOGGED_IN));
         }
         catch (IncorrectPasswordException e){
-            connection.sendPacket(new SCPPrintPlaceholder("Wrong password"));
+            connection.sendPacket(new SCPLogInFailed(ErrorsDictionary.WRONG_PASSWORD));
         }
         catch (AccountNotFoundException e){
-            connection.sendPacket(new SCPPrintPlaceholder("Username not found"));
+            connection.sendPacket(new SCPLogInFailed(ErrorsDictionary.USERNAME_NOT_FOUND));
         }
         catch (AccountAlreadyLoggedInException e){
-            connection.sendPacket(new SCPPrintPlaceholder("Someone has already logged into this account"));
+            connection.sendPacket(new SCPLogInFailed(ErrorsDictionary.ACCOUNT_ALREADY_LOGGED_IN_BY_SOMEONE_ELSE));
         }
     }
 
     @Override
     public void signUp(String username, String password) {
         if(this.username != null){
-            connection.sendPacket(new SCPPrintPlaceholder("You are already logged in"));
+            connection.sendPacket(new SCPSignUpFailed(ErrorsDictionary.GENERIC_ERROR));
             return;
         }
         try {
             this.username = serverController.signUp(connection, username, password);
+            connection.sendPacket(new SCPSignUpSuccess(this.username));
         }
         catch (AccountAlreadyExistsException e){
-            connection.sendPacket(new SCPPrintPlaceholder("The username you provided is already taken"));
+            connection.sendPacket(new SCPSignUpFailed(ErrorsDictionary.USERNAME_ALREADY_TAKEN));
         }
     }
 
@@ -124,7 +128,9 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
             }
             serverController.addLobbyPreviewObserver(username, connection);
         } catch (LogInRequiredException e) {
-            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+            //todo add logging functionality
+//            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+            //do we have to send this notification to the client?
         }
     }
 
@@ -154,16 +160,20 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
             }
         }
         catch (LogInRequiredException e){
-            connection.sendPacket(new SCPPrintPlaceholder("You have to be logged in to perform this action"));
+            //connection.sendPacket(new SCPPrintPlaceholder("You have to be logged in to perform this action"));
+            connection.sendPacket(new SCPStartLobbyFailed(ErrorsDictionary.GENERIC_ERROR));
         }
         catch (MultipleLobbiesException e){
-            connection.sendPacket(new SCPPrintPlaceholder("Can't create new lobby, you already are in a lobby"));
+            //connection.sendPacket(new SCPPrintPlaceholder("Can't create new lobby, you already are in a lobby"));
+            connection.sendPacket(new SCPStartLobbyFailed(ErrorsDictionary.GENERIC_ERROR));
         }
         catch (LobbyNameAlreadyTakenException e){
-            connection.sendPacket(new SCPPrintPlaceholder("The name provided for the lobby is already used"));
+            //connection.sendPacket(new SCPPrintPlaceholder("The name provided for the lobby is already used"));
+            connection.sendPacket(new SCPStartLobbyFailed(ErrorsDictionary.LOBBY_NAME_ALREADY_TAKEN));
         }
         catch (InvalidLobbySettingsException e) {
-            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+            //connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+            connection.sendPacket(new SCPStartLobbyFailed(ErrorsDictionary.INVALID_LOBBY_SIZE));
         }
     }
 
@@ -180,19 +190,24 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
             }
         }
         catch (LogInRequiredException e){
-            connection.sendPacket(new SCPPrintPlaceholder("You have to be logged in to perform this action"));
+            //connection.sendPacket(new SCPPrintPlaceholder("You have to be logged in to perform this action"));
+            connection.sendPacket(new SCPJoinLobbyFailed(ErrorsDictionary.GENERIC_ERROR));
         }
         catch (MultipleLobbiesException e){
-            connection.sendPacket(new SCPPrintPlaceholder("Can't create new lobby, you already are in a lobby"));
+            //connection.sendPacket(new SCPPrintPlaceholder("Can't create new lobby, you already are in a lobby"));
+            connection.sendPacket(new SCPJoinLobbyFailed(ErrorsDictionary.GENERIC_ERROR));
         }
         catch (LobbyNotFoundException e){
-            connection.sendPacket(new SCPPrintPlaceholder("No lobby found with that name"));
+            //connection.sendPacket(new SCPPrintPlaceholder("No lobby found with that name"));
+            connection.sendPacket(new SCPJoinLobbyFailed(ErrorsDictionary.LOBBY_NAME_NOT_FOUND));
         }
         catch (LobbyUserAlreadyConnectedException e){
-            connection.sendPacket(new SCPPrintPlaceholder("This account is already connected to the lobby"));
+            //connection.sendPacket(new SCPPrintPlaceholder("This account is already connected to the lobby"));
+            connection.sendPacket(new SCPJoinLobbyFailed(ErrorsDictionary.GENERIC_ERROR));
         }
         catch (LobbyClosedException e){
-            connection.sendPacket(new SCPPrintPlaceholder("The lobby you are trying to join is closed"));
+            //connection.sendPacket(new SCPPrintPlaceholder("The lobby you are trying to join is closed"));
+            connection.sendPacket(new SCPJoinLobbyFailed(ErrorsDictionary.LOBBY_IS_CLOSED));
         }
     }
 
@@ -203,12 +218,15 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
     public void startGame() {
         try {
             if (lobbyController != null) {
-                lobbyController.startGame();
+                lobbyController.startGame(username);
             } else
                 throw new LobbyRequiredException("You need to be in a Lobby to start a game");
         }
         catch (LobbyRequiredException e){
-            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+            //todo
+            //connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+        } catch (AdminRoleRequiredException e) {
+            //todo
         }
     }
 

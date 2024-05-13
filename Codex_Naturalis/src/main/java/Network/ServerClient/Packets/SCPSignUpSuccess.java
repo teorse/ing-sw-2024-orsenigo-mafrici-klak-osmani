@@ -2,17 +2,16 @@ package Network.ServerClient.Packets;
 
 import Network.ServerMessageExecutor;
 
-public class SCPLogInSuccess implements ServerClientPacket{
+public class SCPSignUpSuccess implements ServerClientPacket{
 
     private final String username;
 
-    public SCPLogInSuccess(String username) {
+    public SCPSignUpSuccess(String username) {
         this.username = username;
     }
 
-
     @Override
     public void execute(ServerMessageExecutor clientController) {
-        clientController.loginSuccess(username);
+        clientController.signUpSuccess(username);
     }
 }

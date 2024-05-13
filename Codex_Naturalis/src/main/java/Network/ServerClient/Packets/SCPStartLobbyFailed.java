@@ -2,16 +2,16 @@ package Network.ServerClient.Packets;
 
 import Network.ServerMessageExecutor;
 
-public class SCPLogInFailed implements ServerClientPacket{
+public class SCPStartLobbyFailed implements ServerClientPacket{
+
     private final ErrorsDictionary errorCause;
 
-    public SCPLogInFailed(ErrorsDictionary errorCause) {
+    public SCPStartLobbyFailed(ErrorsDictionary errorCause) {
         this.errorCause = errorCause;
     }
 
-
     @Override
     public void execute(ServerMessageExecutor clientController) {
-        clientController.loginFailed(errorCause);
+        clientController.startLobbyFailed(errorCause);
     }
 }

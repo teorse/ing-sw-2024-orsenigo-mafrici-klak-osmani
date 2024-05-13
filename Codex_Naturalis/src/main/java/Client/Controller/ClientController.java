@@ -2,6 +2,8 @@ package Client.Controller;
 
 import Client.Model.Records.*;
 import Client.Model.Records.LobbyPreviewRecord;
+import Model.Player.PlayerStates;
+import Network.ServerClient.Packets.ErrorsDictionary;
 import Network.ServerMessageExecutor;
 
 import java.util.List;
@@ -15,12 +17,22 @@ public class ClientController implements ServerMessageExecutor {
     }
 
     @Override
-    public void loginFailed(String serverNotification) {
+    public void loginFailed(ErrorsDictionary errorCause) {
         //todo
     }
 
     @Override
-    public void loginSuccess(String serverNotification, String username) {
+    public void loginSuccess(String username) {
+        //todo
+    }
+
+    @Override
+    public void signUpFailed(ErrorsDictionary errorCause) {
+
+    }
+
+    @Override
+    public void signUpSuccess(String username) {
         //todo
     }
 
@@ -30,12 +42,22 @@ public class ClientController implements ServerMessageExecutor {
     }
 
     @Override
-    public void joinLobbySuccessful(LobbyRecord lobbyRecord, List<LobbyUserRecord> lobbyUsers, String notification) {
+    public void joinLobbySuccessful(LobbyRecord lobbyRecord, List<LobbyUserRecord> lobbyUsers) {
         //todo
     }
 
     @Override
-    public void joinLobbyFailed(String notification) {
+    public void joinLobbyFailed(ErrorsDictionary errorCause) {
+        //todo
+    }
+
+    @Override
+    public void startLobbySuccess(LobbyRecord lobbyRecord, List<LobbyUserRecord> lobbyUsers) {
+        //todo
+    }
+
+    @Override
+    public void startLobbyFailed(ErrorsDictionary errorCause) {
         //todo
     }
 
@@ -80,7 +102,17 @@ public class ClientController implements ServerMessageExecutor {
     }
 
     @Override
-    public void gameOver() {
+    public void updateSecretObjectiveCandidates(List<ObjectiveRecord> candidates) {
+        //todo
+    }
+
+    @Override
+    public void updateClientGameState(PlayerStates newState) {
+        //todo
+    }
+
+    @Override
+    public void gameOver(List<PlayerRecord> players) {
         //todo
     }
 }

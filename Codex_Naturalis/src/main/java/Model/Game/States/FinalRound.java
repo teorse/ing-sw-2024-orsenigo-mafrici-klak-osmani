@@ -6,7 +6,9 @@ import Exceptions.Game.InvalidActionForPlayerStateException;
 import Exceptions.Game.NotYourTurnException;
 import Model.Player.*;
 import Model.Game.Game;
+import Network.ServerClient.Packets.SCPUpdateClientGameState;
 import Server.Model.Lobby.LobbyUserConnectionStates;
+import Server.Model.Lobby.ObserverRelay;
 
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class FinalRound implements GameState{
     //ATTRIBUTES
     private final Game game;
     private final List<Player> players;
+    private final ObserverRelay gameObserverRelay;
 
     private int currentPlayerIndex;
 
@@ -34,6 +37,7 @@ public class FinalRound implements GameState{
     public FinalRound(Game game){
         this.game = game;
         players = game.getPlayers();
+        gameObserverRelay = game.getGameObserverRelay();
 
         findFirstPlayer();
     }
@@ -67,6 +71,7 @@ public class FinalRound implements GameState{
         //The rest of the method is executed if the player is actually allowed to perform the move.
         player.playCard(cardIndex, coordinateIndex, faceUp);
         player.setPlayerState(PlayerStates.WAIT);
+        gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.WAIT));
 
         nextPlayer();
     }
@@ -171,6 +176,7 @@ public class FinalRound implements GameState{
                 if(nextPlayer.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)){
                     currentPlayerIndex = i;
                     nextPlayer.setPlayerState(PlayerStates.PLACE);
+                    gameObserverRelay.update(nextPlayer.getUsername(), new SCPUpdateClientGameState(PlayerStates.PLACE));
                     return;
                 }
             }
@@ -203,11 +209,13 @@ public class FinalRound implements GameState{
                 firstPlayer = players.get(currentPlayerIndex);
                 //The player's state is updated to reflect their next expected move
                 firstPlayer.setPlayerState(PlayerStates.PLACE);
+                gameObserverRelay.update(firstPlayer.getUsername(), new SCPUpdateClientGameState(PlayerStates.PLACE));
                 break;
             }
         }
 
         if(currentPlayerIndex == -1)
+            //todo
             throw new RuntimeException("No players found online");
     }
 

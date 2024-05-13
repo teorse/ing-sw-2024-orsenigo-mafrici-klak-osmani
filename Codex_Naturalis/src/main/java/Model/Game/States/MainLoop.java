@@ -8,8 +8,10 @@ import Model.Game.Game;
 import Model.Game.CardPoolTypes;
 import Model.Game.Table;
 import Model.Player.Player;
+import Network.ServerClient.Packets.SCPUpdateClientGameState;
 import Server.Model.Lobby.LobbyUserConnectionStates;
 import Model.Player.PlayerStates;
+import Server.Model.Lobby.ObserverRelay;
 
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class MainLoop implements GameState{
     private final Game game;
     private final List<Player> players;
     private final Table table;
+    private final ObserverRelay gameObserverRelay;
 
     private int currentPlayerIndex;
 
@@ -39,6 +42,7 @@ public class MainLoop implements GameState{
         this.game = game;
         players = game.getPlayers();
         table = game.getTable();
+        gameObserverRelay = game.getGameObserverRelay();
 
         findFirstPlayer();
     }
@@ -73,6 +77,7 @@ public class MainLoop implements GameState{
         //The rest of the method is executed if the player is actually allowed to perform the move.
         player.playCard(cardIndex, coordinateIndex, faceUp);
         player.setPlayerState(PlayerStates.DRAW);
+        gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.DRAW));
 
 
         game.checkGameEndingConditions();
@@ -103,6 +108,7 @@ public class MainLoop implements GameState{
         player.addCardHeld(cardDrawn);
 
         player.setPlayerState(PlayerStates.WAIT);
+        gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.WAIT));
 
         game.checkGameEndingConditions();
         nextPlayer();
@@ -214,6 +220,7 @@ public class MainLoop implements GameState{
                 firstPlayer = players.get(currentPlayerIndex);
                 //The player's state is updated to reflect their next expected move
                 firstPlayer.setPlayerState(PlayerStates.PLACE);
+                gameObserverRelay.update(firstPlayer.getUsername(), new SCPUpdateClientGameState(PlayerStates.PLACE));
                 break;
             }
         }

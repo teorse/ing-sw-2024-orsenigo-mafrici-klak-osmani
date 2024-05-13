@@ -3,15 +3,15 @@ package Network.ServerClient.Packets;
 import Network.ServerMessageExecutor;
 
 public class SCPJoinLobbyFailed implements ServerClientPacket{
-    private final String message;
+    private final ErrorsDictionary errorCause;
 
-    public SCPJoinLobbyFailed(String message) {
-        this.message = message;
+    public SCPJoinLobbyFailed(ErrorsDictionary errorCause) {
+        this.errorCause = errorCause;
     }
 
 
     @Override
     public void execute(ServerMessageExecutor clientController) {
-        clientController.joinLobbyFailed(message);
+        clientController.joinLobbyFailed(errorCause);
     }
 }

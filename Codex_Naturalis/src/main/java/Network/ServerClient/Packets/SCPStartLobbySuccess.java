@@ -6,17 +6,18 @@ import Network.ServerMessageExecutor;
 
 import java.util.List;
 
-public class SCPJoinLobbySuccessful implements ServerClientPacket {
+public class SCPStartLobbySuccess implements ServerClientPacket{
     private final LobbyRecord lobbyRecord;
     private final List<LobbyUserRecord> lobbyUsers;
 
-    public SCPJoinLobbySuccessful(LobbyRecord lobbyRecord, List<LobbyUserRecord> lobbyUsers){
+    public SCPStartLobbySuccess(LobbyRecord lobbyRecord, List<LobbyUserRecord> lobbyUsers) {
         this.lobbyRecord = lobbyRecord;
         this.lobbyUsers = lobbyUsers;
     }
 
+
     @Override
     public void execute(ServerMessageExecutor clientController) {
-        clientController.joinLobbySuccessful(lobbyRecord, lobbyUsers);
+        clientController.startLobbySuccess(lobbyRecord, lobbyUsers);
     }
 }

@@ -14,7 +14,7 @@ import java.io.Serializable;
  * <p>This record implements the {@code Serializable} interface to support serialization.
  */
 public record PlayerRecord(String nickname, PlayerStates playerState,
-                           int roundsCompleted, int points, int objectivesCompleted) implements Serializable {
+                           int roundsCompleted, int points, int objectivesCompleted, boolean winner) implements Serializable {
 
     /**
      * Constructs a new {@code PlayerRecord} with the specified parameters.

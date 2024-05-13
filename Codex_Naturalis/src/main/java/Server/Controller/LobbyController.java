@@ -1,6 +1,7 @@
 package Server.Controller;
 
 import Exceptions.Server.LobbyExceptions.UnavailableLobbyUserColorException;
+import Exceptions.Server.PermissionExceptions.AdminRoleRequiredException;
 import Server.Controller.InputHandler.GameControllerObserver;
 import Exceptions.Server.LobbyExceptions.LobbyClosedException;
 import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
@@ -69,8 +70,8 @@ public class LobbyController {
     /**
      * Starts the game associated with the lobby.
      */
-    public void startGame(){
-        model.startGame();
+    public void startGame(String username) throws AdminRoleRequiredException {
+        model.startGame(username);
     }
 
     public void changeColor(String username, LobbyUserColors newColor) throws UnavailableLobbyUserColorException{

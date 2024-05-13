@@ -1,9 +1,14 @@
 package Server.Model.Lobby;
 
 import Client.Model.Records.LobbyPreviewRecord;
+import Client.Model.Records.LobbyRecord;
+import Client.Model.Records.LobbyUserRecord;
 import Exceptions.Server.LobbyExceptions.UnavailableLobbyUserColorException;
+import Exceptions.Server.PermissionExceptions.AdminRoleRequiredException;
 import Model.Game.Game;
-import Network.ServerClient.Demo.SCPUpdateLobbyUsers;
+import Network.ServerClient.Packets.SCPUpdateLobbyUsers;
+import Network.ServerClient.Packets.SCPJoinLobbySuccessful;
+import Network.ServerClient.Packets.SCPStartLobbySuccess;
 import Server.Controller.InputHandler.GameControllerObserver;
 import Server.Model.Lobby.Game.GameLoader;
 import Network.ServerClient.Demo.SCPPrintPlaceholder;
@@ -97,7 +102,7 @@ public class Lobby implements ServerModelLayer {
         LobbyUser lobbyUser = new LobbyUser(serverUser, LobbyRoles.ADMIN);
         addLobbyUserToLobby(ch, lobbyUser);
 
-        lobbyObserver.update(lobbyUser.getUsername(), new SCPPrintPlaceholder("You have started the lobby "+lobbyName));
+        lobbyObserver.update(lobbyUser.getUsername(), new SCPStartLobbySuccess(toLobbyRecord(), toLobbyUserRecord()));
     }
 
     private void addLobbyUserToLobby(ClientHandler ch, LobbyUser lobbyUser){
@@ -122,7 +127,6 @@ public class Lobby implements ServerModelLayer {
 
         //todo
         updateLobbyPreview();
-        lobbyObserver.update(new SCPUpdateLobbyUsers(getUsers()));
     }
 
 
@@ -145,6 +149,7 @@ public class Lobby implements ServerModelLayer {
             if (lobbyUsers.containsKey(serverUser.getUsername())){
                 LobbyUser lobbyUser = lobbyUsers.get(serverUser.getUsername());
                 reconnect(lobbyUser, ch);
+                //todo
                 return;
             }
         }
@@ -159,7 +164,8 @@ public class Lobby implements ServerModelLayer {
 
         addLobbyUserToLobby(ch, lobbyUser);
 
-        lobbyObserver.update(lobbyUser.getUsername(), new SCPPrintPlaceholder("You have joined lobby: "+lobbyName));
+        lobbyObserver.update(serverUser.getUsername(), new SCPJoinLobbySuccessful(toLobbyRecord(), toLobbyUserRecord()));
+        lobbyObserver.update(new SCPUpdateLobbyUsers(toLobbyUserRecord()));
     }
 
     private void reconnect(LobbyUser lobbyUser, ClientHandler ch) throws LobbyUserAlreadyConnectedException {
@@ -178,7 +184,7 @@ public class Lobby implements ServerModelLayer {
         lobbyUser.setOnline();
 
         //notify of user status change
-        lobbyObserver.update(new SCPUpdateLobbyUsers(getUsers()));
+        lobbyObserver.update(new SCPUpdateLobbyUsers(toLobbyUserRecord()));
     }
 
 
@@ -202,7 +208,7 @@ public class Lobby implements ServerModelLayer {
             lobbyObserver.unsubscribe(username);
         }
 
-        lobbyObserver.update(new SCPUpdateLobbyUsers(getUsers()));
+        lobbyObserver.update(new SCPUpdateLobbyUsers(toLobbyUserRecord()));
 
         //If the game has not started then the disconnection need to only be handled on the lobby level with the timer
         if(!gameStarted) {
@@ -279,7 +285,7 @@ public class Lobby implements ServerModelLayer {
         if(!gameStarted)
             lobbyClosed = false;
 
-        lobbyObserver.update(new SCPUpdateLobbyUsers(getUsers()));
+        lobbyObserver.update(new SCPUpdateLobbyUsers(toLobbyUserRecord()));
     }
 
 
@@ -290,18 +296,32 @@ public class Lobby implements ServerModelLayer {
     /**
      * Starts the game in the lobby.
      */
-    public void startGame(){
+    public void startGame(String username) throws AdminRoleRequiredException{
+
+        if(!lobbyUsers.get(username).getLobbyRole().equals(LobbyRoles.ADMIN))
+            throw new AdminRoleRequiredException("You need to be an admin to start the game in this lobby");
+
         game = GameLoader.startNewGame(lobbyUsers.values().stream().toList(), this, lobbyObserver);
         updateGameController(new GameController(game));
 
         System.out.println("Game started in lobby: "+lobbyName);
 
-        lobbyObserver.update(new SCPPrintPlaceholder("Game has started"));
-
         gameStarted = true;
         lobbyClosed = true;
 
         updateLobbyPreview();
+    }
+
+    //todo
+    public void gameOver(){
+        updateGameController(null);
+        game = null;
+        gameStarted = false;
+
+        if(lobbyUsers.size() < targetNumberUsers)
+            lobbyClosed = false;
+
+        System.out.println("Game finished in lobby: "+lobbyName);
     }
 
     /**
@@ -328,7 +348,7 @@ public class Lobby implements ServerModelLayer {
             else
                 throw new UnavailableLobbyUserColorException("Color is not available");
         }
-        lobbyObserver.update(new SCPUpdateLobbyUsers(getUsers()));
+        lobbyObserver.update(new SCPUpdateLobbyUsers(toLobbyUserRecord()));
     }
 
 
@@ -338,10 +358,6 @@ public class Lobby implements ServerModelLayer {
     //GETTERS
     public String getLobbyName(){
         return lobbyName;
-    }
-
-    protected List<LobbyUser> getUsers(){
-        return lobbyUsers.values().stream().toList();
     }
 
     public GameController getGameController(){
@@ -377,5 +393,22 @@ public class Lobby implements ServerModelLayer {
     //todo
     private void removeGameControllerObserver(String username){
         gameControllerObservers.remove(username);
+    }
+
+
+
+
+
+    //TO RECORD METHODS
+    private LobbyRecord toLobbyRecord(){
+        return new LobbyRecord(lobbyName, targetNumberUsers, availableUserColors);
+    }
+
+    private List<LobbyUserRecord> toLobbyUserRecord(){
+        List<LobbyUserRecord> lobbyUserRecords = new ArrayList<>();
+        for(LobbyUser lobbyUser : lobbyUsers.values())
+            lobbyUserRecords.add(lobbyUser.toRecord());
+
+        return lobbyUserRecords;
     }
 }

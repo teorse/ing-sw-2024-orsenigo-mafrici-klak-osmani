@@ -1,5 +1,6 @@
 package Server.Model.Lobby;
 
+import Client.Model.Records.LobbyUserRecord;
 import Server.Interfaces.LayerUser;
 import Server.Model.ServerUser;
 
@@ -101,5 +102,14 @@ public class LobbyUser implements Serializable, LayerUser {
     @Override
     public int hashCode() {
         return Objects.hashCode(serverUser);
+    }
+
+
+
+
+
+    //TO RECORD METHODS
+    protected LobbyUserRecord toRecord(){
+        return new LobbyUserRecord(getUsername(), role, color, connectionStatus);
     }
 }

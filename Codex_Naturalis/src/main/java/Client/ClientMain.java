@@ -7,7 +7,9 @@ import Client.Network.ClientConnector;
 import Client.Network.ClientConnectorRMI;
 import Client.Network.ClientConnectorSocket;
 
+import java.net.ConnectException;
 import java.util.Scanner;
+import java.util.Set;
 
 public class ClientMain {
     public static void main(String[] args) {
@@ -30,16 +32,24 @@ public class ClientMain {
 
         ClientConnector clientConnector = null;
 
-        if(input.equals("Socket"))
-            clientConnector = new ClientConnectorSocket(serverIp, controller);
+        try {
+            if (input.equals("Socket")) {
+                clientConnector = new ClientConnectorSocket(serverIp, controller);
+            }
 
-        if(input.equals("RMI"))
-            clientConnector = new ClientConnectorRMI(serverIp, controller);
+            if (input.equals("RMI"))
+                clientConnector = new ClientConnectorRMI(serverIp, controller);
 
-        Thread handler = new Thread(clientConnector);
-        handler.start();
+            Thread handler = new Thread(clientConnector);
+            handler.start();
 
-        Thread inputListener = new Thread(new UserInputListener(clientConnector));
-        inputListener.start();
+            Thread inputListener = new Thread(new UserInputListener(clientConnector));
+            inputListener.start();
+        }
+        catch (ConnectException | java.rmi.ConnectException e ){
+            System.out.println("Couldn't connect to the server");
+            Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+            System.out.println(threadSet);
+        }
     }
 }

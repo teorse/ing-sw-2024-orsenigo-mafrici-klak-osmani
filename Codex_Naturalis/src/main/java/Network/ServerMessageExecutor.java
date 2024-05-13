@@ -1,6 +1,8 @@
 package Network;
 
 import Client.Model.Records.*;
+import Model.Player.PlayerStates;
+import Network.ServerClient.Packets.ErrorsDictionary;
 
 import java.util.List;
 import java.util.Map;
@@ -8,15 +10,23 @@ import java.util.Map;
 public interface ServerMessageExecutor {
     void connectionAck(String serverNotification);
 
-    void loginFailed(String serverNotification);
+    void loginFailed(ErrorsDictionary errorCause);
 
-    void loginSuccess(String serverNotification, String username);
+    void loginSuccess(String username);
+
+    void signUpFailed(ErrorsDictionary errorCause);
+
+    void signUpSuccess(String username);
 
     void updateLobbyPreviews(List<LobbyPreviewRecord> lobbyPreviewRecords);
 
-    void joinLobbySuccessful(LobbyRecord lobbyRecord, List<LobbyUserRecord> lobbyUsers, String notification);
+    void joinLobbySuccessful(LobbyRecord lobbyRecord, List<LobbyUserRecord> lobbyUsers);
 
-    void joinLobbyFailed(String notification);
+    void joinLobbyFailed(ErrorsDictionary errorCause);
+
+    void startLobbySuccess(LobbyRecord lobbyRecord, List<LobbyUserRecord> lobbyUsers);
+
+    void startLobbyFailed(ErrorsDictionary errorCause);
 
     void updateLobbyUsers(List<LobbyUserRecord> lobbyUsers);
 
@@ -34,5 +44,9 @@ public interface ServerMessageExecutor {
 
     void updateGame(GameRecord game);
 
-    void gameOver();
+    void updateSecretObjectiveCandidates(List<ObjectiveRecord> candidates);
+
+    void updateClientGameState(PlayerStates newState);
+
+    void gameOver(List<PlayerRecord> players);
 }

@@ -8,6 +8,7 @@ import Network.ServerClient.Packets.ServerClientPacket;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
 
 /**
@@ -33,7 +34,7 @@ public class ClientConnectorSocket implements ClientConnector {
      * @param serverIp    The IP address of the server to connect to.
      * @param controller  The ClientController to interact with this client's local model.
      */
-    public ClientConnectorSocket(String serverIp, ClientController controller){
+    public ClientConnectorSocket(String serverIp, ClientController controller) throws ConnectException {
         System.out.println("Initializing server handler");
         this.controller = controller;
         try {
@@ -41,6 +42,10 @@ public class ClientConnectorSocket implements ClientConnector {
             socket = new Socket(serverIp, serverPort);
             oos = new ObjectOutputStream(socket.getOutputStream());
             ois = new ObjectInputStream(socket.getInputStream());
+        }
+        catch(ConnectException e){
+            //Thrown when the server does not respond, possibly wrong ip address.
+            throw new ConnectException(e.getMessage());
         }
         catch(IOException e){
             System.out.println(e);

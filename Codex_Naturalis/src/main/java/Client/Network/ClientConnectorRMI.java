@@ -11,6 +11,7 @@ import Network.ServerClient.Packets.ServerClientPacket;
 import Utils.Utilities;
 
 import java.rmi.AlreadyBoundException;
+import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -59,7 +60,7 @@ public class ClientConnectorRMI implements ClientConnector, RMIClientConnector {
      * @param serverIp    The IP address of the server to connect to.
      * @param controller  The client controller associated with this client connector.
      */
-    public ClientConnectorRMI(String serverIp, ClientController controller){
+    public ClientConnectorRMI(String serverIp, ClientController controller) throws ConnectException {
         System.out.println("Initializing server handler");
         this.controller = controller;
         //Setting up client RMI registry
@@ -143,7 +144,7 @@ public class ClientConnectorRMI implements ClientConnector, RMIClientConnector {
      * @param serverIp The IP address of the server.
      * @return The ID of the client handler.
      */
-    private String getClientHandlerID(String serverIp) {
+    private String getClientHandlerID(String serverIp) throws ConnectException {
         try {
             //Requesting dedicated connection from the server
             System.out.println("Trying to connect to server");
@@ -153,7 +154,12 @@ public class ClientConnectorRMI implements ClientConnector, RMIClientConnector {
 
             return serverListenerStub.getNewClientHandler(id);
 
-        } catch (RemoteException | NotBoundException e) {
+        }
+        catch(ConnectException e){
+            //Thrown when the server does not respond, possibly wrong ip address.
+            throw new ConnectException(e.getMessage());
+        }
+        catch (RemoteException | NotBoundException e) {
             throw new RuntimeException(e);
         }
     }

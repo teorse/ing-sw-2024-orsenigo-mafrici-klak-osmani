@@ -6,6 +6,7 @@ import Model.Cards.Card;
 import Model.Objectives.Objective;
 import Model.Player.Player;
 import Model.Game.States.*;
+import Network.ServerClient.Packets.SCPGameOver;
 import Network.ServerClient.Packets.SCPGameStarted;
 import Network.ServerClient.Packets.SCPUpdateGame;
 import Network.ServerClient.Packets.SCPUpdatePlayers;
@@ -30,9 +31,7 @@ public class Game implements ServerModelLayer {
 
     private final Table table;
     private boolean lastRoundFlag;
-    private boolean gameOver;
     private GameState state;
-    private final List<Player> winners;
 
 
     //todo add procedures to start time-out if only 1 player is left in session or if no players are left
@@ -73,11 +72,7 @@ public class Game implements ServerModelLayer {
         Collections.shuffle(this.players);
         this.table = new Table(goldenCards, resourceCards, starterCards, objectives, gameObserverRelay);
         this.lastRoundFlag = false;
-        this.gameOver = false;
-        winners = new ArrayList<>();
         state = new CardsSetup(this);
-
-        System.out.println("Game has started, inside game class now!");
 
         Map<PlayerRecord, CardMapRecord> playerRecordCardMapRecordMap = this.toPlayerViewList();
         TableRecord tableRecord = table.toRecord();
@@ -102,14 +97,14 @@ public class Game implements ServerModelLayer {
     public Table getTable() {
         return table;
     }
-    public int getRoundsCompleted() {
-        return roundsCompleted;
-    }
     public boolean isLastRoundFlag(){
         return this.lastRoundFlag;
     }
     public Lobby getLobby(){
         return this.lobby;
+    }
+    public ObserverRelay getGameObserverRelay(){
+        return this.gameObserverRelay;
     }
 
 
@@ -202,7 +197,7 @@ public class Game implements ServerModelLayer {
         Player referenceWinner = players.getFirst();
         for(Player player : players){
             if(player.getPoints() == referenceWinner.getPoints() && player.getObjectivesCompleted() == referenceWinner.getObjectivesCompleted())
-                winners.add(player);
+                player.setWinner();
         }
     }
 
@@ -214,10 +209,16 @@ public class Game implements ServerModelLayer {
             player.countAllPoints(sharedObjectives);
         }
 
+        //After all players are given their points the winner is calculated.
         selectWinners();
 
-        //After all players are given their points the winner is calculated.
-        gameOver = true;
+        List<PlayerRecord> winners = new ArrayList<>();
+        for(Player player : players){
+            winners.add(player.toTransferableDataObject());
+        }
+
+        gameObserverRelay.update(new SCPGameOver(winners));
+        lobby.gameOver();
     }
 
 
@@ -235,5 +236,5 @@ public class Game implements ServerModelLayer {
         return playerViewList;
     }
 
-    public GameRecord toRecord() {return new GameRecord(roundsCompleted, lastRoundFlag, gameOver, state);}
+    public GameRecord toRecord() {return new GameRecord(roundsCompleted, lastRoundFlag, state);}
 }

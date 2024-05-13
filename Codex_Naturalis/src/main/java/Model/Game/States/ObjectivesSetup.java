@@ -6,8 +6,11 @@ import Exceptions.Game.InvalidActionForPlayerStateException;
 import Exceptions.Game.MoveAttemptOnWaitStateException;
 import Model.Game.Game;
 import Model.Game.Table;
+import Model.Objectives.Objective;
 import Model.Player.Player;
 import Model.Player.PlayerStates;
+import Network.ServerClient.Packets.SCPUpdateClientGameState;
+import Server.Model.Lobby.ObserverRelay;
 
 import java.util.*;
 
@@ -21,6 +24,7 @@ public class ObjectivesSetup implements GameState{
     private final Game game;
     private final List<Player> players;
     private final Table table;
+    private final ObserverRelay gameObserverRelay;
 
     /**
      * Map that keeps track of which players have completed the setups of this game phase and which haven't.<br>
@@ -42,6 +46,7 @@ public class ObjectivesSetup implements GameState{
         this.game = game;
         players = game.getPlayers();
         table = game.getTable();
+        gameObserverRelay = game.getGameObserverRelay();
 
         playerReadiness = new HashMap<>();
 
@@ -49,8 +54,11 @@ public class ObjectivesSetup implements GameState{
 
         for(Player player : players){
             //Distribute objectives to players
-            player.addSecretObjectiveCandidate(table.drawObjective());
-            player.addSecretObjectiveCandidate(table.drawObjective());
+            List<Objective> candidates = new ArrayList<>(){{
+                add(table.drawObjective());
+                add(table.drawObjective());
+            }};
+            player.setSecretObjectiveCandidate(candidates);
 
             //Add players to readiness map.
             playerReadiness.put(player, false);
@@ -60,6 +68,7 @@ public class ObjectivesSetup implements GameState{
         //Setting it before this point can cause problems as players could try to access un-initialized variables.
         for(Player player : players)
             player.setPlayerState(PlayerStates.PICK_OBJECTIVE);
+        gameObserverRelay.update(new SCPUpdateClientGameState(PlayerStates.PICK_OBJECTIVE));
     }
 
 
@@ -116,6 +125,7 @@ public class ObjectivesSetup implements GameState{
         //The rest of the method is executed if the player is actually allowed to perform the move.
         player.selectSecretObjective(objectiveIndex);
         player.setPlayerState(PlayerStates.WAIT);
+        gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.WAIT));
         playerReadiness.put(player, true);
 
         nextState();

@@ -6,6 +6,8 @@ import Model.Game.Game;
 import Model.Player.Player;
 import Model.Game.Table;
 import Model.Player.PlayerStates;
+import Network.ServerClient.Packets.SCPUpdateClientGameState;
+import Server.Model.Lobby.ObserverRelay;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +22,7 @@ public class CardsSetup implements GameState{
     private final Game game;
     private final List<Player> players;
     private final Table table;
+    private final ObserverRelay gameObserverRelay;
 
     private final Map<Player, Integer> goldenCardsDrawn;
     private final Map<Player, Integer> resourceCardsDrawn;
@@ -47,6 +50,7 @@ public class CardsSetup implements GameState{
         this.game = game;
         players = game.getPlayers();
         table = game.getTable();
+        gameObserverRelay = game.getGameObserverRelay();
 
         //Maps to keep track of how many cards of a given type each player has drawn.
         goldenCardsDrawn = new HashMap<>();
@@ -78,6 +82,7 @@ public class CardsSetup implements GameState{
         for(Player player : players){
             player.setPlayerState(PlayerStates.PLACE);
         }
+        gameObserverRelay.update(new SCPUpdateClientGameState(PlayerStates.PLACE));
     }
 
 
@@ -109,6 +114,7 @@ public class CardsSetup implements GameState{
         //The rest of the method is executed if the player is actually allowed to perform the move.
         player.playCard(cardIndex, coordinateIndex, faceUp);
         player.setPlayerState(PlayerStates.DRAW);
+        gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.DRAW));
     }
 
     /**
@@ -166,8 +172,11 @@ public class CardsSetup implements GameState{
         //and he is set to ready in the readiness map.
         if (resourceCardsDrawn.get(player) == resourceCardsToDraw && goldenCardsDrawn.get(player) == goldenCardsToDraw) {
             player.setPlayerState(PlayerStates.WAIT);
+            gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.WAIT));
             playerReadiness.put(player, true);
         }
+        else
+            gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.DRAW));
 
         nextState();
     }
