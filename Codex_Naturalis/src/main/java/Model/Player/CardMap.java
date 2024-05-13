@@ -6,7 +6,7 @@ import Model.Cards.CornerDirection;
 import Model.Cards.CornerType;
 import Model.Utility.Coordinates;
 import Model.Utility.Artifacts;
-import Network.ServerClientPacket.SCPUpdateCardMap;
+import Network.ServerClient.Packets.SCPUpdateCardMap;
 import Server.Model.Lobby.ObserverRelay;
 
 import java.util.*;

@@ -1,6 +1,6 @@
 package Network.RMI.ClientRemoteInterfaces;
 
-import Network.ServerClientPacket.ServerClientPacket;
+import Network.ServerClient.Packets.ServerClientPacket;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

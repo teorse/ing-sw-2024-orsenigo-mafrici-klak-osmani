@@ -6,7 +6,7 @@ import Client.Model.Records.TableRecord;
 import Model.Cards.Card;
 import Model.Objectives.Objective;
 import Model.Utility.Artifacts;
-import Network.ServerClientPacket.SCPUpdateTable;
+import Network.ServerClient.Packets.SCPUpdateTable;
 import Server.Model.Lobby.ObserverRelay;
 
 import java.util.*;

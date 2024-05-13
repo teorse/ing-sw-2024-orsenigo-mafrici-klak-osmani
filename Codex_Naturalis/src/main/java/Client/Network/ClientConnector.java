@@ -1,6 +1,6 @@
 package Client.Network;
 
-import Network.ClientServerPacket.ClientServerPacket;
+import Network.ClientServer.Packets.ClientServerPacket;
 
 /**
  * The ClientConnector interface represents the client-side component responsible for establishing a connection with the server,

@@ -111,7 +111,7 @@ public class ListenerRMI implements Runnable, RMIServerListenerConnection{
         //Initialize and start the new client handler
         try {
             ClientHandlerRMI clientHandler = new ClientHandlerRMI(id, clientIpAddress, clientID);
-            clientHandler.setInputHandler(new ServerInputHandler(serverController, clientHandler));
+            clientHandler.setInputHandler(new ServerInputHandler(clientHandler, serverController));
             Thread thread = new Thread(clientHandler);
             thread.start();
             System.out.println("New client handler started with id: "+id);

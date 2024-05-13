@@ -1,7 +1,7 @@
 package Server.Model;
 
-import Network.ServerClientPacket.Demo.SCPUpdateLobbyPreviewsDemo;
-import Network.ServerClientPacket.ServerClientPacket;
+import Network.ServerClient.Demo.SCPUpdateLobbyPreviewsDemo;
+import Network.ServerClient.Packets.ServerClientPacket;
 import Client.Model.Records.LobbyPreviewRecord;
 import Server.Network.ClientHandler.ClientHandler;
 

@@ -1,224 +1,156 @@
 package Server.Controller.InputHandler;
 
+import Exceptions.Game.*;
+import Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.GameRequiredException;
+import Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.LobbyRequiredException;
+import Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.LogInRequiredException;
+import Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.MissingRequirementException;
+import Exceptions.Server.InputHandlerExceptions.MultipleAccessExceptions.MultipleLobbiesException;
+import Exceptions.Server.InputHandlerExceptions.MultipleAccessExceptions.MultipleLoginViolationException;
+import Exceptions.Server.LobbyExceptions.InvalidLobbySettingsException;
+import Exceptions.Server.LobbyExceptions.LobbyClosedException;
+import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
+import Exceptions.Server.LobbyExceptions.UnavailableLobbyUserColorException;
 import Exceptions.Server.LobbyNameAlreadyTakenException;
 import Exceptions.Server.LobbyNotFoundException;
-import Network.ClientServerPacket.ClientServerPacket;
-import Network.ClientServerPacket.CommandTypes;
-import Network.ClientServerPacket.ServerCommands;
-import Network.ServerClientPacket.Demo.SCPPrintPlaceholder;
-import Exceptions.Server.InputHandlerExceptions.MultipleAccessExceptions.MultipleLobbiesException;
-import Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.LogInRequiredException;
-import Exceptions.Server.InputHandlerExceptions.MultipleAccessExceptions.MultipleLoginViolationException;
-import Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.LobbyRequiredException;
-import Server.Controller.LobbyController;
-import Server.Controller.ServerController;
 import Exceptions.Server.LogInExceptions.AccountAlreadyExistsException;
 import Exceptions.Server.LogInExceptions.AccountAlreadyLoggedInException;
 import Exceptions.Server.LogInExceptions.AccountNotFoundException;
 import Exceptions.Server.LogInExceptions.IncorrectPasswordException;
-import Exceptions.Server.LobbyExceptions.InvalidLobbySettingsException;
-import Exceptions.Server.LobbyExceptions.LobbyClosedException;
-import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
+import Model.Game.CardPoolTypes;
+import Network.ClientServer.Packets.ClientServerPacket;
+import Network.ServerClient.Demo.SCPPrintPlaceholder;
+import Server.Controller.GameController;
+import Server.Controller.LobbyController;
+import Server.Controller.ServerController;
+import Server.Model.Lobby.LobbyUserColors;
 import Server.Network.ClientHandler.ClientHandler;
 
-import java.util.List;
-
-/**
- * The ServerInputHandler class implements the InputHandler interface for handling input messages at the server layer.
- * It interprets the messages received from the client and executes appropriate actions at the server level.
- */
-public class ServerInputHandler implements InputHandler{
+public class ServerInputHandler implements ServerInputExecutor, InputHandler, GameControllerObserver{
     //ATTRIBUTES
     private final ClientHandler connection;
-    private String username;
     private final ServerController serverController;
-    private InputHandler lobbyInputHandler;
-    private boolean loggedIn;
+    private LobbyController lobbyController;
+    private GameController gameController;
+    private String username;
 
-
-
-
-
-    //CONSTRUCTOR
-    /**
-     * Constructs a ServerInputHandler object.
-     *
-     * @param serverController The ServerController managing the server.
-     * @param connection       The ClientHandler associated with the client.
-     */
-    public ServerInputHandler(ServerController serverController, ClientHandler connection){
-        this.serverController = serverController;
+    public ServerInputHandler(ClientHandler connection, ServerController serverController){
         this.connection = connection;
-        lobbyInputHandler = null;
-        loggedIn = false;
-    }
-
-
-
-
-
-    //INTERFACE METHODS
-
-    /**
-     * {@inheritDoc}
-     * @param message The ClientServerPacket representing the input from the client.
-     */
-    @Override
-    public void handleInput(ClientServerPacket message) {
-        List<String> header = message.header();
-        String commandType = header.getFirst();
-
-        switch (CommandTypes.valueOf(commandType)){
-            case LOBBY, GAME -> {
-                try {
-                    if (!loggedIn) {
-                        throw new LogInRequiredException("You need to be logged in to perform this action");
-                    }
-                    else if (lobbyInputHandler == null || !lobbyInputHandler.isBound()) {
-                        throw new LobbyRequiredException("You need to be in a Lobby to perform this action");
-                    }
-                    else
-                        lobbyInputHandler.handleInput(message);
-                }
-                catch (LogInRequiredException | LobbyRequiredException e){
-                    connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
-                }
-            }
-
-            case SERVER -> {
-                String command = header.get(1);
-                List<String> payload = message.payload();
-
-                switch (ServerCommands.valueOf(command)){
-                    case START_LOBBY -> {
-                        String lobbyName = payload.getFirst();
-                        int targetNumberUsers = Integer.parseInt(payload.get(1));
-                        createNewLobby(lobbyName, targetNumberUsers);
-                    }
-
-                    case JOIN_LOBBY -> {
-                        String lobbyName = payload.getFirst();
-                        joinLobby(lobbyName);
-                    }
-
-                    case SIGN_UP -> {
-                        String username = payload.getFirst();
-                        String password = payload.get(1);
-                        signUp(username, password);
-                    }
-
-                    case LOG_IN -> {
-                        String username = payload.getFirst();
-                        String password = payload.get(1);
-                        login(username, password);
-                    }
-
-                    case LOG_OUT -> logOut();
-
-                    case VIEW_LOBBY_PREVIEWS -> viewLobbyPreviews();
-
-                    case STOP_VIEWING_LOBBY_PREVIEWS -> stopViewingLobbyPreviews();
-                }
-            }
-
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void clientDisconnectionProcedure() {
-        if(!loggedIn)
-            return;
-
-        if(lobbyInputHandler != null){
-            lobbyInputHandler.clientDisconnectionProcedure();
-        }
-        serverController.userDisconnectionProcedure(username);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void logOut(){
-        if(!loggedIn)
-            return;
-        if(lobbyInputHandler != null){
-            lobbyInputHandler.logOut();
-        }
-        serverController.quitLayer(username);
-        lobbyInputHandler = null;
-        loggedIn = false;
+        this.serverController = serverController;
         username = null;
     }
 
-    /**
-     * {@inheritDoc}
-     * @return true if the input handler is bound to the controller, false if the handler is not bound to anything.
-     */
+
+
+
+
+    //INPUT HANDLER METHODS
     @Override
-    public boolean isBound() {
-        return false;
+    public void handleInput(ClientServerPacket packet) {
+        packet.execute(this);
+    }
+
+    @Override
+    public void clientDisconnectionProcedure() {
+        if(username != null)
+            serverController.userDisconnectionProcedure(username);
+        if(lobbyController != null)
+            lobbyController.userDisconnectionProcedure(username);
+        if(gameController != null)
+            gameController = null;
     }
 
 
 
 
 
-    //PACKET HANDLING METHODS
-    public void signUp(String username, String password){
-        if(loggedIn){
-            connection.sendPacket(new SCPPrintPlaceholder("You are already logged in"));
-            return;
-        }
-        try {
-             this.username = serverController.signUp(connection, username, password);
-             loggedIn = true;
-        }
-        catch (AccountAlreadyExistsException e){
-            connection.sendPacket(new SCPPrintPlaceholder("The username you provided is already taken"));
-            loggedIn = false;
-        }
-    }
-
-    public void login(String username, String password){
+    //EXECUTOR METHODS
+    //SERVER LAYER
+    @Override
+    public void logIn(String username, String password) {
         try{
-            if(loggedIn){
+            if(this.username != null){
                 //todo
                 throw new MultipleLoginViolationException(connection, "placeholder", username, "");
             }
             this.username = serverController.login(connection, username, password);
-            loggedIn = true;
         }
         catch(MultipleLoginViolationException e){
             connection.sendPacket(new SCPPrintPlaceholder("You are already logged in"));
-            loggedIn = false;
         }
         catch (IncorrectPasswordException e){
             connection.sendPacket(new SCPPrintPlaceholder("Wrong password"));
-            loggedIn = false;
         }
         catch (AccountNotFoundException e){
             connection.sendPacket(new SCPPrintPlaceholder("Username not found"));
-            loggedIn = false;
         }
         catch (AccountAlreadyLoggedInException e){
             connection.sendPacket(new SCPPrintPlaceholder("Someone has already logged into this account"));
-            loggedIn = false;
         }
     }
 
-    private void createNewLobby(String lobbyName, int targetNumberUsers){
+    @Override
+    public void signUp(String username, String password) {
+        if(this.username != null){
+            connection.sendPacket(new SCPPrintPlaceholder("You are already logged in"));
+            return;
+        }
         try {
-            if (!loggedIn) {
+            this.username = serverController.signUp(connection, username, password);
+        }
+        catch (AccountAlreadyExistsException e){
+            connection.sendPacket(new SCPPrintPlaceholder("The username you provided is already taken"));
+        }
+    }
+
+    @Override
+    public void logOut() {
+        if(username == null)
+            return;
+        if(lobbyController != null){
+            lobbyController.quitLobby(username);
+        }
+        serverController.quitLayer(username);
+        lobbyController = null;
+        gameController = null;
+        username = null;
+    }
+
+    @Override
+    public void viewLobbyPreviews() {
+        try {
+            if (this.username == null) {
+                throw new LogInRequiredException("You need to be logged in to perform this action");
+            }
+            serverController.addLobbyPreviewObserver(username, connection);
+        } catch (LogInRequiredException e) {
+            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+        }
+    }
+
+    @Override
+    public void stopViewingLobbyPreviews() {
+        try {
+            if (username == null) {
+                throw new LogInRequiredException("You need to be logged in to perform this action");
+            }
+            serverController.removeLobbyPreviewObserver(username);
+        }
+        catch (LogInRequiredException e) {
+            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+        }
+    }
+
+    @Override
+    public void startLobby(String lobbyName, int lobbySize) {
+        try {
+            if (username == null) {
                 throw new LogInRequiredException("");
-            } else if (lobbyInputHandler != null && lobbyInputHandler.isBound()) {
+            } else if (lobbyController != null) {
                 throw new MultipleLobbiesException("");
             } else {
-                LobbyController lobbyController = serverController.createNewLobby(lobbyName, username, targetNumberUsers, connection);
-                lobbyInputHandler = new LobbyInputHandler(connection, username, lobbyController);
+                lobbyController = serverController.createNewLobby(lobbyName, username, lobbySize, connection);
+                lobbyController.addGameControllerObserver(username, this);
             }
         }
         catch (LogInRequiredException e){
@@ -235,15 +167,16 @@ public class ServerInputHandler implements InputHandler{
         }
     }
 
-    private void joinLobby(String lobbyName){
+    @Override
+    public void joinLobby(String lobbyName) {
         try {
-            if (!loggedIn) {
+            if (username == null) {
                 throw new LogInRequiredException("");
-            } else if (lobbyInputHandler != null && lobbyInputHandler.isBound()) {
+            } else if (lobbyController != null) {
                 throw new MultipleLobbiesException("");
             } else {
-                LobbyController lobbyController = serverController.joinLobby(lobbyName, username, connection);
-                lobbyInputHandler = new LobbyInputHandler(connection, username, lobbyController);
+                lobbyController = serverController.joinLobby(lobbyName, username, connection);
+                lobbyController.addGameControllerObserver(username, this);
             }
         }
         catch (LogInRequiredException e){
@@ -263,26 +196,117 @@ public class ServerInputHandler implements InputHandler{
         }
     }
 
-    private void viewLobbyPreviews() {
+
+
+    //LOBBY LAYER
+    @Override
+    public void startGame() {
         try {
-            if (!loggedIn) {
-                throw new LogInRequiredException("You need to be logged in to perform this action");
-            }
-            serverController.addLobbyPreviewObserver(username, connection);
-        } catch (LogInRequiredException e) {
+            if (lobbyController != null) {
+                lobbyController.startGame();
+            } else
+                throw new LobbyRequiredException("You need to be in a Lobby to start a game");
+        }
+        catch (LobbyRequiredException e){
             connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
         }
     }
 
-    private void stopViewingLobbyPreviews() {
+    @Override
+    public void quitLobby() {
+        if(gameController != null)
+            gameController = null;
+
         try {
-            if (!loggedIn) {
-                throw new LogInRequiredException("You need to be logged in to perform this action");
-            }
-            serverController.removeLobbyPreviewObserver(username);
+            if (lobbyController != null) {
+                //todo
+                //lobbyController.removeGameControllerObserver(this);
+                lobbyController.quitLobby(username);
+                lobbyController = null;
+            } else
+                throw new LobbyRequiredException("You need to be in a Lobby to quit the Lobby");
         }
-        catch (LogInRequiredException e) {
+        catch (LobbyRequiredException e){
             connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
         }
     }
+
+    @Override
+    public void changeColor(LobbyUserColors newColor) {
+        try{
+            if(lobbyController == null)
+                throw new LobbyRequiredException("You need to be in a Lobby to change your color");
+
+            lobbyController.changeColor(username, newColor);
+        }
+        catch (LobbyRequiredException | UnavailableLobbyUserColorException e){
+            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+        }
+    }
+
+
+
+    //GAME LAYER
+    @Override
+    public void playCard(int cardIndex, int coordinateIndex, boolean faceUp) {
+        try{
+            if(username == null)
+                throw new LogInRequiredException("You need to be logged in to perform this action");
+            if(lobbyController == null)
+                throw new LobbyRequiredException("You need to be in a lobby to perform this action");
+            if(gameController == null)
+                throw new GameRequiredException("The game has to already have started to perform this action");
+
+
+            gameController.playCard(username, cardIndex, coordinateIndex, faceUp);
+        }
+        catch (MissingRequirementException | GameException e){
+            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+        }
+    }
+
+    @Override
+    public void drawCard(CardPoolTypes cardPoolType, int cardIndex) {
+        try{
+            if(username == null)
+                throw new LogInRequiredException("You need to be logged in to perform this action");
+            if(lobbyController == null)
+                throw new LobbyRequiredException("You need to be in a lobby to perform this action");
+            if(gameController == null)
+                throw new GameRequiredException("The game has to already have started to perform this action");
+
+            gameController.drawCard(username, cardPoolType, cardIndex);
+        }
+        catch (MissingRequirementException | GameException e){
+            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+        }
+    }
+
+    @Override
+    public void pickObjective(int objectiveIndex) {
+        try{
+            if(username == null)
+                throw new LogInRequiredException("You need to be logged in to perform this action");
+            if(lobbyController == null)
+                throw new LobbyRequiredException("You need to be in a lobby to perform this action");
+            if(gameController == null)
+                throw new GameRequiredException("The game has to already have started to perform this action");
+
+            gameController.pickPlayerObjective(username, objectiveIndex);
+        }
+        catch (MissingRequirementException | GameException e){
+            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+        }
+    }
+
+
+
+
+
+    //OBSERVER
+    @Override
+    public void updateGameController(GameController gameController) {
+        this.gameController = gameController;
+    }
+
 }

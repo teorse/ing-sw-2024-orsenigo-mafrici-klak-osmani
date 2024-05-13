@@ -1,12 +1,12 @@
 package Server.Network.ClientHandler;
 
 import Exceptions.Network.RMI.ClientDisconnectedException;
-import Network.ClientServerPacket.ClientServerPacket;
+import Network.ClientServer.Packets.ClientServerPacket;
 import Network.NetworkConstants;
 import Network.RMI.ClientRemoteInterfaces.RMIClientConnector;
 import Network.RMI.ServerRemoteInterfaces.RMIClientHandlerConnection;
-import Network.ServerClientPacket.Demo.SCPPrintPlaceholder;
-import Network.ServerClientPacket.ServerClientPacket;
+import Network.ServerClient.Demo.SCPPrintPlaceholder;
+import Network.ServerClient.Packets.ServerClientPacket;
 import Server.Controller.InputHandler.InputHandler;
 
 import java.rmi.AlreadyBoundException;

@@ -1,7 +1,7 @@
 package Server.Controller;
 
 import Exceptions.Server.LobbyExceptions.UnavailableLobbyUserColorException;
-import Server.Controller.InputHandler.LobbyInputHandler;
+import Server.Controller.InputHandler.GameControllerObserver;
 import Exceptions.Server.LobbyExceptions.LobbyClosedException;
 import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
 import Server.Model.Lobby.Lobby;
@@ -82,11 +82,7 @@ public class LobbyController {
 
 
     //OBSERVER METHODS
-    public void addGameControllerObserver(LobbyInputHandler observer){
-        model.addGameControllerObserver(observer);
-    }
-
-    public void removeGameControllerObserver(LobbyInputHandler observer){
-        model.removeGameControllerObserver(observer);
+    public void addGameControllerObserver(String username, GameControllerObserver observer){
+        model.addGameControllerObserver(username, observer);
     }
 }

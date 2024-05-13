@@ -67,7 +67,7 @@ public class ListenerSocket implements Runnable{
                 ClientHandler handler = new ClientHandlerSocket(socket);
 
                 //Giving the ClientHandler an Input interpreter to interact with the server
-                handler.setInputHandler(new ServerInputHandler(serverController, handler));
+                handler.setInputHandler(new ServerInputHandler(handler, serverController));
                 System.out.println("Socket Handler Created");
 
                 // Start the thread for the new clientHandler.

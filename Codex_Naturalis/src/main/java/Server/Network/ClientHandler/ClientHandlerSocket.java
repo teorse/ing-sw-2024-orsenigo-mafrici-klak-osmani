@@ -1,8 +1,8 @@
 package Server.Network.ClientHandler;
 
-import Network.ClientServerPacket.ClientServerPacket;
-import Network.ServerClientPacket.Demo.SCPPrintPlaceholder;
-import Network.ServerClientPacket.ServerClientPacket;
+import Network.ClientServer.Packets.ClientServerPacket;
+import Network.ServerClient.Demo.SCPPrintPlaceholder;
+import Network.ServerClient.Packets.ServerClientPacket;
 import Server.Controller.InputHandler.InputHandler;
 
 import java.io.IOException;
@@ -82,7 +82,6 @@ public class ClientHandlerSocket implements ClientHandler, Runnable{
         }
         catch(IOException e){
             System.out.println("Lost connection to client: "+socket);
-            e.printStackTrace();
         }
         finally {
             serverInputHandler.clientDisconnectionProcedure();

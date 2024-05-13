@@ -2,7 +2,7 @@ package Server.Model;
 
 import Exceptions.Server.LobbyNameAlreadyTakenException;
 import Exceptions.Server.LobbyNotFoundException;
-import Network.ServerClientPacket.Demo.SCPPrintPlaceholder;
+import Network.ServerClient.Demo.SCPPrintPlaceholder;
 import Server.Controller.LobbyController;
 import Exceptions.Server.LogInExceptions.AccountAlreadyExistsException;
 import Exceptions.Server.LogInExceptions.AccountAlreadyLoggedInException;
@@ -16,7 +16,6 @@ import Server.Model.Lobby.Lobby;
 import Server.Network.ClientHandler.ClientHandler;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 /**

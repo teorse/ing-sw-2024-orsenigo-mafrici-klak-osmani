@@ -3,11 +3,11 @@ package Server.Model.Lobby;
 import Client.Model.Records.LobbyPreviewRecord;
 import Exceptions.Server.LobbyExceptions.UnavailableLobbyUserColorException;
 import Model.Game.Game;
-import Network.ServerClientPacket.Demo.SCPUpdateLobbyUsers;
+import Network.ServerClient.Demo.SCPUpdateLobbyUsers;
+import Server.Controller.InputHandler.GameControllerObserver;
 import Server.Model.Lobby.Game.GameLoader;
-import Network.ServerClientPacket.Demo.SCPPrintPlaceholder;
+import Network.ServerClient.Demo.SCPPrintPlaceholder;
 import Server.Controller.GameController;
-import Server.Controller.InputHandler.LobbyInputHandler;
 import Server.Interfaces.ServerModelLayer;
 import Exceptions.Server.LobbyExceptions.LobbyClosedException;
 import Exceptions.Server.LobbyExceptions.InvalidLobbySettingsException;
@@ -45,7 +45,7 @@ public class Lobby implements ServerModelLayer {
 
 
     //LISTENERS
-    private final List<LobbyInputHandler> gameControllerObservers;
+    private final Map<String, GameControllerObserver> gameControllerObservers;
     private final LobbyPreviewObserverRelay lobbyPreviewObserverRelay;
     private final ObserverRelay lobbyObserver;
 
@@ -87,7 +87,7 @@ public class Lobby implements ServerModelLayer {
            add(LobbyUserColors.YELLOW);
         }};
 
-        gameControllerObservers = new ArrayList<>();
+        gameControllerObservers = new HashMap<>();
         gameStarted = false;
         lobbyClosed = false;
 
@@ -360,7 +360,7 @@ public class Lobby implements ServerModelLayer {
      */
     private void updateGameController(GameController newGameController){
         this.gameController = newGameController;
-        for(LobbyInputHandler observer : gameControllerObservers){
+        for(GameControllerObserver observer : gameControllerObservers.values()){
             observer.updateGameController(newGameController);
         }
     }
@@ -370,11 +370,12 @@ public class Lobby implements ServerModelLayer {
         lobbyPreviewObserverRelay.updateLobbyPreview(preview);
     }
 
-    public void addGameControllerObserver(LobbyInputHandler observer){
-        gameControllerObservers.add(observer);
+    public void addGameControllerObserver(String username, GameControllerObserver observer){
+        gameControllerObservers.put(username, observer);
     }
 
-    public void removeGameControllerObserver(LobbyInputHandler observer){
-        gameControllerObservers.remove(observer);
+    //todo
+    private void removeGameControllerObserver(String username){
+        gameControllerObservers.remove(username);
     }
 }

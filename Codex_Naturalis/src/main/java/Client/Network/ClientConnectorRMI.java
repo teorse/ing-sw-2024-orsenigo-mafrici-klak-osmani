@@ -1,13 +1,13 @@
 package Client.Network;
 
 import Client.Controller.ClientController;
-import Network.ClientServerPacket.ClientServerPacket;
+import Network.ClientServer.Packets.ClientServerPacket;
 import Network.LanIpFinder;
 import Network.NetworkConstants;
 import Network.RMI.ClientRemoteInterfaces.RMIClientConnector;
 import Network.RMI.ServerRemoteInterfaces.RMIClientHandlerConnection;
 import Network.RMI.ServerRemoteInterfaces.RMIServerListenerConnection;
-import Network.ServerClientPacket.ServerClientPacket;
+import Network.ServerClient.Packets.ServerClientPacket;
 import Utils.Utilities;
 
 import java.rmi.AlreadyBoundException;

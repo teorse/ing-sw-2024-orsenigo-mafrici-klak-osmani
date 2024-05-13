@@ -1,6 +1,6 @@
 package Server.Controller.InputHandler;
 
-import Network.ClientServerPacket.ClientServerPacket;
+import Network.ClientServer.Packets.ClientServerPacket;
 
 /**
  * The InputHandler interface defines the contract for classes that handle input messages.<br>
@@ -13,24 +13,12 @@ public interface InputHandler{
     /**
      * Handles the input message received from the client.
      *
-     * @param message The ClientServerPacket representing the input from the client.
+     * @param packet The ClientServerPacket representing the input from the client.
      */
-    void handleInput(ClientServerPacket message);
+    void handleInput(ClientServerPacket packet);
 
     /**
      * Handles the accidental disconnection of the client.
      */
     void clientDisconnectionProcedure();
-
-    /**
-     * Handles the voluntary disconnection of the client through a log-out request from the given layer of the server.
-     */
-    void logOut();
-
-    /**
-     * Checks if the input handler is currently bound to the controller of the given layer.
-     *
-     * @return true if the input handler is bound to the controller, false if the handler is not bound to anything.
-     */
-    boolean isBound();
 }

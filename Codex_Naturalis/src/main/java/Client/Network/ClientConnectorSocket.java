@@ -1,9 +1,9 @@
 package Client.Network;
 
 import Client.Controller.ClientController;
-import Network.ClientServerPacket.ClientServerPacket;
+import Network.ClientServer.Packets.ClientServerPacket;
 import Network.NetworkConstants;
-import Network.ServerClientPacket.ServerClientPacket;
+import Network.ServerClient.Packets.ServerClientPacket;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -61,6 +61,8 @@ public class ClientConnectorSocket implements ClientConnector {
     public void sendPacket(ClientServerPacket packet) {
         try{
             oos.writeObject(packet);
+            oos.flush();
+            oos.reset();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
