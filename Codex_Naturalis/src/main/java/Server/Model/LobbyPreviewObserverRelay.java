@@ -35,6 +35,7 @@ public class LobbyPreviewObserverRelay {
 
     //OBSERVER METHODS
     public void updateLobbyPreview(LobbyPreviewRecord preview){
+        lobbyPreviewSet.remove(preview);
         lobbyPreviewSet.add(preview);
 
         ServerClientPacket packet = new SCPUpdateLobbyPreviewsDemo(lobbyPreviewSet);

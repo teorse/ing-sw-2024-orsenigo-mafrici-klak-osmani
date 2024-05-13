@@ -104,6 +104,8 @@ public class ClientHandlerSocket implements ClientHandler, Runnable{
     public void sendPacket(ServerClientPacket packet) {
         try {
             oos.writeObject(packet);
+            oos.flush();
+            oos.reset();
         }
         catch (IOException e){
             e.printStackTrace();
