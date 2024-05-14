@@ -1,7 +1,7 @@
 package Network.ServerClient.Packets;
 
 import Client.Model.Records.GameRecord;
-import Network.ServerMessageExecutor;
+import Network.ServerClient.ServerMessageExecutor;
 
 public class SCPUpdateGame implements ServerClientPacket {
     private final GameRecord game;

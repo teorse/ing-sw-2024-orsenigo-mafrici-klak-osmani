@@ -6,15 +6,15 @@ import Model.Cards.Card;
 import Model.Objectives.Objective;
 import Model.Player.Player;
 import Model.Game.States.*;
-import Network.ServerClient.Packets.SCPGameOver;
-import Network.ServerClient.Packets.SCPGameStarted;
-import Network.ServerClient.Packets.SCPUpdateGame;
-import Network.ServerClient.Packets.SCPUpdatePlayers;
+import Network.ServerClient.Packets.*;
 import Server.Interfaces.ServerModelLayer;
 import Server.Model.Lobby.Lobby;
 import Server.Model.Lobby.LobbyUser;
 import Server.Model.Lobby.ObserverRelay;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -81,8 +81,78 @@ public class Game implements ServerModelLayer {
         for(Player player : players) {
             secretInfoRecord = player.toSecretPlayer();
 
+
+
+            Object objectToSerialize = tableRecord; // Replace YourObjectHere with the object you want to serialize
+
+            // Try to serialize the object
+            try {
+                FileOutputStream fileOut = new FileOutputStream("serialized_object.ser");
+                ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                out.writeObject(objectToSerialize);
+                out.close();
+                fileOut.close();
+                System.out.println("TableRecord serialization successful.");
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Failed to serialize TableRecord: " + e.getMessage());
+            }
+
+            Object objectToSerialize1 = gameRecord; // Replace YourObjectHere with the object you want to serialize
+
+            // Try to serialize the object
+            try {
+                FileOutputStream fileOut = new FileOutputStream("serialized_object.ser");
+                ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                out.writeObject(objectToSerialize1);
+                out.close();
+                fileOut.close();
+                System.out.println("GameRecord serialization successful.");
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Failed to serialize GameRecord: " + e.getMessage());
+            }
+
+            Object objectToSerialize2 = secretInfoRecord; // Replace YourObjectHere with the object you want to serialize
+
+            // Try to serialize the object
+            try {
+                FileOutputStream fileOut = new FileOutputStream("serialized_object.ser");
+                ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                out.writeObject(objectToSerialize2);
+                out.close();
+                fileOut.close();
+                System.out.println("secretInfoRecord serialization successful.");
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Failed to serialize secretInfoRecord: " + e.getMessage());
+            }
+
+            Object objectToSerialize3 = playerRecordCardMapRecordMap; // Replace YourObjectHere with the object you want to serialize
+
+            // Try to serialize the object
+            try {
+                FileOutputStream fileOut = new FileOutputStream("serialized_object.ser");
+                ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                out.writeObject(objectToSerialize3);
+                out.close();
+                fileOut.close();
+                System.out.println("playerRecordCardMapRecordMap serialization successful.");
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Failed to serialize playerRecordCardMapRecordMap: " + e.getMessage());
+            }
+
+
+
+
+
+
+
+
+
             if(gameObserverRelay != null)
-                gameObserverRelay.update(player.getUsername(), new SCPGameStarted(playerRecordCardMapRecordMap, secretInfoRecord, tableRecord, gameRecord));
+                gameObserverRelay.update(player.getUsername(), new SCPGameStarted(null, null, null, gameRecord));
         }
     }
 
@@ -236,5 +306,5 @@ public class Game implements ServerModelLayer {
         return playerViewList;
     }
 
-    public GameRecord toRecord() {return new GameRecord(roundsCompleted, lastRoundFlag, state);}
+    public GameRecord toRecord() {return new GameRecord(roundsCompleted, lastRoundFlag);}
 }

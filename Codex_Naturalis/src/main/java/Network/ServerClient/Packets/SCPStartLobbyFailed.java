@@ -1,6 +1,6 @@
 package Network.ServerClient.Packets;
 
-import Network.ServerMessageExecutor;
+import Network.ServerClient.ServerMessageExecutor;
 
 public class SCPStartLobbyFailed implements ServerClientPacket{
 

@@ -20,7 +20,6 @@ import Exceptions.Server.LogInExceptions.IncorrectPasswordException;
 import Exceptions.Server.PermissionExceptions.AdminRoleRequiredException;
 import Model.Game.CardPoolTypes;
 import Network.ClientServer.Packets.ClientServerPacket;
-import Network.ServerClient.Demo.SCPPrintPlaceholder;
 import Network.ServerClient.Packets.*;
 import Server.Controller.GameController;
 import Server.Controller.LobbyController;
@@ -143,7 +142,8 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
             serverController.removeLobbyPreviewObserver(username);
         }
         catch (LogInRequiredException e) {
-            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+            //todo
+            //connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
         }
     }
 
@@ -245,7 +245,8 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
                 throw new LobbyRequiredException("You need to be in a Lobby to quit the Lobby");
         }
         catch (LobbyRequiredException e){
-            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+            //todo
+            //connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
         }
     }
 
@@ -258,7 +259,8 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
             lobbyController.changeColor(username, newColor);
         }
         catch (LobbyRequiredException | UnavailableLobbyUserColorException e){
-            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+            //todo
+            //connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
         }
     }
 
@@ -279,7 +281,8 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
             gameController.playCard(username, cardIndex, coordinateIndex, faceUp);
         }
         catch (MissingRequirementException | GameException e){
-            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+            //todo
+            //connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
         }
     }
 
@@ -296,7 +299,8 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
             gameController.drawCard(username, cardPoolType, cardIndex);
         }
         catch (MissingRequirementException | GameException e){
-            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+            //todo
+            //connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
         }
     }
 
@@ -313,7 +317,8 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
             gameController.pickPlayerObjective(username, objectiveIndex);
         }
         catch (MissingRequirementException | GameException e){
-            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+            //todo
+            //connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
         }
     }
 

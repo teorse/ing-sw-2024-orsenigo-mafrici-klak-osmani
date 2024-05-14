@@ -14,7 +14,7 @@ import java.util.List;
  *
  * <p>This record implements the {@code Serializable} interface to support serialization.
  */
-public record GameRecord(int roundsCompleted, boolean lastRoundFlag, GameState currentState)
+public record GameRecord(int roundsCompleted, boolean lastRoundFlag)
         implements Serializable {
 
     /**
@@ -22,7 +22,6 @@ public record GameRecord(int roundsCompleted, boolean lastRoundFlag, GameState c
      *
      * @param roundsCompleted the number of rounds completed in the game
      * @param lastRoundFlag indicates if it's the last round of the game
-     * @param currentState the current state of the game
      */
     public GameRecord {
         // No additional implementation needed as records automatically generate a constructor

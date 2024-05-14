@@ -1,7 +1,7 @@
 package Network.ServerClient.Packets;
 
 import Client.Model.Records.TableRecord;
-import Network.ServerMessageExecutor;
+import Network.ServerClient.ServerMessageExecutor;
 
 public class SCPUpdateTable implements ServerClientPacket {
     private final TableRecord table;

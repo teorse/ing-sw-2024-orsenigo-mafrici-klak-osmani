@@ -1,6 +1,6 @@
 package Server.Model;
 
-import Network.ServerClient.Demo.SCPUpdateLobbyPreviewsDemo;
+import Network.ServerClient.Packets.SCPUpdateLobbyPreviews;
 import Network.ServerClient.Packets.ServerClientPacket;
 import Client.Model.Records.LobbyPreviewRecord;
 import Server.Network.ClientHandler.ClientHandler;
@@ -38,7 +38,7 @@ public class LobbyPreviewObserverRelay {
         lobbyPreviewSet.remove(preview);
         lobbyPreviewSet.add(preview);
 
-        ServerClientPacket packet = new SCPUpdateLobbyPreviewsDemo(lobbyPreviewSet);
+        ServerClientPacket packet = new SCPUpdateLobbyPreviews(lobbyPreviewSet.stream().toList());
 
         for(ClientHandler observer : observers.values())
             observer.sendPacket(packet);
@@ -51,7 +51,7 @@ public class LobbyPreviewObserverRelay {
      */
     public void addObserver(String username, ClientHandler observer){
         observers.put(username, observer);
-        ServerClientPacket packet = new SCPUpdateLobbyPreviewsDemo(lobbyPreviewSet);
+        ServerClientPacket packet = new SCPUpdateLobbyPreviews(lobbyPreviewSet.stream().toList());
         observer.sendPacket(packet);
     }
 

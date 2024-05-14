@@ -1,13 +1,14 @@
-package Network;
+package Network.ServerClient;
 
 import Client.Model.Records.*;
 import Model.Player.PlayerStates;
 import Network.ServerClient.Packets.ErrorsDictionary;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public interface ServerMessageExecutor {
+public interface ServerMessageExecutor extends Serializable {
     void connectionAck(String serverNotification);
 
     void loginFailed(ErrorsDictionary errorCause);

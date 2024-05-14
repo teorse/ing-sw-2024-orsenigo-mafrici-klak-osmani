@@ -1,7 +1,7 @@
 package Server.Network.ClientHandler;
 
 import Network.ClientServer.Packets.ClientServerPacket;
-import Network.ServerClient.Demo.SCPPrintPlaceholder;
+import Network.ServerClient.Packets.SCPConnectionAck;
 import Network.ServerClient.Packets.ServerClientPacket;
 import Server.Controller.InputHandler.InputHandler;
 
@@ -58,7 +58,7 @@ public class ClientHandlerSocket implements ClientHandler, Runnable{
      */
     @Override
     public void run() {
-        sendPacket(new SCPPrintPlaceholder("Welcome to the server, please Log in or Sign up."));
+        sendPacket(new SCPConnectionAck("Welcome to the server, please Log in or Sign up."));
 
         //Listen for messages on the input stream.
         try {

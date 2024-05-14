@@ -2,11 +2,14 @@ package Network.ServerClient.Packets;
 
 import Client.Model.Records.LobbyRecord;
 import Client.Model.Records.LobbyUserRecord;
-import Network.ServerMessageExecutor;
+import Network.ServerClient.ServerMessageExecutor;
 
+import java.io.Serial;
 import java.util.List;
 
 public class SCPStartLobbySuccess implements ServerClientPacket{
+    @Serial
+    private static final long serialVersionUID = -7181004148327909726L;
     private final LobbyRecord lobbyRecord;
     private final List<LobbyUserRecord> lobbyUsers;
 

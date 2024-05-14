@@ -1,6 +1,6 @@
 package Network.ServerClient.Packets;
 
-import Network.ServerMessageExecutor;
+import Network.ServerClient.ServerMessageExecutor;
 
 public class SCPJoinLobbyFailed implements ServerClientPacket{
     private final ErrorsDictionary errorCause;

@@ -1,7 +1,7 @@
 package Network.ServerClient.Packets;
 
 import Model.Player.PlayerStates;
-import Network.ServerMessageExecutor;
+import Network.ServerClient.ServerMessageExecutor;
 
 public class SCPUpdateClientGameState implements ServerClientPacket{
 

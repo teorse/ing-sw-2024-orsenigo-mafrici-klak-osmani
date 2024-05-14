@@ -1,7 +1,7 @@
 package Network.ServerClient.Packets;
 
 import Client.Model.Records.*;
-import Network.ServerMessageExecutor;
+import Network.ServerClient.ServerMessageExecutor;
 
 import java.util.Map;
 

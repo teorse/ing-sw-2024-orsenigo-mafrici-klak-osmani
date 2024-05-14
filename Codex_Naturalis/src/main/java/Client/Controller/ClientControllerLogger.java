@@ -9,7 +9,7 @@ import Network.ServerClient.ServerMessageExecutor;
 import java.util.List;
 import java.util.Map;
 
-public class ClientController implements ServerMessageExecutor {
+public class ClientControllerLogger implements ServerMessageExecutor {
 
     @Override
     public void connectionAck(String serverNotification) {

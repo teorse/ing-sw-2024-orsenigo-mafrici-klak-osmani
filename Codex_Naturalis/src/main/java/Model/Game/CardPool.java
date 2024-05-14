@@ -28,10 +28,9 @@ public class CardPool {
     public CardPool(List<Card> cards){
         deck = new Deck(cards);
         deck.shuffleDeck();
-        visibleCards = new ArrayList<>(){{
-            add(deck.draw());
-            add(deck.draw());
-        }};
+        visibleCards = new ArrayList<>();
+        visibleCards.add(deck.draw());
+        visibleCards.add(deck.draw());
     }
 
 

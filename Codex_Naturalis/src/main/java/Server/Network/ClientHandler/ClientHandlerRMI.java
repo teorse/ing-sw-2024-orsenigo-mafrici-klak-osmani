@@ -5,7 +5,7 @@ import Network.ClientServer.Packets.ClientServerPacket;
 import Network.NetworkConstants;
 import Network.RMI.ClientRemoteInterfaces.RMIClientConnector;
 import Network.RMI.ServerRemoteInterfaces.RMIClientHandlerConnection;
-import Network.ServerClient.Demo.SCPPrintPlaceholder;
+import Network.ServerClient.Packets.SCPConnectionAck;
 import Network.ServerClient.Packets.ServerClientPacket;
 import Server.Controller.InputHandler.InputHandler;
 
@@ -178,7 +178,7 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, RMIClientHandl
         try {
             clientStub = (RMIClientConnector) clientRegistry.lookup(NetworkConstants.RMIClientConnectorDirectory + clientID);
             System.out.println("Client Handler "+id+" confirms connection to client");
-            sendPacket(new SCPPrintPlaceholder("Welcome to the server, please Log in or Sign up."));
+            sendPacket(new SCPConnectionAck("Welcome to the server, please Log in or Sign up."));
         }
         catch (NotBoundException e){
             System.out.println("Client RMI object not found for client handler: "+id);

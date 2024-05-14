@@ -2,7 +2,6 @@ package Server.Model;
 
 import Exceptions.Server.LobbyNameAlreadyTakenException;
 import Exceptions.Server.LobbyNotFoundException;
-import Network.ServerClient.Demo.SCPPrintPlaceholder;
 import Server.Controller.LobbyController;
 import Exceptions.Server.LogInExceptions.AccountAlreadyExistsException;
 import Exceptions.Server.LogInExceptions.AccountAlreadyLoggedInException;
@@ -79,8 +78,6 @@ public class ServerModel implements ServerModelLayer {
 
         System.out.println("Sign up successful for user: "+username);
 
-        ch.sendPacket(new SCPPrintPlaceholder("Sign-up successful"));
-
         return username;
     }
 
@@ -112,8 +109,6 @@ public class ServerModel implements ServerModelLayer {
 
         loggedInUsers.put(serverUser.getUsername(), serverUser);
         System.out.println("serverUser "+username+" logged in.");
-
-        ch.sendPacket(new SCPPrintPlaceholder("Log-in successful"));
 
         return serverUser.getUsername();
     }

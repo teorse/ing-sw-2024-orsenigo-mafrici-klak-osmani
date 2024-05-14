@@ -1,6 +1,6 @@
 package Network.ServerClient.Packets;
 
-import Network.ServerMessageExecutor;
+import Network.ServerClient.ServerMessageExecutor;
 
 import java.io.Serializable;
 

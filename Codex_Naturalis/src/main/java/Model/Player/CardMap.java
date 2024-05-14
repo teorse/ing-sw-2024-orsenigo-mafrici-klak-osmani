@@ -66,7 +66,9 @@ public class CardMap {
      */
     public CardMap(ObserverRelay gameObserverRelay, String username) {
         cardsPlaced = new HashMap<>();
-        availablePlacements = new ArrayList<>(){{add(new Coordinates(0, 0));}};
+        availablePlacements = new ArrayList<>();
+        availablePlacements.add(new Coordinates(0, 0));
+
         coordinatesPlaced = new ArrayList<>();
         artifactsCounter = new HashMap<>();
 
@@ -95,15 +97,6 @@ public class CardMap {
      */
     public List<Coordinates> getAvailablePlacements() {
         return Collections.unmodifiableList(availablePlacements);
-    }
-
-    /**
-     * Method which returns the card color of the card positioned at the specified coordinates.
-     * @param coordinates   coordinates of the card.
-     * @return              Artifact representing the color of the card.
-     */
-    public Artifacts getCardColorByCoordinate(Coordinates coordinates) {
-        return cardsPlaced.get(coordinates).getCardColor();
     }
 
 

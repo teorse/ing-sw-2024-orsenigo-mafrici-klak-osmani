@@ -11,7 +11,6 @@ import Network.ServerClient.Packets.SCPJoinLobbySuccessful;
 import Network.ServerClient.Packets.SCPStartLobbySuccess;
 import Server.Controller.InputHandler.GameControllerObserver;
 import Server.Model.Lobby.Game.GameLoader;
-import Network.ServerClient.Demo.SCPPrintPlaceholder;
 import Server.Controller.GameController;
 import Server.Interfaces.ServerModelLayer;
 import Exceptions.Server.LobbyExceptions.LobbyClosedException;
@@ -85,12 +84,11 @@ public class Lobby implements ServerModelLayer {
         this.lobbyPreviewObserverRelay = lobbyPreviewObserverRelay;
         lobbyObserver = new ObserverRelay();
 
-        availableUserColors = new ArrayList<>(){{
-           add(LobbyUserColors.RED);
-           add(LobbyUserColors.BLUE);
-           add(LobbyUserColors.GREEN);
-           add(LobbyUserColors.YELLOW);
-        }};
+        availableUserColors = new ArrayList<>();
+        availableUserColors.add(LobbyUserColors.RED);
+        availableUserColors.add(LobbyUserColors.BLUE);
+        availableUserColors.add(LobbyUserColors.GREEN);
+        availableUserColors.add(LobbyUserColors.YELLOW);
 
         gameControllerObservers = new HashMap<>();
         gameStarted = false;
@@ -102,6 +100,23 @@ public class Lobby implements ServerModelLayer {
         LobbyUser lobbyUser = new LobbyUser(serverUser, LobbyRoles.ADMIN);
         addLobbyUserToLobby(ch, lobbyUser);
 
+        System.out.println("Sending success lobby created to user");
+
+
+        List<LobbyUserColors> colors = new ArrayList<>();
+        colors.add(LobbyUserColors.RED);
+
+//        LobbyRecord lobbyRecordTest = new LobbyRecord(lobbyName, 2, availableUserColors);
+//        LobbyUserRecord userTest = new LobbyUserRecord("username", LobbyRoles.ADMIN, LobbyUserColors.RED, LobbyUserConnectionStates.ONLINE);
+//
+//        List<LobbyUserRecord> listTest = new ArrayList<>();
+//        listTest.add(userTest);
+//
+//        lobbyObserver.update(lobbyUser.getUsername(), new SCPStartLobbySuccess(lobbyRecordTest, listTest));
+
+//
+//        LobbyRecord lobbyRecord = toLobbyRecord();
+//        List<LobbyUserRecord> lobbyUserRecords = toLobbyUserRecord();
         lobbyObserver.update(lobbyUser.getUsername(), new SCPStartLobbySuccess(toLobbyRecord(), toLobbyUserRecord()));
     }
 

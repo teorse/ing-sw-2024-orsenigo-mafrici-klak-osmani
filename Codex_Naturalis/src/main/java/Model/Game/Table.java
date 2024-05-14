@@ -37,10 +37,10 @@ public class Table {
      * @param objectives    List of Objectives to use during this game.
      */
     public Table(List<Card> goldenCards, List<Card> resourceCards, List<Card> starterCards, List<Objective> objectives, ObserverRelay gameObserverRelay){
-        this.cardPools = new HashMap<>(){{
-            put(CardPoolTypes.RESOURCE, new CardPool(resourceCards));
-            put(CardPoolTypes.GOLDEN, new CardPool(goldenCards));
-        }};
+        this.cardPools = new HashMap<>();
+        this.cardPools.put(CardPoolTypes.RESOURCE, new CardPool(resourceCards));
+        this.cardPools.put(CardPoolTypes.GOLDEN, new CardPool(goldenCards));
+
         this.starterCards = new Deck(starterCards);
         this.starterCards.shuffleDeck();
 
