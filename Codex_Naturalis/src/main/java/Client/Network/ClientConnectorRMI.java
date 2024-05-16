@@ -10,6 +10,10 @@ import Network.RMI.ServerRemoteInterfaces.RMIServerListenerConnection;
 import Network.ServerClient.Packets.ServerClientPacket;
 import Utils.Utilities;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
@@ -148,7 +152,8 @@ public class ClientConnectorRMI implements ClientConnector, RMIClientConnector {
         try {
             //Requesting dedicated connection from the server
             System.out.println("Trying to connect to server");
-            serverRegistry = LocateRegistry.getRegistry(serverIp, NetworkConstants.RMIServerRegistryPort);
+            RMIClientSocketFactory RMIClientSocketFactory = new Client.Network.RMIClientSocketFactory();
+            serverRegistry = LocateRegistry.getRegistry(serverIp, NetworkConstants.RMIServerRegistryPort, RMIClientSocketFactory);
             RMIServerListenerConnection serverListenerStub = (RMIServerListenerConnection) serverRegistry.lookup(NetworkConstants.RMIListenerStubName);
             System.out.println("Connection successful");
 

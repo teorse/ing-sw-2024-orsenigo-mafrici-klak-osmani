@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ConnectException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 /**
@@ -39,7 +40,8 @@ public class ClientConnectorSocket implements ClientConnector {
         this.controller = controller;
         try {
             int serverPort = NetworkConstants.ServerSocketListenerPort;
-            socket = new Socket(serverIp, serverPort);
+            socket = new Socket();
+            socket.connect(new InetSocketAddress(serverIp, serverPort), NetworkConstants.ServerSocketTimeOut);
             oos = new ObjectOutputStream(socket.getOutputStream());
             ois = new ObjectInputStream(socket.getInputStream());
         }

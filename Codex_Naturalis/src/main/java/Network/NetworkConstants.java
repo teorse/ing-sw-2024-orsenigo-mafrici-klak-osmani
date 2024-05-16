@@ -28,4 +28,7 @@ public final class NetworkConstants {
      * The directory name for storing RMI client connector remote objects on the client's registry.
      */
     public static final String RMIClientConnectorDirectory = "RMIClientConnectors/";
+
+
+    public static final int ServerSocketTimeOut = 10000;
 }
