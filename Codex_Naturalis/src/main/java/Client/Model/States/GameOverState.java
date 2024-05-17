@@ -5,8 +5,21 @@ import Client.Model.Records.PlayerRecord;
 import Client.View.TextUI;
 import Client.View.UserInterface;
 
+/**
+ * Represents the state of the client when the game is over.
+ * It provides functionality to handle user input for exiting the current state and moving to the next state.
+ * In this state, the final rankings of players are displayed along with prompts to exit the view.
+ */
 public class GameOverState extends ClientState{
 
+    /**
+     * Constructs a new GameOverState with the specified client model.
+     * <p>
+     * Upon instantiation, this constructor clears the command-line interface, displays the game over message,
+     * and prints the final rankings of the game.
+     *
+     * @param model the client model
+     */
     public GameOverState(ClientModel model) {
         super(model);
         TextUI.clearCMD();
@@ -14,6 +27,13 @@ public class GameOverState extends ClientState{
         print();
     }
 
+    /**
+     * Prints the final rankings of the game.
+     * <p>
+     * This method displays the final rankings of players based on their points, objectives completed,
+     * and rounds completed. Each player's nickname, points, objectives completed, and rounds completed
+     * are shown. Additionally, it prompts the user to exit the final rankings view by entering "EXIT".
+     */
     @Override
     public void print() {
         System.out.println("THE GAME IS OVER. Final Rankings: ");
@@ -29,6 +49,14 @@ public class GameOverState extends ClientState{
         System.out.println("\n" + "To exit the Final Rankings view enter EXIT.");
     }
 
+    /**
+     * Handles the user input for exiting the current state.
+     * <p>
+     * If the input is "EXIT", transitions to the next state.
+     * Otherwise, prints a message prompting the user to enter "EXIT" to exit.
+     *
+     * @param input the user input
+     */
     @Override
     public void handleInput(String input) {
         if(input.equalsIgnoreCase("EXIT"))
@@ -37,6 +65,15 @@ public class GameOverState extends ClientState{
             System.out.println("To exit enter EXIT!");
     }
 
+    /**
+     * Moves the client to the next state based on the current game conditions.
+     * <p>
+     * If the current player is the last online player in the lobby, transitions to the LobbySelectionState,
+     * allowing the player to select options in the lobby.
+     * <p>
+     * If there are still other players online in the lobby, transitions to the LobbyJoined state,
+     * indicating that the player remains in the lobby and waits for further actions.
+     */
     @Override
     public void nextState() {
         if (UserInterface.isLastOnlinePlayer(model)) {
