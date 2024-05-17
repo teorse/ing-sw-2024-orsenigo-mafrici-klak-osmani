@@ -7,16 +7,39 @@ import Model.Game.CardPoolTypes;
 import Model.Player.PlayerStates;
 import Network.ClientServer.Packets.CSPDrawCard;
 
+/**
+ * Represents the state where the player chooses to draw a card from the resource or golden pool during the game.
+ * Upon instantiation, the command-line interface is cleared, and the initial draw state of the game is printed.
+ * Players are prompted to choose from which pool they want to draw a card.
+ * Once the pool selection is made, they are prompted to select a card from the chosen pool.
+ * The chosen card is then drawn from the selected pool.
+ */
 public class GameDrawState extends ClientState{
+
     CardPoolTypes cardPoolTypes;
     int cardChoice;
 
+    /**
+     * Constructs a new GameDrawState with the specified client model.
+     * <p>
+     * Upon instantiation, this constructor clears the command-line interface and prints the draw state of the game.
+     *
+     * @param model the client model
+     */
     public GameDrawState(ClientModel model) {
         super(model);
         TextUI.clearCMD();
         print();
     }
 
+    /**
+     * Prints the options for selecting a card from the resource or golden pool.
+     * <p>
+     * This method displays the available card pools for drawing, including the resource pool and the golden pool.
+     * It prompts the user to enter a number to choose from which pool they want to draw a card.
+     * If the input counter is 0, it prints the options for selecting a pool (Resource or Golden).
+     * If the input counter is 1, it prints nothing, indicating that the user has made their pool selection.
+     */
     @Override
     public void print() {
         //TODO fix null pool cards
@@ -66,6 +89,13 @@ public class GameDrawState extends ClientState{
             model.getClientConnector().sendPacket(new CSPDrawCard(cardPoolTypes,cardChoice));
     }
 
+    /**
+     * Moves the client to the next state based on the success of the previous operation and the player's current state.
+     * If the previous operation was successful and the player is not the last online player in the lobby,
+     * and the player's state is set to "WAIT", transitions to the GameWaitState to indicate waiting for other players' actions.
+     * If the player is the last online player, transitions to the GameOverState to handle the end of the game.
+     * If the operation fails, prints an error message and remains in the current state, prompting the user to try again.
+     */
     @Override
     public void nextState() {
         if (model.isOperationSuccesful()) {
