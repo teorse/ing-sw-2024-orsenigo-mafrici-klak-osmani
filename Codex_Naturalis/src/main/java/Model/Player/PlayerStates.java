@@ -11,9 +11,19 @@ public enum PlayerStates {
     PLACE,
 
     /**
-     * State representing the phase where the player is drawing cards from the deck.
+     * State representing the phase where the player is drawing any cards from the deck.
      */
     DRAW,
+
+    /**
+     * State representing the phase where the player is drawing golden cards from the deck (setup phase only).
+     */
+    DRAW_GOLDEN,
+
+    /**
+     * State representing the phase where the player is drawing resource cards from the deck(setup phase only).
+     */
+    DRAW_RESOURCE,
 
     /**
      * State representing the phase where the player is waiting for a signal from the server.

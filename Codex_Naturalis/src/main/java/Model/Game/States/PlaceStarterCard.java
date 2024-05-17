@@ -17,18 +17,11 @@ import java.util.Map;
  * Represents the initial setup state in the game, where players receive their starting cards and choose their colors.<br>
  * This state implements the GameState interface and handles starter card distribution and placement, initial card draws and player color selection.
  */
-public class CardsSetup implements GameState{
+public class PlaceStarterCard implements GameState{
     //ATTRIBUTES
     private final Game game;
     private final List<Player> players;
-    private final Table table;
     private final ObserverRelay gameObserverRelay;
-
-    private final Map<Player, Integer> goldenCardsDrawn;
-    private final Map<Player, Integer> resourceCardsDrawn;
-
-    private final int goldenCardsToDraw;
-    private final int resourceCardsToDraw;
 
     /**
      * Map that keeps track of which players have completed the setups of this game phase and which haven't.<br>
@@ -46,19 +39,11 @@ public class CardsSetup implements GameState{
      *
      * @param game The game instance to which this MainLoop state belongs.
      */
-    public CardsSetup(Game game){
+    public PlaceStarterCard(Game game){
         this.game = game;
         players = game.getPlayers();
-        table = game.getTable();
+        Table table = game.getTable();
         gameObserverRelay = game.getGameObserverRelay();
-
-        //Maps to keep track of how many cards of a given type each player has drawn.
-        goldenCardsDrawn = new HashMap<>();
-        resourceCardsDrawn = new HashMap<>();
-
-        //Parameters indicating how many cards of each type players have to draw
-        goldenCardsToDraw = 1;
-        resourceCardsToDraw = 2;
 
         //Map containing the readiness status of each player.
         //if true, player has completed all required setups for this game state.
@@ -68,10 +53,6 @@ public class CardsSetup implements GameState{
         for(Player player : players){
             //Give each player a starter card
             player.addCardHeld(table.drawStarterCard());
-
-            //Set up the card-draw counters.
-            resourceCardsDrawn.put(player, 0);
-            goldenCardsDrawn.put(player,0);
 
             //Set each player as unready
             playerReadiness.put(player, false);
@@ -113,8 +94,10 @@ public class CardsSetup implements GameState{
 
         //The rest of the method is executed if the player is actually allowed to perform the move.
         player.playCard(cardIndex, coordinateIndex, faceUp);
-        player.setPlayerState(PlayerStates.DRAW);
-        gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.DRAW));
+        player.setPlayerState(PlayerStates.WAIT);
+        gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.WAIT));
+
+        playerReadiness.put(player, true);
     }
 
     /**
@@ -129,56 +112,8 @@ public class CardsSetup implements GameState{
      * @throws MaxResourceCardsDrawnException       Thrown if the player attempts to draw an extra resource card beyond the maximum allowed during the cards setup state.
      */
     @Override
-    public void drawCard(Player player, CardPoolTypes cardPoolType, int index) throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, MaxGoldenCardsDrawnException, MaxResourceCardsDrawnException {
-        //Throws exception if the player has already performed all his moves for this turn.
-        if (player.getPlayerState().equals(PlayerStates.WAIT))
-            throw new MoveAttemptOnWaitStateException("You have already performed all moves for this turn.");
-
-        //Throws exception if the player can't perform this move.
-        else if (!player.getPlayerState().equals(PlayerStates.DRAW))
-            throw new InvalidActionForPlayerStateException("You can't perform this move at the moment.");
-
-        //The rest of the method is executed if the player is actually allowed to perform the move.
-
-        //Switch to update the counters for cards drawn.
-        switch (cardPoolType) {
-            case GOLDEN: {
-                if (goldenCardsDrawn.containsKey(player)) {
-                    int counter = goldenCardsDrawn.get(player);
-                    if (counter >= 1)
-                        throw new MaxGoldenCardsDrawnException("You have already drawn your golden card");
-                    else {
-                        player.addCardHeld(table.drawCard(cardPoolType, index));
-                        goldenCardsDrawn.put(player, counter + 1);
-                    }
-                }
-            }
-
-            case RESOURCE: {
-                if (resourceCardsDrawn.containsKey(player)) {
-                    int counter = resourceCardsDrawn.get(player);
-                    if (counter >= 2)
-                        throw new MaxResourceCardsDrawnException("You have already drawn your two resource cards");
-                    else {
-                        player.addCardHeld(table.drawCard(cardPoolType, index));
-                        resourceCardsDrawn.put(player, counter + 1);
-                    }
-                }
-            }
-        }
-
-
-        //If the player has reached the required number of draws for each card type then his state is updated to WAIT,
-        //and he is set to ready in the readiness map.
-        if (resourceCardsDrawn.get(player) == resourceCardsToDraw && goldenCardsDrawn.get(player) == goldenCardsToDraw) {
-            player.setPlayerState(PlayerStates.WAIT);
-            gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.WAIT));
-            playerReadiness.put(player, true);
-        }
-        else
-            gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.DRAW));
-
-        nextState();
+    public void drawCard(Player player, CardPoolTypes cardPoolType, int index) throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, MaxGoldenCardsDrawnException, MaxResourceCardsDrawnException, InvalidActionForGameStateException {
+        throw new InvalidActionForGameStateException("You can't draw cards right now.");
     }
 
     /**
@@ -250,6 +185,6 @@ public class CardsSetup implements GameState{
                 return;
         }
         //If all online players are ready then go to next state.
-        game.setState(new ObjectivesSetup(game));
+        game.setState(new DrawInitialCards(game));
     }
 }

@@ -69,7 +69,7 @@ public class Game implements ServerModelLayer {
         Collections.shuffle(this.players);
         this.table = new Table(goldenCards, resourceCards, starterCards, objectives, gameObserverRelay);
         this.lastRoundFlag = false;
-        state = new CardsSetup(this);
+        state = new PlaceStarterCard(this);
 
         Map<PlayerRecord, CardMapRecord> playerRecordMap = toPlayerViewList();
         TableRecord tableRecord = table.toRecord();
