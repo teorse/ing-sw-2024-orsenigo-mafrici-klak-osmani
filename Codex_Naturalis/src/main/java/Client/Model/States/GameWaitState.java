@@ -7,10 +7,21 @@ import Model.Game.CardPoolTypes;
 import Model.Player.PlayerStates;
 import Model.Utility.Coordinates;
 
+/**
+ * Represents the state of the client when waiting for the game to start.
+ * Upon entering this state, the command line interface is cleared, and the appropriate message is printed.
+ * This state allows users to interact with the game board and zoom into specific elements.
+ */
 public class GameWaitState extends ClientState{
+
     PlayerRecord choosenplayerRecord;
     Coordinates choosenCoordinates;
     int choice;
+
+    /**
+     * Represents the state of the client when waiting for the game to start.
+     * Upon entering this state, the command line interface is cleared, and the appropriate message is printed.
+     */
     public GameWaitState(ClientModel model) {
         super(model);
         TextUI.clearCMD();
