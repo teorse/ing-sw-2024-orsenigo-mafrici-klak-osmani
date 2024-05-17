@@ -1,6 +1,5 @@
 package Client.Model.Records;
 
-import Model.Player.CardVisibility;
 import Model.Utility.Artifacts;
 import Model.Utility.Coordinates;
 
@@ -16,7 +15,7 @@ import java.util.Map;
  *
  * <p>This record implements the {@code Serializable} interface to support serialization.
  */
-public record CardMapRecord(Map<Coordinates, CardVisibility> cardsPlaced, List<Coordinates> availablePlacements,
+public record CardMapRecord(Map<Coordinates, CardVisibilityRecord> cardsPlaced, List<Coordinates> availablePlacements,
                             Map<Artifacts, Integer> artifactsCounter, List<Coordinates> coordinatesPlaced)
         implements Serializable {
 
@@ -32,7 +31,7 @@ public record CardMapRecord(Map<Coordinates, CardVisibility> cardsPlaced, List<C
         // No additional implementation needed as records automatically generate a constructor
     }
 
-    public CardRecord getCard(Coordinates c) {
-        return this.cardsPlaced.get(c).getCard().toRecord();
+    public CardVisibilityRecord getCardVisibilityRecord(Coordinates c) {
+        return this.cardsPlaced.get(c);
     }
 }

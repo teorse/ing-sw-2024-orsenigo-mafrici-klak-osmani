@@ -47,10 +47,6 @@ public class CardResource extends Card {
     public int getPoints(){
         return points;
     };
-    @Override
-    protected Map<CornerOrientation, Corner> getCorners() {
-        return super.getCorners();
-    }
 
     //ABSTRACT CLASS METHODS
     public int countPoints(CardMap cardMap, Coordinates coordinates, boolean faceUp) {
@@ -113,5 +109,10 @@ public class CardResource extends Card {
     @Override
     public CardRecord toRecord() {
         return new CardRecord(getCardColor(), getPoints(), super.getCorners(), false, null, null, null);
+    }
+
+    @Override
+    public CardRecord toRecord(boolean faceUp) {
+        return new CardRecord(getCardColor(), getPoints(), super.getCorners(faceUp), false, null, null, null);
     }
 }

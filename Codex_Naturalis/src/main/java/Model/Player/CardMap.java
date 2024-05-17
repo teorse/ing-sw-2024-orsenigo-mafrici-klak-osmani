@@ -1,6 +1,7 @@
 package Model.Player;
 
 import Client.Model.Records.CardMapRecord;
+import Client.Model.Records.CardVisibilityRecord;
 import Model.Cards.Card;
 import Model.Cards.CornerDirection;
 import Model.Cards.CornerType;
@@ -402,6 +403,10 @@ public class CardMap {
     }
 
     public CardMapRecord toTransferableDataObject() {
+        Map<Coordinates, CardVisibilityRecord> cardsPlaced = new HashMap<>();
+        for(Map.Entry<Coordinates, CardVisibility> entry : this.cardsPlaced.entrySet())
+            cardsPlaced.put(entry.getKey(), entry.getValue().toRecord());
+
         return new CardMapRecord(cardsPlaced, availablePlacements, artifactsCounter, coordinatesPlaced);
     }
 }

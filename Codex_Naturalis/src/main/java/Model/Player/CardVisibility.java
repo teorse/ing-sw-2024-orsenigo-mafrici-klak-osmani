@@ -1,10 +1,10 @@
 package Model.Player;
 
-import Model.Cards.Card;
-import Model.Cards.CornerDirection;
-import Model.Cards.CornerType;
+import Client.Model.Records.CardVisibilityRecord;
+import Model.Cards.*;
 import Model.Utility.Artifacts;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +16,7 @@ import java.util.Map;
  * the cards.
  */
 
-public class CardVisibility {
+public class CardVisibility implements Serializable {
     //ATTRIBUTES
     /**
      * Reference to the card that this instance of CardVisibility is linked to.
@@ -128,5 +128,20 @@ public class CardVisibility {
      */
     protected void coverCorner(CornerDirection cornerDirection){
         cornerVisibility.put(cornerDirection, false);
+    }
+
+
+
+
+
+    //TO RECORD
+    public CardVisibilityRecord toRecord(){
+        Map<CornerDirection, Corner> corners = new HashMap<>();
+        for(Map.Entry<CornerOrientation, Corner> entry : card.getCorners(faceUp).entrySet()){
+            if(entry.getKey().isFaceUp() == faceUp)
+                corners.put(entry.getKey().getCornerDirection(), entry.getValue());
+        }
+
+        return new CardVisibilityRecord(card.getCardColor(), corners, cornerVisibility);
     }
 }

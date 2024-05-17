@@ -6,6 +6,7 @@ import Model.Utility.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Card implements Serializable {
@@ -31,8 +32,28 @@ public abstract class Card implements Serializable {
     //GETTER
     public abstract Artifacts getCardColor();
     public abstract int getPoints();
-    protected Map<CornerOrientation, Corner> getCorners() {
+    public Map<CornerOrientation, Corner> getCorners() {
         return corners;
+    }
+    public Map<CornerOrientation, Corner> getCorners(boolean faceUp){
+        if(faceUp){
+            Map<CornerOrientation, Corner> faceUpCorners = new HashMap<>();
+            for(Map.Entry<CornerOrientation, Corner> entry : corners.entrySet()){
+                if(entry.getKey().isFaceUp())
+                    faceUpCorners.put(entry.getKey(), entry.getValue());
+            }
+
+            return faceUpCorners;
+        }
+        else{
+            Map<CornerOrientation, Corner> faceDownCorners = new HashMap<>();
+            for(Map.Entry<CornerOrientation, Corner> entry : corners.entrySet()){
+                if(!entry.getKey().isFaceUp())
+                    faceDownCorners.put(entry.getKey(), entry.getValue());
+            }
+
+            return faceDownCorners;
+        }
     }
 
 
@@ -95,4 +116,6 @@ public abstract class Card implements Serializable {
     }
 
     public abstract CardRecord toRecord();
+
+    public abstract CardRecord toRecord(boolean faceUp);
 }

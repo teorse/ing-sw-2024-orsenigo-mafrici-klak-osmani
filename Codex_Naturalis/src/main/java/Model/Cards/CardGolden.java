@@ -117,4 +117,9 @@ public class CardGolden extends CardResource {
     public CardRecord toRecord() {
         return new CardRecord(super.getCardColor(), super.getPoints(), super.getCorners(), requiresCorner, requiredArtifact, constraint, null);
     }
+
+    @Override
+    public CardRecord toRecord(boolean faceUp){
+        return new CardRecord(super.getCardColor(), super.getPoints(), super.getCorners(faceUp), requiresCorner, requiredArtifact, constraint, null);
+    }
 }
