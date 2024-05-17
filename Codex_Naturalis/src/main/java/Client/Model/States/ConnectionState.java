@@ -10,14 +10,39 @@ import Client.View.UserInterface;
 import java.net.SocketTimeoutException;
 import java.rmi.ConnectException;
 
+/**
+ * Represents the state of establishing a connection to the game server.
+ * <p>
+ * This state manages the process of selecting the communication method (RMI or Socket) and providing the server's IP address.
+ * Upon instantiation, it clears the command-line interface and prompts the user for connection details.
+ * It handles user input to choose the communication method and validate the server's IP address.
+ * Once the connection is successfully established, it transitions to the LogInSignUpState to handle user authentication.
+ *
+ * @see LogInSignUpState
+ */
 public class ConnectionState extends ClientState {
+
     int choice;
+
+    /**
+     * Constructs a new ConnectionState with the specified client model.
+     * <p>
+     * Upon instantiation, this constructor clears the command-line interface and prints the initial state of the connection.
+     *
+     * @param model the client model
+     */
     public ConnectionState(ClientModel model) {
         super(model);
         TextUI.clearCMD();
         print();
     }
 
+    /**
+     * Prints the options for selecting the communication method and the server IP address.
+     * <p>
+     * If the input counter is 0, it prompts the user to choose between RMI and Socket communication methods.
+     * If the input counter is 1, it prompts the user to enter the IP address of the server, with an option to leave it empty for localhost.
+     */
     @Override
     public void print() {
         if (inputCounter == 0) {
@@ -77,6 +102,11 @@ public class ConnectionState extends ClientState {
         }
     }
 
+    /**
+     * Moves the client to the next state based on the success of the previous operation.
+     * If the previous operation was successful, transitions to the LogInSignUpState to handle user authentication.
+     * If the operation fails, prints an error message and remains in the current state, prompting the user to try again.
+     */
     @Override
     public void nextState() {
         if(model.isOperationSuccesful()) {
