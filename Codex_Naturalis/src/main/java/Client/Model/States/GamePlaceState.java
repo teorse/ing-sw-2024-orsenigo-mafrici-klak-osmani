@@ -6,11 +6,21 @@ import Client.View.UserInterface;
 import Model.Player.PlayerStates;
 import Model.Utility.Coordinates;
 
+/**
+ * Represents the state where the player places a card on the game board during their turn.
+ * Upon entering this state, the command-line interface is cleared, and a message indicating that it's the player's turn is displayed.
+ * Additionally, the method prints the available options for placing the card.
+ */
 public class GamePlaceState extends ClientState{
     int cardIndex;
     int coordinateIndex;
     boolean faceUp;
 
+    /**
+     * Constructs a new GamePlace state with the specified client model
+     *
+     * @param model the client model
+     */
     public GamePlaceState(ClientModel model) {
         super(model);
         TextUI.clearCMD();
@@ -18,6 +28,12 @@ public class GamePlaceState extends ClientState{
         print();
     }
 
+    /**
+     * Prints the current game board and the cards held by the player.
+     * Additionally, it prompts the user to choose a card from their hand to place on the game board.
+     * If the input counter is 1, prompts the user to choose a coordinate to place the selected card on the game board.
+     * If the input counter is 2, prompts the user to choose the side (front or back) where they want to place the card.
+     */
     @Override
     public void print() {
         textUI.showGameBoard();
@@ -69,6 +85,13 @@ public class GamePlaceState extends ClientState{
         print();
     }
 
+    /**
+     * Moves the client to the next state based on the success of the previous operation and the player's current state.
+     * If the previous operation was successful and the player is not the last online player in the game, it checks the player's state.
+     * If the player's state is set to "DRAW", transitions to the GameDrawState to allow the player to draw cards.
+     * If the player is the last online player, transitions to the GameOverState to handle the end of the game.
+     * If the operation fails, prints an error message and remains in the current state, prompting the user to try again.
+     */
     @Override
     public void nextState() {
         if (model.isOperationSuccesful()) {
