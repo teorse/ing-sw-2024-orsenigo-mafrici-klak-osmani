@@ -9,11 +9,27 @@ import Network.ClientServer.Packets.CSPStartLobby;
 import Network.ClientServer.Packets.CSPStopViewingLobbyPreviews;
 import Network.ClientServer.Packets.CSPViewLobbyPreviews;
 
+/**
+ * The LobbySelectionState represents the state where the client is presented with options to create or join a lobby.
+ *
+ * <p>In this state, the user can choose to either create a new lobby or join an existing one. If the user chooses to
+ * create a lobby, they will be prompted to enter the name of the lobby and the desired number of users for the game.
+ * If the user chooses to join a lobby, they will be shown a list of available lobbies along with their details, and
+ * prompted to enter the name of the lobby they want to join.
+ *
+ * <p>Once the user completes the necessary input, the nextState() method is invoked to transition to the next state
+ * based on the success of the operation.
+ */
 public class LobbySelectionState extends ClientState {
     int targetNumberUsers;
     String lobbyName;
     int choice;
 
+    /**
+     * Constructs a new LobbySelectionState with the specified client model.
+     *
+     * @param model the client model
+     */
     public LobbySelectionState(ClientModel model) {
         super(model);
         TextUI.clearCMD();
@@ -113,6 +129,14 @@ public class LobbySelectionState extends ClientState {
         }
     }
 
+    /**
+     * Moves the client to the next state based on the success of the previous operation.
+     *
+     * <p>If the previous operation was successful, the client transitions to the LobbyJoined state. If the client
+     * previously chose to view lobby previews, it sends a packet to stop viewing lobby previews before transitioning
+     * to the LobbyJoined state. If the operation failed, an error message is displayed, and the client is prompted
+     * to try again.
+     */
     @Override
     public void nextState() {
         if (model.isOperationSuccesful()) {
