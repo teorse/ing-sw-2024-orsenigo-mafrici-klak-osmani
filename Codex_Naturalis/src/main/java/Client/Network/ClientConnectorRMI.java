@@ -65,7 +65,6 @@ public class ClientConnectorRMI implements ClientConnector, RMIClientConnector {
      * @param controller  The client controller associated with this client connector.
      */
     public ClientConnectorRMI(String serverIp, ClientController controller) throws ConnectException {
-        System.out.println("Initializing server handler");
         this.controller = controller;
         //Setting up client RMI registry
         //If the registry does not already exist then create a new registry.
@@ -182,7 +181,7 @@ public class ClientConnectorRMI implements ClientConnector, RMIClientConnector {
             RMIClientHandlerConnection clientHandlerStub = (RMIClientHandlerConnection) serverRegistry.lookup(NetworkConstants.RMIClientHandlerDirectory + clientHandlerID);
             System.out.println("Client Handler Stub obtained, attempting handshake with client handler.");
             clientHandlerStub.handShake();
-            System.out.println("HandShake successful");
+//            System.out.println("HandShake successful");
 
             return clientHandlerStub;
 

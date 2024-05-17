@@ -40,8 +40,10 @@ public class LobbyPreviewObserverRelay {
 
         ServerClientPacket packet = new SCPUpdateLobbyPreviews(lobbyPreviewSet.stream().toList());
 
-        for(ClientHandler observer : observers.values())
+        for(ClientHandler observer : observers.values()) {
+            System.out.println("Sending Lobby preview update to users");
             observer.sendPacket(packet);
+        }
     }
 
     /**
@@ -52,6 +54,7 @@ public class LobbyPreviewObserverRelay {
     public void addObserver(String username, ClientHandler observer){
         observers.put(username, observer);
         ServerClientPacket packet = new SCPUpdateLobbyPreviews(lobbyPreviewSet.stream().toList());
+        System.out.println("Added new observer and Sending Lobby preview update to them");
         observer.sendPacket(packet);
     }
 

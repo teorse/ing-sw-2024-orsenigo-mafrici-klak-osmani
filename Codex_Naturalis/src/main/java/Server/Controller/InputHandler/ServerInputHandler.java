@@ -125,6 +125,7 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
             if (this.username == null) {
                 throw new LogInRequiredException("You need to be logged in to perform this action");
             }
+            System.out.println("Client sent request to view lobby previews");
             serverController.addLobbyPreviewObserver(username, connection);
         } catch (LogInRequiredException e) {
             //todo add logging functionality
