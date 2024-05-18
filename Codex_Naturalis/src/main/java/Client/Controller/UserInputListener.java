@@ -1,24 +1,24 @@
 package Client.Controller;
 
+import Client.Model.ClientModel;
+import Client.Model.States.ClientState;
 import Client.Network.ClientConnector;
 
 import java.util.Scanner;
 
 public class UserInputListener implements Runnable{
-    private ClientConnector clientConnector;
+    private ClientController clientController;
     private final Scanner scanner = new Scanner(System.in);
 
-    public  UserInputListener(ClientConnector clientConnector){
-        this.clientConnector = clientConnector;
+    public  UserInputListener(ClientController clientController){
+        this.clientController = clientController;
     }
 
     @Override
     public void run() {
         while(true){
             String input = scanner.nextLine();
-            UserInputInterpreter interpreter = new UserInputInterpreter(input, clientConnector);
-            Thread thread = new Thread(interpreter);
-            thread.start();
+            clientController.handleInput(input);
         }
     }
 }

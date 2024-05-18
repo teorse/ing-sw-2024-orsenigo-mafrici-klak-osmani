@@ -1,7 +1,9 @@
 package Client.Controller;
 
+import Client.Model.ClientModel;
 import Client.Model.Records.*;
 import Client.Model.Records.LobbyPreviewRecord;
+import Client.View.TextUI;
 import Model.Player.PlayerStates;
 import Network.ServerClient.Packets.ErrorsDictionary;
 import Network.ServerClient.ServerMessageExecutor;
@@ -9,137 +11,189 @@ import Network.ServerClient.ServerMessageExecutor;
 import java.util.List;
 import java.util.Map;
 
-public class ClientController implements ServerMessageExecutor {
+import static Client.View.UserInterface.myPlayerRecord;
+
+
+public class ClientController  implements ServerMessageExecutor {
+    ClientModel model;
+
+    //TODO fix updates methods
+
+    public ClientController(ClientModel clientModel) {
+        this.model = clientModel;
+    }
+
+    public void handleInput(String input) {
+        model.handleInput(input);
+    }
 
     @Override
     public void connectionAck(String serverNotification) {
-        System.out.println("connectionAck method called.");
-        System.out.println("Received serverNotification: " + serverNotification);
+        model.setOperationSuccesful(true);
+        model.nextState();
     }
 
     @Override
     public void loginFailed(ErrorsDictionary errorCause) {
-        System.out.println("loginFailed method called.");
-        System.out.println("Received errorCause: " + errorCause);
+        model.setOperationSuccesful(false);
+        switch (errorCause) {
+            case WRONG_PASSWORD -> System.out.println("Wrong password.");
+            case USERNAME_NOT_FOUND -> System.out.println("Username not found.");
+            case YOU_ARE_ALREADY_LOGGED_IN -> System.out.println("You are already logged in.");
+            case ACCOUNT_ALREADY_LOGGED_IN_BY_SOMEONE_ELSE -> System.out.println("Account already logged on another computer.");
+        }
+        model.nextState();
     }
 
     @Override
     public void loginSuccess(String username) {
-        System.out.println("loginSuccess method called.");
-        System.out.println("Received username: " + username);
+        model.setOperationSuccesful(true);
+        model.setMyUsername(username);
+        model.nextState();
     }
 
     @Override
     public void signUpFailed(ErrorsDictionary errorCause) {
-        System.out.println("signUpFailed method called.");
-        System.out.println("Received errorCause: " + errorCause);
+        model.setOperationSuccesful(false);
+        switch (errorCause) {
+            case USERNAME_ALREADY_TAKEN -> System.out.println("Username already taken.");
+            case GENERIC_ERROR -> System.out.println("Something happened in the server, please try again.");
+        }
+        model.nextState();
     }
 
     @Override
     public void signUpSuccess(String username) {
-        System.out.println("signUpSuccess method called.");
-        System.out.println("Received username: " + username);
-    }
-
-    @Override
-    public void updateLobbyPreviews(List<LobbyPreviewRecord> lobbyPreviewRecords) {
-        System.out.println("updateLobbyPreviews method called.");
-        System.out.println("Received lobbyPreviewRecords: " + lobbyPreviewRecords);
+        model.setOperationSuccesful(true);
+        model.setMyUsername(username);
+        model.nextState();
     }
 
     @Override
     public void joinLobbySuccessful(LobbyRecord lobbyRecord, List<LobbyUserRecord> lobbyUsers) {
-        System.out.println("joinLobbySuccessful method called.");
-        System.out.println("Received lobbyRecord: " + lobbyRecord);
-        System.out.println("Received lobbyUsers: " + lobbyUsers);
+        model.setOperationSuccesful(true);
+        model.setLobbyRecord(lobbyRecord);
+        model.setLobbyUserRecords(lobbyUsers);
+        model.nextState();
     }
 
     @Override
     public void joinLobbyFailed(ErrorsDictionary errorCause) {
-        System.out.println("joinLobbyFailed method called.");
-        System.out.println("Received errorCause: " + errorCause);
+        model.setOperationSuccesful(false);
+        switch (errorCause) {
+            case LOBBY_IS_CLOSED -> System.out.println("Lobby closed.");
+            case GENERIC_ERROR -> System.out.println("Generic error.");
+            case LOBBY_NAME_NOT_FOUND -> System.out.println("Lobby name not found.");
+        }
+        model.nextState();
     }
 
     @Override
     public void startLobbySuccess(LobbyRecord lobbyRecord, List<LobbyUserRecord> lobbyUsers) {
-        System.out.println("startLobbySuccess method called.");
-        System.out.println("Received lobbyRecord: " + lobbyRecord);
-        System.out.println("Received lobbyUsers: " + lobbyUsers);
+        model.setOperationSuccesful(true);
+        model.setLobbyRecord(lobbyRecord);
+        model.setLobbyUserRecords(lobbyUsers);
+        model.nextState();
     }
 
     @Override
     public void startLobbyFailed(ErrorsDictionary errorCause) {
-        System.out.println("startLobbyFailed method called.");
-        System.out.println("Received errorCause: " + errorCause);
+        model.setOperationSuccesful(false);
+        switch (errorCause) {
+            case GENERIC_ERROR -> System.out.println("Generic error.");
+            case INVALID_LOBBY_SIZE -> System.out.println("Invalid lobby size.");
+            case LOBBY_NAME_ALREADY_TAKEN -> System.out.println("Lobby name already taken.");
+        }
+        model.nextState();
+    }
+
+    @Override
+    public void updateLobbyPreviews(List<LobbyPreviewRecord> lobbyPreviewRecords) {
+        model.setLobbyPreviewRecords(lobbyPreviewRecords);
+        TextUI.clearCMD();
+        TextUI.displayGameTitle();
+        model.print();
     }
 
     @Override
     public void updateLobbyUsers(List<LobbyUserRecord> lobbyUsers) {
-        System.out.println("updateLobbyUsers method called.");
-        System.out.println("Received lobbyUsers: " + lobbyUsers);
+        model.setLobbyUserRecords(lobbyUsers);
+        TextUI.clearCMD();
+        TextUI.displayGameTitle();
+        model.print();
     }
 
     @Override
     public void gameStarted(Map<PlayerRecord, CardMapRecord> players, PlayerSecretInfoRecord secret, TableRecord table, GameRecord game) {
-        System.out.println("gameStarted method called.");
-        System.out.println("Received players: " + players);
-        System.out.println("Received secret: " + secret);
-        System.out.println("Received table: " + table);
-        System.out.println("Received game: " + game);
+        model.setPlayerCardMapRecord(players);
+        model.setPlayerSecretInfoRecord(secret);
+        model.setTableRecord(table);
+        model.setGameRecord(game);
+        model.setMyPlayerState(PlayerStates.WAIT);
     }
 
     @Override
     public void updatePlayers(Map<PlayerRecord, CardMapRecord> players) {
-        System.out.println("updatePlayers method called.");
-        System.out.println("Received players: " + players);
+        model.setPlayerCardMapRecord(players);
     }
 
     @Override
     public void updateSpecificPlayer(PlayerRecord player) {
-        System.out.println("updateSpecificPlayer method called.");
-        System.out.println("Received player: " + player);
+        int i = 0;
+        for(PlayerRecord playerRecord : model.getPlayerRecords()) {
+            if (playerRecord.nickname().equals(player.nickname())) {
+                model.getPlayerRecords().remove(i);
+                model.getPlayerRecords().add(player);
+            } else
+                i++;
+        }
     }
 
     @Override
     public void updateCardMap(String ownerUsername, CardMapRecord cardMap) {
-        System.out.println("updateCardMap method called.");
-        System.out.println("Received ownerUsername: " + ownerUsername);
-        System.out.println("Received cardMap: " + cardMap);
+        PlayerRecord playerRecord = null;
+        for (PlayerRecord pr : model.getPlayerRecords()) {
+            if (pr.nickname().equals(ownerUsername))
+                playerRecord = pr;
+        }
+        model.getPlayerCardMapRecord().put(playerRecord, cardMap);
     }
 
     @Override
     public void updateSecret(PlayerSecretInfoRecord secret) {
-        System.out.println("updateSecret method called.");
-        System.out.println("Received secret: " + secret);
+        model.setPlayerSecretInfoRecord(secret);
+
     }
 
     @Override
     public void updateTable(TableRecord table) {
-        System.out.println("updateTable method called.");
-        System.out.println("Received table: " + table);
+        model.setTableRecord(table);
+
     }
 
     @Override
     public void updateGame(GameRecord game) {
-        System.out.println("updateGame method called.");
-        System.out.println("Received game: " + game);
+        model.setGameRecord(game);
+
     }
 
     @Override
     public void updateSecretObjectiveCandidates(List<ObjectiveRecord> candidates) {
-        System.out.println("updateSecretObjectiveCandidates method called.");
-        System.out.println("Received candidates: " + candidates);
+        model.setObjectiveRecords(candidates);
+
     }
 
     @Override
     public void updateClientGameState(PlayerStates newState) {
-        System.out.println("updateClientGameState method called.");
-        System.out.println("Received newState: " + newState);
+        model.setOperationSuccesful(true);
+        model.setMyPlayerState(newState);
+        model.nextState();
     }
 
     @Override
     public void gameOver(List<PlayerRecord> players) {
-        System.out.println("gameOver method called.");
-        System.out.println("Received players: " + players);
+        model.setOperationSuccesful(true);
+        model.setWinners(players);
+        model.nextState();
     }
 }

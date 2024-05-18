@@ -11,6 +11,7 @@ import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 /**
  * The ClientConnectorSocket class is an implementation of the ClientConnector interface using sockets.<br>
@@ -35,8 +36,7 @@ public class ClientConnectorSocket implements ClientConnector {
      * @param serverIp    The IP address of the server to connect to.
      * @param controller  The ClientController to interact with this client's local model.
      */
-    public ClientConnectorSocket(String serverIp, ClientController controller) throws ConnectException {
-        System.out.println("Initializing server handler");
+    public ClientConnectorSocket(String serverIp, ClientController controller) throws SocketTimeoutException {
         this.controller = controller;
         try {
             int serverPort = NetworkConstants.ServerSocketListenerPort;
@@ -45,9 +45,9 @@ public class ClientConnectorSocket implements ClientConnector {
             oos = new ObjectOutputStream(socket.getOutputStream());
             ois = new ObjectInputStream(socket.getInputStream());
         }
-        catch(ConnectException e){
+        catch(SocketTimeoutException e){
             //Thrown when the server does not respond, possibly wrong ip address.
-            throw new ConnectException(e.getMessage());
+            throw new SocketTimeoutException(e.getMessage());
         }
         catch(IOException e){
             System.out.println(e);
