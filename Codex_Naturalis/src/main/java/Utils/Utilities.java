@@ -1,5 +1,7 @@
 package Utils;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Utilities {
@@ -13,5 +15,15 @@ public class Utilities {
                 .limit(length)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
+    }
+
+    public static String StackTraceToString(Exception e){
+        List<StackTraceElement> stackTrace = Arrays.stream(e.getStackTrace()).toList();
+        StringBuilder stackTraceString = new StringBuilder();
+
+        for(StackTraceElement element : stackTrace)
+            stackTraceString.append(element.toString()).append("\n");
+
+        return stackTraceString.toString();
     }
 }

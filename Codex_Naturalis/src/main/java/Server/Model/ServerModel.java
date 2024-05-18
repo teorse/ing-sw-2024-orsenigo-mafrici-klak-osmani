@@ -16,6 +16,7 @@ import Server.Network.ClientHandler.ClientHandler;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * This class represents the model of the server, managing user accounts, authentication, and lobbies.
@@ -29,6 +30,7 @@ public class ServerModel implements ServerModelLayer {
 
     private final LobbyPreviewObserverRelay lobbyPreviewObserverRelay;
 
+    private final Logger logger;
 
 
 
@@ -39,11 +41,14 @@ public class ServerModel implements ServerModelLayer {
      * Default Constructor
      */
     public ServerModel(){
-        System.out.println("Initializing ServerMain Model");
+        logger = Logger.getLogger(ServerModel.class.getName());
+        logger.info("Initializing server Model");
+
         userDatabase = new HashMap<>();
         lobbiesMap = new HashMap<>();
         loggedInUsers = new HashMap<>();
         lobbyPreviewObserverRelay = new LobbyPreviewObserverRelay();
+        logger.fine("Server Model initialized");
     }
 
 
@@ -59,6 +64,9 @@ public class ServerModel implements ServerModelLayer {
      * @throws AccountAlreadyExistsException If the account already exists.
      */
     public String signUp(ClientHandler ch, String username, String password) throws AccountAlreadyExistsException {
+        logger.fine("Signing connection "+ch+" as user: "+username);
+
+        logger.fine("Checking if username "+username+" is already taken");
         if(userDatabase.containsKey(username)) {
             throw new AccountAlreadyExistsException(ch, username, "");
         }
@@ -66,17 +74,20 @@ public class ServerModel implements ServerModelLayer {
         String salt = ServerSecurity.generateSalt();
         String hashedPassword = ServerSecurity.hashPassword(password, salt);
 
+        logger.fine("Creating user "+username);
         ServerUser serverUser = new ServerUser(username);
         ServerUserInfo serverUserInfo = new ServerUserInfo(serverUser, hashedPassword, salt);
 
 
         //Add new user to user database
+        logger.fine("Adding "+username+" to Server database");
         userDatabase.put(serverUser.getUsername(), serverUserInfo);
 
         //Set user online
+        logger.fine("Adding "+username+" to Logged in users map");
         loggedInUsers.put(username, serverUser);
 
-        System.out.println("Sign up successful for user: "+username);
+        logger.info("Sign up successful for user: "+username);
 
         return username;
     }
@@ -92,23 +103,29 @@ public class ServerModel implements ServerModelLayer {
      * @throws IncorrectPasswordException       If the password is incorrect.
      */
     public String login(ClientHandler ch, String username, String password) throws AccountNotFoundException, AccountAlreadyLoggedInException, IncorrectPasswordException {
+        logger.fine("Logging in connection "+ch+" as user: "+username);
+
+        logger.fine("Checking if username "+username+" exists");
         if(!userDatabase.containsKey(username)){
             throw new AccountNotFoundException(ch, username, "");
         }
 
         //Check if that user already has a connection associated with them right now
+        logger.fine("Checking if username "+username+" is already logged in");
         if(loggedInUsers.containsKey(username)){
             throw new AccountAlreadyLoggedInException(ch, username, "");
         }
 
         //Get serverUser info by username
+        logger.fine("Retrieving user information for user "+username);
         ServerUserInfo serverUserInfo = userDatabase.get(username);
 
         //Get user from userInfo by providing correct password
+        logger.fine("Trying provided password for user "+username);
         ServerUser serverUser = serverUserInfo.getUser(password);
 
         loggedInUsers.put(serverUser.getUsername(), serverUser);
-        System.out.println("serverUser "+username+" logged in.");
+        logger.info("serverUser "+username+" logged in.");
 
         return serverUser.getUsername();
     }
@@ -130,17 +147,20 @@ public class ServerModel implements ServerModelLayer {
     public LobbyController createNewLobby(String lobbyName, String username, int targetNumberUsers, ClientHandler connection) throws LobbyNameAlreadyTakenException, InvalidLobbySettingsException {
         ServerUser serverUser = loggedInUsers.get(username);
 
+        logger.fine("Checking if lobby name "+lobbyName+" exists in server");
         if(lobbiesMap.containsKey(lobbyName)){
             throw new LobbyNameAlreadyTakenException(connection, serverUser.getUsername(), "");
         }
 
-        System.out.println("Creating new Lobby");
+        logger.info("User "+username+" is creating Lobby "+lobbyName);
         Lobby lobby = new Lobby(lobbyName, targetNumberUsers, serverUser, connection, lobbyPreviewObserverRelay);
 
+        logger.fine("Creating controller for lobby "+lobbyName);
         LobbyController lobbyController = new LobbyController(lobby);
+        logger.fine("Adding Lobby "+lobbyName+" to lobby Map");
         lobbiesMap.put(lobby.getLobbyName(), lobbyController);
 
-        System.out.println("User "+serverUser.getUsername()+" created lobby: "+lobbyName);
+        logger.info("User "+serverUser.getUsername()+" created lobby: "+lobbyName);
 
         return lobbyController;
     }
@@ -154,14 +174,19 @@ public class ServerModel implements ServerModelLayer {
      * @throws LobbyNotFoundException If the lobby is not found.
      */
     public LobbyController joinLobby(String lobbyName, String username, ClientHandler connection) throws LobbyNotFoundException, LobbyClosedException, LobbyUserAlreadyConnectedException {
-
         ServerUser serverUser = loggedInUsers.get(username);
 
+        logger.fine("Checking if lobby name "+lobbyName+" exists in server");
         if(!lobbiesMap.containsKey(lobbyName))
             throw new LobbyNotFoundException(lobbyName);
 
+        logger.info("User "+username+" is joining Lobby "+lobbyName);
+
+        logger.fine("Retrieving lobby controller for lobby "+lobbyName);
         LobbyController lobbyController = lobbiesMap.get(lobbyName);
+        logger.fine("Attempting to join lobby "+lobbyName);
         lobbyController.joinLobby(serverUser, connection);
+        logger.info("User "+username+" joined Lobby "+lobbyName);
         return lobbyController;
     }
 
@@ -177,9 +202,8 @@ public class ServerModel implements ServerModelLayer {
      */
     @Override
     public void userDisconnectionProcedure(String username) {
-        removeLobbyPreviewObserver(username);
-        loggedInUsers.remove(username);
-        System.out.println("User removed from Server");
+        logger.info("Disconnection procedure started in Server Layer for user "+username);
+        removeUser(username);
     }
 
     /**
@@ -189,8 +213,14 @@ public class ServerModel implements ServerModelLayer {
      */
     @Override
     public void quit(String username) {
-        userDisconnectionProcedure(username);
-        System.out.println("ServerUser: "+ username + " successfully logged-out of Server");
+        logger.info("Quitting procedure started in Server Layer for user "+username);
+        removeUser(username);
+    }
+
+    private void removeUser(String username){
+        removeLobbyPreviewObserver(username);
+        loggedInUsers.remove(username);
+        logger.info("User "+username+" removed from Server Layer");
     }
 
 
@@ -199,10 +229,12 @@ public class ServerModel implements ServerModelLayer {
 
     //OBSERVER METHODS
     public void addLobbyPreviewObserver(String username, ClientHandler ch){
+        logger.fine("Adding observer "+username+ " to lobby previews");
         this.lobbyPreviewObserverRelay.addObserver(username, ch);
     }
 
     public void removeLobbyPreviewObserver(String username){
+        logger.fine("Removing observer "+username+ " from lobby previews");
         this.lobbyPreviewObserverRelay.removeObserver(username);
     }
 }

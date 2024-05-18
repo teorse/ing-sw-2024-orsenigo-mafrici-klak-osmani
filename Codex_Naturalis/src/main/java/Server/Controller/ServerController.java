@@ -11,6 +11,9 @@ import Exceptions.Server.LobbyExceptions.LobbyClosedException;
 import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
 import Server.Model.ServerModel;
 import Server.Network.ClientHandler.ClientHandler;
+import Server.ServerMain;
+
+import java.util.logging.Logger;
 
 /**
  * The ServerController class serves as the controller for the server-side model.
@@ -23,7 +26,6 @@ public class ServerController {
 
 
 
-
     //CONSTRUCTOR
     /**
      * Constructs a ServerController object with the specified server model.
@@ -31,7 +33,10 @@ public class ServerController {
      * @param model The ServerModel object associated with this controller.
      */
     public ServerController(ServerModel model){
+        Logger logger = Logger.getLogger(ServerMain.class.getName());
+        logger.fine("Initializing ServerModel Controller");
         this.model = model;
+        logger.info("Server Model Controller created");
     }
 
 
