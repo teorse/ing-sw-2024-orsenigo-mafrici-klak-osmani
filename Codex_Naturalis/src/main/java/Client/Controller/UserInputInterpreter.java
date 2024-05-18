@@ -12,6 +12,12 @@ import Server.Model.Lobby.LobbyUserColors;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class interprets user input and converts it into appropriate client-server packets for communication.
+ * It implements the Runnable interface to be executed in a separate thread when needed.
+ * The user input is parsed to identify the command type and its corresponding payload, and then converted
+ * into the respective client-server packet based on the command type.
+ */
 public class UserInputInterpreter implements Runnable{
     private String input;
     private ClientConnector clientConnector;
@@ -21,6 +27,12 @@ public class UserInputInterpreter implements Runnable{
         this.clientConnector = clientConnector;
     }
 
+    /**
+     * Executes the interpretation of user input to generate corresponding client-server packets.
+     * It parses the input to extract the header and payload, determines the command type,
+     * and constructs the appropriate client-server packet based on the command type and payload.
+     * Once the packet is created, it is sent through the client connector for communication with the server.
+     */
     @Override
     public void run() {
         List<String> header = new ArrayList<>();
@@ -72,7 +84,6 @@ public class UserInputInterpreter implements Runnable{
                 }
             }
         }
-
 
         if(message != null)
             clientConnector.sendPacket(message);

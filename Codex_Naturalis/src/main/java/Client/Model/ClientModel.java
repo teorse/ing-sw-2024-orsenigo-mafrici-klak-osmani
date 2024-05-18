@@ -11,6 +11,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The ClientModel class represents the client-side data model for the game.
+ * <p>
+ * This class manages the state and data of the client, including player information,
+ * game records, lobby details, and connection settings. It also handles the transition
+ * between different client states, such as connection, game play, and waiting states.
+ */
 public class ClientModel {
     //ATTRIBUTES
     boolean operationSuccesful;

@@ -134,7 +134,14 @@ public class CardVisibility implements Serializable {
 
 
 
-    //TO RECORD
+    /**
+     * Converts the current state of the card visibility into a CardVisibilityRecord object.
+     * This method retrieves the corners of the card based on the specified visibility (faceUp or faceDown),
+     * constructs a map of corner directions to corners, and creates a new CardVisibilityRecord
+     * with the card color, corner information, and visibility details.
+     *
+     * @return the CardVisibilityRecord representing the current visibility state of the card
+     */
     public CardVisibilityRecord toRecord(){
         Map<CornerDirection, Corner> corners = new HashMap<>();
         for(Map.Entry<CornerOrientation, Corner> entry : card.getCorners(faceUp).entrySet()){

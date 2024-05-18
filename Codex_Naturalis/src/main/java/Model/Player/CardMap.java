@@ -19,7 +19,6 @@ import java.util.stream.Stream;
  * -It stores the available placements for the next round.<br>
  * -It stores the player's current Resources and Items counters.
  */
-
 public class CardMap {
 
     //ATTRIBUTES
@@ -402,6 +401,14 @@ public class CardMap {
         availablePlacements.addAll(candidates);
     }
 
+    /**
+     * Converts the current state of the card map into a CardMapRecord object, which can be transferred over the network.
+     * This method iterates through the cards placed on the map, converts each card's visibility into a CardVisibilityRecord,
+     * and constructs a map of coordinates to card visibility records. It then creates a new CardMapRecord object
+     * containing the card placements, available placements, artifacts counter, and coordinates of placed cards.
+     *
+     * @return the CardMapRecord representing the current state of the card map for transfer over the network
+     */
     public CardMapRecord toTransferableDataObject() {
         Map<Coordinates, CardVisibilityRecord> cardsPlaced = new HashMap<>();
         for(Map.Entry<Coordinates, CardVisibility> entry : this.cardsPlaced.entrySet())
