@@ -63,6 +63,7 @@ public class LobbySelectionState extends ClientState {
             if (choice == 1) {
                 System.out.println("\nEnter lobby name: ");
             } else if (choice == 2) {
+                System.out.println("LOBBY PREVIEWS");
                 //For loop for printing lobbies
                 for (LobbyPreviewRecord lobbyPreviewRecord : model.getLobbyPreviewRecords()) {
                     System.out.print("\nLobby Name: " + lobbyPreviewRecord.lobbyName() + ",  ");

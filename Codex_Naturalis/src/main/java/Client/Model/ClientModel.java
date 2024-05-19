@@ -62,6 +62,10 @@ public class ClientModel {
     public boolean isOperationSuccesful() {
         return operationSuccesful;
     }
+    public boolean isGameOver() {return isGameOver;}
+    public boolean isSetUpFinished() {
+        return isSetUpFinished;
+    }
     public String getMyUsername() {return myUsername; }
     public PlayerStates getMyPlayerState() {return myPlayerState;}
     public ClientConnector getClientConnector() { return clientConnector; }
@@ -105,14 +109,17 @@ public class ClientModel {
         return objectiveCandidates;
     }
 
-
-
-
-
     //SETTERS
     public void setOperationSuccesful(boolean operationSuccesful) {
         this.operationSuccesful = operationSuccesful;
     }
+
+    public void setGameOver(boolean gameOver) {isGameOver = gameOver;}
+
+    public void setSetUpFinished(boolean setUpFinished) {
+        isSetUpFinished = setUpFinished;
+    }
+
     public void setMyUsername(String myUsername) {this.myUsername = myUsername;}
 
     public void setMyPlayerState(PlayerStates myPlayerState) {this.myPlayerState = myPlayerState;}
