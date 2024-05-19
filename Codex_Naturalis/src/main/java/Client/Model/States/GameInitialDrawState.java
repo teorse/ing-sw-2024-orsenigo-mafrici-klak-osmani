@@ -15,7 +15,6 @@ import Network.ClientServer.Packets.CSPDrawCard;
  * They are prompted to enter a number between 1 and 3 to pick a card from the selected pool.
  */
 public class GameInitialDrawState extends ClientState{
-
     /**
      * Constructs a new GameInitialDrawState with the specified client model.
      * <p>
@@ -39,9 +38,9 @@ public class GameInitialDrawState extends ClientState{
      */
     @Override
     public void print() {
-        if (inputCounter < 2)
+        if (model.getMyPlayerState() == PlayerStates.DRAW_RESOURCE)
             textUI.zoomCardPool(CardPoolTypes.RESOURCE);
-        else
+        else if (model.getMyPlayerState() == PlayerStates.DRAW_GOLDEN)
             textUI.zoomCardPool(CardPoolTypes.GOLDEN);
         System.out.println("\nEnter a number between 1 and 3 to pick a card: ");
     }
@@ -60,12 +59,10 @@ public class GameInitialDrawState extends ClientState{
     public void handleInput(String input) {
         if (UserInterface.checkInputBound(input,1,3)) {
             int choice = Integer.parseInt(input);
-            if (inputCounter < 2) {
+            if (model.getMyPlayerState() == PlayerStates.DRAW_RESOURCE)
                 model.getClientConnector().sendPacket(new CSPDrawCard(CardPoolTypes.RESOURCE, choice - 2));
-            }
-            else {
+            else if (model.getMyPlayerState() == PlayerStates.DRAW_GOLDEN)
                 model.getClientConnector().sendPacket(new CSPDrawCard(CardPoolTypes.GOLDEN, choice - 2));
-            }
         } else
             print();
     }
@@ -79,12 +76,12 @@ public class GameInitialDrawState extends ClientState{
     @Override
     public void nextState() {
         if (model.isOperationSuccesful()) {
-            if (model.getMyPlayerState() == PlayerStates.DRAW) {
-                inputCounter++;
-                print();
-            } else if (model.getMyPlayerState() == PlayerStates.PICK_OBJECTIVE) {
+            if (model.getMyPlayerState() == PlayerStates.PICK_OBJECTIVE)
                 model.setClientState(new GamePickObjectiveState(model));
-            }
+            else if (model.getMyPlayerState() == PlayerStates.WAIT)
+                model.setClientState(new GameWaitState(model));
+            else
+                print();
         } else {
             System.out.println("The operation failed! Please try again.\n");
             print();

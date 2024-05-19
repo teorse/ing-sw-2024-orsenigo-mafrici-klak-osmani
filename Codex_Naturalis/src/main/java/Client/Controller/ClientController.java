@@ -364,6 +364,8 @@ public class ClientController  implements ServerMessageExecutor {
     public void updateClientGameState(PlayerStates newState) {
         model.setOperationSuccesful(true);
         model.setMyPlayerState(newState);
+        if (newState == PlayerStates.PICK_OBJECTIVE)
+            model.setSetUpFinished(true);
         model.nextState();
     }
 
@@ -378,6 +380,7 @@ public class ClientController  implements ServerMessageExecutor {
     @Override
     public void gameOver(List<PlayerRecord> players) {
         model.setOperationSuccesful(true);
+        model.setGameOver(true);
         model.setWinners(players);
         model.nextState();
     }

@@ -128,6 +128,9 @@ public class DrawInitialCards implements GameState{
                     else {
                         player.addCardHeld(table.drawCard(cardPoolType, index));
                         goldenCardsDrawn.put(player, counter + 1);
+                        player.setPlayerState(PlayerStates.WAIT);
+                        gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.WAIT));
+                        nextPlayer();
                     }
                 }
             }
@@ -140,16 +143,21 @@ public class DrawInitialCards implements GameState{
                     else {
                         player.addCardHeld(table.drawCard(cardPoolType, index));
                         resourceCardsDrawn.put(player, counter + 1);
+                        player.setPlayerState(PlayerStates.WAIT);
+                        gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.WAIT));
+                        nextPlayer();
                     }
                 }
             }
         }
 
         //todo think about moving this block before the statements, to block the player from sending multiple actions at once.
-        player.setPlayerState(PlayerStates.WAIT);
-        gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.WAIT));
-
-        nextPlayer();
+        //player.setPlayerState(PlayerStates.WAIT_SETUP);
+        //gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.WAIT_SETUP));
+//        if (cardPoolType == CardPoolTypes.GOLDEN)
+//            System.out.println("Wait per il caso golden");
+//
+//        nextPlayer();
     }
 
     /**
@@ -215,7 +223,7 @@ public class DrawInitialCards implements GameState{
         int playersSize = players.size();
 
         //If current player is the last players call next state.
-        if(currentPlayerIndex +1 == playersSize)
+        if(currentPlayerIndex + 1 == playersSize)
             nextState();
 
         else {
@@ -228,6 +236,8 @@ public class DrawInitialCards implements GameState{
 
                     //Evaluates what cards the next player has still to draw.
                     determinePlayerState(nextPlayer);
+
+                    return;
                 }
             }
 
@@ -274,12 +284,14 @@ public class DrawInitialCards implements GameState{
      */
     private void determinePlayerState(Player player) {
         PlayerStates playerState;
-        if(goldenCardsDrawn.get(player) == goldenCardsToDraw)
+        if(resourceCardsDrawn.get(player) < resourceCardsToDraw)
             playerState = PlayerStates.DRAW_RESOURCE;
-        else if(resourceCardsDrawn.get(player) == resourceCardsToDraw)
+        else if(goldenCardsDrawn.get(player) < goldenCardsToDraw)
             playerState = PlayerStates.DRAW_GOLDEN;
-        else
-            playerState = PlayerStates.DRAW;
+        else {
+            playerState = PlayerStates.WAIT;
+        }
+
 
         player.setPlayerState(playerState);
         gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(playerState));
@@ -297,8 +309,8 @@ public class DrawInitialCards implements GameState{
         //otherwise it continues this state by finding the next first player.
         setupStateCounter++;
         if(setupStateCounter == 3)
-            findFirstPlayer();
-        else
             game.setState(new ObjectivesSetup(game));
+        else
+            findFirstPlayer();
     }
 }

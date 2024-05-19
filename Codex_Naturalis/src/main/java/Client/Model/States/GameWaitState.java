@@ -47,39 +47,43 @@ public class GameWaitState extends ClientState{
      */
     @Override
     public void print() {
-        textUI.showGameBoard();
-        if (inputCounter == 0) {
-            for (PlayerRecord playerRecord : model.getPlayerRecords()) {
-                if (playerRecord.playerState() != PlayerStates.WAIT)
-                    System.out.print("It's " + playerRecord.nickname() + "turn. ");
-                else
-                    System.out.println("Wait! (Enter ZOOM to look at the board)");
-            }
-        } else if (inputCounter == 1) {
-            System.out.println("""
+        if (model.isSetUpFinished()) {
+            textUI.showGameBoard();
+            if (inputCounter == 0) {
+                for (PlayerRecord playerRecord : model.getPlayerRecords()) {
+                    if (playerRecord.playerState() != PlayerStates.WAIT)
+                        System.out.print("It's " + playerRecord.nickname() + "turn. ");
+                    else
+                        System.out.println("Wait! (Enter ZOOM to look at the board)");
+                }
+            } else if (inputCounter == 1) {
+                System.out.println("""
                         Enter what do you want to zoom:
                          1 - CardMap details
                          2 - CardHeld
                          3 - CardPool""");
-        }
-        else if (inputCounter == 2) {
-            if (choice == 1) {
-                System.out.println("Select a player nickname to zoom its CardMap by inserting an integer");
-                for (PlayerRecord playerRecord : model.getPlayerRecords()) {
-                    int i = 1;
-                    System.out.println(i++ + " - Player nickname: " + playerRecord.nickname());
+            } else if (inputCounter == 2) {
+                if (choice == 1) {
+                    System.out.println("Select a player nickname to zoom its CardMap by inserting an integer");
+                    for (PlayerRecord playerRecord : model.getPlayerRecords()) {
+                        int i = 1;
+                        System.out.println(i++ + " - Player nickname: " + playerRecord.nickname());
+                    }
+                    System.out.println();
+                } else if (choice == 2) {
+                    textUI.zoomCardsHeld();
+                } else if (choice == 3) {
+                    System.out.println("""
+                            Enter the pool you want to zoom:
+                             1 - Resource Pool
+                             2 - Golden Pool""");
                 }
-                System.out.println();
-            } else if (choice == 2) {
-                textUI.zoomCardsHeld();
-            } else if (choice == 3) {
-                System.out.println("""
-                        Enter the pool you want to zoom:
-                         1 - Resource Pool
-                         2 - Golden Pool""");
+            } else if (inputCounter == 3 && choice == 1) {
+                System.out.println("Choose a coordinate to zoom the card [ROW] [COLUMN].");
             }
-        } else if (inputCounter == 3 && choice == 1) {
-            System.out.println("Choose a coordinate to zoom the card [ROW] [COLUMN].");
+        } else {
+            TextUI.displayGameTitle();
+            System.out.println("The Set Up is not completed. Please wait!");
         }
     }
 
@@ -105,42 +109,57 @@ public class GameWaitState extends ClientState{
      */
     @Override
     public void handleInput(String input) {
-        if (inputCounter == 0) {
-            if (input.equalsIgnoreCase("ZOOM")) {
-                inputCounter++;
-            } else
-                System.out.println("To look at the board elements enter ZOOM");
-        } else if (inputCounter == 1) {
-            if (TextUI.checkInputBound(input, 1, 3)) {
-                choice = Integer.parseInt(input);
-                inputCounter++;
-            }
-            print();
-        } else if (inputCounter == 2) {
-            if (choice == 1) {
-                if (TextUI.checkInputBound(input, 1 , model.getPlayerRecords().size())) {
-                    choosenplayerRecord = model.getPlayerRecords().get(Integer.parseInt(input));
-                }
-                print();
-            } else if (choice == 3) {
-                if (TextUI.getBinaryChoice(input)) {
-                    if (Integer.parseInt(input) == 1)
-                        textUI.zoomCardPool(CardPoolTypes.RESOURCE);
-                    else
-                        textUI.zoomCardPool(CardPoolTypes.GOLDEN);
+        if (model.isSetUpFinished()) {
+            if (inputCounter == 0) {
+                if (input.equalsIgnoreCase("ZOOM")) {
+                    inputCounter++;
+                } else
+                    System.out.println("To look at the board elements enter ZOOM");
+            } else if (inputCounter == 1) {
+                if (TextUI.checkInputBound(input, 1, 3)) {
+                    choice = Integer.parseInt(input);
                     inputCounter++;
                 }
-            }
-        } else if (inputCounter == 3 && choice == 1) {
-            choosenCoordinates = textUI.getInputCoordinates(input);
-            if (choosenCoordinates != null)
-                textUI.zoomCardMap(input, myPR);
+                print();
+            } else if (inputCounter == 2) {
+                if (choice == 1) {
+                    if (TextUI.checkInputBound(input, 1, model.getPlayerRecords().size())) {
+                        choosenplayerRecord = model.getPlayerRecords().get(Integer.parseInt(input));
+                    }
+                    print();
+                } else if (choice == 3) {
+                    if (TextUI.getBinaryChoice(input)) {
+                        if (Integer.parseInt(input) == 1)
+                            textUI.zoomCardPool(CardPoolTypes.RESOURCE);
+                        else
+                            textUI.zoomCardPool(CardPoolTypes.GOLDEN);
+                        inputCounter++;
+                    }
+                }
+            } else if (inputCounter == 3 && choice == 1) {
+                choosenCoordinates = textUI.getInputCoordinates(input);
+                if (choosenCoordinates != null)
+                    textUI.zoomCardMap(input, myPR);
+            } else
+                print();
         } else
-            print();
+            System.out.println("\nYou can't enter any input in this phase. Wait the game to start!");
     }
 
     @Override
     public void nextState() {
-        nextGameState();
+        if (model.isOperationSuccesful()) {
+            if (model.getMyPlayerState() == PlayerStates.WAIT)
+                print();
+            else if (model.getMyPlayerState() == PlayerStates.DRAW_RESOURCE || model.getMyPlayerState() == PlayerStates.DRAW_GOLDEN)
+                model.setClientState(new GameInitialDrawState(model));
+            else if (model.getMyPlayerState() == PlayerStates.PICK_OBJECTIVE)
+                model.setClientState(new GamePickObjectiveState(model));
+            else if (model.getMyPlayerState() == PlayerStates.PLACE)
+                model.setClientState(new GamePlaceState(model));
+        } else {
+            System.out.println("The operation failed! Please try again.\n");
+            print();
+        }
     }
 }

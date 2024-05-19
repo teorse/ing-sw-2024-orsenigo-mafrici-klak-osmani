@@ -21,6 +21,8 @@ import java.util.Map;
 public class ClientModel {
     //ATTRIBUTES
     boolean operationSuccesful;
+    boolean isGameOver;
+    boolean isSetUpFinished;
     String myUsername;
     PlayerStates myPlayerState;
     ClientConnector clientConnector;

@@ -77,8 +77,11 @@ public class GameStarterChoice extends ClientState {
      */
     @Override
     public void nextState() {
-        if (model.isOperationSuccesful() && model.getMyPlayerState() == PlayerStates.DRAW) {
-            model.setClientState(new GameInitialDrawState(model));
+        if (model.isOperationSuccesful()) {
+            if (model.getMyPlayerState() == PlayerStates.DRAW_RESOURCE)
+                model.setClientState(new GameInitialDrawState(model));
+            else if (model.getMyPlayerState() == PlayerStates.WAIT)
+                model.setClientState(new GameWaitState(model));
         } else {
             System.out.println("The operation failed! Please try again.\n");
             print();

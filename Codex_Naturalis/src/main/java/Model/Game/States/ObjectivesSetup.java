@@ -1,5 +1,6 @@
 package Model.Game.States;
 
+import Client.Model.Records.ObjectiveRecord;
 import Model.Game.CardPoolTypes;
 import Exceptions.Game.InvalidActionForGameStateException;
 import Exceptions.Game.InvalidActionForPlayerStateException;
@@ -10,6 +11,7 @@ import Model.Objectives.Objective;
 import Model.Player.Player;
 import Model.Player.PlayerStates;
 import Network.ServerClient.Packets.SCPUpdateClientGameState;
+import Network.ServerClient.Packets.SCPUpdateSecretObjectiveCandidates;
 import Server.Model.Lobby.ObserverRelay;
 
 import java.util.*;
@@ -54,11 +56,17 @@ public class ObjectivesSetup implements GameState{
 
         for(Player player : players){
             //Distribute objectives to players
-            List<Objective> candidates = new ArrayList<>(){{
-                add(table.drawObjective());
-                add(table.drawObjective());
-            }};
+            //TODO double curly brackets
+            List<Objective> candidates = new ArrayList<>();
+            candidates.add(table.drawObjective());
+            candidates.add(table.drawObjective());
+
             player.setSecretObjectiveCandidate(candidates);
+//            List<ObjectiveRecord> objectiveRecords = new ArrayList<>();
+//            for (Objective objective : candidates) {
+//                objectiveRecords.add(objective.toRecord());
+//            }
+//            gameObserverRelay.update(player.getUsername(), new SCPUpdateSecretObjectiveCandidates(objectiveRecords));
 
             //Add players to readiness map.
             playerReadiness.put(player, false);
@@ -70,6 +78,7 @@ public class ObjectivesSetup implements GameState{
             player.setPlayerState(PlayerStates.PICK_OBJECTIVE);
         gameObserverRelay.update(new SCPUpdateClientGameState(PlayerStates.PICK_OBJECTIVE));
     }
+
 
 
 
@@ -163,7 +172,7 @@ public class ObjectivesSetup implements GameState{
     public void userDisconnectionProcedure(Player player) {
         String username = player.getUsername();
 
-        System.out.println("Player "+username+" has disconnected from the game," +
+        System.out.println("Player " + username + " has disconnected from the game," +
                 "They have 90 seconds to reconnect before being kicked from the game");
     }
 

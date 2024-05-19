@@ -98,6 +98,7 @@ public class PlaceStarterCard implements GameState{
         gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.WAIT));
 
         playerReadiness.put(player, true);
+        nextState();
     }
 
     /**
