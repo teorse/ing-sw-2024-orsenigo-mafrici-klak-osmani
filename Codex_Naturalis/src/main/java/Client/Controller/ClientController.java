@@ -21,8 +21,8 @@ import java.util.logging.Logger;
  * and data based on server messages and user inputs.
  */
 public class ClientController  implements ServerMessageExecutor {
-    ClientModel model;
-    Logger logger;
+    private final ClientModel model;
+    private final Logger logger;
 
     //TODO fix updates methods
 
@@ -336,13 +336,10 @@ public class ClientController  implements ServerMessageExecutor {
         logger.info("updateSpecificPlayer method called.");
         logger.fine("Received player: " + player);
 
-        int i = 0;
-        for(PlayerRecord playerRecord : model.getPlayerRecords()) {
+        for(PlayerRecord playerRecord : model.getPlayerCardMapRecord().keySet()) {
             if (playerRecord.nickname().equals(player.nickname())) {
-                model.getPlayerRecords().remove(i);
-                model.getPlayerRecords().add(player);
-            } else
-                i++;
+                model.getPlayerCardMapRecord().put(player,model.getPlayerCardMapRecord().get(playerRecord));
+            }
         }
     }
 
@@ -364,7 +361,7 @@ public class ClientController  implements ServerMessageExecutor {
         logger.fine("Received cardMap: " + cardMap);
 
         PlayerRecord playerRecord = null;
-        for (PlayerRecord pr : model.getPlayerRecords()) {
+        for (PlayerRecord pr : model.getPlayerCardMapRecord().keySet()) {
             if (pr.nickname().equals(ownerUsername))
                 playerRecord = pr;
         }
