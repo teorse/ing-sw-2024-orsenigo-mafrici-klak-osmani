@@ -154,7 +154,7 @@ public class ClientModel {
         this.objectiveRecords = objectiveRecords;
     }
     public void setPlayerRecords(List<PlayerRecord> playerRecords) {
-        this.playerRecords = playerRecords;
+        this.playerRecords = Collections.unmodifiableList(playerRecords);
     }
     public void setPlayerSecretInfoRecord(PlayerSecretInfoRecord playerSecretInfoRecord) {
         this.playerSecretInfoRecord = playerSecretInfoRecord;

@@ -107,36 +107,6 @@ public class TextUI extends UserInterface {
 
     //GET METHODS (Verify if the input is valid otherwise return null)
     /**
-     * Retrieves a {@code PlayerRecord} based on user input.
-     *
-     * <p>This method prompts the user to input an integer representing their choice of player.
-     * It validates the input to ensure it is a valid integer within the range of available players.
-     * If the input is invalid, it prints an error message and returns null.
-     * If the input is valid, it returns the corresponding {@code PlayerRecord} from the list of players.
-     *
-     * @param input the user input string representing the player choice
-     * @return the selected {@code PlayerRecord}, or {@code null} if the input is invalid
-     */
-    public PlayerRecord getInputPlayer(String input) {
-        List<PlayerRecord> playerRecords = new ArrayList<>(model.getPlayerCardMapRecord().keySet());
-        int choice;
-
-        try {
-            choice = Integer.parseInt(input);
-        } catch (NumberFormatException e) {
-            out.println("Invalid format input. Please enter an int between 1 and " + playerRecords.size());
-            return null;
-        }
-
-        if (choice >= 1 && choice <= playerRecords.size()) {
-            return playerRecords.get(choice - 1);
-        } else {
-            out.println("Invalid choice. Please enter an int between 1 and " + playerRecords.size());
-            return null;
-        }
-    }
-
-    /**
      * Gets the coordinates based on user input.
      *
      * <p>This method prompts the user to input coordinates in the format of a row and a column (e.g., "A B").
@@ -169,7 +139,7 @@ public class TextUI extends UserInterface {
         int x = (int) (readCoords[1].toUpperCase().charAt(1)) - 'A' - maxCoordinate;
         coordinatesView = new Coordinates(x,y);
 
-        if (model.getPlayerCardMapRecord().get(myPlayerRecord(model)).cardsPlaced().get(coordinatesView) != null) {
+        if (model.getPlayerCardMapRecord().get(TextUI.usernameToPlayerRecord(model, model.getMyUsername())).cardsPlaced().get(coordinatesView) != null) {
             return coordinatesView;
         } else {
             out.println("Insert a row [A - " + (char) (maxBoardSide + 'A') + "]" +
@@ -179,7 +149,7 @@ public class TextUI extends UserInterface {
     }
 
     public boolean isAvaiableCoordinates(Coordinates coordinates) {
-        return model.getPlayerCardMapRecord().get(myPlayerRecord(model)).availablePlacements().contains(coordinates);
+        return model.getPlayerCardMapRecord().get(TextUI.usernameToPlayerRecord(model, model.getMyUsername())).availablePlacements().contains(coordinates);
     }
 
 
@@ -228,16 +198,18 @@ public class TextUI extends UserInterface {
         //Retrieve the list of cards held by the player
         Map<CardRecord,Boolean> cardsHeld = model.getPlayerSecretInfoRecord().cardsHeld();
 
+        int i = 1;
+
         //Loop through the map of cards held by the player
         for (CardRecord cardRecord : cardsHeld.keySet()) {
-            int i = 1;
+
             //Print if the card can be placed on both sides
-            out.println(i + " - This card can be placed on both sides: " + cardsHeld.get(cardRecord));
+            out.println(i++ + " - This card can be placed on both sides: " + cardsHeld.get(cardRecord));
 
             //Show the details of the card
             showCardDetails(cardRecord);
         }
-        displayArtifact(UserInterface.myPlayerRecord(model));
+        displayArtifact(TextUI.usernameToPlayerRecord(model, model.getMyUsername()));
     }
 
     /**
@@ -291,9 +263,7 @@ public class TextUI extends UserInterface {
         showSharedObjectives(model.getGameRecord());
         showObjective(model.getPlayerSecretInfoRecord().secretObjectives());
         showPoints();
-        for (PlayerRecord playerRecord : model.getPlayerRecords()) {
-            showCardMap(playerRecord);
-        }
+        showCardMaps(model.getPlayerRecords());
     }
 
     /**
@@ -440,19 +410,14 @@ public class TextUI extends UserInterface {
      * for each player along with their nickname.
      */
     public void showPoints() {
-        // TODO fixare il metodo aggiungendo myPR
         out.println("POINTS TABLE (You are the player in green, while the ones in red are disconnected)");
-        for(PlayerRecord playerRecord : model.getPlayerCardMapRecord().keySet()) {
-            for (LobbyUserRecord lobbyUserRecord : model.getLobbyUserRecords()) {
-                if (playerRecord.nickname().equals(lobbyUserRecord.username())) {
-                    if (playerRecord.nickname().equals(model.getMyUsername())) {
-                        out.println(TerminalColor.GREEN_BRIGHT + playerRecord.nickname() + TerminalColor.RESET + ": " + playerRecord.points());
-                    } else if (lobbyUserRecord.connectionStatus() == LobbyUserConnectionStates.OFFLINE) {
-                        out.println(TerminalColor.RED_BRIGHT + playerRecord.nickname() + TerminalColor.RESET + ": " + playerRecord.points());
-                    }
-                }
-            }
-            out.println(playerRecord.nickname() + ": " + playerRecord.points());
+        for (PlayerRecord playerRecord : model.getPlayerRecords()) {
+            if (playerRecord.nickname().equals(model.getMyUsername()))
+                out.println(TerminalColor.GREEN_BRIGHT + playerRecord.nickname() + TerminalColor.RESET + ": " + playerRecord.points());
+            else if (usernameToLobbyUserRecord(model, playerRecord.nickname()).connectionStatus() == LobbyUserConnectionStates.OFFLINE)
+                out.println(TerminalColor.RED_BRIGHT + playerRecord.nickname() + TerminalColor.RESET + ": " + playerRecord.points());
+            else
+                out.println(playerRecord.nickname() + ": " + playerRecord.points());
         }
     }
 
@@ -473,7 +438,7 @@ public class TextUI extends UserInterface {
      * - If it's an empty grid area with an odd coordinate sum, it shows a BLACK square.
      * - Otherwise, it resets to default color.
      */
-    public void showCard(PlayerRecord playerRecord, Coordinates coordinates) {
+    public String showCard(PlayerRecord playerRecord, Coordinates coordinates) {
         CardMapRecord cardMapRecord = model.getPlayerCardMapRecord().get(playerRecord);
 
         //Check if there is a card placed at the specified coordinates
@@ -482,78 +447,98 @@ public class TextUI extends UserInterface {
             Artifacts cardColor = cardMapRecord.getCardVisibilityRecord(coordinates).cardColor();
             //Display the background color based on the card's artifact type
             switch (cardColor) {
-                case ANIMAL -> out.print(TerminalColor.BLUE_BACKGROUND_BRIGHT + "   ");
-                case FUNGI -> out.print(TerminalColor.RED_BACKGROUND_BRIGHT + "   ");
-                case INSECT -> out.print(TerminalColor.PURPLE_BACKGROUND_BRIGHT + "   ");
-                case PLANT -> out.print(TerminalColor.GREEN_BACKGROUND_BRIGHT + "   ");
-                case NULL -> out.print(TerminalColor.YELLOW_BACKGROUND_BRIGHT + "   ");
+                case ANIMAL -> {
+                    return (TerminalColor.BLUE_BACKGROUND_BRIGHT + "   ");
+                }
+                case FUNGI -> {
+                    return(TerminalColor.RED_BACKGROUND_BRIGHT + "   ");
+                }
+                case INSECT -> {
+                    return(TerminalColor.PURPLE_BACKGROUND_BRIGHT + "   ");
+                }
+                case PLANT -> {
+                    return(TerminalColor.GREEN_BACKGROUND_BRIGHT + "   ");
+                }
+                case NULL -> {
+                    return(TerminalColor.YELLOW_BACKGROUND_BRIGHT + "   ");
+                }
             }
         }
         //Check if the given coordinates are available for placement
         else if (cardMapRecord.availablePlacements().contains(coordinates)) {
-            out.print(TerminalColor.WHITE_BACKGROUND_BRIGHT + " x "); // Indicate available placement
+            return (TerminalColor.WHITE_BACKGROUND_BRIGHT + " x "); // Indicate available placement
         }
         //Check if the given coordinates are part of a checkerboard pattern (odd sum of x and y)
         else if (((Math.abs(coordinates.getCoordX()) + (Math.abs(coordinates.getCoordY()))) % 2) != 0) {
-            out.print(TerminalColor.BLACK_BACKGROUND + "   "); //Black background for odd squares
+            return (TerminalColor.BLACK_BACKGROUND + "   "); //Black background for odd squares
         } else {
-            out.print(TerminalColor.RESET + "   "); //Reset for even squares
+            return (TerminalColor.RESET + "   "); //Reset for even squares
         }
+        return null;
     }
 
 
     /**
-     * Displays the card map, showing the current state of the game's map with placed cards and available placements.
-     * <p>
-     * The output represents a square grid with coordinates labeled from A onward, both for rows and columns.
-     * The grid uses specific colors to represent the following:
-     * - Placed cards:
-     *   - BLUE for Animal cards
-     *   - RED for Fungi cards
-     *   - PURPLE for Insect cards
-     *   - GREEN for Plant cards
-     *   - YELLOW for Starter cards
-     * - Available placements are shown with a WHITE square containing an "x".
-     * - Grid areas without a card placement alternate between BLACK and default color for visual separation.
-     * <p>
-     * The display includes a header indicating "CARD MAP" and provides a grid structure with corresponding row and column labels.
+     * Displays the card maps of multiple players side by side on the terminal.
+     *
+     * <p>This method prints the card maps of each player horizontally aligned,
+     * allowing for easy comparison and viewing of multiple players' card maps simultaneously.
+     *
+     * @param playerRecords a list of PlayerRecord objects representing the players whose card maps are to be displayed
      */
-    public void showCardMap(PlayerRecord playerRecord) {
+    public void showCardMaps(List<PlayerRecord> playerRecords) {
         int maxCoordinate = this.maxCoordinate();
         int maxBoardSide = (maxCoordinate * 2) + 3;
 
-        //Print spacing for aligning the title
-        for (int i = 0; i < maxCoordinate; i++) {
-            out.print("   ");
-        }
+        // List to hold rows for each player's map
+        List<List<String>> maps = new ArrayList<>();
 
-        //Print the title "CARD MAP"
-        out.println(playerRecord.nickname() + "'s Card Map");
+        // Prepare the card maps for each player
+        for (PlayerRecord playerRecord : playerRecords) {
+            List<String> mapRows = new ArrayList<>();
 
-        //Print the column headers (A, B, C, ...)
-        out.print(" ");
-        for (int i = 0; i < maxBoardSide; i++) {
-            out.print("  " + (char) (i + 65)); //'A' corresponds to ASCII value 65
-        }
-        out.println();
+            // Title
+            String title = playerRecord.nickname() + "'s Card Map";
+            int padding = (maxBoardSide * 3 + 2 - title.length()) / 2;
+            String titleRow = " ".repeat(padding) + title + " ".repeat(padding) + "   ";
+            mapRows.add(titleRow);
 
-        //Print the board row by row
-        for (int j = 0; j < maxBoardSide; j++) { //Iterate through each row
-            out.print((char) (j + 65) + " "); //Print the row header
+            // Column headers (A, B, C, ...)
+            StringBuilder headerRow = new StringBuilder(" ");
+            for (int i = 0; i < maxBoardSide; i++) {
+                headerRow.append("  ").append((char) (i + 65)); //'A' corresponds to ASCII value 65
+            }
+            headerRow.append(" ");
+            mapRows.add(headerRow.toString());
 
-            for (int k = 0; k < maxBoardSide; k++) { //Iterate through each column
-                //Display the card at the specified coordinates
-                showCard(playerRecord, new Coordinates(k - maxCoordinate, j - maxCoordinate));
-                //Reset the terminal color after displaying each card
-                out.print(TerminalColor.RESET);
+            // Card map rows
+            for (int j = 0; j < maxBoardSide; j++) {
+                StringBuilder row = new StringBuilder();
+                row.append((char) (j + 65)).append(" "); // Row header
+
+                for (int k = 0; k < maxBoardSide; k++) {
+                    row.append(showCard(playerRecord, new Coordinates(k - maxCoordinate - 1, -j + maxCoordinate + 1)));
+                    row.append(TerminalColor.RESET);
+                }
+
+                mapRows.add(row.toString());
             }
 
-            out.println(); //New line after each row
+            maps.add(mapRows);
         }
 
-        out.println(); //Extra space at the end of the board
-    }
+        // Print the maps side by side
+        int totalRows = maps.getFirst().size(); // Assumes all maps have the same number of rows
+        for (int i = 0; i < totalRows; i++) {
+            for (List<String> map : maps) {
+                out.print(map.get(i));
+                out.print("   "); // Add some space between maps
+            }
+            out.println();
+        }
 
+        out.println(); // Extra space at the end
+    }
 
     /**
      * Displays the current artifact counter, listing the types of artifacts and their corresponding quantities.
@@ -600,6 +585,6 @@ public class TextUI extends UserInterface {
                 }
             }
         }
-        return mbs;
+        return Math.max(mbs, 5);
     }
 }
