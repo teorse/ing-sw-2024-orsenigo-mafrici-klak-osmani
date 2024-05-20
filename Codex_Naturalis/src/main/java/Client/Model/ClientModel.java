@@ -6,10 +6,7 @@ import Client.Model.States.ConnectionState;
 import Client.Network.ClientConnector;
 import Model.Player.PlayerStates;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The ClientModel class represents the client-side data model for the game.
@@ -50,8 +47,8 @@ public class ClientModel {
         this.cardStarterRecords = new ArrayList<>();
         this.lobbyPreviewRecords = new ArrayList<>();
         this.lobbyUserRecords = new ArrayList<>();
-        this.objectiveRecords = new ArrayList<>();
         this.playerRecords = new ArrayList<>();
+        this.objectiveRecords = new ArrayList<>();
         this.winners = new ArrayList<>();
         clientState = new ConnectionState(this);
     }
@@ -93,7 +90,7 @@ public class ClientModel {
         return objectiveRecords;
     }
     public List<PlayerRecord> getPlayerRecords() {
-        return playerRecords;
+        return Collections.unmodifiableList(playerRecords);
     }
     public PlayerSecretInfoRecord getPlayerSecretInfoRecord() {
         return playerSecretInfoRecord;
@@ -110,6 +107,10 @@ public class ClientModel {
     public List<ObjectiveRecord> getObjectiveCandidates() {
         return objectiveCandidates;
     }
+
+
+
+
 
     //SETTERS
     public void setOperationSuccesful(boolean operationSuccesful) {

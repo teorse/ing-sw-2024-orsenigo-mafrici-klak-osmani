@@ -3,6 +3,7 @@ package Client.Model.States;
 import Client.Model.ClientModel;
 import Client.Model.Records.ObjectiveRecord;
 import Client.View.TextUI;
+import Model.Player.PlayerStates;
 import Network.ClientServer.Packets.CSPPickObjective;
 
 /**
@@ -40,11 +41,11 @@ public class GamePickObjectiveState extends ClientState{
     @Override
     public void print() {
         int i = 1;
-        System.out.println("Choose a secret objective: ");
+        System.out.println("Choose a secret objective: \n");
         for (ObjectiveRecord objectiveRecord : model.getObjectiveCandidates()) {
             System.out.print(i + " - ");
             textUI.showObjective(objectiveRecord);
-            System.out.println("\n");
+            System.out.println();
             i++;
         }
     }
@@ -69,6 +70,17 @@ public class GamePickObjectiveState extends ClientState{
 
     @Override
     public void nextState() {
-        nextGameState();
+        if (model.isOperationSuccesful()) {
+            if (myPR.playerState() == PlayerStates.WAIT) {
+                System.out.println("Entered the PlayerStates.WAIT branch in nextState method of GamePickObjectiveState class");
+                model.setClientState(new GameWaitState(model));
+            } else if (myPR.playerState() == PlayerStates.PLACE) {
+                System.out.println("Entered the PlayerStates.PLACE branch in nextState method of GamePickObjectiveState class");
+                model.setClientState(new GamePlaceState(model));
+            }
+        } else {
+            System.out.println("The operation failed! Please try again.\n");
+            print();
+        }
     }
 }
