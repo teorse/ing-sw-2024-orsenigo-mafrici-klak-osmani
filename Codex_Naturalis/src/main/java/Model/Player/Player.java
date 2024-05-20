@@ -163,7 +163,7 @@ public class Player implements LayerUser {
         CardPlayability cardPlayability;
 
         try {
-             cardPlayability = cardsHeld.get(cardIndex);
+             cardPlayability = cardsHeld.remove(cardIndex);
         }
         catch (IndexOutOfBoundsException i){
             throw new RuntimeException("Index provided is not a valid index");
