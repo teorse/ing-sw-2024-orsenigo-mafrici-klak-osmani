@@ -31,7 +31,7 @@ public class ServerMain {
         }
 
         Logger logger = Logger.getLogger(ServerMain.class.getName());
-        logger.info("Application started");
+        logger.info("Server started");
 
 
 

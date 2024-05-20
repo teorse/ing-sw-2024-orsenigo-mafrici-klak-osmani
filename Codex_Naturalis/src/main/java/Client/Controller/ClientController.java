@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import static Client.View.UserInterface.myPlayerRecord;
-
 /**
  * The ClientController class manages client-side operations and interactions with the server.
  * <p>

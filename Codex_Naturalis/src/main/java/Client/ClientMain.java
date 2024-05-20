@@ -17,7 +17,7 @@ public class ClientMain {
     public static void main(String[] args) {
 
         String timestamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date());
-        String LogFileName = "Client:_"+timestamp;
+        String LogFileName = "Client:_"+timestamp+".log";
 
         //Setting up the logger
         //Give each client a different file to write to
