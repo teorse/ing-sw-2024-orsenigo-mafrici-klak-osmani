@@ -156,7 +156,7 @@ public abstract class UserInterface {
         if(choice >= lowerBound && choice <= upperBound)
             return true;
         else {
-            System.out.println("Invalid input: number must be between " + lowerBound + "and " + upperBound + "\n");
+            System.out.println("Invalid input: number must be between " + lowerBound + " and " + upperBound + "\n");
             return false;
         }
 
@@ -214,13 +214,14 @@ public abstract class UserInterface {
      * @param model The ClientModel containing player records and user information.
      * @return The PlayerRecord corresponding to the current user, or null if not found.
      */
-    public static PlayerRecord myPlayerRecord(ClientModel model) {
-        PlayerRecord myPR = null;
+    public static PlayerRecord usernameToPlayerRecord(ClientModel model, String username) {
+        PlayerRecord PR = null;
         for (PlayerRecord playerRecord : model.getPlayerRecords()) {
-            if(playerRecord.nickname().equals(model.getMyUsername()))
-                myPR = playerRecord;
+            if(playerRecord.nickname().equals(username)) {
+                PR = playerRecord;
+            }
         }
-        return myPR;
+        return PR;
     }
 
     /**
@@ -232,13 +233,13 @@ public abstract class UserInterface {
      * @param model The ClientModel containing lobby user records and user information.
      * @return The LobbyUserRecord corresponding to the current user, or null if not found.
      */
-    public static LobbyUserRecord myLobbyUserRecord(ClientModel model) {
-        LobbyUserRecord myLUR = null;
+    public static LobbyUserRecord usernameToLobbyUserRecord(ClientModel model, String username) {
+        LobbyUserRecord LUR = null;
         for (LobbyUserRecord lobbyUserRecord : model.getLobbyUserRecords()) {
-            if (lobbyUserRecord.username().equals(model.getMyUsername()))
-                myLUR = lobbyUserRecord;
+            if (lobbyUserRecord.username().equals(username))
+                LUR = lobbyUserRecord;
         }
-        return myLUR;
+        return LUR;
     }
 
     /**
