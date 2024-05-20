@@ -434,7 +434,7 @@ public class ClientController  implements ServerMessageExecutor {
         logger.info("updateSecretObjectiveCandidates method called.");
         logger.fine("Received candidates: " + candidates);
 
-        model.setObjectiveRecords(candidates);
+        model.setObjectiveCandidates(candidates);
     }
 
     /**
