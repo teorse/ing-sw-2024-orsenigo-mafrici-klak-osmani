@@ -10,6 +10,7 @@ import Network.ServerClient.ServerMessageExecutor;
 
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import static Client.View.UserInterface.myPlayerRecord;
 
@@ -23,11 +24,14 @@ import static Client.View.UserInterface.myPlayerRecord;
  */
 public class ClientController  implements ServerMessageExecutor {
     ClientModel model;
+    Logger logger;
 
     //TODO fix updates methods
 
     public ClientController(ClientModel clientModel) {
         this.model = clientModel;
+
+        logger = Logger.getLogger(ClientController.class.getName());
     }
 
     public void handleInput(String input) {
@@ -44,6 +48,9 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void connectionAck(String serverNotification) {
+        logger.info("connectionAck method called.");
+        logger.fine("Received serverNotification: " + serverNotification);
+
         model.setOperationSuccesful(true);
         model.nextState();
     }
@@ -59,6 +66,10 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void loginFailed(ErrorsDictionary errorCause) {
+
+        logger.info("loginFailed method called.");
+        logger.fine("Received errorCause: " + errorCause);
+
         model.setOperationSuccesful(false);
         switch (errorCause) {
             case WRONG_PASSWORD -> System.out.println("Wrong password.");
@@ -80,6 +91,10 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void loginSuccess(String username) {
+
+        logger.info("loginSuccess method called.");
+        logger.fine("Received username: " + username);
+
         model.setOperationSuccesful(true);
         model.setMyUsername(username);
         model.nextState();
@@ -96,6 +111,10 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void signUpFailed(ErrorsDictionary errorCause) {
+
+        logger.info("signUpFailed method called.");
+        logger.fine("Received errorCause: " + errorCause);
+
         model.setOperationSuccesful(false);
         switch (errorCause) {
             case USERNAME_ALREADY_TAKEN -> System.out.println("Username already taken.");
@@ -114,6 +133,10 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void signUpSuccess(String username) {
+
+        logger.info("signUpSuccess method called.");
+        logger.fine("Received username: " + username);
+
         model.setOperationSuccesful(true);
         model.setMyUsername(username);
         model.nextState();
@@ -131,6 +154,11 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void joinLobbySuccessful(LobbyRecord lobbyRecord, List<LobbyUserRecord> lobbyUsers) {
+
+        logger.info("joinLobbySuccessful method called.");
+        logger.fine("Received lobbyRecord: " + lobbyRecord);
+        logger.fine("Received lobbyUsers: " + lobbyUsers);
+
         model.setOperationSuccesful(true);
         model.setLobbyRecord(lobbyRecord);
         model.setLobbyUserRecords(lobbyUsers);
@@ -148,6 +176,10 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void joinLobbyFailed(ErrorsDictionary errorCause) {
+
+        logger.info("joinLobbyFailed method called.");
+        logger.fine("Received errorCause: " + errorCause);
+
         model.setOperationSuccesful(false);
         switch (errorCause) {
             case LOBBY_IS_CLOSED -> System.out.println("Lobby closed.");
@@ -169,6 +201,11 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void startLobbySuccess(LobbyRecord lobbyRecord, List<LobbyUserRecord> lobbyUsers) {
+
+        logger.info("startLobbySuccess method called.");
+        logger.fine("Received lobbyRecord: " + lobbyRecord);
+        logger.fine("Received lobbyUsers: " + lobbyUsers);
+
         model.setOperationSuccesful(true);
         model.setLobbyRecord(lobbyRecord);
         model.setLobbyUserRecords(lobbyUsers);
@@ -186,6 +223,10 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void startLobbyFailed(ErrorsDictionary errorCause) {
+
+        logger.info("startLobbyFailed method called.");
+        logger.fine("Received errorCause: " + errorCause);
+
         model.setOperationSuccesful(false);
         switch (errorCause) {
             case GENERIC_ERROR -> System.out.println("Generic error.");
@@ -206,6 +247,10 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void updateLobbyPreviews(List<LobbyPreviewRecord> lobbyPreviewRecords) {
+
+        logger.info("updateLobbyPreviews method called.");
+        logger.fine("Received lobbyPreviewRecords: " + lobbyPreviewRecords);
+
         model.setLobbyPreviewRecords(lobbyPreviewRecords);
         TextUI.clearCMD();
         TextUI.displayGameTitle();
@@ -223,6 +268,10 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void updateLobbyUsers(List<LobbyUserRecord> lobbyUsers) {
+
+        logger.info("updateLobbyUsers method called.");
+        logger.fine("Received lobbyUsers: " + lobbyUsers);
+
         model.setLobbyUserRecords(lobbyUsers);
         TextUI.clearCMD();
         TextUI.displayGameTitle();
@@ -243,6 +292,13 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void gameStarted(Map<PlayerRecord, CardMapRecord> players, PlayerSecretInfoRecord secret, TableRecord table, GameRecord game) {
+
+        logger.info("gameStarted method called.");
+        logger.fine("Received players: " + players);
+        logger.fine("Received secret: " + secret);
+        logger.fine("Received table: " + table);
+        logger.fine("Received game: " + game);
+
         model.setPlayerCardMapRecord(players);
         model.setPlayerSecretInfoRecord(secret);
         model.setTableRecord(table);
@@ -260,6 +316,10 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void updatePlayers(Map<PlayerRecord, CardMapRecord> players) {
+
+        logger.info("updatePlayers method called.");
+        logger.fine("Received players: " + players);
+
         model.setPlayerCardMapRecord(players);
     }
 
@@ -274,6 +334,10 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void updateSpecificPlayer(PlayerRecord player) {
+
+        logger.info("updateSpecificPlayer method called.");
+        logger.fine("Received player: " + player);
+
         int i = 0;
         for(PlayerRecord playerRecord : model.getPlayerRecords()) {
             if (playerRecord.nickname().equals(player.nickname())) {
@@ -296,6 +360,11 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void updateCardMap(String ownerUsername, CardMapRecord cardMap) {
+
+        logger.info("updateCardMap method called.");
+        logger.fine("Received ownerUsername: " + ownerUsername);
+        logger.fine("Received cardMap: " + cardMap);
+
         PlayerRecord playerRecord = null;
         for (PlayerRecord pr : model.getPlayerRecords()) {
             if (pr.nickname().equals(ownerUsername))
@@ -313,6 +382,10 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void updateSecret(PlayerSecretInfoRecord secret) {
+
+        logger.info("updateSecret method called.");
+        logger.fine("Received secret: " + secret);
+
         model.setPlayerSecretInfoRecord(secret);
     }
 
@@ -325,6 +398,10 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void updateTable(TableRecord table) {
+
+        logger.info("updateTable method called.");
+        logger.fine("Received table: " + table);
+
         model.setTableRecord(table);
     }
 
@@ -337,6 +414,10 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void updateGame(GameRecord game) {
+
+        logger.info("updateGame method called.");
+        logger.fine("Received game: " + game);
+
         model.setGameRecord(game);
     }
 
@@ -349,6 +430,10 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void updateSecretObjectiveCandidates(List<ObjectiveRecord> candidates) {
+
+        logger.info("updateSecretObjectiveCandidates method called.");
+        logger.fine("Received candidates: " + candidates);
+
         model.setObjectiveRecords(candidates);
     }
 
@@ -362,6 +447,10 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void updateClientGameState(PlayerStates newState) {
+
+        logger.info("updateClientGameState method called.");
+        logger.fine("Received newState: " + newState);
+
         model.setOperationSuccesful(true);
         model.setMyPlayerState(newState);
         if (newState == PlayerStates.PICK_OBJECTIVE)
@@ -379,6 +468,10 @@ public class ClientController  implements ServerMessageExecutor {
      */
     @Override
     public void gameOver(List<PlayerRecord> players) {
+
+        logger.info("gameOver method called.");
+        logger.fine("Received players: " + players);
+
         model.setOperationSuccesful(true);
         model.setGameOver(true);
         model.setWinners(players);
