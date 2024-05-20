@@ -95,13 +95,9 @@ public class GamePlaceState extends ClientState{
     @Override
     public void nextState() {
         if (model.isOperationSuccesful()) {
-            if (!UserInterface.isLastOnlinePlayer(model)) {
-                myPR = UserInterface.myPlayerRecord(model);
-                if (myPR.playerState() == PlayerStates.DRAW) {
-                    model.setClientState(new GameDrawState(model));
-                }
-            } else
-                model.setClientState(new GameOverState(model));
+            if (myPR.playerState() == PlayerStates.DRAW) {
+                model.setClientState(new GameDrawState(model));
+            }
         } else {
             System.out.println("The operation failed! Please try again.\n");
             print();

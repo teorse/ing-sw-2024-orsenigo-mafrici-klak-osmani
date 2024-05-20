@@ -7,6 +7,8 @@ import Client.View.TextUI;
 import Client.View.UserInterface;
 import Model.Player.PlayerStates;
 
+import java.util.logging.Logger;
+
 /**
  * Abstract class representing the state of the client in the game.
  * <p>
@@ -35,8 +37,7 @@ public abstract class ClientState {
     public ClientState(ClientModel model) {
         this.model = model;
         this.textUI = new TextUI(model);
-        this.myPR = TextUI.myPlayerRecord(model);
-        this.myLUR = TextUI.myLobbyUserRecord(model);
+        this.myPR = TextUI.usernameToPlayerRecord(model,model.getMyUsername());
         this.inputCounter = 0;
         this.model.setOperationSuccesful(false);
     }
@@ -48,32 +49,5 @@ public abstract class ClientState {
 
     public abstract void nextState();
 
-    /**
-     * Determines the next state of the client based on the current game state and operation success.
-     * <p>
-     * If the previous operation was successful and the game is ongoing:
-     * - If the player is not the last online player and their state is "WAIT", transitions to the GameWaitState.
-     * - If the player's state is "PLACE", transitions to the GamePlaceState to allow the player to place a card.
-     * If the game is over (all players finished), transitions to the GameOverState.
-     * If the operation fails, prints an error message and remains in the current state, prompting the user to try again.
-     */
-    //Used by GamePickObjective and GameWaitState to move from a wait state
-    void nextGameState() {
-        //TODO il server manda un pacchetto quando finisce il game
-        if (model.isOperationSuccesful()) {
-            if (!UserInterface.isLastOnlinePlayer(model)) {
-                myPR = UserInterface.myPlayerRecord(model);
-                if (myPR.playerState() == PlayerStates.WAIT) {
-                    model.setClientState(new GameWaitState(model));
-                } else if (myPR.playerState() == PlayerStates.PLACE) {
-                    model.setClientState(new GamePlaceState(model));
-                }
-            } else
-                model.setClientState(new GameOverState(model));
-        } else {
-            System.out.println("The operation failed! Please try again.\n");
-            print();
-        }
-    }
 }
 

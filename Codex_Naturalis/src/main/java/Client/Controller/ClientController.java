@@ -7,6 +7,7 @@ import Client.View.TextUI;
 import Model.Player.PlayerStates;
 import Network.ServerClient.Packets.ErrorsDictionary;
 import Network.ServerClient.ServerMessageExecutor;
+import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Map;
@@ -298,6 +299,7 @@ public class ClientController  implements ServerMessageExecutor {
         logger.fine("Received game: " + game);
 
         model.setPlayerCardMapRecord(players);
+        model.setPlayerRecords(new ArrayList<>(players.keySet()));
         model.setPlayerSecretInfoRecord(secret);
         model.setTableRecord(table);
         model.setGameRecord(game);

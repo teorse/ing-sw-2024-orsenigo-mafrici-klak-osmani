@@ -125,6 +125,7 @@ public class GameWaitState extends ClientState{
                 if (choice == 1) {
                     if (TextUI.checkInputBound(input, 1, model.getPlayerRecords().size())) {
                         choosenplayerRecord = model.getPlayerRecords().get(Integer.parseInt(input));
+                        inputCounter++;
                     }
                     print();
                 } else if (choice == 3) {
