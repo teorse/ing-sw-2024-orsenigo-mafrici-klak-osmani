@@ -6,6 +6,8 @@ import Client.View.TextUI;
 import Model.Player.PlayerStates;
 import Network.ClientServer.Packets.CSPPickObjective;
 
+import java.util.logging.Logger;
+
 /**
  * Represents the state in which the player picks a secret objective card during the game.
  * <p>
@@ -17,6 +19,8 @@ import Network.ClientServer.Packets.CSPPickObjective;
  */
 public class GamePickObjectiveState extends ClientState{
 
+    private final Logger logger;
+
     /**
      * Constructs a new GamePickObjectiveState with the specified client model.
      * <p>
@@ -27,9 +31,15 @@ public class GamePickObjectiveState extends ClientState{
      */
     public GamePickObjectiveState(ClientModel model) {
         super(model);
+
+        logger = Logger.getLogger(GamePickObjectiveState.class.getName());
+        logger.info("Initializing GamePickObjectiveState");
+
         TextUI.clearCMD();
         TextUI.displayGameTitle();
         print();
+
+        logger.fine("GamePickObjectiveState initialized");
     }
 
     /**
@@ -70,12 +80,16 @@ public class GamePickObjectiveState extends ClientState{
 
     @Override
     public void nextState() {
+        logger.info("Choosing next state");
+
         if (model.isOperationSuccesful()) {
-            if (myPR.playerState() == PlayerStates.WAIT) {
-                System.out.println("Entered the PlayerStates.WAIT branch in nextState method of GamePickObjectiveState class");
+            logger.fine("Operation Successful flag is true");
+            logger.fine("Current value of myPR State: "+myPR.playerState());
+            if (model.getMyPlayerState() == PlayerStates.WAIT) {
+                logger.fine("Entering GameWaitState");
                 model.setClientState(new GameWaitState(model));
-            } else if (myPR.playerState() == PlayerStates.PLACE) {
-                System.out.println("Entered the PlayerStates.PLACE branch in nextState method of GamePickObjectiveState class");
+            } else if (model.getMyPlayerState() == PlayerStates.PLACE) {
+                logger.fine("Entering GamePlaceState");
                 model.setClientState(new GamePlaceState(model));
             }
         } else {

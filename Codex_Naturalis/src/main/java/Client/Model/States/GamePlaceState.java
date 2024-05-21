@@ -6,6 +6,8 @@ import Client.View.UserInterface;
 import Model.Player.PlayerStates;
 import Model.Utility.Coordinates;
 
+import java.util.logging.Logger;
+
 /**
  * Represents the state where the player places a card on the game board during their turn.
  * Upon entering this state, the command-line interface is cleared, and a message indicating that it's the player's turn is displayed.
@@ -16,6 +18,8 @@ public class GamePlaceState extends ClientState{
     int coordinateIndex;
     boolean faceUp;
 
+    private final Logger logger;
+
     /**
      * Constructs a new GamePlace state with the specified client model
      *
@@ -23,9 +27,12 @@ public class GamePlaceState extends ClientState{
      */
     public GamePlaceState(ClientModel model) {
         super(model);
+        logger = Logger.getLogger(GamePlaceState.class.getName());
+        logger.info("Initializing GamePlaceState");
         TextUI.clearCMD();
         System.out.println("It's your turn!");
         print();
+        logger.fine("GamePlaceState initialized");
     }
 
     /**
@@ -95,7 +102,7 @@ public class GamePlaceState extends ClientState{
     @Override
     public void nextState() {
         if (model.isOperationSuccesful()) {
-            if (myPR.playerState() == PlayerStates.DRAW) {
+            if (model.getMyPlayerState() == PlayerStates.DRAW) {
                 model.setClientState(new GameDrawState(model));
             }
         } else {

@@ -277,6 +277,19 @@ public class ClientController  implements ServerMessageExecutor {
         model.print();
     }
 
+    @Override
+    public void updateLobby(LobbyRecord lobby) {
+        logger.info("updateLobby method called.");
+        logger.fine("Received lobby: " + lobby);
+        //todo
+    }
+
+    @Override
+    public void changeColorFailed() {
+        logger.info("changeColorFailed method called");
+        //todo
+    }
+
     /**
      * Signals the client that the game has started and provides initial game data.
      * <p>

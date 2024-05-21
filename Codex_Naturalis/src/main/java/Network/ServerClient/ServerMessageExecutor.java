@@ -31,6 +31,10 @@ public interface ServerMessageExecutor extends Serializable {
 
     void updateLobbyUsers(List<LobbyUserRecord> lobbyUsers);
 
+    void updateLobby(LobbyRecord lobby);
+
+    void changeColorFailed();
+
     void gameStarted(Map<PlayerRecord, CardMapRecord> players, PlayerSecretInfoRecord secret, TableRecord table, GameRecord game);
 
     void updatePlayers(Map<PlayerRecord, CardMapRecord> players);

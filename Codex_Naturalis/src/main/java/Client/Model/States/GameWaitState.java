@@ -7,6 +7,8 @@ import Model.Game.CardPoolTypes;
 import Model.Player.PlayerStates;
 import Model.Utility.Coordinates;
 
+import java.util.logging.Logger;
+
 /**
  * Represents the state of the client when waiting for the game to start.
  * Upon entering this state, the command line interface is cleared, and the appropriate message is printed.
@@ -17,6 +19,7 @@ public class GameWaitState extends ClientState{
     PlayerRecord choosenplayerRecord;
     Coordinates choosenCoordinates;
     int choice;
+    private final Logger logger;
 
     /**
      * Represents the state of the client when waiting for the game to start.
@@ -24,8 +27,11 @@ public class GameWaitState extends ClientState{
      */
     public GameWaitState(ClientModel model) {
         super(model);
+        logger = Logger.getLogger(GameWaitState.class.getName());
+        logger.info("Initializing GameWaitState");
         TextUI.clearCMD();
         print();
+        logger.fine("GameWaitStateInitialized");
     }
 
     /**
@@ -149,15 +155,28 @@ public class GameWaitState extends ClientState{
 
     @Override
     public void nextState() {
+        logger.info("Choosing next state");
+
         if (model.isOperationSuccesful()) {
-            if (model.getMyPlayerState() == PlayerStates.WAIT)
+            logger.fine("Operation Successful flag is true");
+            logger.fine("Current value of myPR State: "+myPR.playerState());
+
+            if (model.getMyPlayerState() == PlayerStates.WAIT) {
+                logger.fine("Staying in Wait state");
                 print();
-            else if (model.getMyPlayerState() == PlayerStates.DRAW_RESOURCE || model.getMyPlayerState() == PlayerStates.DRAW_GOLDEN)
+            }
+            else if (model.getMyPlayerState() == PlayerStates.DRAW_RESOURCE || model.getMyPlayerState() == PlayerStates.DRAW_GOLDEN) {
+                logger.fine("Entering GameInitialDrawState");
                 model.setClientState(new GameInitialDrawState(model));
-            else if (model.getMyPlayerState() == PlayerStates.PICK_OBJECTIVE)
+            }
+            else if (model.getMyPlayerState() == PlayerStates.PICK_OBJECTIVE) {
+                logger.fine("Entering GamePickObjectiveState");
                 model.setClientState(new GamePickObjectiveState(model));
-            else if (model.getMyPlayerState() == PlayerStates.PLACE)
+            }
+            else if (model.getMyPlayerState() == PlayerStates.PLACE) {
+                logger.fine("Entering GamePlaceState");
                 model.setClientState(new GamePlaceState(model));
+            }
         } else {
             System.out.println("The operation failed! Please try again.\n");
             print();
