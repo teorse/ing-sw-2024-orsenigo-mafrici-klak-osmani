@@ -26,6 +26,9 @@ import Server.Controller.LobbyController;
 import Server.Controller.ServerController;
 import Server.Model.Lobby.LobbyUserColors;
 import Server.Network.ClientHandler.ClientHandler;
+import Utils.Utilities;
+
+import java.util.logging.Logger;
 
 public class ServerInputHandler implements ServerInputExecutor, InputHandler, GameControllerObserver{
     //ATTRIBUTES
@@ -34,11 +37,18 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
     private LobbyController lobbyController;
     private GameController gameController;
     private String username;
+    private final Logger logger;
 
     public ServerInputHandler(ClientHandler connection, ServerController serverController){
+        logger = Logger.getLogger(ServerInputHandler.class.getName());
+        logger.fine("Initializing ServerInputHandler");
+
+
         this.connection = connection;
         this.serverController = serverController;
         username = null;
+
+        logger.fine("ServerInputHandler initialized");
     }
 
 
@@ -53,12 +63,19 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
 
     @Override
     public void clientDisconnectionProcedure() {
-        if(username != null)
+        logger.info("Client disconnection procedure initiated.");
+        if(username != null){
+            logger.info("User disconnected: " + username);
             serverController.userDisconnectionProcedure(username);
-        if(lobbyController != null)
+            }
+        if(lobbyController != null) {
+            logger.info("Disconnecting from lobby: " + lobbyController.getLobbyName());
             lobbyController.userDisconnectionProcedure(username);
-        if(gameController != null)
+        }
+        if(gameController != null) {
             gameController = null;
+            logger.info("Game controller cleared.");
+        }
     }
 
 
@@ -69,6 +86,9 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
     //SERVER LAYER
     @Override
     public void logIn(String username, String password) {
+        logger.info("LogIn message received.");
+        logger.fine("LogIn message contents:\n"+"Username: "+username+"\nPassword: "+password);
+
         try{
             if(this.username != null){
                 //todo
@@ -78,36 +98,56 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
             connection.sendPacket(new SCPLogInSuccess(this.username));
         }
         catch(MultipleLoginViolationException e){
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("MultipleLoginViolationException by: "+username+".\nStacktrace:\n"+stackTraceString);
             connection.sendPacket(new SCPLogInFailed(ErrorsDictionary.YOU_ARE_ALREADY_LOGGED_IN));
         }
         catch (IncorrectPasswordException e){
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("IncorrectPasswordException for: "+username+".\nStacktrace:\n"+stackTraceString);
             connection.sendPacket(new SCPLogInFailed(ErrorsDictionary.WRONG_PASSWORD));
         }
         catch (AccountNotFoundException e){
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("AccountNotFoundException for: "+username+".\nStacktrace:\n"+stackTraceString);
             connection.sendPacket(new SCPLogInFailed(ErrorsDictionary.USERNAME_NOT_FOUND));
         }
         catch (AccountAlreadyLoggedInException e){
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("AccountAlreadyLoggedInException for: "+username+".\nStacktrace:\n"+stackTraceString);
             connection.sendPacket(new SCPLogInFailed(ErrorsDictionary.ACCOUNT_ALREADY_LOGGED_IN_BY_SOMEONE_ELSE));
         }
     }
 
     @Override
     public void signUp(String username, String password) {
-        if(this.username != null){
-            connection.sendPacket(new SCPSignUpFailed(ErrorsDictionary.GENERIC_ERROR));
-            return;
-        }
+        logger.info("SignUp message received.");
+        logger.fine("SignUp message contents:\n"+"Username: "+username+"\nPassword: "+password);
+
         try {
+            if(this.username != null){
+                //todo
+                throw new MultipleLoginViolationException(connection, "placeholder", username, "");
+            }
+
             this.username = serverController.signUp(connection, username, password);
             connection.sendPacket(new SCPSignUpSuccess(this.username));
         }
         catch (AccountAlreadyExistsException e){
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("AccountAlreadyExistsException by: "+username+".\nStacktrace:\n"+stackTraceString);
             connection.sendPacket(new SCPSignUpFailed(ErrorsDictionary.USERNAME_ALREADY_TAKEN));
+        }
+        catch(MultipleLoginViolationException e){
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("MultipleLoginViolationException by: "+username+".\nStacktrace:\n"+stackTraceString);
+            connection.sendPacket(new SCPSignUpFailed(ErrorsDictionary.YOU_ARE_ALREADY_LOGGED_IN));
         }
     }
 
     @Override
     public void logOut() {
+        logger.info("LogOut message received.");
         if(username == null)
             return;
         if(lobbyController != null){
@@ -117,25 +157,28 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
         lobbyController = null;
         gameController = null;
         username = null;
+        logger.info("LogOut procedure completed.");
     }
 
     @Override
     public void viewLobbyPreviews() {
+        logger.info("ViewLobbyPreviews message received");
+
         try {
             if (this.username == null) {
                 throw new LogInRequiredException("You need to be logged in to perform this action");
             }
-            System.out.println("Client sent request to view lobby previews");
             serverController.addLobbyPreviewObserver(username, connection);
         } catch (LogInRequiredException e) {
-            //todo add logging functionality
-//            connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
-            //do we have to send this notification to the client?
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("LogInRequiredException\nStacktrace:\n"+stackTraceString);
         }
     }
 
     @Override
     public void stopViewingLobbyPreviews() {
+        logger.info("StopViewingLobbyPreviews Message received");
+
         try {
             if (username == null) {
                 throw new LogInRequiredException("You need to be logged in to perform this action");
@@ -143,13 +186,15 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
             serverController.removeLobbyPreviewObserver(username);
         }
         catch (LogInRequiredException e) {
-            //todo
-            //connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("LogInRequiredException\nStacktrace:\n"+stackTraceString);
         }
     }
 
     @Override
     public void startLobby(String lobbyName, int lobbySize) {
+        logger.info("StartLobby message received");
+        logger.fine("Message contents:\nLobby name: "+lobbyName+"\nLobby Size: "+lobbySize);
         try {
             if (username == null) {
                 throw new LogInRequiredException("");
@@ -161,25 +206,32 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
             }
         }
         catch (LogInRequiredException e){
-            //connection.sendPacket(new SCPPrintPlaceholder("You have to be logged in to perform this action"));
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("LogInRequiredException\nStacktrace:\n"+stackTraceString);
             connection.sendPacket(new SCPStartLobbyFailed(ErrorsDictionary.GENERIC_ERROR));
         }
         catch (MultipleLobbiesException e){
-            //connection.sendPacket(new SCPPrintPlaceholder("Can't create new lobby, you already are in a lobby"));
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("MultipleLobbiesException\nStacktrace:\n"+stackTraceString);
             connection.sendPacket(new SCPStartLobbyFailed(ErrorsDictionary.GENERIC_ERROR));
         }
         catch (LobbyNameAlreadyTakenException e){
-            //connection.sendPacket(new SCPPrintPlaceholder("The name provided for the lobby is already used"));
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("LobbyNameAlreadyTakenException\nStacktrace:\n"+stackTraceString);
             connection.sendPacket(new SCPStartLobbyFailed(ErrorsDictionary.LOBBY_NAME_ALREADY_TAKEN));
         }
         catch (InvalidLobbySettingsException e) {
-            //connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("InvalidLobbySettingsException\nStacktrace:\n"+stackTraceString);
             connection.sendPacket(new SCPStartLobbyFailed(ErrorsDictionary.INVALID_LOBBY_SIZE));
         }
     }
 
     @Override
     public void joinLobby(String lobbyName) {
+        logger.info("Received join lobby message");
+        logger.fine("Message content:\nLobby Name: "+lobbyName);
+
         try {
             if (username == null) {
                 throw new LogInRequiredException("");
@@ -187,27 +239,33 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
                 throw new MultipleLobbiesException("");
             } else {
                 lobbyController = serverController.joinLobby(lobbyName, username, connection);
+                gameController = lobbyController.getGameController();
                 lobbyController.addGameControllerObserver(username, this);
             }
         }
         catch (LogInRequiredException e){
-            //connection.sendPacket(new SCPPrintPlaceholder("You have to be logged in to perform this action"));
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("LogInRequiredException\nStacktrace:\n"+stackTraceString);
             connection.sendPacket(new SCPJoinLobbyFailed(ErrorsDictionary.GENERIC_ERROR));
         }
         catch (MultipleLobbiesException e){
-            //connection.sendPacket(new SCPPrintPlaceholder("Can't create new lobby, you already are in a lobby"));
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("MultipleLobbiesException\nStacktrace:\n"+stackTraceString);
             connection.sendPacket(new SCPJoinLobbyFailed(ErrorsDictionary.GENERIC_ERROR));
         }
         catch (LobbyNotFoundException e){
-            //connection.sendPacket(new SCPPrintPlaceholder("No lobby found with that name"));
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("LobbyNotFoundException\nStacktrace:\n"+stackTraceString);
             connection.sendPacket(new SCPJoinLobbyFailed(ErrorsDictionary.LOBBY_NAME_NOT_FOUND));
         }
         catch (LobbyUserAlreadyConnectedException e){
-            //connection.sendPacket(new SCPPrintPlaceholder("This account is already connected to the lobby"));
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("LobbyUserAlreadyConnectedException\nStacktrace:\n"+stackTraceString);
             connection.sendPacket(new SCPJoinLobbyFailed(ErrorsDictionary.GENERIC_ERROR));
         }
         catch (LobbyClosedException e){
-            //connection.sendPacket(new SCPPrintPlaceholder("The lobby you are trying to join is closed"));
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("LobbyClosedException\nStacktrace:\n"+stackTraceString);
             connection.sendPacket(new SCPJoinLobbyFailed(ErrorsDictionary.LOBBY_IS_CLOSED));
         }
     }
@@ -217,6 +275,7 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
     //LOBBY LAYER
     @Override
     public void startGame() {
+        logger.info("Start Game message received");
         try {
             if (lobbyController != null) {
                 lobbyController.startGame(username);
@@ -225,14 +284,19 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
         }
         catch (LobbyRequiredException e){
             //todo
-            //connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("LobbyRequiredException\nStacktrace:\n"+stackTraceString);
         } catch (AdminRoleRequiredException e) {
             //todo
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("AdminRoleRequiredException, "+username+" attempted to start a game while not admin\nStacktrace:\n"+stackTraceString);
         }
     }
 
     @Override
     public void quitLobby() {
+        logger.info("Quit Lobby message received");
+
         if(gameController != null)
             gameController = null;
 
@@ -246,6 +310,9 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
                 throw new LobbyRequiredException("You need to be in a Lobby to quit the Lobby");
         }
         catch (LobbyRequiredException e){
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("LobbyRequiredException, User is trying to quit lobby but he is not in any lobby." +
+                    "\nStacktrace:\n"+stackTraceString);
             //todo
             //connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
         }
@@ -253,15 +320,22 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
 
     @Override
     public void changeColor(LobbyUserColors newColor) {
+        logger.info("Change color message received");
+        logger.fine("Message contents:\nNew Color: "+newColor);
         try{
             if(lobbyController == null)
                 throw new LobbyRequiredException("You need to be in a Lobby to change your color");
 
             lobbyController.changeColor(username, newColor);
         }
-        catch (LobbyRequiredException | UnavailableLobbyUserColorException e){
-            //todo
-            //connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
+        catch (LobbyRequiredException e){
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("LobbyRequiredException\nStacktrace:\n"+stackTraceString);
+        }
+        catch (UnavailableLobbyUserColorException e){
+            //todo add change color failed message
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("UnavailableLobbyUserColorException\nStacktrace:\n"+stackTraceString);
         }
     }
 
@@ -270,6 +344,8 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
     //GAME LAYER
     @Override
     public void playCard(int cardIndex, int coordinateIndex, boolean faceUp) {
+        logger.info("Play Card message received");
+        logger.fine("Message contents:\nCardIndex: "+cardIndex+"\nCoordinateIndex: "+coordinateIndex+"\nFaceUp: "+faceUp);
         try{
             if(username == null)
                 throw new LogInRequiredException("You need to be logged in to perform this action");
@@ -289,6 +365,8 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
 
     @Override
     public void drawCard(CardPoolTypes cardPoolType, int cardIndex) {
+        logger.info("Draw Card message received");
+        logger.fine("Message Contents:\nCardPoolType: "+cardPoolType+"\nCard Index: "+cardIndex);
         try{
             if(username == null)
                 throw new LogInRequiredException("You need to be logged in to perform this action");

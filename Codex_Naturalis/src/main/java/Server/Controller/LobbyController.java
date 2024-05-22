@@ -86,4 +86,8 @@ public class LobbyController {
     public void addGameControllerObserver(String username, GameControllerObserver observer){
         model.addGameControllerObserver(username, observer);
     }
+
+    public String getLobbyName() {
+        return model.getLobbyName();
+    }
 }

@@ -153,7 +153,7 @@ public class ServerModel implements ServerModelLayer {
         }
 
         logger.info("User "+username+" is creating Lobby "+lobbyName);
-        Lobby lobby = new Lobby(lobbyName, targetNumberUsers, serverUser, connection, lobbyPreviewObserverRelay);
+        Lobby lobby = new Lobby(lobbyName, targetNumberUsers, serverUser, connection, this, lobbyPreviewObserverRelay);
 
         logger.fine("Creating controller for lobby "+lobbyName);
         LobbyController lobbyController = new LobbyController(lobby);
@@ -221,6 +221,11 @@ public class ServerModel implements ServerModelLayer {
         removeLobbyPreviewObserver(username);
         loggedInUsers.remove(username);
         logger.info("User "+username+" removed from Server Layer");
+    }
+
+    public void removeLobby(String lobbyName){
+        logger.info("Removing lobby "+lobbyName+" from Server model");
+        lobbiesMap.remove(lobbyName);
     }
 
 
