@@ -72,7 +72,9 @@ public class LogInSignUpState extends ClientState {
      */
     @Override
     public void handleInput(String input) {
-        if (inputCounter == 0) {
+        if (input.equalsIgnoreCase("back") && (inputCounter == 1 || inputCounter == 2)) {
+            inputCounter = 0;
+        } else if (inputCounter == 0) {
             if (UserInterface.getBinaryChoice(input)) {
                 choice = Integer.parseInt(input);
                 inputCounter++;
@@ -85,7 +87,6 @@ public class LogInSignUpState extends ClientState {
                     inputCounter++;
                 }
                 print();
-
         } else if (inputCounter == 2) {
             if (UserInterface.isPasswordValid(input)) {
                 credentials.add(input);

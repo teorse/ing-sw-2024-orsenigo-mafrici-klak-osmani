@@ -30,7 +30,6 @@ import java.util.*;
  */
 public class TextUI extends UserInterface {
     //ATTRIBUTES
-    private final Scanner in;
     private final PrintStream out;
     private final ClientModel model;
 
@@ -40,7 +39,6 @@ public class TextUI extends UserInterface {
 
     //CONSTRUCTOR
     public TextUI(ClientModel model) {
-        in = new Scanner(System.in);
         out = new PrintStream(System.out, true);
         this.model = model;
     }
@@ -131,12 +129,12 @@ public class TextUI extends UserInterface {
             return  null;
         }
 
-        //Insert before the row than the column but in the map the x axis is the one of the column
+        //Insert before the row than the column but in the map the x-axis is the one of the column
         int y = (int) (readCoords[0].toUpperCase().charAt(0)) - 'A' - maxCoordinate;
         int x = (int) (readCoords[1].toUpperCase().charAt(1)) - 'A' - maxCoordinate;
         coordinatesView = new Coordinates(x,y);
 
-        if (model.getCardMaps().get(TextUI.usernameToPlayerRecord(model, model.getMyUsername())).cardsPlaced().get(coordinatesView) != null) {
+        if (model.getCardMaps().get(model.getMyUsername()).cardsPlaced().get(coordinatesView) != null) {
             return coordinatesView;
         } else {
             out.println("Insert a row [A - " + (char) (maxBoardSide + 'A') + "]" +
@@ -206,7 +204,7 @@ public class TextUI extends UserInterface {
             //Show the details of the card
             showCardDetails(cardRecord);
         }
-        displayArtifact(TextUI.usernameToPlayerRecord(model, model.getMyUsername()));
+        displayArtifact(model.getMyUsername());
     }
 
     /**
@@ -547,9 +545,9 @@ public class TextUI extends UserInterface {
      * <p>
      * After listing all artifact types and their counts, an additional blank line is printed for separation.
      */
-    public void displayArtifact(PlayerRecord playerRecord) {
+    public void displayArtifact(String username) {
         //Get the artifact counter from the card map view
-        Map<Artifacts, Integer> artifactsCounter = model.getCardMaps().get(playerRecord).artifactsCounter();
+        Map<Artifacts, Integer> artifactsCounter = model.getCardMaps().get(username).artifactsCounter();
 
         //Display the artifact counter header
         out.println("ARTIFACT COUNTER");

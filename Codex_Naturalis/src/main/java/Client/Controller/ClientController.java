@@ -25,7 +25,6 @@ public class ClientController  implements ServerMessageExecutor {
     private final ClientModel model;
     private final Logger logger;
 
-    //TODO fix updates methods
 
     public ClientController(ClientModel clientModel) {
         this.model = clientModel;
@@ -71,7 +70,8 @@ public class ClientController  implements ServerMessageExecutor {
 
         model.setLoggedIn(false);
         switch (errorCause) {
-            case WRONG_PASSWORD -> System.out.println("Wrong password.");
+            case WRONG_PASSWORD ->
+                    System.out.println("Wrong password.");
             case USERNAME_NOT_FOUND -> System.out.println("Username not found.");
             case YOU_ARE_ALREADY_LOGGED_IN -> System.out.println("You are already logged in.");
             case ACCOUNT_ALREADY_LOGGED_IN_BY_SOMEONE_ELSE -> System.out.println("Account already logged on another computer.");

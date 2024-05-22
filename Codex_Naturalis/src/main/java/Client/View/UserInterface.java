@@ -190,22 +190,6 @@ public abstract class UserInterface {
     }
 
     /**
-     * Checks if the provided client model has exactly one user who is currently online.
-     *
-     * @param clientModel the client model containing information about users in the lobby
-     * @return {@code true} if there is exactly one user who is currently online in the lobby,
-     *         {@code false} otherwise
-     */
-    public static boolean isLastOnlinePlayer(ClientModel clientModel) {
-        int counter = 0;
-        for (LobbyUserRecord lobbyUserRecord : clientModel.getLobbyUserRecords()) {
-            if (lobbyUserRecord.connectionStatus() == LobbyUserConnectionStates.ONLINE)
-                counter++;
-        }
-        return (counter == 1);
-    }
-
-    /**
      * Retrieves the PlayerRecord corresponding to the current user from the ClientModel.
      *
      * <p>This method iterates over the player records stored in the ClientModel and compares each player's username with

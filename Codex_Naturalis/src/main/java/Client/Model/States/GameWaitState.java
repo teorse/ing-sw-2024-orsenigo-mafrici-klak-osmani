@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  */
 public class GameWaitState extends ClientState{
 
-    PlayerRecord choosenplayerRecord;
+    String choosenUsername;
     Coordinates choosenCoordinates;
     int choice;
     private final Logger logger;
@@ -130,7 +130,7 @@ public class GameWaitState extends ClientState{
             } else if (inputCounter == 2) {
                 if (choice == 1) {
                     if (TextUI.checkInputBound(input, 1, model.getPlayers().size())) {
-                        choosenplayerRecord = model.getPlayers().get(Integer.parseInt(input));
+                        choosenUsername = model.getPlayers().get(Integer.parseInt(input)).username();
                         inputCounter++;
                     }
                     print();
@@ -146,7 +146,7 @@ public class GameWaitState extends ClientState{
             } else if (inputCounter == 3 && choice == 1) {
                 choosenCoordinates = textUI.getInputCoordinates(input);
                 if (choosenCoordinates != null)
-                    textUI.zoomCardMap(input, myPR);
+                    textUI.zoomCardMap(input, choosenUsername);
             } else
                 print();
         } else

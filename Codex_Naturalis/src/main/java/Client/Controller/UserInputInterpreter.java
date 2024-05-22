@@ -19,8 +19,8 @@ import java.util.List;
  * into the respective client-server packet based on the command type.
  */
 public class UserInputInterpreter implements Runnable{
-    private String input;
-    private ClientConnector clientConnector;
+    private final String input;
+    private final ClientConnector clientConnector;
 
     public UserInputInterpreter(String input, ClientConnector clientConnector){
         this.input = input;

@@ -17,8 +17,6 @@ public abstract class ClientState {
 
     protected ClientModel model;
     protected TextUI textUI;
-    protected PlayerRecord myPR;
-    protected LobbyUserRecord myLUR;
     protected int inputCounter;
 
     /**
@@ -33,9 +31,7 @@ public abstract class ClientState {
     public ClientState(ClientModel model) {
         this.model = model;
         this.textUI = new TextUI(model);
-        this.myPR = TextUI.usernameToPlayerRecord(model,model.getMyUsername());
         this.inputCounter = 0;
-//        this.model.setOperationSuccessful(false);
     }
 
 

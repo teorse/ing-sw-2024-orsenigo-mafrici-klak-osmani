@@ -29,6 +29,9 @@ public class ClientModel {
     String myUsername;
     PlayerStates myPlayerGameState;
 
+    //Error managing
+    //ErrorDictionaryLogIn
+
     //Thread Locks
     private final Object playerMapThreadLock = new Object();
 

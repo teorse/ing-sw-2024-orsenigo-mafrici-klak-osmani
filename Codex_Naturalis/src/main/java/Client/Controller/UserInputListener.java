@@ -7,7 +7,7 @@ import Client.Network.ClientConnector;
 import java.util.Scanner;
 
 public class UserInputListener implements Runnable{
-    private ClientController clientController;
+    private final ClientController clientController;
     private final Scanner scanner = new Scanner(System.in);
 
     public  UserInputListener(ClientController clientController){
