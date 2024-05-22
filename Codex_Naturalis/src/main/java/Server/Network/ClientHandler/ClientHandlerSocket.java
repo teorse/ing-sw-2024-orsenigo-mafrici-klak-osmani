@@ -4,11 +4,13 @@ import Network.ClientServer.Packets.ClientServerPacket;
 import Network.ServerClient.Packets.SCPConnectionAck;
 import Network.ServerClient.Packets.ServerClientPacket;
 import Server.Controller.InputHandler.InputHandler;
+import Utils.Utilities;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 /**
  * ClientHandlerSocket class represents the socket implementation of the ClientHandler interface.
@@ -20,6 +22,7 @@ public class ClientHandlerSocket implements ClientHandler, Runnable{
     private ObjectOutputStream oos;
     private InputHandler serverInputHandler;
     private final Socket socket;
+    private final Logger logger;
 
 
 
@@ -32,15 +35,21 @@ public class ClientHandlerSocket implements ClientHandler, Runnable{
      * @param socket The socket representing the connection to the client.
      */
     public ClientHandlerSocket(Socket socket){
+
+        logger = Logger.getLogger(ClientServerPacket.class.getName());
+        logger.info("Initializing Client Handler Socket");
+
         this.socket = socket;
 
         try {
             oos = new ObjectOutputStream(socket.getOutputStream());
             ois = new ObjectInputStream(socket.getInputStream());
+
+            logger.info("Client Handler socket initialized");
         }
         catch (IOException e){
-            System.out.println("Problem in creating streams for: "+socket);
-            e.printStackTrace();
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("IOException caught in Client Handler Socket Constructor while opening socket streams.\nStacktrace:\n"+stackTraceString);
             closeSocket();
         }
     }
@@ -58,6 +67,9 @@ public class ClientHandlerSocket implements ClientHandler, Runnable{
      */
     @Override
     public void run() {
+        logger.info("Client Handler Socket is running");
+
+        logger.fine("Sending SCP ConnectionAck to Client "+socket);
         sendPacket(new SCPConnectionAck("Welcome to the server, please Log in or Sign up."));
 
         //Listen for messages on the input stream.
@@ -65,23 +77,26 @@ public class ClientHandlerSocket implements ClientHandler, Runnable{
             //Outer try layer catches socket exceptions to break the while's execution
             while (!socket.isClosed()) {
 
-
                 try {
                     //Middle try layer catches serialization exceptions without breaking listening while loop
                     ClientServerPacket received = (ClientServerPacket) ois.readObject();
+                    logger.fine("Message received in client handler socket from client "+socket);
 
                     //Start new thread to handle the input so that this thread can go back to listening for more inputs
                     Thread thread = new Thread(() -> serverInputHandler.handleInput(received));
                     thread.start();
                 }
                 catch (ClassNotFoundException e) {
-                    System.out.println("Exception in client Handler "+socket);
-                    e.printStackTrace();
+                    String stackTraceString = Utilities.StackTraceToString(e);
+                    logger.warning("ClassNotFoundException caught in Client Handler Socket Constructor while reading object from socket.\nStacktrace:\n"+stackTraceString);
                 }
             }
         }
+        //todo implement more "graceful" disconnection protocol
         catch(IOException e){
             System.out.println("Lost connection to client: "+socket);
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("Lost connection to client: "+socket+"\nStacktrace:\n"+stackTraceString);
         }
         finally {
             serverInputHandler.clientDisconnectionProcedure();
@@ -102,12 +117,16 @@ public class ClientHandlerSocket implements ClientHandler, Runnable{
     @Override
     public void sendPacket(ServerClientPacket packet) {
         try {
+
+            logger.fine("Sending message to client "+socket);
+
             oos.writeObject(packet);
             oos.flush();
             oos.reset();
         }
         catch (IOException e){
-            e.printStackTrace();
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("IOException caught in Client Handler Socket while sending message to client"+socket+".\nStacktrace:\n"+stackTraceString);
         }
     }
 
@@ -131,12 +150,14 @@ public class ClientHandlerSocket implements ClientHandler, Runnable{
      * Closes the socket.
      */
     private void closeSocket(){
+        logger.info("Closing socket");
         try {
             if (socket != null && !socket.isClosed())
                 socket.close();
         }
         catch (IOException e){
-            e.printStackTrace();
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("IOException caught in Client Handler Socket while closing the socket.\nStacktrace:\n"+stackTraceString);
         }
     }
 }

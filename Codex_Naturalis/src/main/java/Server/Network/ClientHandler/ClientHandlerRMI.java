@@ -8,6 +8,7 @@ import Network.RMI.ServerRemoteInterfaces.RMIClientHandlerConnection;
 import Network.ServerClient.Packets.SCPConnectionAck;
 import Network.ServerClient.Packets.ServerClientPacket;
 import Server.Controller.InputHandler.InputHandler;
+import Utils.Utilities;
 
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
@@ -15,6 +16,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.logging.Logger;
 
 /**
  * ClientHandlerRMI class represents the RMI implementation of the ClientHandler interface.
@@ -46,6 +48,7 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, RMIClientHandl
     private boolean ping;
 
     private InputHandler serverInputHandler;
+    private final Logger logger;
 
 
 
@@ -60,7 +63,11 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, RMIClientHandl
      * @param clientID          The client ID associated with this client handler.
      * @throws AlreadyBoundException If the client handler is already bound in the registry.
      */
-    public ClientHandlerRMI(String id, String clientIPAddress, String clientID) throws AlreadyBoundException {
+    public ClientHandlerRMI(String id, String clientIPAddress, String clientID) throws AlreadyBoundException, RemoteException {
+
+        logger = Logger.getLogger(ClientHandlerRMI.class.getName());
+        logger.info("Initializing Client Handler RMI");
+
         this.id = id;
         this.clientIPAddress = clientIPAddress;
         this.clientID = clientID;
@@ -70,12 +77,14 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, RMIClientHandl
             stub = (RMIClientHandlerConnection) UnicastRemoteObject.exportObject(this, 0);
             serverRegistry = LocateRegistry.getRegistry(NetworkConstants.RMIServerRegistryPort);
 
-            System.out.println("Binding this Client Handler to registry");
+            logger.info("Binding this Client Handler to registry");
             serverRegistry.bind(NetworkConstants.RMIClientHandlerDirectory+id, stub);
-            System.out.println("Client handler "+id+" successfully bound to registry");
+            logger.info("Client handler "+id+" successfully bound to registry");
         }
         catch (RemoteException e) {
-            throw new RuntimeException(e);
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("RemoteException caught in Client Handler RMI Constructor while binding object to register.\nStacktrace:\n"+stackTraceString);
+            throw new RemoteException(e.getMessage());
         }
     }
 
@@ -90,7 +99,7 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, RMIClientHandl
      */
     @Override
     public void run() {
-        System.out.println("Client handler "+ id +" is now listening");
+        logger.info("Client Handler RMI "+id+" is now listening for pings");
         //Setting up thread to handle the ping heartbeat mechanism to detect client disconnections.
         boolean receivedPing = true;
 
@@ -108,21 +117,27 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, RMIClientHandl
                 receivedPing = ping;
                 ping = false;
             }
-            throw new ClientDisconnectedException("Client disconnected");
+            throw new ClientDisconnectedException("Client "+clientIPAddress+":"+clientID+" disconnected");
         }
         catch (ClientDisconnectedException e){
-            System.out.println("No heartbeat detected from client: "+id);
+            logger.warning("No heartbeat detected from RMI Client: "+clientIPAddress+":"+clientID);
+            System.out.println("No heartbeat detected from client: "+clientIPAddress+":"+clientID);
             serverInputHandler.clientDisconnectionProcedure();
         }
         finally {
             //Removing the client handler from the registry to clean up
-            System.out.println("Executing 'finally' block in client handler, proceeding to remove from registry");
+            logger.fine("Executing 'finally' block in client handler, proceeding to remove from registry");
             try {
+                logger.info("Unbinding RMI client handler "+id);
                 serverRegistry.unbind(NetworkConstants.RMIClientHandlerDirectory+id);
-            } catch (RemoteException ex) {
-                System.out.println("Registry gave remote exception when unbinding client handler: "+id);
-            } catch (NotBoundException ex) {
-                System.out.println("This client handler "+id+" was not found in the registry");
+            }
+            catch (RemoteException ex) {
+                String stackTraceString = Utilities.StackTraceToString(ex);
+                logger.warning("RemoteException caught in Client Handler RMI while unbinding client handler.\nStacktrace:\n"+stackTraceString);
+            }
+            catch (NotBoundException ex) {
+                String stackTraceString = Utilities.StackTraceToString(ex);
+                logger.warning("NotBoundException caught in Client Handler RMI while unbinding client handler.\nStacktrace:\n"+stackTraceString);
             }
         }
     }
@@ -138,11 +153,13 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, RMIClientHandl
      */
     @Override
     public void sendPacket(ServerClientPacket packet) {
+        logger.fine("Sending packet to client: "+clientIPAddress+":"+clientID);
         try {
             clientStub.receivePacket(packet);
         }
         catch (RemoteException e){
-            System.out.println("Client RMI object not responding");
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("RemoteException caught in Client Handler RMI while sending message to client: "+clientIPAddress+":"+clientID+".\nStacktrace:\n"+stackTraceString);
         }
     }
 
@@ -165,6 +182,7 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, RMIClientHandl
      */
     @Override
     public void sendCSP(ClientServerPacket packet) throws RemoteException {
+        logger.fine("Receiving packet from client: "+clientIPAddress+":"+clientID);
         serverInputHandler.handleInput(packet);
     }
 
@@ -173,15 +191,20 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, RMIClientHandl
      */
     @Override
     public void handShake() throws RemoteException {
+        logger.info("Client "+clientIPAddress+":"+clientID+" initiated handshake with client handler "+id);
+        logger.fine("Attempting to close handshake with client "+clientIPAddress+":"+clientID);
         Registry clientRegistry = LocateRegistry.getRegistry(clientIPAddress, NetworkConstants.RMIClientRegistryPort);
 
         try {
             clientStub = (RMIClientConnector) clientRegistry.lookup(NetworkConstants.RMIClientConnectorDirectory + clientID);
-            System.out.println("Client Handler "+id+" confirms connection to client");
+            logger.info("Client Handler "+id+" confirms connection to client "+clientIPAddress+":"+clientID);
+
+            logger.fine("Sending connection ack to client "+clientIPAddress+":"+clientID);
             sendPacket(new SCPConnectionAck("Welcome to the server, please Log in or Sign up."));
         }
         catch (NotBoundException e){
-            System.out.println("Client RMI object not found for client handler: "+id);
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("NotBoundException caught in Client Handler RMI while handshaking with client handler.\nStacktrace:\n"+stackTraceString);
         }
     }
 
