@@ -82,7 +82,7 @@ public class GamePickObjectiveState extends ClientState{
     public void nextState() {
         logger.info("Choosing next state");
 
-        if (model.isOperationSuccesful()) {
+        if (model.isOperationSuccessful()) {
             logger.fine("Operation Successful flag is true");
             logger.fine("Current value of myPR State: "+myPR.playerState());
             if (model.getMyPlayerState() == PlayerStates.WAIT) {

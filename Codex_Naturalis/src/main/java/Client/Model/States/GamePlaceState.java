@@ -101,7 +101,7 @@ public class GamePlaceState extends ClientState{
      */
     @Override
     public void nextState() {
-        if (model.isOperationSuccesful()) {
+        if (model.isOperationSuccessful()) {
             if (model.getMyPlayerState() == PlayerStates.DRAW) {
                 model.setClientState(new GameDrawState(model));
             }

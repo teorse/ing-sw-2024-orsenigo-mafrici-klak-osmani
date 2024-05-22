@@ -58,7 +58,7 @@ public class ClientModel {
 
 
     //GETTERS
-    public boolean isOperationSuccesful() {
+    public boolean isOperationSuccessful() {
         return operationSuccesful;
     }
     public boolean isGameOver() {return isGameOver;}

@@ -109,7 +109,7 @@ public class ConnectionState extends ClientState {
      */
     @Override
     public void nextState() {
-        if(model.isOperationSuccesful()) {
+        if(model.isOperationSuccessful()) {
             model.setClientState(new LogInSignUpState(model));
         } else {
             System.out.println("The operation failed! Please try again.\n");

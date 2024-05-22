@@ -75,7 +75,7 @@ public class GameInitialDrawState extends ClientState{
      */
     @Override
     public void nextState() {
-        if (model.isOperationSuccesful()) {
+        if (model.isOperationSuccessful()) {
             if (model.getMyPlayerState() == PlayerStates.PICK_OBJECTIVE)
                 model.setClientState(new GamePickObjectiveState(model));
             else if (model.getMyPlayerState() == PlayerStates.WAIT)

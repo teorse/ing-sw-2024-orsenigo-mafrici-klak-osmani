@@ -80,7 +80,7 @@ public class LobbyJoined extends ClientState{
      */
     @Override
     public void nextState() {
-        if (model.isOperationSuccesful() && model.getMyPlayerState() == PlayerStates.PLACE) {
+        if (model.isOperationSuccessful() && model.getMyPlayerState() == PlayerStates.PLACE) {
             model.setClientState(new GameStarterChoice(model));
         }
         else {

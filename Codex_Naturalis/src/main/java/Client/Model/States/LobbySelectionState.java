@@ -140,7 +140,7 @@ public class LobbySelectionState extends ClientState {
      */
     @Override
     public void nextState() {
-        if (model.isOperationSuccesful()) {
+        if (model.isOperationSuccessful()) {
             if (choice == 2)
                 model.getClientConnector().sendPacket(new CSPStopViewingLobbyPreviews());
             model.setClientState(new LobbyJoined(model));

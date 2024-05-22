@@ -98,7 +98,7 @@ public class GameDrawState extends ClientState{
      */
     @Override
     public void nextState() {
-        if (model.isOperationSuccesful()) {
+        if (model.isOperationSuccessful()) {
             if (!UserInterface.isLastOnlinePlayer(model)) {
                 if (model.getMyPlayerState() == PlayerStates.WAIT)
                     model.setClientState(new GameWaitState(model));
