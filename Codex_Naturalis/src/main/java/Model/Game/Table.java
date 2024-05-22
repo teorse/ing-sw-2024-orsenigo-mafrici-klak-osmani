@@ -80,7 +80,7 @@ public class Table {
      * @return  Objective from list of non-shared objectives.
      */
     public Objective drawObjective(){
-        return objectives.getLast();
+        return objectives.removeLast();
     }
 
     /**
