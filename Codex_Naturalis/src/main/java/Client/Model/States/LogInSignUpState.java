@@ -1,6 +1,8 @@
 package Client.Model.States;
 
 import Client.Model.ClientModel;
+import Client.Model.ErrorDictionary.ErrorDictionaryLogIn;
+import Client.Model.ErrorDictionary.ErrorDictionarySignUp;
 import Client.View.TextUI;
 import Client.View.UserInterface;
 import Network.ClientServer.Packets.CSPLogIn;
@@ -88,9 +90,8 @@ public class LogInSignUpState extends ClientState {
                 inputCounter++;
             }
             print();
-
         } else if (inputCounter == 1) {
-                if (!UserInterface.isNameInvalid(input)) {
+                if (UserInterface.isNameValid(input)) {
                     credentials.add(input);
                     inputCounter++;
                 }

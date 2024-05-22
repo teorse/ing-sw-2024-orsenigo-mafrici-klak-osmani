@@ -120,13 +120,13 @@ public class LobbySelectionState extends ClientState {
             print();
         } else if (inputCounter == 1) {
                 if (choice == 1) {
-                    if (!TextUI.isNameInvalid(input)) {
+                    if (TextUI.isNameValid(input)) {
                         lobbyName = input;
                         inputCounter++;
                     }
                     print();
                 } else if (choice == 2) {
-                    if (!TextUI.isNameInvalid(input))
+                    if (TextUI.isNameValid(input))
                         model.getClientConnector().sendPacket(new CSPJoinLobby(input));
                     else
                         print();

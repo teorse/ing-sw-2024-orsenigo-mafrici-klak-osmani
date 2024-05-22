@@ -138,7 +138,7 @@ public class TextUI extends UserInterface {
      */
     public void zoomCardMap(String row, String column, String username) {
         //The cards are previously set with only visible attribute
-        Coordinates coordinates = getInputCoordinates(input);
+        Coordinates coordinates = inputToCoordinates(column, row);
 
         //Get the card from the map of card visualized, checked in getInputCoordinates
         CardVisibilityRecord card = model.getCardMaps().get(username).getCardVisibilityRecord(coordinates);

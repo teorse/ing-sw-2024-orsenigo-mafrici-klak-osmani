@@ -92,8 +92,8 @@ public class LobbyJoined extends ClientState{
     @Override
     public synchronized void nextState() {
         logger.info("Choosing next state");
-        logger.fine("Current gameStarted: "+model.isGameStarted()+
-                "\nCurrent ClientPlayerState: "+model.getMyPlayerGameState());
+        logger.fine("Current gameStarted: " + model.isGameStarted()+
+                "\nCurrent ClientPlayerState: " + model.getMyPlayerGameState());
 
 
         PlayerStates myPlayerGameState = model.getMyPlayerGameState();

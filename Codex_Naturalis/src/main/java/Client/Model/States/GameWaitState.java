@@ -16,8 +16,9 @@ import java.util.logging.Logger;
  */
 public class GameWaitState extends ClientState{
 
-    String choosenUsername;
-    Coordinates choosenCoordinates;
+    String chosenUsername;
+    String chosenRow;
+    String chosenCol;
     int choice;
     private final Logger logger;
 
@@ -118,6 +119,22 @@ public class GameWaitState extends ClientState{
      */
     @Override
     public void handleInput(String input) {
+        int maxBoardSide = (textUI.maxCoordinate() * 2) + 3;
+
+        if (input.equalsIgnoreCase("BACK")){
+
+            if (inputCounter == 1) {
+                inputCounter = 0;
+            } else if (inputCounter == 2) {
+                inputCounter = 1;
+            } else if (inputCounter == 3) {
+                inputCounter = 2;
+            } else if(inputCounter == 4){
+                inputCounter = 3;
+            }else
+                print();
+        }
+
         if (model.isSetUpFinished()) {
             if (inputCounter == 0) {
                 if (input.equalsIgnoreCase("ZOOM")) {
@@ -133,7 +150,7 @@ public class GameWaitState extends ClientState{
             } else if (inputCounter == 2) {
                 if (choice == 1) {
                     if (TextUI.checkInputBound(input, 1, model.getPlayers().size())) {
-                        choosenUsername = model.getPlayers().get(Integer.parseInt(input)).username();
+                        chosenUsername = model.getPlayers().get(Integer.parseInt(input)).username();
                         inputCounter++;
                     }
                     print();
@@ -147,9 +164,21 @@ public class GameWaitState extends ClientState{
                     }
                 }
             } else if (inputCounter == 3 && choice == 1) {
-                choosenCoordinates = textUI.getInputCoordinates(input);
-                if (choosenCoordinates != null)
-                    textUI.zoomCardMap(input, choosenUsername);
+                if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide)) {
+                    chosenRow = input;
+                    inputCounter++;
+                }
+            } else if (inputCounter == 4 && choice == 1) {
+                if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide)) {
+                    chosenCol = input;
+                    Coordinates coordinatesChosen = textUI.inputToCoordinates(chosenCol, chosenRow);
+                    if (model.getCardMaps().get(chosenUsername).coordinatesPlaced().contains(coordinatesChosen)) {
+                        textUI.zoomCardMap(chosenRow, chosenCol, chosenUsername);
+                    } else {
+                        System.out.println("The coordinates you entered are not in the used placements of the player you selected! Try again.");
+                        inputCounter = 1;
+                    }
+                }
             } else
                 print();
         } else
