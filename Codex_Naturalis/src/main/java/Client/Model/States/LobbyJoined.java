@@ -5,9 +5,8 @@ import Client.Model.Records.LobbyUserRecord;
 import Client.View.TextUI;
 import Model.Player.PlayerStates;
 import Network.ClientServer.Packets.CSPStartGame;
-import Server.Model.Lobby.LobbyRoles;
 
-import java.util.Scanner;
+import java.util.logging.Logger;
 
 /**
  * Represents the state of a client after joining a lobby.
@@ -20,6 +19,8 @@ import java.util.Scanner;
  */
 public class LobbyJoined extends ClientState{
 
+    private final Logger logger;
+
     /**
      * Constructs a new LobbyJoined state with the specified client model.
      *
@@ -27,6 +28,9 @@ public class LobbyJoined extends ClientState{
      */
     public LobbyJoined(ClientModel model) {
         super(model);
+        logger = Logger.getLogger(LobbyJoined.class.getName());
+        logger.info("Initializing LobbyJoined");
+
         TextUI.clearCMD();
         TextUI.displayGameTitle();
         print();
@@ -79,11 +83,16 @@ public class LobbyJoined extends ClientState{
      * prompting the user to try again.
      */
     @Override
-    public void nextState() {
-        if (model.isOperationSuccesful() && model.getMyPlayerState() == PlayerStates.PLACE) {
+    public synchronized void nextState() {
+        logger.info("Choosing next state");
+        logger.fine("Current gameStarted: "+model.isGameStarted()+
+                "\nCurrent ClientPlayerState: "+model.getMyPlayerGameState());
+
+        if (model.isGameStarted() && model.getMyPlayerGameState() == PlayerStates.PLACE) {
             model.setClientState(new GameStarterChoice(model));
         }
         else {
+            logger.fine("Conditions were not met to switch state, staying in LobbyJoined");
             System.out.println("The operation failed! Please try again.\n");
             print();
         }
