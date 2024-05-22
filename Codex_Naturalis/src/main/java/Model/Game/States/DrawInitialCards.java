@@ -150,14 +150,6 @@ public class DrawInitialCards implements GameState{
                 }
             }
         }
-
-        //todo think about moving this block before the statements, to block the player from sending multiple actions at once.
-        //player.setPlayerState(PlayerStates.WAIT_SETUP);
-        //gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.WAIT_SETUP));
-//        if (cardPoolType == CardPoolTypes.GOLDEN)
-//            System.out.println("Wait per il caso golden");
-//
-//        nextPlayer();
     }
 
     /**
@@ -185,11 +177,14 @@ public class DrawInitialCards implements GameState{
      */
     @Override
     public void removePlayer(Player player) {
+        Player currentPlayer = players.get(currentPlayerIndex);
         players.remove(player);
 
         //If we are removing the current player then we need to advance to the next player
-        if(player.equals(players.get(currentPlayerIndex)))
+        if(player.equals(currentPlayer) && players.size() > 1)
             nextPlayer();
+        else
+            game.gameOver();
     }
 
     /**

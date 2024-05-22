@@ -12,6 +12,7 @@ import Server.Model.Lobby.ObserverRelay;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Represents the initial setup state in the game, where players receive their starting cards and choose their colors.<br>
@@ -23,14 +24,13 @@ public class PlaceStarterCard implements GameState{
     private final List<Player> players;
     private final ObserverRelay gameObserverRelay;
 
+    private final Logger logger;
+
     /**
      * Map that keeps track of which players have completed the setups of this game phase and which haven't.<br>
      * If true, it means the player HAS completed all setups and is ready for the next phase.
      */
     private final Map<Player, Boolean> playerReadiness;
-
-
-
 
 
     //CONSTRUCTOR
@@ -40,6 +40,10 @@ public class PlaceStarterCard implements GameState{
      * @param game The game instance to which this MainLoop state belongs.
      */
     public PlaceStarterCard(Game game){
+
+        logger = Logger.getLogger(PlaceStarterCard.class.getName());
+        logger.info("Initializing Game state: 'PlaceStarterCard'.");
+
         this.game = game;
         players = game.getPlayers();
         Table table = game.getTable();
@@ -63,6 +67,9 @@ public class PlaceStarterCard implements GameState{
         for(Player player : players){
             player.setPlayerState(PlayerStates.PLACE);
         }
+
+        logger.fine("Game state PlaceStarterCard initialized.\n" +
+                "Broadcasting Client State Update PLACE.");
         gameObserverRelay.update(new SCPUpdateClientGameState(PlayerStates.PLACE));
     }
 
@@ -84,6 +91,8 @@ public class PlaceStarterCard implements GameState{
      */
     @Override
     public void playCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException {
+        logger.info("Player "+player.getUsername()+" is now placing a card");
+        logger.fine("Checking if player has the correct internal state to place cards");
         //Throws exception if the player has already performed all his moves for this turn.
         if (player.getPlayerState().equals(PlayerStates.WAIT))
             throw new MoveAttemptOnWaitStateException("You have already performed all moves for this turn.");
@@ -92,11 +101,15 @@ public class PlaceStarterCard implements GameState{
         else if (!player.getPlayerState().equals(PlayerStates.PLACE))
             throw new InvalidActionForPlayerStateException("You can't perform this move at the moment.");
 
+        logger.fine("Player does have the required state to place cards, proceeding to place card.");
         //The rest of the method is executed if the player is actually allowed to perform the move.
         player.playCard(cardIndex, coordinateIndex, faceUp);
+        logger.fine("Updating Client State to WAIT");
         player.setPlayerState(PlayerStates.WAIT);
+        logger.fine("Sending to player "+player.getUsername()+" Update Client State package to "+PlayerStates.WAIT);
         gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.WAIT));
 
+        logger.fine("Setting player "+player.getUsername()+" as READY for this state.");
         playerReadiness.put(player, true);
         nextState();
     }
@@ -144,7 +157,10 @@ public class PlaceStarterCard implements GameState{
         playerReadiness.remove(player);
         players.remove(player);
 
-        nextState();
+        if(players.size() > 1)
+            nextState();
+        else
+            game.gameOver();
     }
 
     /**

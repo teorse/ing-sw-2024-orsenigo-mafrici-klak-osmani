@@ -13,7 +13,9 @@ import Server.Model.Lobby.LobbyUserConnectionStates;
 import Model.Player.PlayerStates;
 import Server.Model.Lobby.ObserverRelay;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents the main loop state in the game, where players take turns to place cards and draw new cards.<br>
@@ -27,6 +29,7 @@ public class MainLoop implements GameState{
     private final ObserverRelay gameObserverRelay;
 
     private int currentPlayerIndex;
+    private final Map<String, PlayerStates> playerStatesBeforeDisconnection;
 
 
 
@@ -43,6 +46,17 @@ public class MainLoop implements GameState{
         players = game.getPlayers();
         table = game.getTable();
         gameObserverRelay = game.getGameObserverRelay();
+        playerStatesBeforeDisconnection = new HashMap<>();
+
+        findFirstPlayer();
+    }
+
+    public MainLoop(Game game, Map<String, PlayerStates> playerStatesBeforeDisconnection){
+        this.game = game;
+        players = game.getPlayers();
+        table = game.getTable();
+        gameObserverRelay = game.getGameObserverRelay();
+        this.playerStatesBeforeDisconnection = playerStatesBeforeDisconnection;
 
         findFirstPlayer();
     }
@@ -139,11 +153,22 @@ public class MainLoop implements GameState{
      */
     @Override
     public void removePlayer(Player player) {
+        Player currentPlayer = players.get(currentPlayerIndex);
+        int indexPlayerToRemove = players.indexOf(player);
+
+        if(indexPlayerToRemove <= currentPlayerIndex)
+            currentPlayerIndex--;
+
         players.remove(player);
 
+
+        //todo update current player index after removal adjusting for list shrinking
+
         //If we are removing the current player then we need to advance to the next player
-        if(player.equals(players.get(currentPlayerIndex)))
+        if(player.equals(currentPlayer) && players.size() > 1)
             nextPlayer();
+        else
+            game.gameOver();
     }
 
     /**
@@ -155,6 +180,11 @@ public class MainLoop implements GameState{
      */
     @Override
     public void userDisconnectionProcedure(Player player) {
+
+        if(player.getPlayerState()!=PlayerStates.WAIT)
+            playerStatesBeforeDisconnection.put(player.getUsername(), player.getPlayerState());
+
+        player.setPlayerState(PlayerStates.WAIT);
 
         if(players.equals(players.get(currentPlayerIndex)))
             nextPlayer();
@@ -187,7 +217,10 @@ public class MainLoop implements GameState{
                 //Set as current player the first online player found among the remaining ones.
                 if(nextPlayer.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)){
                     currentPlayerIndex = i;
-                    nextPlayer.setPlayerState(PlayerStates.PLACE);
+
+                    //If the player had previously disconnected then the old saved value for their state is retrieved, otherwise
+                    //by default they are assigned the PLACE state.
+                    nextPlayer.setPlayerState(playerStatesBeforeDisconnection.getOrDefault(nextPlayer.getUsername(), PlayerStates.PLACE));
                     return;
                 }
             }
@@ -219,7 +252,11 @@ public class MainLoop implements GameState{
                 //The player found is set as current player.
                 firstPlayer = players.get(currentPlayerIndex);
                 //The player's state is updated to reflect their next expected move
-                firstPlayer.setPlayerState(PlayerStates.PLACE);
+
+
+                //If the player had previously disconnected then the old saved value for their state is retrieved, otherwise
+                //by default they are assigned the PLACE state.
+                firstPlayer.setPlayerState(playerStatesBeforeDisconnection.getOrDefault(firstPlayer.getUsername(), PlayerStates.PLACE));
                 gameObserverRelay.update(firstPlayer.getUsername(), new SCPUpdateClientGameState(PlayerStates.PLACE));
                 break;
             }
@@ -244,6 +281,6 @@ public class MainLoop implements GameState{
         if(game.isLastRoundFlag())
             game.setState(new FinalRound(game));
         else
-            game.setState(new MainLoop(game));
+            game.setState(new MainLoop(game, playerStatesBeforeDisconnection));
     }
 }

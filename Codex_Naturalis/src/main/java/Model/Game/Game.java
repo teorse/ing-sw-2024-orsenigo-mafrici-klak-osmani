@@ -137,6 +137,13 @@ public class Game implements ServerModelLayer {
         Player player = getPlayerByUsername(username);
         state.userDisconnectionProcedure(player);
     }
+
+    public void userReconnectionProcedure(String username){
+        Player player = getPlayerByUsername(username);
+        gameObserverRelay.update(username, new SCPGameStarted(toPlayerViewList(), player.toSecretPlayer(), table.toRecord(), toRecord()));
+        gameObserverRelay.update(username, new SCPUpdateClientGameState(player.getPlayerState()));
+    }
+
     @Override
     public void quit(String username) {
         Player player = getPlayerByUsername(username);

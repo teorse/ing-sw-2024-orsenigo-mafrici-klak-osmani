@@ -1,6 +1,5 @@
 package Model.Game.States;
 
-import Client.Model.Records.ObjectiveRecord;
 import Model.Game.CardPoolTypes;
 import Exceptions.Game.InvalidActionForGameStateException;
 import Exceptions.Game.InvalidActionForPlayerStateException;
@@ -11,7 +10,6 @@ import Model.Objectives.Objective;
 import Model.Player.Player;
 import Model.Player.PlayerStates;
 import Network.ServerClient.Packets.SCPUpdateClientGameState;
-import Network.ServerClient.Packets.SCPUpdateSecretObjectiveCandidates;
 import Server.Model.Lobby.ObserverRelay;
 
 import java.util.*;
@@ -25,7 +23,6 @@ public class ObjectivesSetup implements GameState{
     //ATTRIBUTES
     private final Game game;
     private final List<Player> players;
-    private final Table table;
     private final ObserverRelay gameObserverRelay;
 
     /**
@@ -47,7 +44,7 @@ public class ObjectivesSetup implements GameState{
     public ObjectivesSetup(Game game){
         this.game = game;
         players = game.getPlayers();
-        table = game.getTable();
+        Table table = game.getTable();
         gameObserverRelay = game.getGameObserverRelay();
 
         playerReadiness = new HashMap<>();
@@ -56,17 +53,11 @@ public class ObjectivesSetup implements GameState{
 
         for(Player player : players){
             //Distribute objectives to players
-            //TODO double curly brackets
             List<Objective> candidates = new ArrayList<>();
             candidates.add(table.drawObjective());
             candidates.add(table.drawObjective());
 
             player.setSecretObjectiveCandidate(candidates);
-//            List<ObjectiveRecord> objectiveRecords = new ArrayList<>();
-//            for (Objective objective : candidates) {
-//                objectiveRecords.add(objective.toRecord());
-//            }
-//            gameObserverRelay.update(player.getUsername(), new SCPUpdateSecretObjectiveCandidates(objectiveRecords));
 
             //Add players to readiness map.
             playerReadiness.put(player, false);
@@ -78,7 +69,6 @@ public class ObjectivesSetup implements GameState{
             player.setPlayerState(PlayerStates.PICK_OBJECTIVE);
         gameObserverRelay.update(new SCPUpdateClientGameState(PlayerStates.PICK_OBJECTIVE));
     }
-
 
 
 
@@ -153,11 +143,13 @@ public class ObjectivesSetup implements GameState{
      */
     @Override
     public void removePlayer(Player player) {
-
         playerReadiness.remove(player);
         players.remove(player);
 
-        nextState();
+        if(players.size() > 1)
+            nextState();
+        else
+            game.gameOver();
     }
 
     /**
