@@ -35,9 +35,9 @@ public interface ServerMessageExecutor extends Serializable {
 
     void changeColorFailed();
 
-    void gameStarted(Map<PlayerRecord, CardMapRecord> players, PlayerSecretInfoRecord secret, TableRecord table, GameRecord game);
+    void gameStarted(List<PlayerRecord> players, Map<String, CardMapRecord> cardMaps, PlayerSecretInfoRecord secret, TableRecord table, GameRecord game);
 
-    void updatePlayers(Map<PlayerRecord, CardMapRecord> players);
+    void updatePlayers(List<PlayerRecord> players, Map<String, CardMapRecord> cardMaps);
 
     void updateSpecificPlayer(PlayerRecord player);
 

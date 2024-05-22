@@ -240,8 +240,8 @@ public class Player implements LayerUser {
 
     public PlayerRecord toTransferableDataObject() {return new PlayerRecord(user.getUsername(), playerState, roundsCompleted, points, objectivesCompleted, winner);}
 
-    public Map.Entry<PlayerRecord, CardMapRecord> toPlayerCardMapView(){
-        return new AbstractMap.SimpleEntry<PlayerRecord, CardMapRecord>(toTransferableDataObject(), cardMap.toTransferableDataObject());
+    public Map.Entry<String, CardMapRecord> toCardMapRecord(){
+        return new AbstractMap.SimpleEntry<String, CardMapRecord>(user.getUsername(), cardMap.toTransferableDataObject());
     }
 }
 

@@ -216,7 +216,7 @@ public abstract class UserInterface {
      */
     public static PlayerRecord usernameToPlayerRecord(ClientModel model, String username) {
         PlayerRecord PR = null;
-        for (PlayerRecord playerRecord : model.getPlayerRecords()) {
+        for (PlayerRecord playerRecord : model.getPlayers()) {
             if(playerRecord.username().equals(username)) {
                 PR = playerRecord;
             }

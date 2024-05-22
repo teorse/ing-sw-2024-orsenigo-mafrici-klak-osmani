@@ -136,7 +136,7 @@ public class TextUI extends UserInterface {
         int x = (int) (readCoords[1].toUpperCase().charAt(1)) - 'A' - maxCoordinate;
         coordinatesView = new Coordinates(x,y);
 
-        if (model.getPlayerCardMapRecord().get(TextUI.usernameToPlayerRecord(model, model.getMyUsername())).cardsPlaced().get(coordinatesView) != null) {
+        if (model.getCardMaps().get(TextUI.usernameToPlayerRecord(model, model.getMyUsername())).cardsPlaced().get(coordinatesView) != null) {
             return coordinatesView;
         } else {
             out.println("Insert a row [A - " + (char) (maxBoardSide + 'A') + "]" +
@@ -146,7 +146,7 @@ public class TextUI extends UserInterface {
     }
 
     public boolean isAvaiableCoordinates(Coordinates coordinates) {
-        return model.getPlayerCardMapRecord().get(TextUI.usernameToPlayerRecord(model, model.getMyUsername())).availablePlacements().contains(coordinates);
+        return model.getCardMaps().get(TextUI.usernameToPlayerRecord(model, model.getMyUsername())).availablePlacements().contains(coordinates);
     }
 
 
@@ -170,7 +170,7 @@ public class TextUI extends UserInterface {
         Coordinates coordinates = getInputCoordinates(input);
 
         //Get the card from the map of card visualized, checked in getInputCoordinates
-        CardVisibilityRecord card = model.getPlayerCardMapRecord().get(playerRecord).getCardVisibilityRecord(coordinates);
+        CardVisibilityRecord card = model.getCardMaps().get(playerRecord).getCardVisibilityRecord(coordinates);
 
         //Show all the textual details for the specific card
         showCardPlacedDetails(playerRecord, card, coordinates);
@@ -260,7 +260,7 @@ public class TextUI extends UserInterface {
         showSharedObjectives(model.getGameRecord());
         showObjective(model.getPlayerSecretInfoRecord().secretObjectives());
         showPoints();
-        showCardMaps(model.getPlayerRecords());
+        showCardMaps(model.getPlayers());
     }
 
     /**
@@ -408,7 +408,7 @@ public class TextUI extends UserInterface {
      */
     public void showPoints() {
         out.println("POINTS TABLE (You are the player in green, while the ones in red are disconnected)");
-        for (PlayerRecord playerRecord : model.getPlayerRecords()) {
+        for (PlayerRecord playerRecord : model.getPlayers()) {
             if (playerRecord.username().equals(model.getMyUsername()))
                 out.println(TerminalColor.GREEN_BRIGHT + playerRecord.username() + TerminalColor.RESET + ": " + playerRecord.points());
             else if (usernameToLobbyUserRecord(model, playerRecord.username()).connectionStatus() == LobbyUserConnectionStates.OFFLINE)
@@ -436,7 +436,7 @@ public class TextUI extends UserInterface {
      * - Otherwise, it resets to default color.
      */
     public String showCard(PlayerRecord playerRecord, Coordinates coordinates) {
-        CardMapRecord cardMapRecord = model.getPlayerCardMapRecord().get(playerRecord);
+        CardMapRecord cardMapRecord = model.getCardMaps().get(playerRecord);
 
         //Check if there is a card placed at the specified coordinates
         if (cardMapRecord.cardsPlaced().containsKey(coordinates)) {
@@ -549,7 +549,7 @@ public class TextUI extends UserInterface {
      */
     public void displayArtifact(PlayerRecord playerRecord) {
         //Get the artifact counter from the card map view
-        Map<Artifacts, Integer> artifactsCounter = model.getPlayerCardMapRecord().get(playerRecord).artifactsCounter();
+        Map<Artifacts, Integer> artifactsCounter = model.getCardMaps().get(playerRecord).artifactsCounter();
 
         //Display the artifact counter header
         out.println("ARTIFACT COUNTER");
@@ -574,8 +574,8 @@ public class TextUI extends UserInterface {
      */
     public int maxCoordinate() {
         int mbs = 0;
-        for (PlayerRecord playerRecord : model.getPlayerCardMapRecord().keySet()) {
-            for (Coordinates coordinates : model.getPlayerCardMapRecord().get(playerRecord).cardsPlaced().keySet()) {
+        for (PlayerRecord playerRecord : model.getCardMaps().keySet()) {
+            for (Coordinates coordinates : model.getCardMaps().get(playerRecord).cardsPlaced().keySet()) {
                 int max = Math.max(Math.abs(coordinates.getCoordY()), Math.abs(coordinates.getCoordY()));
                 if (max > mbs) {
                     mbs = max;

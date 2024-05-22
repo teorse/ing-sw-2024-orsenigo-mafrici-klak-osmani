@@ -80,7 +80,7 @@ public class GamePlaceState extends ClientState{
             Coordinates coordinatesChosen = textUI.getInputCoordinates(input);
             //todo add else statement to communicate to player that their input is not correct
             if (coordinatesChosen != null && textUI.isAvaiableCoordinates(coordinatesChosen)) {
-                coordinateIndex = model.getPlayerCardMapRecord().get(myPR).availablePlacements().indexOf(coordinatesChosen);
+                coordinateIndex = model.getCardMaps().get(myPR).availablePlacements().indexOf(coordinatesChosen);
                 inputCounter++;
             }
         } else if (inputCounter == 2) {

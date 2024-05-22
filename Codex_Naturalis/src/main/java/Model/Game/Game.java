@@ -70,16 +70,11 @@ public class Game implements ServerModelLayer {
         this.table = new Table(goldenCards, resourceCards, starterCards, objectives, gameObserverRelay);
         this.lastRoundFlag = false;
         state = new PlaceStarterCard(this);
-
-        Map<PlayerRecord, CardMapRecord> playerRecordMap = toPlayerViewList();
-        TableRecord tableRecord = table.toRecord();
-        GameRecord gameRecord = toRecord();
-
         
         for(Player player : players) {
 
             if(gameObserverRelay != null)
-                gameObserverRelay.update(player.getUsername(), new SCPGameStarted(playerRecordMap, player.toSecretPlayer(), tableRecord, gameRecord));
+                gameObserverRelay.update(player.getUsername(), new SCPGameStarted(toPlayerRecordList(), toCardMapRecordsMap(), player.toSecretPlayer(), table.toRecord(), toRecord()));
         }
     }
 
@@ -130,7 +125,7 @@ public class Game implements ServerModelLayer {
     public void removePlayer(String username){
         Player player = getPlayerByUsername(username);
         state.removePlayer(player);
-        gameObserverRelay.update(new SCPUpdatePlayers(this.toPlayerViewList()));
+        gameObserverRelay.update(new SCPUpdatePlayers(this.toPlayerRecordList(), this.toCardMapRecordsMap()));
     }
     @Override
     public void userDisconnectionProcedure(String username) {
@@ -140,7 +135,7 @@ public class Game implements ServerModelLayer {
 
     public void userReconnectionProcedure(String username){
         Player player = getPlayerByUsername(username);
-        gameObserverRelay.update(username, new SCPGameStarted(toPlayerViewList(), player.toSecretPlayer(), table.toRecord(), toRecord()));
+        gameObserverRelay.update(username, new SCPGameStarted(toPlayerRecordList(), toCardMapRecordsMap(), player.toSecretPlayer(), table.toRecord(), toRecord()));
         gameObserverRelay.update(username, new SCPUpdateClientGameState(player.getPlayerState()));
     }
 
@@ -231,13 +226,21 @@ public class Game implements ServerModelLayer {
 
 
     //OBSERVERS
-    public Map<PlayerRecord, CardMapRecord> toPlayerViewList() {
-        Map<PlayerRecord, CardMapRecord> playerViewList = new HashMap<>();
+    public List<PlayerRecord> toPlayerRecordList(){
+        List<PlayerRecord> playerRecords = new ArrayList<>();
         for(Player player : players){
-            Map.Entry<PlayerRecord, CardMapRecord> entry = player.toPlayerCardMapView();
-            playerViewList.put(entry.getKey(), entry.getValue());
+            playerRecords.add(player.toTransferableDataObject());
         }
-        return playerViewList;
+        return playerRecords;
+    }
+
+    public Map<String, CardMapRecord> toCardMapRecordsMap() {
+        Map<String, CardMapRecord> CardMapRecordsMap = new HashMap<>();
+        for(Player player : players){
+            Map.Entry<String, CardMapRecord> entry = player.toCardMapRecord();
+            CardMapRecordsMap.put(entry.getKey(), entry.getValue());
+        }
+        return CardMapRecordsMap;
     }
 
     public GameRecord toRecord() {return new GameRecord(roundsCompleted, lastRoundFlag);}

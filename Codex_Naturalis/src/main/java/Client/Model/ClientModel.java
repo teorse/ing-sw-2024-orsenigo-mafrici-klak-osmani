@@ -44,9 +44,9 @@ public class ClientModel {
 
     //GAME
     //Publicly-visible game attributes
-    Map<PlayerRecord, CardMapRecord> playerCardMapRecord;
+    Map<String, CardMapRecord> cardMaps;
+    List<PlayerRecord> players;
     GameRecord gameRecord;
-    List<PlayerRecord> playerRecords;
     TableRecord tableRecord;
     List<PlayerRecord> winners;
 
@@ -60,10 +60,10 @@ public class ClientModel {
 
     //CONSTRUCTOR
     public ClientModel() {
-        this.playerCardMapRecord = new HashMap<>();
+        this.cardMaps = new HashMap<>();
         this.lobbyPreviewRecords = new ArrayList<>();
         this.lobbyUserRecords = new ArrayList<>();
-        this.playerRecords = new ArrayList<>();
+        this.players = new ArrayList<>();
         this.winners = new ArrayList<>();
         clientState = new ConnectionState(this);
     }
@@ -80,8 +80,8 @@ public class ClientModel {
     public String getMyUsername() {return myUsername; }
     public PlayerStates getMyPlayerGameState() {return myPlayerGameState;}
     public ClientConnector getClientConnector() { return clientConnector; }
-    public Map<PlayerRecord, CardMapRecord> getPlayerCardMapRecord() {
-        return playerCardMapRecord;
+    public Map<String, CardMapRecord> getCardMaps() {
+        return cardMaps;
     }
     public GameRecord getGameRecord() {
         return gameRecord;
@@ -92,8 +92,8 @@ public class ClientModel {
     public List<LobbyUserRecord> getLobbyUserRecords() {
         return lobbyUserRecords;
     }
-    public List<PlayerRecord> getPlayerRecords() {
-        return Collections.unmodifiableList(playerRecords);
+    public List<PlayerRecord> getPlayers() {
+        return Collections.unmodifiableList(players);
     }
     public PlayerSecretInfoRecord getPlayerSecretInfoRecord() {
         return playerSecretInfoRecord;
@@ -130,37 +130,36 @@ public class ClientModel {
         clientConnectorThread.start();
     }
 
-    public void setPlayerCardMapRecord(Map<PlayerRecord, CardMapRecord> playerCardMapRecord) {
+    public void setCardMaps(Map<String, CardMapRecord> cardMaps) {
         synchronized (playerMapThreadLock) {
-            this.playerCardMapRecord = playerCardMapRecord;
+            this.cardMaps = cardMaps;
         }
     }
-    public void setPlayerRecords(List<PlayerRecord> playerRecords) {
+    public void setPlayers(List<PlayerRecord> players) {
         synchronized (playerMapThreadLock) {
-            this.playerRecords = Collections.unmodifiableList(playerRecords);
+            this.players = Collections.unmodifiableList(players);
         }
     }
     //todo fix how map keys are updated
     public void setSpecificPlayer(PlayerRecord player){
         synchronized (playerMapThreadLock) {
-            for (PlayerRecord playerRecord : playerCardMapRecord.keySet()) {
-                if (playerRecord.username().equals(player.username())) {
-                    playerCardMapRecord.put(player, playerCardMapRecord.get(playerRecord));
+
+            PlayerRecord currentPlayer;
+
+            for (int i = 0; i < players.size(); i++) {
+
+                currentPlayer = players.get(i);
+
+                if (currentPlayer.username().equals(player.username())) {
+                    players.set(i, player);
                     return;
                 }
             }
         }
     }
     public void setSpecificCardMap(String owner, CardMapRecord cardMap){
-        PlayerRecord key;
         synchronized (playerMapThreadLock) {
-            for (PlayerRecord player : playerCardMapRecord.keySet()) {
-                if (player.username().equals(owner)) {
-                    key = player;
-                    playerCardMapRecord.put(key, cardMap);
-                    break;
-                }
-            }
+            cardMaps.put(owner, cardMap);
         }
     }
 

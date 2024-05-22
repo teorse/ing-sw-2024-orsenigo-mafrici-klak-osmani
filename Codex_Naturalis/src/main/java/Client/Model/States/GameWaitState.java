@@ -56,7 +56,7 @@ public class GameWaitState extends ClientState{
         if (model.isSetUpFinished()) {
             textUI.showGameBoard();
             if (inputCounter == 0) {
-                for (PlayerRecord playerRecord : model.getPlayerRecords()) {
+                for (PlayerRecord playerRecord : model.getPlayers()) {
                     if (playerRecord.playerState() != PlayerStates.WAIT)
                         System.out.print("It's " + playerRecord.username() + "turn. ");
                     else
@@ -71,7 +71,7 @@ public class GameWaitState extends ClientState{
             } else if (inputCounter == 2) {
                 if (choice == 1) {
                     System.out.println("Select a player username to zoom its CardMap by inserting an integer");
-                    for (PlayerRecord playerRecord : model.getPlayerRecords()) {
+                    for (PlayerRecord playerRecord : model.getPlayers()) {
                         int i = 1;
                         System.out.println(i++ + " - Player username: " + playerRecord.username());
                     }
@@ -129,8 +129,8 @@ public class GameWaitState extends ClientState{
                 print();
             } else if (inputCounter == 2) {
                 if (choice == 1) {
-                    if (TextUI.checkInputBound(input, 1, model.getPlayerRecords().size())) {
-                        choosenplayerRecord = model.getPlayerRecords().get(Integer.parseInt(input));
+                    if (TextUI.checkInputBound(input, 1, model.getPlayers().size())) {
+                        choosenplayerRecord = model.getPlayers().get(Integer.parseInt(input));
                         inputCounter++;
                     }
                     print();

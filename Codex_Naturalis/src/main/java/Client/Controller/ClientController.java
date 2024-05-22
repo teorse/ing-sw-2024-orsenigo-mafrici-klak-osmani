@@ -303,7 +303,7 @@ public class ClientController  implements ServerMessageExecutor {
      * @param game the game record containing general information about the game
      */
     @Override
-    public void gameStarted(Map<PlayerRecord, CardMapRecord> players, PlayerSecretInfoRecord secret, TableRecord table, GameRecord game) {
+    public void gameStarted(List<PlayerRecord> players, Map<String, CardMapRecord> cardMaps, PlayerSecretInfoRecord secret, TableRecord table, GameRecord game) {
 
         logger.info("gameStarted method called.");
         logger.fine("Received players: " + players);
@@ -312,8 +312,8 @@ public class ClientController  implements ServerMessageExecutor {
         logger.fine("Received game: " + game);
 
         model.setGameStarted(true);
-        model.setPlayerCardMapRecord(players);
-        model.setPlayerRecords(new ArrayList<>(players.keySet()));
+        model.setCardMaps(cardMaps);
+        model.setPlayers(players);
         model.setPlayerSecretInfoRecord(secret);
         model.setTableRecord(table);
         model.setGameRecord(game);
@@ -330,12 +330,13 @@ public class ClientController  implements ServerMessageExecutor {
      * @param players a map containing player records as keys and their corresponding card map records as values
      */
     @Override
-    public void updatePlayers(Map<PlayerRecord, CardMapRecord> players) {
+    public void updatePlayers(List<PlayerRecord> players, Map<String, CardMapRecord> cardMaps) {
 
         logger.info("updatePlayers method called.");
         logger.fine("Received players: " + players);
 
-        model.setPlayerCardMapRecord(players);
+        model.setPlayers(players);
+        model.setCardMaps(cardMaps);
     }
 
     /**
