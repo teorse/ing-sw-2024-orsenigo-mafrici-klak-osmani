@@ -148,6 +148,10 @@ public class ListenerRMI implements Runnable, RMIServerListenerConnection{
                     "client handler id "+id+" was already bound, generating new id\n" +
                     "stacktrace:\n"+ stackTraceString);
         }
+        catch(RemoteException e){
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("RemoteException caught in Listener RMI while creating new ClientHandlerRMI.\nStacktrace:\n"+ stackTraceString);
+        }
 
         System.out.println("Server is Listening on RMI...");
         logger.info("Server is listening on RMI");
