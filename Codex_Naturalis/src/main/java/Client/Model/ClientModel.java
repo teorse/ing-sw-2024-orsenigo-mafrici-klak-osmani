@@ -54,7 +54,7 @@ public class ClientModel {
     List<ObjectiveRecord> objectiveCandidates;
     PlayerSecretInfoRecord playerSecretInfoRecord;
 
-    
+
 
 
 
