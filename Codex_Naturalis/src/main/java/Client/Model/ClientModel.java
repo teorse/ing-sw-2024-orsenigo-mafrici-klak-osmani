@@ -1,5 +1,7 @@
 package Client.Model;
 
+import Client.Model.ErrorDictionary.ErrorDictionaryLogIn;
+import Client.Model.ErrorDictionary.ErrorDictionarySignUp;
 import Client.Model.Records.*;
 import Client.Model.States.ClientState;
 import Client.Model.States.ConnectionState;

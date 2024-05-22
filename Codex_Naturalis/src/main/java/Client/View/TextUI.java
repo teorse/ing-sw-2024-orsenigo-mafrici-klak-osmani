@@ -143,8 +143,8 @@ public class TextUI extends UserInterface {
         }
     }
 
-    public boolean isAvaiableCoordinates(Coordinates coordinates) {
-        return model.getCardMaps().get(TextUI.usernameToPlayerRecord(model, model.getMyUsername())).availablePlacements().contains(coordinates);
+    public boolean isAvailableCoordinates(Coordinates coordinates) {
+        return model.getCardMaps().get(model.getMyUsername()).availablePlacements().contains(coordinates);
     }
 
 
@@ -163,15 +163,15 @@ public class TextUI extends UserInterface {
      * and finally retrieves the card from the player's `CardMapView`. It uses `showCardPlacedDetails` to print out the
      * card's specific details.
      */
-    public void zoomCardMap(String input, PlayerRecord playerRecord) {
+    public void zoomCardMap(String input, String username) {
         //The cards are previously set with only visible attribute
         Coordinates coordinates = getInputCoordinates(input);
 
         //Get the card from the map of card visualized, checked in getInputCoordinates
-        CardVisibilityRecord card = model.getCardMaps().get(playerRecord).getCardVisibilityRecord(coordinates);
+        CardVisibilityRecord card = model.getCardMaps().get(username).getCardVisibilityRecord(coordinates);
 
         //Show all the textual details for the specific card
-        showCardPlacedDetails(playerRecord, card, coordinates);
+        showCardPlacedDetails(card);
     }
 
     /**
@@ -325,11 +325,9 @@ public class TextUI extends UserInterface {
      * If a corner is covered, it will be displayed in red. The method retrieves the corner details and checks
      * whether it is visible or covered to determine the color coding.
      *
-     * @param playerRecord  The `PlayerView` representing the player whose card map contains the placed card.
      * @param cardVisibilityRecord The `CardView` representing the card whose details are to be displayed.
-     * @param coordinates The `Coordinates` indicating where the card is placed on the card map.
      */
-    public void showCardPlacedDetails(PlayerRecord playerRecord, CardVisibilityRecord cardVisibilityRecord, Coordinates coordinates) {
+    public void showCardPlacedDetails(CardVisibilityRecord cardVisibilityRecord) {
         //Prints the color of the card
         out.println("Artifact Type: " + cardVisibilityRecord.cardColor());
 
@@ -433,8 +431,8 @@ public class TextUI extends UserInterface {
      * - If it's an empty grid area with an odd coordinate sum, it shows a BLACK square.
      * - Otherwise, it resets to default color.
      */
-    public String showCard(PlayerRecord playerRecord, Coordinates coordinates) {
-        CardMapRecord cardMapRecord = model.getCardMaps().get(playerRecord);
+    public String showCard(String username, Coordinates coordinates) {
+        CardMapRecord cardMapRecord = model.getCardMaps().get(username);
 
         //Check if there is a card placed at the specified coordinates
         if (cardMapRecord.cardsPlaced().containsKey(coordinates)) {
@@ -512,7 +510,7 @@ public class TextUI extends UserInterface {
                 row.append((char) (j + 65)).append(" "); // Row header
 
                 for (int k = 0; k < maxBoardSide; k++) {
-                    row.append(showCard(playerRecord, new Coordinates(k - maxCoordinate - 1, -j + maxCoordinate + 1)));
+                    row.append(showCard(playerRecord.username(), new Coordinates(k - maxCoordinate - 1, -j + maxCoordinate + 1)));
                     row.append(TerminalColor.RESET);
                 }
 
@@ -572,13 +570,12 @@ public class TextUI extends UserInterface {
      */
     public int maxCoordinate() {
         int mbs = 0;
-        for (PlayerRecord playerRecord : model.getCardMaps().keySet()) {
-            for (Coordinates coordinates : model.getCardMaps().get(playerRecord).cardsPlaced().keySet()) {
+        for (String username : model.getCardMaps().keySet())
+            for (Coordinates coordinates : model.getCardMaps().get(username).cardsPlaced().keySet()) {
                 int max = Math.max(Math.abs(coordinates.getCoordY()), Math.abs(coordinates.getCoordY()));
                 if (max > mbs) {
                     mbs = max;
                 }
-            }
         }
         return Math.max(mbs, 5);
     }

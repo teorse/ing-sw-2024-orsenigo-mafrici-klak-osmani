@@ -79,8 +79,8 @@ public class GamePlaceState extends ClientState{
         } else if (inputCounter == 1) {
             Coordinates coordinatesChosen = textUI.getInputCoordinates(input);
             //todo add else statement to communicate to player that their input is not correct
-            if (coordinatesChosen != null && textUI.isAvaiableCoordinates(coordinatesChosen)) {
-                coordinateIndex = model.getCardMaps().get(myPR).availablePlacements().indexOf(coordinatesChosen);
+            if (coordinatesChosen != null && textUI.isAvailableCoordinates(coordinatesChosen)) {
+                coordinateIndex = model.getCardMaps().get(model.getMyUsername()).availablePlacements().indexOf(coordinatesChosen);
                 inputCounter++;
             }
         } else if (inputCounter == 2) {
