@@ -82,19 +82,19 @@ public class GamePickObjectiveState extends ClientState{
     public void nextState() {
         logger.info("Choosing next state");
 
-        if (model.isOperationSuccesful()) {
-            logger.fine("Operation Successful flag is true");
-            logger.fine("Current value of myPR State: "+myPR.playerState());
-            if (model.getMyPlayerState() == PlayerStates.WAIT) {
-                logger.fine("Entering GameWaitState");
-                model.setClientState(new GameWaitState(model));
-            } else if (model.getMyPlayerState() == PlayerStates.PLACE) {
-                logger.fine("Entering GamePlaceState");
-                model.setClientState(new GamePlaceState(model));
-            }
-        } else {
-            System.out.println("The operation failed! Please try again.\n");
-            print();
+        logger.fine("Operation Successful flag is true");
+        logger.fine("Current value of myPR State: "+myPR.playerState());
+
+        //todo reconsider removing "isOperationSuccessful" for input validation
+        if(model.isGameOver()){
+            model.setClientState(new GameOverState(model));
+        }
+        else if (model.getMyPlayerGameState() == PlayerStates.WAIT) {
+            logger.fine("Entering GameWaitState");
+            model.setClientState(new GameWaitState(model));
+        } else if (model.getMyPlayerGameState() == PlayerStates.PLACE) {
+            logger.fine("Entering GamePlaceState");
+            model.setClientState(new GamePlaceState(model));
         }
     }
 }

@@ -22,7 +22,7 @@ import java.rmi.ConnectException;
  */
 public class ConnectionState extends ClientState {
 
-    int choice;
+    private int choice;
 
     /**
      * Constructs a new ConnectionState with the specified client model.
@@ -86,7 +86,8 @@ public class ConnectionState extends ClientState {
                 if (choice == 1) {
                     try {
                         model.setClientConnector(new ClientConnectorRMI(input, new ClientController(model)));
-                    } catch (ConnectException connectException) {
+                    }
+                    catch (ConnectException connectException) {
                         System.out.println("Server not found!\n");
                         print();
                     }
@@ -109,9 +110,10 @@ public class ConnectionState extends ClientState {
      */
     @Override
     public void nextState() {
-        if(model.isOperationSuccesful()) {
+        if(model.isConnected()) {
             model.setClientState(new LogInSignUpState(model));
-        } else {
+        }
+        else {
             System.out.println("The operation failed! Please try again.\n");
             print();
         }

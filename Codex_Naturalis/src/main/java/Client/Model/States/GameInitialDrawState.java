@@ -38,9 +38,9 @@ public class GameInitialDrawState extends ClientState{
      */
     @Override
     public void print() {
-        if (model.getMyPlayerState() == PlayerStates.DRAW_RESOURCE)
+        if (model.getMyPlayerGameState() == PlayerStates.DRAW_RESOURCE)
             textUI.zoomCardPool(CardPoolTypes.RESOURCE);
-        else if (model.getMyPlayerState() == PlayerStates.DRAW_GOLDEN)
+        else if (model.getMyPlayerGameState() == PlayerStates.DRAW_GOLDEN)
             textUI.zoomCardPool(CardPoolTypes.GOLDEN);
         System.out.println("\nEnter a number between 1 and 3 to pick a card: ");
     }
@@ -59,9 +59,9 @@ public class GameInitialDrawState extends ClientState{
     public void handleInput(String input) {
         if (UserInterface.checkInputBound(input,1,3)) {
             int choice = Integer.parseInt(input);
-            if (model.getMyPlayerState() == PlayerStates.DRAW_RESOURCE)
+            if (model.getMyPlayerGameState() == PlayerStates.DRAW_RESOURCE)
                 model.getClientConnector().sendPacket(new CSPDrawCard(CardPoolTypes.RESOURCE, choice - 2));
-            else if (model.getMyPlayerState() == PlayerStates.DRAW_GOLDEN)
+            else if (model.getMyPlayerGameState() == PlayerStates.DRAW_GOLDEN)
                 model.getClientConnector().sendPacket(new CSPDrawCard(CardPoolTypes.GOLDEN, choice - 2));
         } else
             print();
@@ -75,16 +75,15 @@ public class GameInitialDrawState extends ClientState{
      */
     @Override
     public void nextState() {
-        if (model.isOperationSuccesful()) {
-            if (model.getMyPlayerState() == PlayerStates.PICK_OBJECTIVE)
-                model.setClientState(new GamePickObjectiveState(model));
-            else if (model.getMyPlayerState() == PlayerStates.WAIT)
-                model.setClientState(new GameWaitState(model));
-            else
-                print();
-        } else {
-            System.out.println("The operation failed! Please try again.\n");
-            print();
+        //todo reconsider removing "isOperationSuccessful" for input validation
+        if(model.isGameOver()){
+            model.setClientState(new GameOverState(model));
         }
+        else if (model.getMyPlayerGameState() == PlayerStates.PICK_OBJECTIVE)
+            model.setClientState(new GamePickObjectiveState(model));
+        else if (model.getMyPlayerGameState() == PlayerStates.WAIT)
+            model.setClientState(new GameWaitState(model));
+        else
+            print();
     }
 }

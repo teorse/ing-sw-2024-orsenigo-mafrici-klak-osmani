@@ -2,7 +2,6 @@ package Client.Model.States;
 
 import Client.Model.ClientModel;
 import Client.View.TextUI;
-import Client.View.UserInterface;
 import Model.Player.PlayerStates;
 import Model.Utility.Coordinates;
 
@@ -79,6 +78,7 @@ public class GamePlaceState extends ClientState{
             }
         } else if (inputCounter == 1) {
             Coordinates coordinatesChosen = textUI.getInputCoordinates(input);
+            //todo add else statement to communicate to player that their input is not correct
             if (coordinatesChosen != null && textUI.isAvaiableCoordinates(coordinatesChosen)) {
                 coordinateIndex = model.getPlayerCardMapRecord().get(myPR).availablePlacements().indexOf(coordinatesChosen);
                 inputCounter++;
@@ -101,13 +101,12 @@ public class GamePlaceState extends ClientState{
      */
     @Override
     public void nextState() {
-        if (model.isOperationSuccesful()) {
-            if (model.getMyPlayerState() == PlayerStates.DRAW) {
-                model.setClientState(new GameDrawState(model));
-            }
-        } else {
-            System.out.println("The operation failed! Please try again.\n");
-            print();
+        //todo reconsider removing "isOperationSuccessful" for input validation
+        if(model.isGameOver()){
+            model.setClientState(new GameOverState(model));
+        }
+        else if (model.getMyPlayerGameState() == PlayerStates.DRAW) {
+            model.setClientState(new GameDrawState(model));
         }
     }
 }

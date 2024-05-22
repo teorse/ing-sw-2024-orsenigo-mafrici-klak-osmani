@@ -11,6 +11,8 @@ import Model.Utility.Artifacts;
 
 import Network.ClientServer.Packets.CSPPlayCard;
 
+import java.util.logging.Logger;
+
 /**
  * Represents the state where the player makes choices at the start of the game.
  * Upon entering this state, the command-line interface is cleared, and the game title is displayed.
@@ -24,6 +26,8 @@ import Network.ClientServer.Packets.CSPPlayCard;
  */
 public class GameStarterChoice extends ClientState {
 
+    private final Logger logger;
+
     /**
      * Represents the state where the player makes choices at the start of the game.
      * Upon entering this state, the command-line interface is cleared, and the game title is displayed.
@@ -33,6 +37,9 @@ public class GameStarterChoice extends ClientState {
      */
     public GameStarterChoice(ClientModel model) {
         super(model);
+        logger = Logger.getLogger(GameStarterChoice.class.getName());
+        logger.info("Initializing GameStarterChoice state");
+
         TextUI.clearCMD();
         TextUI.displayGameTitle();
         print();
@@ -77,15 +84,15 @@ public class GameStarterChoice extends ClientState {
      */
     @Override
     public void nextState() {
-        if (model.isOperationSuccesful()) {
-            if (model.getMyPlayerState() == PlayerStates.DRAW_RESOURCE)
-                model.setClientState(new GameInitialDrawState(model));
-            else if (model.getMyPlayerState() == PlayerStates.WAIT)
-                model.setClientState(new GameWaitState(model));
-        } else {
-            System.out.println("The operation failed! Please try again.\n");
-            print();
+
+        //todo reconsider removing "isOperationSuccessful" for input validation
+        if(model.isGameOver()){
+            model.setClientState(new GameOverState(model));
         }
+        else if (model.getMyPlayerGameState() == PlayerStates.DRAW_RESOURCE)
+            model.setClientState(new GameInitialDrawState(model));
+        else if (model.getMyPlayerGameState() == PlayerStates.WAIT)
+            model.setClientState(new GameWaitState(model));
     }
 
     /**

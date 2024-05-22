@@ -98,15 +98,15 @@ public class GameDrawState extends ClientState{
      */
     @Override
     public void nextState() {
-        if (model.isOperationSuccesful()) {
-            if (!UserInterface.isLastOnlinePlayer(model)) {
-                if (model.getMyPlayerState() == PlayerStates.WAIT)
-                    model.setClientState(new GameWaitState(model));
-            } else
-                model.setClientState(new GameOverState(model));
-        } else {
-            System.out.println("The operation failed! Please try again.\n");
-            print();
+        //todo reconsider removing "isOperationSuccessful" for input validation
+        if(model.isGameOver()){
+            model.setClientState(new GameOverState(model));
         }
+        else if (!UserInterface.isLastOnlinePlayer(model)) {
+            if (model.getMyPlayerGameState() == PlayerStates.WAIT)
+                model.setClientState(new GameWaitState(model));
+        }
+        else
+            model.setClientState(new GameOverState(model));
     }
 }

@@ -43,7 +43,7 @@ public class GameWaitState extends ClientState{
      *   <li>Step 1: Prompts the user to select what they want to zoom into (CardMap details, CardHeld, or CardPool).</li>
      *   <li>Step 2:
      *     <ul>
-     *       <li>If choice is 1 (zoom into CardMap), prompts the user to select a player by nickname.</li>
+     *       <li>If choice is 1 (zoom into CardMap), prompts the user to select a player by username.</li>
      *       <li>If choice is 2 (zoom into CardHeld), calls the method to zoom into the cards held by the player.</li>
      *       <li>If choice is 3 (zoom into CardPool), prompts the user to select between Resource Pool and Golden Pool.</li>
      *     </ul>
@@ -58,7 +58,7 @@ public class GameWaitState extends ClientState{
             if (inputCounter == 0) {
                 for (PlayerRecord playerRecord : model.getPlayerRecords()) {
                     if (playerRecord.playerState() != PlayerStates.WAIT)
-                        System.out.print("It's " + playerRecord.nickname() + "turn. ");
+                        System.out.print("It's " + playerRecord.username() + "turn. ");
                     else
                         System.out.println("Wait! (Enter ZOOM to look at the board)");
                 }
@@ -70,10 +70,10 @@ public class GameWaitState extends ClientState{
                          3 - CardPool""");
             } else if (inputCounter == 2) {
                 if (choice == 1) {
-                    System.out.println("Select a player nickname to zoom its CardMap by inserting an integer");
+                    System.out.println("Select a player username to zoom its CardMap by inserting an integer");
                     for (PlayerRecord playerRecord : model.getPlayerRecords()) {
                         int i = 1;
-                        System.out.println(i++ + " - Player nickname: " + playerRecord.nickname());
+                        System.out.println(i++ + " - Player username: " + playerRecord.username());
                     }
                     System.out.println();
                 } else if (choice == 2) {
@@ -157,29 +157,28 @@ public class GameWaitState extends ClientState{
     public void nextState() {
         logger.info("Choosing next state");
 
-        if (model.isOperationSuccesful()) {
-            logger.fine("Operation Successful flag is true");
-            logger.fine("Current value of myPR State: "+myPR.playerState());
+        logger.fine("Operation Successful flag is true");
+        logger.fine("Current value of myPR State: "+myPR.playerState());
 
-            if (model.getMyPlayerState() == PlayerStates.WAIT) {
-                logger.fine("Staying in Wait state");
-                print();
-            }
-            else if (model.getMyPlayerState() == PlayerStates.DRAW_RESOURCE || model.getMyPlayerState() == PlayerStates.DRAW_GOLDEN) {
-                logger.fine("Entering GameInitialDrawState");
-                model.setClientState(new GameInitialDrawState(model));
-            }
-            else if (model.getMyPlayerState() == PlayerStates.PICK_OBJECTIVE) {
-                logger.fine("Entering GamePickObjectiveState");
-                model.setClientState(new GamePickObjectiveState(model));
-            }
-            else if (model.getMyPlayerState() == PlayerStates.PLACE) {
-                logger.fine("Entering GamePlaceState");
-                model.setClientState(new GamePlaceState(model));
-            }
-        } else {
-            System.out.println("The operation failed! Please try again.\n");
+        //todo reconsider removing "isOperationSuccessful" for input validation
+        if(model.isGameOver()){
+            model.setClientState(new GameOverState(model));
+        }
+        else if (model.getMyPlayerGameState() == PlayerStates.WAIT) {
+            logger.fine("Staying in Wait state");
             print();
+        }
+        else if (model.getMyPlayerGameState() == PlayerStates.DRAW_RESOURCE || model.getMyPlayerGameState() == PlayerStates.DRAW_GOLDEN) {
+            logger.fine("Entering GameInitialDrawState");
+            model.setClientState(new GameInitialDrawState(model));
+        }
+        else if (model.getMyPlayerGameState() == PlayerStates.PICK_OBJECTIVE) {
+            logger.fine("Entering GamePickObjectiveState");
+            model.setClientState(new GamePickObjectiveState(model));
+        }
+        else if (model.getMyPlayerGameState() == PlayerStates.PLACE) {
+            logger.fine("Entering GamePlaceState");
+            model.setClientState(new GamePlaceState(model));
         }
     }
 }

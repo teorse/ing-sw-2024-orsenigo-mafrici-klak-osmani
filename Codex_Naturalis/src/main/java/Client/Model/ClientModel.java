@@ -17,38 +17,53 @@ import java.util.*;
  */
 public class ClientModel {
     //ATTRIBUTES
-    boolean operationSuccesful;
-    boolean isGameOver;
-    boolean isSetUpFinished;
+
+    //Internal Logic
+    boolean connected;
+    boolean loggedIn;
+    boolean inLobby;
+    boolean gameStarted;
+    boolean gameOver;
+    boolean setUpFinished;
+    ClientState clientState;
     String myUsername;
-    PlayerStates myPlayerState;
+    PlayerStates myPlayerGameState;
+
+    //Thread Locks
+    private final Object playerMapThreadLock = new Object();
+
+    //NETWORK
     ClientConnector clientConnector;
-    Map<PlayerRecord, CardMapRecord> playerCardMapRecord;
-    List<CardRecord> cardStarterRecords;
-    GameRecord gameRecord;
+
+
+    //SERVER MODEL MIRROR
+    //LOBBY
     List<LobbyPreviewRecord> lobbyPreviewRecords;
     LobbyRecord lobbyRecord;
     List<LobbyUserRecord> lobbyUserRecords;
-    List<ObjectiveRecord> objectiveRecords;
-    List<PlayerRecord> playerRecords;
-    PlayerSecretInfoRecord playerSecretInfoRecord;
-    TableRecord tableRecord;
-    ClientState clientState;
-    List<PlayerRecord> winners;
-    List<ObjectiveRecord> objectiveCandidates;
 
+    //GAME
+    //Publicly-visible game attributes
+    Map<PlayerRecord, CardMapRecord> playerCardMapRecord;
+    GameRecord gameRecord;
+    List<PlayerRecord> playerRecords;
+    TableRecord tableRecord;
+    List<PlayerRecord> winners;
+
+    //Player private game attributes
+    List<ObjectiveRecord> objectiveCandidates;
+    PlayerSecretInfoRecord playerSecretInfoRecord;
 
     
+
 
 
     //CONSTRUCTOR
     public ClientModel() {
         this.playerCardMapRecord = new HashMap<>();
-        this.cardStarterRecords = new ArrayList<>();
         this.lobbyPreviewRecords = new ArrayList<>();
         this.lobbyUserRecords = new ArrayList<>();
         this.playerRecords = new ArrayList<>();
-        this.objectiveRecords = new ArrayList<>();
         this.winners = new ArrayList<>();
         clientState = new ConnectionState(this);
     }
@@ -58,21 +73,15 @@ public class ClientModel {
 
 
     //GETTERS
-    public boolean isOperationSuccesful() {
-        return operationSuccesful;
-    }
-    public boolean isGameOver() {return isGameOver;}
+    public boolean isGameOver() {return gameOver;}
     public boolean isSetUpFinished() {
-        return isSetUpFinished;
+        return setUpFinished;
     }
     public String getMyUsername() {return myUsername; }
-    public PlayerStates getMyPlayerState() {return myPlayerState;}
+    public PlayerStates getMyPlayerGameState() {return myPlayerGameState;}
     public ClientConnector getClientConnector() { return clientConnector; }
     public Map<PlayerRecord, CardMapRecord> getPlayerCardMapRecord() {
         return playerCardMapRecord;
-    }
-    public List<CardRecord> getCardStarterRecords() {
-        return cardStarterRecords;
     }
     public GameRecord getGameRecord() {
         return gameRecord;
@@ -80,14 +89,8 @@ public class ClientModel {
     public List<LobbyPreviewRecord> getLobbyPreviewRecords() {
         return lobbyPreviewRecords;
     }
-    public LobbyRecord getLobbyRecord() {
-        return lobbyRecord;
-    }
     public List<LobbyUserRecord> getLobbyUserRecords() {
         return lobbyUserRecords;
-    }
-    public List<ObjectiveRecord> getObjectiveRecords() {
-        return objectiveRecords;
     }
     public List<PlayerRecord> getPlayerRecords() {
         return Collections.unmodifiableList(playerRecords);
@@ -98,9 +101,6 @@ public class ClientModel {
     public TableRecord getTableRecord() {
         return tableRecord;
     }
-    public ClientState getClientState() {
-        return clientState;
-    }
     public List<PlayerRecord> getWinners() {
         return winners;
     }
@@ -108,36 +108,63 @@ public class ClientModel {
         return objectiveCandidates;
     }
 
-
-
-
+    public boolean isConnected(){
+        return this.connected;
+    }
+    public boolean isLoggedIn(){
+        return this.loggedIn;
+    }
+    public boolean isInLobby() {
+        return inLobby;
+    }
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
 
     //SETTERS
-    public void setOperationSuccesful(boolean operationSuccesful) {
-        this.operationSuccesful = operationSuccesful;
-    }
-
-    public void setGameOver(boolean gameOver) {isGameOver = gameOver;}
-
-    public void setSetUpFinished(boolean setUpFinished) {
-        isSetUpFinished = setUpFinished;
-    }
-
     public void setMyUsername(String myUsername) {this.myUsername = myUsername;}
-
-    public void setMyPlayerState(PlayerStates myPlayerState) {this.myPlayerState = myPlayerState;}
-
+    public void setMyPlayerGameState(PlayerStates myPlayerGameState) {this.myPlayerGameState = myPlayerGameState;}
     public void setClientConnector(ClientConnector clientConnector) {
         this.clientConnector = clientConnector;
         Thread clientConnectorThread = new Thread(this.clientConnector);
         clientConnectorThread.start();
     }
+
     public void setPlayerCardMapRecord(Map<PlayerRecord, CardMapRecord> playerCardMapRecord) {
-        this.playerCardMapRecord = playerCardMapRecord;
+        synchronized (playerMapThreadLock) {
+            this.playerCardMapRecord = playerCardMapRecord;
+        }
     }
-    public void setCardStarterRecords(List<CardRecord> cardStarterRecords) {
-        this.cardStarterRecords = cardStarterRecords;
+    public void setPlayerRecords(List<PlayerRecord> playerRecords) {
+        synchronized (playerMapThreadLock) {
+            this.playerRecords = Collections.unmodifiableList(playerRecords);
+        }
     }
+    //todo fix how map keys are updated
+    public void setSpecificPlayer(PlayerRecord player){
+        synchronized (playerMapThreadLock) {
+            for (PlayerRecord playerRecord : playerCardMapRecord.keySet()) {
+                if (playerRecord.username().equals(player.username())) {
+                    playerCardMapRecord.put(player, playerCardMapRecord.get(playerRecord));
+                    return;
+                }
+            }
+        }
+    }
+    public void setSpecificCardMap(String owner, CardMapRecord cardMap){
+        PlayerRecord key;
+        synchronized (playerMapThreadLock) {
+            for (PlayerRecord player : playerCardMapRecord.keySet()) {
+                if (player.username().equals(owner)) {
+                    key = player;
+                    playerCardMapRecord.put(key, cardMap);
+                    break;
+                }
+            }
+        }
+    }
+
+
     public void setGameRecord(GameRecord gameRecord) {
         this.gameRecord = gameRecord;
     }
@@ -150,12 +177,7 @@ public class ClientModel {
     public void setLobbyUserRecords(List<LobbyUserRecord> lobbyUserRecords) {
         this.lobbyUserRecords = lobbyUserRecords;
     }
-    public void setObjectiveRecords(List<ObjectiveRecord> objectiveRecords) {
-        this.objectiveRecords = objectiveRecords;
-    }
-    public void setPlayerRecords(List<PlayerRecord> playerRecords) {
-        this.playerRecords = Collections.unmodifiableList(playerRecords);
-    }
+
     public void setPlayerSecretInfoRecord(PlayerSecretInfoRecord playerSecretInfoRecord) {
         this.playerSecretInfoRecord = playerSecretInfoRecord;
     }
@@ -172,7 +194,23 @@ public class ClientModel {
         this.objectiveCandidates = objectiveCandidates;
     }
 
-
+    public void setSetUpFinished(boolean setUpFinished) {
+        this.setUpFinished = setUpFinished;
+    }
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;}
+    public void setConnected(boolean connected){
+        this.connected = connected;
+    }
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
+    }
+    public void setInLobby(boolean inLobby) {
+        this.inLobby = inLobby;
+    }
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
+    }
 
 
     //METHODS

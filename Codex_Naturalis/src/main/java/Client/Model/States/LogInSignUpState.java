@@ -9,6 +9,8 @@ import Network.ClientServer.Packets.CSPSignUp;
 import java.util.ArrayList;
 import java.util.List;
 
+//todo add possibility to go back to the choice of log-in/sign-up
+
 /**
  * The LogInSignUpState represents the state of the client where the user is prompted to log in or sign up.
  *
@@ -105,7 +107,7 @@ public class LogInSignUpState extends ClientState {
      */
     @Override
     public void nextState() {
-        if (model.isOperationSuccesful()) {
+        if (model.isLoggedIn()) {
             model.setClientState(new LobbySelectionState(model));
         } else {
             System.out.println("The operation failed! Please try again.\n");

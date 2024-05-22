@@ -3,7 +3,6 @@ package Client.Model.States;
 import Client.Model.ClientModel;
 import Client.Model.Records.PlayerRecord;
 import Client.View.TextUI;
-import Client.View.UserInterface;
 
 /**
  * Represents the state of the client when the game is over.
@@ -31,7 +30,7 @@ public class GameOverState extends ClientState{
      * Prints the final rankings of the game.
      * <p>
      * This method displays the final rankings of players based on their points, objectives completed,
-     * and rounds completed. Each player's nickname, points, objectives completed, and rounds completed
+     * and rounds completed. Each player's username, points, objectives completed, and rounds completed
      * are shown. Additionally, it prompts the user to exit the final rankings view by entering "EXIT".
      */
     @Override
@@ -43,7 +42,7 @@ public class GameOverState extends ClientState{
                 System.out.println(" 1 - ");
             else
                 System.out.println(" " + i + " - ");
-            System.out.println(winners.nickname() + "  Points: " + winners.points() + "  ObjectivesCompleted: "
+            System.out.println(winners.username() + "  Points: " + winners.points() + "  ObjectivesCompleted: "
                     + winners.objectivesCompleted() + " RoundsCompleted: " + winners.roundsCompleted());
         }
         System.out.println("\n" + "To exit the Final Rankings view enter EXIT.");
@@ -76,10 +75,6 @@ public class GameOverState extends ClientState{
      */
     @Override
     public void nextState() {
-        if (UserInterface.isLastOnlinePlayer(model)) {
-            model.setClientState(new LobbySelectionState(model));
-        } else {
-            model.setClientState(new LobbyJoined(model));
-        }
+        model.setClientState(new LobbyJoined(model));
     }
 }

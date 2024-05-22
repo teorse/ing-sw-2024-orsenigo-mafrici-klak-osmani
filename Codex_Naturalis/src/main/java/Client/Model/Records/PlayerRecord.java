@@ -1,25 +1,23 @@
 package Client.Model.Records;
 
 import Model.Player.PlayerStates;
-import Server.Model.Lobby.LobbyUserColors;
-import Server.Model.Lobby.LobbyUserConnectionStates;
 
 import java.io.Serializable;
 
 /**
  * Represents a record containing information about a player in a game.
  *
- * <p>A {@code PlayerRecord} contains details such as the nickname, color, state, rounds completed, points, and objectives completed by the player.
+ * <p>A {@code PlayerRecord} contains details such as the username, color, state, rounds completed, points, and objectives completed by the player.
  *
  * <p>This record implements the {@code Serializable} interface to support serialization.
  */
-public record PlayerRecord(String nickname, PlayerStates playerState,
+public record PlayerRecord(String username, PlayerStates playerState,
                            int roundsCompleted, int points, int objectivesCompleted, boolean winner) implements Serializable {
 
     /**
      * Constructs a new {@code PlayerRecord} with the specified parameters.
      *
-     * @param nickname the nickname of the player
+     * @param username the username of the player
      * @param playerState the state of the player
      * @param roundsCompleted the number of rounds completed by the player
      * @param points the points earned by the player

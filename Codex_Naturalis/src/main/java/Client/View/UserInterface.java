@@ -208,7 +208,7 @@ public abstract class UserInterface {
     /**
      * Retrieves the PlayerRecord corresponding to the current user from the ClientModel.
      *
-     * <p>This method iterates over the player records stored in the ClientModel and compares each player's nickname with
+     * <p>This method iterates over the player records stored in the ClientModel and compares each player's username with
      * the username of the current user. When a match is found, it returns the corresponding PlayerRecord.
      *
      * @param model The ClientModel containing player records and user information.
@@ -217,7 +217,7 @@ public abstract class UserInterface {
     public static PlayerRecord usernameToPlayerRecord(ClientModel model, String username) {
         PlayerRecord PR = null;
         for (PlayerRecord playerRecord : model.getPlayerRecords()) {
-            if(playerRecord.nickname().equals(username)) {
+            if(playerRecord.username().equals(username)) {
                 PR = playerRecord;
             }
         }

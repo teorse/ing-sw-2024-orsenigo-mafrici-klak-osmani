@@ -7,10 +7,8 @@ import Model.Cards.CornerDirection;
 import Model.Cards.CornerOrientation;
 import Model.Cards.CornerType;
 import Model.Game.CardPoolTypes;
-import Model.Player.CardVisibility;
 import Model.Utility.Artifacts;
 import Model.Utility.Coordinates;
-import Server.Model.Lobby.LobbyRoles;
 import Server.Model.Lobby.LobbyUserConnectionStates;
 
 import java.io.IOException;
@@ -124,7 +122,6 @@ public class TextUI extends UserInterface {
         int maxCoordinate = this.maxCoordinate();
         int maxBoardSide = (maxCoordinate * 2) + 3;
 
-        input = in.nextLine();
         String[] readCoords;
         readCoords = input.split("\\s+");
 
@@ -407,17 +404,17 @@ public class TextUI extends UserInterface {
      *
      * <p>
      * This method retrieves the list of PlayerViews from the given GameView and displays the points
-     * for each player along with their nickname.
+     * for each player along with their username.
      */
     public void showPoints() {
         out.println("POINTS TABLE (You are the player in green, while the ones in red are disconnected)");
         for (PlayerRecord playerRecord : model.getPlayerRecords()) {
-            if (playerRecord.nickname().equals(model.getMyUsername()))
-                out.println(TerminalColor.GREEN_BRIGHT + playerRecord.nickname() + TerminalColor.RESET + ": " + playerRecord.points());
-            else if (usernameToLobbyUserRecord(model, playerRecord.nickname()).connectionStatus() == LobbyUserConnectionStates.OFFLINE)
-                out.println(TerminalColor.RED_BRIGHT + playerRecord.nickname() + TerminalColor.RESET + ": " + playerRecord.points());
+            if (playerRecord.username().equals(model.getMyUsername()))
+                out.println(TerminalColor.GREEN_BRIGHT + playerRecord.username() + TerminalColor.RESET + ": " + playerRecord.points());
+            else if (usernameToLobbyUserRecord(model, playerRecord.username()).connectionStatus() == LobbyUserConnectionStates.OFFLINE)
+                out.println(TerminalColor.RED_BRIGHT + playerRecord.username() + TerminalColor.RESET + ": " + playerRecord.points());
             else
-                out.println(playerRecord.nickname() + ": " + playerRecord.points());
+                out.println(playerRecord.username() + ": " + playerRecord.points());
         }
     }
 
@@ -498,7 +495,7 @@ public class TextUI extends UserInterface {
             List<String> mapRows = new ArrayList<>();
 
             // Title
-            String title = playerRecord.nickname() + "'s Card Map";
+            String title = playerRecord.username() + "'s Card Map";
             int padding = (maxBoardSide * 3 + 2 - title.length()) / 2;
             String titleRow = " ".repeat(padding) + title + " ".repeat(padding) + "   ";
             mapRows.add(titleRow);

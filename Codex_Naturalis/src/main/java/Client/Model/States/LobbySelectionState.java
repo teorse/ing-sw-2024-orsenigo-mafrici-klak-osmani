@@ -3,7 +3,6 @@ package Client.Model.States;
 import Client.Model.ClientModel;
 import Client.Model.Records.LobbyPreviewRecord;
 import Client.View.TextUI;
-import Client.View.UserInterface;
 import Network.ClientServer.Packets.CSPJoinLobby;
 import Network.ClientServer.Packets.CSPStartLobby;
 import Network.ClientServer.Packets.CSPStopViewingLobbyPreviews;
@@ -140,7 +139,8 @@ public class LobbySelectionState extends ClientState {
      */
     @Override
     public void nextState() {
-        if (model.isOperationSuccesful()) {
+        if (model.isInLobby()) {
+            //Unsubscribe from lobby preview observer list if user choose to join lobby
             if (choice == 2)
                 model.getClientConnector().sendPacket(new CSPStopViewingLobbyPreviews());
             model.setClientState(new LobbyJoined(model));
