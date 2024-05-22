@@ -9,19 +9,21 @@ import Server.Network.ClientHandler.ClientHandlerRMI;
 import Utils.Utilities;
 
 import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
+import java.rmi.server.Unreferenced;
 import java.util.logging.Logger;
 
 /**
  * ListenerRMI class is responsible for listening to incoming RMI connection requests from clients.
  * When a request is received, it creates a ClientHandler to further handle the client's connection.
  */
-public class ListenerRMI implements Runnable, RMIServerListenerConnection{
+public class ListenerRMI implements Runnable, RMIServerListenerConnection, Unreferenced {
     //ATTRIBUTES
     private final ServerController serverController;
     /**
@@ -31,6 +33,8 @@ public class ListenerRMI implements Runnable, RMIServerListenerConnection{
     private static Registry serverRegistry;
 
     private final Logger logger;
+
+    private boolean shouldStayAlive;
 
 
 
@@ -45,6 +49,8 @@ public class ListenerRMI implements Runnable, RMIServerListenerConnection{
     public ListenerRMI(ServerController serverController){
         logger = Logger.getLogger(ListenerRMI.class.getName());
         logger.fine("Initializing RMI Listener");
+
+        shouldStayAlive = true;
 
         this.serverController = serverController;
 
@@ -89,6 +95,25 @@ public class ListenerRMI implements Runnable, RMIServerListenerConnection{
         catch (AlreadyBoundException | RemoteException e) {
             String stackTraceString = Utilities.StackTraceToString(e);
             logger.warning("Error exporting or binding RMI object: " + e.getMessage()+"\nStacktrace:\n"+ stackTraceString);
+        }
+    }
+
+    @Override
+    public void unreferenced(){
+        try {
+            logger.warning("Attempt to garbage collect RMI Listener, unreferenced method called.");
+            if (shouldStayAlive) {
+                logger.info("Rebinding listener to register.");
+                serverRegistry.rebind(NetworkConstants.RMIListenerStubName, stub);
+            }
+            else {
+                logger.info("Unbinding listener from register.");
+                serverRegistry.unbind(NetworkConstants.RMIListenerStubName);
+            }
+        }
+        catch (NotBoundException | RemoteException e){
+            String stackTrace = Utilities.StackTraceToString(e);
+            logger.warning("Exception "+e.getMessage()+ " caught in call to unreferenced method in RMI Listener.\nStacktrace:\n"+stackTrace);
         }
     }
 
