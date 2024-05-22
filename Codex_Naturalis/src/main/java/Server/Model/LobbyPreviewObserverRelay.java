@@ -37,7 +37,15 @@ public class LobbyPreviewObserverRelay {
     public void updateLobbyPreview(LobbyPreviewRecord preview){
         lobbyPreviewSet.remove(preview);
         lobbyPreviewSet.add(preview);
+        broadCastPreviews();
+    }
 
+    public void removeLobbyPreview(LobbyPreviewRecord preview){
+        lobbyPreviewSet.remove(preview);
+        broadCastPreviews();
+    }
+
+    private void broadCastPreviews(){
         ServerClientPacket packet = new SCPUpdateLobbyPreviews(lobbyPreviewSet.stream().toList());
 
         for(ClientHandler observer : observers.values()) {
