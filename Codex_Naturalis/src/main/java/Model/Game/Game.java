@@ -27,6 +27,7 @@ public class Game implements ServerModelLayer {
     private final ObserverRelay gameObserverRelay;
 
     private final Table table;
+    private boolean setupFinished;
     private boolean lastRoundFlag;
     private GameState state;
 
@@ -69,6 +70,7 @@ public class Game implements ServerModelLayer {
         Collections.shuffle(this.players);
         this.table = new Table(goldenCards, resourceCards, starterCards, objectives, gameObserverRelay);
         this.lastRoundFlag = false;
+        this.setupFinished = false;
         state = new PlaceStarterCard(this);
         
         for(Player player : players) {
@@ -243,5 +245,5 @@ public class Game implements ServerModelLayer {
         return CardMapRecordsMap;
     }
 
-    public GameRecord toRecord() {return new GameRecord(roundsCompleted, lastRoundFlag);}
+    public GameRecord toRecord() {return new GameRecord(roundsCompleted, lastRoundFlag, setupFinished);}
 }

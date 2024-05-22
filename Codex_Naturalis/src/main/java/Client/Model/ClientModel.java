@@ -176,6 +176,7 @@ public class ClientModel {
 
     public void setGameRecord(GameRecord gameRecord) {
         this.gameRecord = gameRecord;
+        setUpFinished = gameRecord.setupFinished();
     }
     public void setLobbyPreviewRecords(List<LobbyPreviewRecord> lobbyPreviewRecords) {
         this.lobbyPreviewRecords = lobbyPreviewRecords;
