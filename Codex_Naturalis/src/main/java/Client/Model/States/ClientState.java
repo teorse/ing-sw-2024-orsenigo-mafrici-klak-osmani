@@ -4,10 +4,6 @@ import Client.Model.ClientModel;
 import Client.Model.Records.LobbyUserRecord;
 import Client.Model.Records.PlayerRecord;
 import Client.View.TextUI;
-import Client.View.UserInterface;
-import Model.Player.PlayerStates;
-
-import java.util.logging.Logger;
 
 /**
  * Abstract class representing the state of the client in the game.
@@ -39,7 +35,7 @@ public abstract class ClientState {
         this.textUI = new TextUI(model);
         this.myPR = TextUI.usernameToPlayerRecord(model,model.getMyUsername());
         this.inputCounter = 0;
-        this.model.setOperationSuccesful(false);
+        this.model.setOperationSuccessful(false);
     }
 
 

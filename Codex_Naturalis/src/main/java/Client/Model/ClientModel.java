@@ -17,7 +17,7 @@ import java.util.*;
  */
 public class ClientModel {
     //ATTRIBUTES
-    boolean operationSuccesful;
+    boolean operationSuccessful;
     boolean isGameOver;
     boolean isSetUpFinished;
     String myUsername;
@@ -59,7 +59,7 @@ public class ClientModel {
 
     //GETTERS
     public boolean isOperationSuccessful() {
-        return operationSuccesful;
+        return operationSuccessful;
     }
     public boolean isGameOver() {return isGameOver;}
     public boolean isSetUpFinished() {
@@ -113,8 +113,8 @@ public class ClientModel {
 
 
     //SETTERS
-    public void setOperationSuccesful(boolean operationSuccesful) {
-        this.operationSuccesful = operationSuccesful;
+    public void setOperationSuccessful(boolean operationSuccessful) {
+        this.operationSuccessful = operationSuccessful;
     }
 
     public void setGameOver(boolean gameOver) {isGameOver = gameOver;}
