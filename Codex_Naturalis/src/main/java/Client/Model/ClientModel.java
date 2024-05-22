@@ -142,7 +142,7 @@ public class ClientModel {
     }
     public void setPlayers(List<PlayerRecord> players) {
         synchronized (playerMapThreadLock) {
-            this.players = Collections.unmodifiableList(players);
+            this.players = players;
         }
     }
     //todo fix how map keys are updated
@@ -171,6 +171,7 @@ public class ClientModel {
 
     public void setGameRecord(GameRecord gameRecord) {
         this.gameRecord = gameRecord;
+        setUpFinished = gameRecord.setupFinished();
     }
     public void setLobbyPreviewRecords(List<LobbyPreviewRecord> lobbyPreviewRecords) {
         this.lobbyPreviewRecords = lobbyPreviewRecords;

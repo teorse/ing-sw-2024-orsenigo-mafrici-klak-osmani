@@ -34,6 +34,8 @@ public class LobbyJoined extends ClientState{
         TextUI.clearCMD();
         TextUI.displayGameTitle();
         print();
+
+        nextState();
     }
 
     /**
@@ -88,9 +90,18 @@ public class LobbyJoined extends ClientState{
         logger.fine("Current gameStarted: "+model.isGameStarted()+
                 "\nCurrent ClientPlayerState: "+model.getMyPlayerGameState());
 
-        if (model.isGameStarted() && model.getMyPlayerGameState() == PlayerStates.PLACE) {
-            model.setClientState(new GameStarterChoice(model));
+
+        PlayerStates myPlayerGameState = model.getMyPlayerGameState();
+        if(model.isGameStarted() && myPlayerGameState != null){
+            switch(myPlayerGameState){
+                case PLACE -> model.setClientState(new GameStarterChoice(model));
+                case DRAW -> model.setClientState(new GameDrawState(model));
+                case DRAW_GOLDEN, DRAW_RESOURCE -> model.setClientState(new GameInitialDrawState(model));
+                case PICK_OBJECTIVE -> model.setClientState(new GamePickObjectiveState(model));
+                case WAIT -> model.setClientState(new GameWaitState(model));
+            }
         }
+
         else {
             logger.fine("Conditions were not met to switch state, staying in LobbyJoined");
             System.out.println("The operation failed! Please try again.\n");
