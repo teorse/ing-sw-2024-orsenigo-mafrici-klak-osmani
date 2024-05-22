@@ -56,11 +56,12 @@ public class GameWaitState extends ClientState{
         if (model.isSetUpFinished()) {
             textUI.showGameBoard();
             if (inputCounter == 0) {
+                System.out.println("Wait! (Enter ZOOM to look at the board)");
                 for (PlayerRecord playerRecord : model.getPlayers()) {
-                    if (playerRecord.playerState() != PlayerStates.WAIT)
-                        System.out.print("It's " + playerRecord.username() + "turn. ");
-                    else
-                        System.out.println("Wait! (Enter ZOOM to look at the board)");
+                    logger.info(playerRecord.username() + ": " + playerRecord.playerState());
+                    if (playerRecord.playerState() == PlayerStates.PLACE || playerRecord.playerState() == PlayerStates.DRAW) {
+                        System.out.print("It's " + playerRecord.username() + " turn. ");
+                    }
                 }
             } else if (inputCounter == 1) {
                 System.out.println("""
@@ -85,7 +86,9 @@ public class GameWaitState extends ClientState{
                              2 - Golden Pool""");
                 }
             } else if (inputCounter == 3 && choice == 1) {
-                System.out.println("Choose a coordinate to zoom the card [ROW] [COLUMN].");
+                System.out.println("Choose a ROW to zoom the card.");
+            } else if (inputCounter == 4 && choice == 1) {
+                System.out.println("Choose a COLUMN to zoom the card.");
             }
         } else {
             TextUI.displayGameTitle();
@@ -160,7 +163,6 @@ public class GameWaitState extends ClientState{
         logger.fine("Operation Successful flag is true");
         logger.fine("Current value of myPR State: " + model.getMyPlayerGameState());
 
-        //todo reconsider removing "isOperationSuccessful" for input validation
         if(model.isGameOver()){
             model.setClientState(new GameOverState(model));
         }

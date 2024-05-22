@@ -1,6 +1,8 @@
 package Client.Model.States;
 
 import Client.Model.ClientModel;
+import Client.Model.ErrorDictionary.ErrorDictionaryJoinLobbyFailed;
+import Client.Model.ErrorDictionary.ErrorDictionaryStartLobbyFailed;
 import Client.Model.Records.LobbyPreviewRecord;
 import Client.View.TextUI;
 import Network.ClientServer.Packets.CSPJoinLobby;
@@ -33,6 +35,7 @@ public class LobbySelectionState extends ClientState {
         super(model);
         TextUI.clearCMD();
         TextUI.displayGameTitle();
+        System.out.println("If you want to go back at the previous choice, type BACK \n");
         print();
     }
 
@@ -99,7 +102,15 @@ public class LobbySelectionState extends ClientState {
      */
     @Override
     public void handleInput(String input) {
-        if (inputCounter == 0) {
+        if (input.equalsIgnoreCase("BACK")) {
+            if (inputCounter == 1) {
+                inputCounter = 0;
+                print();
+            } else if (inputCounter == 2) {
+                inputCounter = 1;
+                print();
+            }
+        } else if (inputCounter == 0) {
             if (TextUI.getBinaryChoice(input)) {
                 choice = Integer.parseInt(input);
                 if (choice == 2)
@@ -145,8 +156,29 @@ public class LobbySelectionState extends ClientState {
                 model.getClientConnector().sendPacket(new CSPStopViewingLobbyPreviews());
             model.setClientState(new LobbyJoined(model));
         } else {
-            System.out.println("The operation failed! Please try again.\n");
-            inputCounter = 1;
+            if (choice == 1)
+                switch (model.getErrorDictionaryStartLobbyFailed()) {
+                    case ErrorDictionaryStartLobbyFailed.GENERIC_ERROR -> {
+                        System.out.println("Generic error.");
+                        inputCounter = 1;
+                    }
+                    case ErrorDictionaryStartLobbyFailed.INVALID_LOBBY_SIZE -> {
+                        System.out.println("Invalid lobby size.");
+                        inputCounter = 2;
+                    }
+                    case ErrorDictionaryStartLobbyFailed.LOBBY_NAME_ALREADY_TAKEN -> {
+                        System.out.println("Lobby name already taken.");
+                        inputCounter = 1;
+                    }
+            }
+            else if (choice == 2) {
+                switch (model.getErrorDictionaryJoinLobbyFailed()) {
+                    case ErrorDictionaryJoinLobbyFailed.LOBBY_IS_CLOSED -> System.out.println("Lobby closed.");
+                    case ErrorDictionaryJoinLobbyFailed.GENERIC_ERROR -> System.out.println("Something happened in the server, please try again.");
+                    case ErrorDictionaryJoinLobbyFailed.LOBBY_NAME_NOT_FOUND -> System.out.println("Lobby name not found.");
+                }
+                inputCounter = 1;
+            }
             print();
         }
     }

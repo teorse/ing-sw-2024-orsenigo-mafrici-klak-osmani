@@ -2,10 +2,12 @@ package Client.Model;
 
 import Client.Model.ErrorDictionary.ErrorDictionaryLogIn;
 import Client.Model.ErrorDictionary.ErrorDictionarySignUp;
+import Client.Model.ErrorDictionary.ErrorDictionaryStartLobbyFailed;
 import Client.Model.Records.*;
 import Client.Model.States.ClientState;
 import Client.Model.States.ConnectionState;
 import Client.Network.ClientConnector;
+import Client.View.TextUI;
 import Model.Player.PlayerStates;
 
 import java.util.*;
@@ -31,8 +33,11 @@ public class ClientModel {
     String myUsername;
     PlayerStates myPlayerGameState;
 
-    //Error managing
-    //ErrorDictionaryLogIn
+    //Error Managing
+    ErrorDictionaryLogIn errorDictionaryLogIn;
+    ErrorDictionarySignUp errorDictionarySignUp;
+    ErrorDictionaryJoinLobbyFailed errorDictionaryJoinLobbyFailed;
+    ErrorDictionaryStartLobbyFailed errorDictionaryStartLobbyFailed;
 
     //Thread Locks
     private final Object playerMapThreadLock = new Object();
@@ -126,6 +131,7 @@ public class ClientModel {
         return gameStarted;
     }
 
+
     //SETTERS
     public void setMyUsername(String myUsername) {this.myUsername = myUsername;}
     public void setMyPlayerGameState(PlayerStates myPlayerGameState) {this.myPlayerGameState = myPlayerGameState;}
@@ -142,13 +148,12 @@ public class ClientModel {
     }
     public void setPlayers(List<PlayerRecord> players) {
         synchronized (playerMapThreadLock) {
-            this.players = Collections.unmodifiableList(players);
+            this.players = players;
         }
     }
     //todo fix how map keys are updated
     public void setSpecificPlayer(PlayerRecord player){
         synchronized (playerMapThreadLock) {
-
             PlayerRecord currentPlayer;
 
             for (int i = 0; i < players.size(); i++) {
