@@ -462,8 +462,6 @@ public class ClientController  implements ServerMessageExecutor {
         logger.fine("Received newState: " + newState);
 
         model.setMyPlayerGameState(newState);
-        if (newState == PlayerStates.PICK_OBJECTIVE)
-            model.setSetUpFinished(true);
         model.nextState();
     }
 

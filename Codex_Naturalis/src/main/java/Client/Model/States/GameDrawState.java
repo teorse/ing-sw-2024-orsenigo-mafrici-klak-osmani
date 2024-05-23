@@ -43,13 +43,16 @@ public class GameDrawState extends ClientState{
     @Override
     public void print() {
         //TODO fix null pool cards
-        textUI.zoomCardPool(CardPoolTypes.RESOURCE);
-        textUI.zoomCardPool(CardPoolTypes.GOLDEN);
-        if (inputCounter == 0)
-            System.out.println("""
+        if (inputCounter == 0) {
+            textUI.zoomCardPool(CardPoolTypes.RESOURCE);
+            textUI.zoomCardPool(CardPoolTypes.GOLDEN);
+            System.out.println("\n" +
+                    """
                     Enter from which pool you want to draw:
                      1 - Resource
                      2 - Golden""");
+        }
+
         else if (inputCounter == 1)
             System.out.println("\nEnter a number between 1 and 3 to pick a card: ");
     }

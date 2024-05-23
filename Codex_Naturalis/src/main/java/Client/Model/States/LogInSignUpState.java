@@ -37,7 +37,7 @@ public class LogInSignUpState extends ClientState {
         super(model);
         TextUI.clearCMD();
         TextUI.displayGameTitle();
-        System.out.println("If you want to go back at the previous choice, type BACK \n");
+        System.out.println("If you want to go back at the previous choice, type BACK");
         print();
     }
 
@@ -51,7 +51,7 @@ public class LogInSignUpState extends ClientState {
     @Override
     public void print() {
         if (inputCounter == 0) {
-            System.out.println("""
+            System.out.println("\n" + """ 
                     Enter your choice:
                      1 - Log in
                      2 - Sign up""");

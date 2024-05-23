@@ -92,24 +92,26 @@ public class LobbyJoined extends ClientState{
     @Override
     public synchronized void nextState() {
         logger.info("Choosing next state");
-        logger.fine("Current gameStarted: " + model.isGameStarted()+
+        logger.fine("Current gameStarted: " + model.isGameStarted() +
                 "\nCurrent ClientPlayerState: " + model.getMyPlayerGameState());
 
         PlayerStates myPlayerGameState = model.getMyPlayerGameState();
-        if(model.isGameStarted() && myPlayerGameState != null){
-            switch(myPlayerGameState){
-                case PLACE -> model.setClientState(new GameStarterChoice(model));
-                case DRAW -> model.setClientState(new GameDrawState(model));
-                case DRAW_GOLDEN, DRAW_RESOURCE -> model.setClientState(new GameInitialDrawState(model));
-                case PICK_OBJECTIVE -> model.setClientState(new GamePickObjectiveState(model));
-                case WAIT -> model.setClientState(new GameWaitState(model));
-            }
-        }
-
-        else {
-            logger.fine("Conditions were not met to switch state, staying in LobbyJoined");
-            System.out.println("The operation failed! Please try again.\n");
-            print();
+        if (model.isGameStarted()) {
+            if (myPlayerGameState != null) {
+                switch (myPlayerGameState) {
+                    case PLACE -> {
+                        if (!model.isSetUpFinished())
+                            model.setClientState(new GameStarterChoice(model));
+                        else
+                            model.setClientState(new GamePlaceState(model));
+                    }
+                    case DRAW -> model.setClientState(new GameDrawState(model));
+                    case DRAW_GOLDEN, DRAW_RESOURCE -> model.setClientState(new GameInitialDrawState(model));
+                    case PICK_OBJECTIVE -> model.setClientState(new GamePickObjectiveState(model));
+                    case WAIT -> model.setClientState(new GameWaitState(model));
+                }
+            } else
+                 logger.fine("Conditions were not met to switch state, staying in LobbyJoined");
         }
     }
 }

@@ -194,7 +194,7 @@ public class GameWaitState extends ClientState{
 
         logger.fine("Current value of myPR State: " + model.getMyPlayerGameState());
 
-        if(model.isGameOver()){
+        if(model.isGameOver()) {
             model.setClientState(new GameOverState(model));
         }
         else if (model.getMyPlayerGameState() == PlayerStates.WAIT) {
