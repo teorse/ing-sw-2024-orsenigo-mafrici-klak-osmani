@@ -221,6 +221,7 @@ public class MainLoop implements GameState{
                     //If the player had previously disconnected then the old saved value for their state is retrieved, otherwise
                     //by default they are assigned the PLACE state.
                     nextPlayer.setPlayerState(playerStatesBeforeDisconnection.getOrDefault(nextPlayer.getUsername(), PlayerStates.PLACE));
+                    gameObserverRelay.update(nextPlayer.getUsername(), new SCPUpdateClientGameState(nextPlayer.getPlayerState()));
                     return;
                 }
             }
