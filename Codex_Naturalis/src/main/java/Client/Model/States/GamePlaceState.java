@@ -4,6 +4,8 @@ import Client.Model.ClientModel;
 import Client.View.TextUI;
 import Model.Player.PlayerStates;
 import Model.Utility.Coordinates;
+import Network.ClientServer.Packets.CSPPickObjective;
+import Network.ClientServer.Packets.CSPPlayCard;
 
 import java.util.logging.Logger;
 
@@ -15,6 +17,8 @@ import java.util.logging.Logger;
 public class GamePlaceState extends ClientState{
     int cardIndex;
     int coordinateIndex;
+    String chosenRow;
+    String chosenCol;
     boolean faceUp;
 
     private final Logger logger;
@@ -47,8 +51,10 @@ public class GamePlaceState extends ClientState{
         if (inputCounter == 0) {
             System.out.println("Choose a card from your hand to place.");
         } else if (inputCounter == 1) {
-            System.out.println("Choose a coordinate to place the card [ROW] [COLUMN]. (On the map are the squares in white with an X)");
+            System.out.println("Choose a ROW to place the card. (Only white squares with an X are allowed)");
         } else if (inputCounter == 2) {
+            System.out.println("Choose a COLUMN to place the card. (Only white squares with an X are allowed)");
+        } else if (inputCounter == 3) {
             System.out.println("""
                     On which side do you want to place the card? Enter your choice:
                      1 - Front
@@ -71,22 +77,33 @@ public class GamePlaceState extends ClientState{
      */
     @Override
     public void handleInput(String input) {
+        int maxBoardSide = (textUI.maxCoordinate() * 2) + 3;
         if (inputCounter == 0) {
             if (TextUI.checkInputBound(input,1,3)) {
                 cardIndex = Integer.parseInt(input);
                 inputCounter++;
             }
         } else if (inputCounter == 1) {
-            Coordinates coordinatesChosen = textUI.getInputCoordinates(input);
-            //todo add else statement to communicate to player that their input is not correct
-            if (coordinatesChosen != null && textUI.isAvailableCoordinates(coordinatesChosen)) {
-                coordinateIndex = model.getCardMaps().get(model.getMyUsername()).availablePlacements().indexOf(coordinatesChosen);
+            if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide)) {
+                chosenRow = input;
                 inputCounter++;
             }
         } else if (inputCounter == 2) {
+            if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide)) {
+                chosenCol = input;
+                inputCounter++;
+                Coordinates coordinatesChosen = textUI.inputToCoordinates(chosenRow, chosenCol);
+                if (model.getCardMaps().get(model.getMyUsername()).availablePlacements().contains(coordinatesChosen)) {
+                    coordinateIndex = model.getCardMaps().get(model.getMyUsername()).availablePlacements().indexOf(coordinatesChosen);
+                } else {
+                    System.out.println("The coordinates you entered are not in the available placements! Try again.");
+                    inputCounter = 1;
+                }
+            }
+        } else if (inputCounter == 3) {
             if (TextUI.getBinaryChoice(input)) {
                 faceUp = (Integer.parseInt(input) == 1);
-                inputCounter++;
+                model.getClientConnector().sendPacket(new CSPPlayCard(cardIndex, coordinateIndex, faceUp));
             }
         }
         print();
@@ -101,7 +118,6 @@ public class GamePlaceState extends ClientState{
      */
     @Override
     public void nextState() {
-        //todo reconsider removing "isOperationSuccessful" for input validation
         if(model.isGameOver()){
             model.setClientState(new GameOverState(model));
         }

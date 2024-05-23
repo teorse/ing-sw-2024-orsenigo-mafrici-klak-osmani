@@ -84,12 +84,9 @@ public class GameStarterChoice extends ClientState {
      */
     @Override
     public void nextState() {
-
-        //todo reconsider removing "isOperationSuccessful" for input validation
-        if(model.isGameOver()){
+        if(model.isGameOver())
             model.setClientState(new GameOverState(model));
-        }
-        else if (model.getMyPlayerGameState() == PlayerStates.DRAW_RESOURCE)
+        else if (model.getMyPlayerGameState() == PlayerStates.DRAW_RESOURCE || model.getMyPlayerGameState() == PlayerStates.DRAW_GOLDEN)
             model.setClientState(new GameInitialDrawState(model));
         else if (model.getMyPlayerGameState() == PlayerStates.WAIT)
             model.setClientState(new GameWaitState(model));

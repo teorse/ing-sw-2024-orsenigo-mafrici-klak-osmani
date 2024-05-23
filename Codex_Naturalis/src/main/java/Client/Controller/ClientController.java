@@ -1,13 +1,16 @@
 package Client.Controller;
 
 import Client.Model.ClientModel;
+import Client.Model.ErrorDictionary.ErrorDictionaryJoinLobbyFailed;
+import Client.Model.ErrorDictionary.ErrorDictionaryLogIn;
+import Client.Model.ErrorDictionary.ErrorDictionarySignUp;
+import Client.Model.ErrorDictionary.ErrorDictionaryStartLobbyFailed;
 import Client.Model.Records.*;
 import Client.Model.Records.LobbyPreviewRecord;
 import Client.View.TextUI;
 import Model.Player.PlayerStates;
 import Network.ServerClient.Packets.ErrorsDictionary;
 import Network.ServerClient.ServerMessageExecutor;
-import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Map;
@@ -70,11 +73,13 @@ public class ClientController  implements ServerMessageExecutor {
 
         model.setLoggedIn(false);
         switch (errorCause) {
-            case WRONG_PASSWORD ->
-                    System.out.println("Wrong password.");
-            case USERNAME_NOT_FOUND -> System.out.println("Username not found.");
-            case YOU_ARE_ALREADY_LOGGED_IN -> System.out.println("You are already logged in.");
-            case ACCOUNT_ALREADY_LOGGED_IN_BY_SOMEONE_ELSE -> System.out.println("Account already logged on another computer.");
+            case WRONG_PASSWORD -> model.setErrorDictionaryLogIn(ErrorDictionaryLogIn.WRONG_PASSWORD);
+
+            case USERNAME_NOT_FOUND -> model.setErrorDictionaryLogIn(ErrorDictionaryLogIn.USERNAME_NOT_FOUND);
+
+            case YOU_ARE_ALREADY_LOGGED_IN -> model.setErrorDictionaryLogIn(ErrorDictionaryLogIn.YOU_ARE_ALREADY_LOGGED_IN);
+
+            case ACCOUNT_ALREADY_LOGGED_IN_BY_SOMEONE_ELSE -> model.setErrorDictionaryLogIn(ErrorDictionaryLogIn.ACCOUNT_ALREADY_LOGGED_IN_BY_SOMEONE_ELSE);
         }
         model.nextState();
     }
@@ -116,8 +121,8 @@ public class ClientController  implements ServerMessageExecutor {
 
         model.setLoggedIn(false);
         switch (errorCause) {
-            case USERNAME_ALREADY_TAKEN -> System.out.println("Username already taken.");
-            case GENERIC_ERROR -> System.out.println("Something happened in the server, please try again.");
+            case USERNAME_ALREADY_TAKEN -> model.setErrorDictionarySignUp(ErrorDictionarySignUp.USERNAME_ALREADY_TAKEN);
+            case GENERIC_ERROR -> model.setErrorDictionarySignUp(ErrorDictionarySignUp.GENERIC_ERROR);
         }
         model.nextState();
     }
@@ -181,9 +186,12 @@ public class ClientController  implements ServerMessageExecutor {
 
         model.setInLobby(false);
         switch (errorCause) {
-            case LOBBY_IS_CLOSED -> System.out.println("Lobby closed.");
-            case GENERIC_ERROR -> System.out.println("Generic error.");
-            case LOBBY_NAME_NOT_FOUND -> System.out.println("Lobby name not found.");
+            case LOBBY_IS_CLOSED -> model.setErrorDictionaryJoinLobbyFailed(ErrorDictionaryJoinLobbyFailed.LOBBY_IS_CLOSED);
+                    //System.out.println("Lobby closed.");
+            case GENERIC_ERROR -> model.setErrorDictionaryJoinLobbyFailed(ErrorDictionaryJoinLobbyFailed.GENERIC_ERROR);
+                    //System.out.println("Generic error.");
+            case LOBBY_NAME_NOT_FOUND -> model.setErrorDictionaryJoinLobbyFailed(ErrorDictionaryJoinLobbyFailed.LOBBY_NAME_NOT_FOUND);
+                    //System.out.println("Lobby name not found.");
         }
         model.nextState();
     }
@@ -228,9 +236,9 @@ public class ClientController  implements ServerMessageExecutor {
 
         model.setInLobby(false);
         switch (errorCause) {
-            case GENERIC_ERROR -> System.out.println("Generic error.");
-            case INVALID_LOBBY_SIZE -> System.out.println("Invalid lobby size.");
-            case LOBBY_NAME_ALREADY_TAKEN -> System.out.println("Lobby name already taken.");
+            case GENERIC_ERROR -> model.setErrorDictionaryStartLobbyFailed(ErrorDictionaryStartLobbyFailed.GENERIC_ERROR);
+            case INVALID_LOBBY_SIZE -> model.setErrorDictionaryStartLobbyFailed(ErrorDictionaryStartLobbyFailed.INVALID_LOBBY_SIZE);
+            case LOBBY_NAME_ALREADY_TAKEN -> model.setErrorDictionaryStartLobbyFailed(ErrorDictionaryStartLobbyFailed.LOBBY_NAME_ALREADY_TAKEN);
         }
         model.nextState();
     }

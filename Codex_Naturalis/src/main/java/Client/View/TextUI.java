@@ -103,48 +103,21 @@ public class TextUI extends UserInterface {
 
     //GET METHODS (Verify if the input is valid otherwise return null)
     /**
-     * Gets the coordinates based on user input.
+     * Converts input row and column strings into a Coordinates object.
+     * The method interprets the row and column as letters (e.g., "A", "B", "C") and converts them
+     * to numerical coordinates based on their ASCII values, adjusted by a maximum coordinate offset.
      *
-     * <p>This method prompts the user to input coordinates in the format of a row and a column (e.g., "A B").
-     * It then processes the input to determine the corresponding coordinates on the game board. The method
-     * validates the input to ensure it contains exactly two characters, both of which must be within the
-     * allowable range of rows and columns. If the input is invalid, it prints an error message and returns null.
-     * If the coordinates are valid and a card is placed at the given coordinates, it returns the coordinates.
-     * Otherwise, it prints an error message and returns null.
-     *
-     * @param input the user input string representing the coordinates
-     * @return a {@code Coordinates} object representing the coordinates on the game board, or {@code null} if the input is invalid or no card is placed at the coordinates
+     * @param row The row input as a string, representing a letter (e.g., "A", "B", "C").
+     * @param column The column input as a string, representing a letter (e.g., "A", "B", "C").
+     * @return A Coordinates object representing the converted x and y coordinates.
      */
-    public Coordinates getInputCoordinates(String input) {
-        Coordinates coordinatesView;
+    public Coordinates inputToCoordinates(String row, String column) {
         int maxCoordinate = this.maxCoordinate();
-        int maxBoardSide = (maxCoordinate * 2) + 3;
-
-        String[] readCoords;
-        readCoords = input.split("\\s+");
-
-        if (readCoords.length != 2 || readCoords[0].length() != 1 || readCoords[1].length() != 1) {
-            out.println("Insert a row [A - " + (char)(maxBoardSide + 'A') + "]" +
-                    " and a column [A - " + (char)(maxBoardSide + 'A') + "]");
-            return  null;
-        }
 
         //Insert before the row than the column but in the map the x-axis is the one of the column
-        int y = (int) (readCoords[0].toUpperCase().charAt(0)) - 'A' - maxCoordinate;
-        int x = (int) (readCoords[1].toUpperCase().charAt(1)) - 'A' - maxCoordinate;
-        coordinatesView = new Coordinates(x,y);
-
-        if (model.getCardMaps().get(model.getMyUsername()).cardsPlaced().get(coordinatesView) != null) {
-            return coordinatesView;
-        } else {
-            out.println("Insert a row [A - " + (char) (maxBoardSide + 'A') + "]" +
-                    " and a column [A - " + (char) (maxBoardSide + 'A') + "]");
-            return null;
-        }
-    }
-
-    public boolean isAvailableCoordinates(Coordinates coordinates) {
-        return model.getCardMaps().get(model.getMyUsername()).availablePlacements().contains(coordinates);
+        int y = (int) (row.toUpperCase().charAt(0)) - 'A' + maxCoordinate;
+        int x = (int) (column.toUpperCase().charAt(0)) - 'A' - maxCoordinate;
+        return new Coordinates(x,y);
     }
 
 
@@ -163,9 +136,9 @@ public class TextUI extends UserInterface {
      * and finally retrieves the card from the player's `CardMapView`. It uses `showCardPlacedDetails` to print out the
      * card's specific details.
      */
-    public void zoomCardMap(String input, String username) {
+    public void zoomCardMap(String row, String column, String username) {
         //The cards are previously set with only visible attribute
-        Coordinates coordinates = getInputCoordinates(input);
+        Coordinates coordinates = inputToCoordinates(column, row);
 
         //Get the card from the map of card visualized, checked in getInputCoordinates
         CardVisibilityRecord card = model.getCardMaps().get(username).getCardVisibilityRecord(coordinates);

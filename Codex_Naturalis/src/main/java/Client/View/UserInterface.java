@@ -4,9 +4,9 @@ import Client.Model.ClientModel;
 import Client.Model.Records.LobbyUserRecord;
 import Client.Model.Records.PlayerRecord;
 import Server.Model.Lobby.LobbyRoles;
-import Server.Model.Lobby.LobbyUserConnectionStates;
 
 public abstract class UserInterface {
+
     /**
      * Checks the validity of an IP address.
      * <p>
@@ -64,34 +64,46 @@ public abstract class UserInterface {
      * @param name The name to be validated.
      * @return True if the name is valid according to the specified criteria, otherwise false.
      */
-    public static boolean isNameInvalid(String name) {
+    public static boolean isNameValid(String name) {
 
         if (name == null || name.isEmpty()) {
             System.out.println("Invalid input: name can't be empty.\n");
-            return true;
+            return false;
         }
 
         if (name.contains(" ")) {
             System.out.println("Invalid input: name can't contain spaces.\n");
-            return true;
+            return false;
         }
 
         if (!name.matches("^[a-zA-Z0-9_]+$")) {
             System.out.println("Invalid input: name can contain only letters, numbers and underscore.\n");
-            return true;
+            return false;
+        }
+
+        if (name.equalsIgnoreCase("back")) {
+            System.out.println("Invalid input: name can't be 'back'.\n");
+            return false;
+        }
+
+        if (name.equalsIgnoreCase("quit")) {
+            System.out.println("Invalid input: name can't be 'quit'.\n");
+            return false;
         }
 
         if (name.length() < 4) {
             System.out.println("Invalid input: name must be at least 4 characters long.\n");
-            return true;
+            return false;
         }
 
         if (name.length() > 14) {
             System.out.println("Invalid input: name can't be longer than 15 characters.\n");
-            return true;
+            return false;
         }
-        return false;
+
+        return true;
     }
+
 
     /**
      * Checks the validity of a password.
@@ -120,6 +132,16 @@ public abstract class UserInterface {
             return false;
         }
 
+        if (password.equalsIgnoreCase("back")) {
+            System.out.println("Invalid input: password can't be 'back'.\n");
+            return false;
+        }
+
+        if (password.equalsIgnoreCase("quit")) {
+            System.out.println("Invalid input: password can't be 'quit'.\n");
+            return false;
+        }
+
         if (password.length() < 5) {
             System.out.println("Invalid input: password must be at least 5 characters long.\n");
             return false;
@@ -129,8 +151,10 @@ public abstract class UserInterface {
             System.out.println("Invalid input: password can't be longer than 20 characters.\n");
             return false;
         }
+
         return true;
     }
+
 
     /**
      * Checks user input against specified bounds.
@@ -159,8 +183,31 @@ public abstract class UserInterface {
             System.out.println("Invalid input: number must be between " + lowerBound + " and " + upperBound + "\n");
             return false;
         }
-
     }
+
+    /**
+     * Checks if a given character is within the specified bounds.
+     *
+     * @param ch the character to check
+     * @param lowerBound the lower bound (inclusive)
+     * @param upperBound the upper bound (inclusive)
+     * @return {@code true} if the character is within the bounds; {@code false} otherwise
+     */
+    public static boolean isCharWithinBounds(char ch, int lowerBound, int upperBound) {
+
+        boolean withinBounds = (int) ch >= lowerBound && (int) ch <= upperBound;
+        char lowerBoundChar = (char) lowerBound;
+        char upperBoundChar = (char) upperBound;
+
+        if (!withinBounds) {
+            System.out.println("Error: The character '" + ch + "' is not within the bounds '" +
+                    lowerBoundChar + "' and '" + upperBoundChar + "'.");
+        }
+
+        return withinBounds;
+    }
+
+
 
     /**
      * Reads a binary choice (1 or 2) from the user input.

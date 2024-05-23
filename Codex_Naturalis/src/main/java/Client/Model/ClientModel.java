@@ -1,11 +1,14 @@
 package Client.Model;
 
+import Client.Model.ErrorDictionary.ErrorDictionaryJoinLobbyFailed;
 import Client.Model.ErrorDictionary.ErrorDictionaryLogIn;
 import Client.Model.ErrorDictionary.ErrorDictionarySignUp;
+import Client.Model.ErrorDictionary.ErrorDictionaryStartLobbyFailed;
 import Client.Model.Records.*;
 import Client.Model.States.ClientState;
 import Client.Model.States.ConnectionState;
 import Client.Network.ClientConnector;
+import Client.View.TextUI;
 import Model.Player.PlayerStates;
 
 import java.util.*;
@@ -31,8 +34,11 @@ public class ClientModel {
     String myUsername;
     PlayerStates myPlayerGameState;
 
-    //Error managing
-    //ErrorDictionaryLogIn
+    //Error Managing
+    ErrorDictionaryLogIn errorDictionaryLogIn;
+    ErrorDictionarySignUp errorDictionarySignUp;
+    ErrorDictionaryJoinLobbyFailed errorDictionaryJoinLobbyFailed;
+    ErrorDictionaryStartLobbyFailed errorDictionaryStartLobbyFailed;
 
     //Thread Locks
     private final Object playerMapThreadLock = new Object();
@@ -78,6 +84,8 @@ public class ClientModel {
 
 
     //GETTERS
+
+    //Getters for class attributes (not error managing)
     public boolean isGameOver() {return gameOver;}
     public boolean isSetUpFinished() {
         return setUpFinished;
@@ -90,6 +98,12 @@ public class ClientModel {
     }
     public GameRecord getGameRecord() {
         return gameRecord;
+    }
+    public LobbyRecord getLobbyRecord() {
+        return lobbyRecord;
+    }
+    public ClientState getClientState() {
+        return clientState;
     }
     public List<LobbyPreviewRecord> getLobbyPreviewRecords() {
         return lobbyPreviewRecords;
@@ -113,6 +127,21 @@ public class ClientModel {
         return objectiveCandidates;
     }
 
+    //Getters for error managing
+    public ErrorDictionaryLogIn getErrorDictionaryLogIn() {
+        return errorDictionaryLogIn;
+    }
+    public ErrorDictionarySignUp getErrorDictionarySignUp() {
+        return errorDictionarySignUp;
+    }
+    public ErrorDictionaryJoinLobbyFailed getErrorDictionaryJoinLobbyFailed() {
+        return errorDictionaryJoinLobbyFailed;
+    }
+    public ErrorDictionaryStartLobbyFailed getErrorDictionaryStartLobbyFailed() {
+        return errorDictionaryStartLobbyFailed;
+    }
+
+    //Getters for booleans
     public boolean isConnected(){
         return this.connected;
     }
@@ -126,7 +155,10 @@ public class ClientModel {
         return gameStarted;
     }
 
+
     //SETTERS
+
+    //Setters for class attributes (no error managing)
     public void setMyUsername(String myUsername) {this.myUsername = myUsername;}
     public void setMyPlayerGameState(PlayerStates myPlayerGameState) {this.myPlayerGameState = myPlayerGameState;}
     public void setClientConnector(ClientConnector clientConnector) {
@@ -145,7 +177,6 @@ public class ClientModel {
     }
     public void setSpecificPlayer(PlayerRecord player){
         synchronized (playerMapThreadLock) {
-
             PlayerRecord currentPlayer;
 
             for (int i = 0; i < players.size(); i++) {
@@ -159,12 +190,12 @@ public class ClientModel {
             }
         }
     }
+
     public void setSpecificCardMap(String owner, CardMapRecord cardMap){
         synchronized (playerMapThreadLock) {
             cardMaps.put(owner, cardMap);
         }
     }
-
 
     public void setGameRecord(GameRecord gameRecord) {
         this.gameRecord = gameRecord;
@@ -212,6 +243,20 @@ public class ClientModel {
     }
     public void setGameStarted(boolean gameStarted) {
         this.gameStarted = gameStarted;
+    }
+
+    //Setters for error managing
+    public void setErrorDictionaryLogIn(ErrorDictionaryLogIn errorDictionaryLogIn) {
+        this.errorDictionaryLogIn = errorDictionaryLogIn;
+    }
+    public void setErrorDictionarySignUp(ErrorDictionarySignUp errorDictionarySignUp) {
+        this.errorDictionarySignUp = errorDictionarySignUp;
+    }
+    public void setErrorDictionaryJoinLobbyFailed(ErrorDictionaryJoinLobbyFailed errorDictionaryJoinLobbyFailed) {
+        this.errorDictionaryJoinLobbyFailed = errorDictionaryJoinLobbyFailed;
+    }
+    public void setErrorDictionaryStartLobbyFailed(ErrorDictionaryStartLobbyFailed errorDictionaryStartLobbyFailed) {
+        this.errorDictionaryStartLobbyFailed = errorDictionaryStartLobbyFailed;
     }
 
 

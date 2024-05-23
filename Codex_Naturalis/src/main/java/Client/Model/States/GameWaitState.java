@@ -16,8 +16,9 @@ import java.util.logging.Logger;
  */
 public class GameWaitState extends ClientState{
 
-    String choosenUsername;
-    Coordinates choosenCoordinates;
+    String chosenUsername;
+    String chosenRow;
+    String chosenCol;
     int choice;
     private final Logger logger;
 
@@ -56,11 +57,12 @@ public class GameWaitState extends ClientState{
         if (model.isSetUpFinished()) {
             textUI.showGameBoard();
             if (inputCounter == 0) {
+                System.out.println("Wait! (Enter ZOOM to look at the board)");
                 for (PlayerRecord playerRecord : model.getPlayers()) {
-                    if (playerRecord.playerState() != PlayerStates.WAIT)
-                        System.out.print("It's " + playerRecord.username() + "turn. ");
-                    else
-                        System.out.println("Wait! (Enter ZOOM to look at the board)");
+                    logger.info(playerRecord.username() + ": " + playerRecord.playerState());
+                    if (playerRecord.playerState() == PlayerStates.PLACE || playerRecord.playerState() == PlayerStates.DRAW) {
+                        System.out.print("It's " + playerRecord.username() + " turn. ");
+                    }
                 }
             } else if (inputCounter == 1) {
                 System.out.println("""
@@ -85,7 +87,9 @@ public class GameWaitState extends ClientState{
                              2 - Golden Pool""");
                 }
             } else if (inputCounter == 3 && choice == 1) {
-                System.out.println("Choose a coordinate to zoom the card [ROW] [COLUMN].");
+                System.out.println("Choose a ROW to zoom the card.");
+            } else if (inputCounter == 4 && choice == 1) {
+                System.out.println("Choose a COLUMN to zoom the card.");
             }
         } else {
             TextUI.displayGameTitle();
@@ -115,6 +119,22 @@ public class GameWaitState extends ClientState{
      */
     @Override
     public void handleInput(String input) {
+        int maxBoardSide = (textUI.maxCoordinate() * 2) + 3;
+
+        if (input.equalsIgnoreCase("BACK")){
+
+            if (inputCounter == 1) {
+                inputCounter = 0;
+            } else if (inputCounter == 2) {
+                inputCounter = 1;
+            } else if (inputCounter == 3) {
+                inputCounter = 2;
+            } else if(inputCounter == 4){
+                inputCounter = 3;
+            }else
+                print();
+        }
+
         if (model.isSetUpFinished()) {
             if (inputCounter == 0) {
                 if (input.equalsIgnoreCase("ZOOM")) {
@@ -130,7 +150,7 @@ public class GameWaitState extends ClientState{
             } else if (inputCounter == 2) {
                 if (choice == 1) {
                     if (TextUI.checkInputBound(input, 1, model.getPlayers().size())) {
-                        choosenUsername = model.getPlayers().get(Integer.parseInt(input)).username();
+                        chosenUsername = model.getPlayers().get(Integer.parseInt(input)).username();
                         inputCounter++;
                     }
                     print();
@@ -144,9 +164,21 @@ public class GameWaitState extends ClientState{
                     }
                 }
             } else if (inputCounter == 3 && choice == 1) {
-                choosenCoordinates = textUI.getInputCoordinates(input);
-                if (choosenCoordinates != null)
-                    textUI.zoomCardMap(input, choosenUsername);
+                if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide)) {
+                    chosenRow = input;
+                    inputCounter++;
+                }
+            } else if (inputCounter == 4 && choice == 1) {
+                if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide)) {
+                    chosenCol = input;
+                    Coordinates coordinatesChosen = textUI.inputToCoordinates(chosenCol, chosenRow);
+                    if (model.getCardMaps().get(chosenUsername).coordinatesPlaced().contains(coordinatesChosen)) {
+                        textUI.zoomCardMap(chosenRow, chosenCol, chosenUsername);
+                    } else {
+                        System.out.println("The coordinates you entered are not in the used placements of the player you selected! Try again.");
+                        inputCounter = 1;
+                    }
+                }
             } else
                 print();
         } else
@@ -160,7 +192,6 @@ public class GameWaitState extends ClientState{
         logger.fine("Operation Successful flag is true");
         logger.fine("Current value of myPR State: " + model.getMyPlayerGameState());
 
-        //todo reconsider removing "isOperationSuccessful" for input validation
         if(model.isGameOver()){
             model.setClientState(new GameOverState(model));
         }

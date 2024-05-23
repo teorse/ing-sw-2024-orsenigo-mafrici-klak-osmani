@@ -85,10 +85,9 @@ public class GamePickObjectiveState extends ClientState{
         logger.fine("Operation Successful flag is true");
         logger.fine("Current value of myPR State: "+ model.getMyPlayerGameState());
 
-        //todo reconsider removing "isOperationSuccessful" for input validation
-        if(model.isGameOver()){
+
+        if(model.isGameOver())
             model.setClientState(new GameOverState(model));
-        }
         else if (model.getMyPlayerGameState() == PlayerStates.WAIT) {
             logger.fine("Entering GameWaitState");
             model.setClientState(new GameWaitState(model));

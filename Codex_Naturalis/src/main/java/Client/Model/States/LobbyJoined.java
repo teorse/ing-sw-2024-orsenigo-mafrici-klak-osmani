@@ -4,6 +4,7 @@ import Client.Model.ClientModel;
 import Client.Model.Records.LobbyUserRecord;
 import Client.View.TextUI;
 import Model.Player.PlayerStates;
+import Network.ClientServer.Packets.CSPQuitLobby;
 import Network.ClientServer.Packets.CSPStartGame;
 
 import java.util.logging.Logger;
@@ -33,6 +34,7 @@ public class LobbyJoined extends ClientState{
 
         TextUI.clearCMD();
         TextUI.displayGameTitle();
+        System.out.println("If you want to go back at the previous choice, type BACK. If you want to quit the lobby, type QUIT \n");
         print();
 
         nextState();
@@ -54,7 +56,7 @@ public class LobbyJoined extends ClientState{
             System.out.println("Connection Status: " + user.connectionStatus() + "\n");
         }
         if (TextUI.areYouAdmin(model))
-            System.out.println("You are the Admin, enter START to start the game!");
+            System.out.println("You are the Admin, type START to start the game!");
     }
 
     /**
@@ -68,11 +70,14 @@ public class LobbyJoined extends ClientState{
      */
     @Override
     public void handleInput(String input) {
-        if (TextUI.areYouAdmin(model)) {
+        if (input.equalsIgnoreCase("QUIT")) {
+            model.getClientConnector().sendPacket(new CSPQuitLobby());
+            model.setClientState(new LobbySelectionState(model));
+        } else if (TextUI.areYouAdmin(model)) {
            if(input.equalsIgnoreCase("START"))
                model.getClientConnector().sendPacket(new CSPStartGame());
            else
-               System.out.println("To start the game enter START!");
+               System.out.println("To start the game type START!");
         } else
             System.out.println("You are not the admin. Please wait until the game starts!");
     }
@@ -87,8 +92,8 @@ public class LobbyJoined extends ClientState{
     @Override
     public synchronized void nextState() {
         logger.info("Choosing next state");
-        logger.fine("Current gameStarted: "+model.isGameStarted()+
-                "\nCurrent ClientPlayerState: "+model.getMyPlayerGameState());
+        logger.fine("Current gameStarted: " + model.isGameStarted()+
+                "\nCurrent ClientPlayerState: " + model.getMyPlayerGameState());
 
 
         PlayerStates myPlayerGameState = model.getMyPlayerGameState();

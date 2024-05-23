@@ -1,6 +1,8 @@
 package Client.Model.States;
 
 import Client.Model.ClientModel;
+import Client.Model.ErrorDictionary.ErrorDictionaryLogIn;
+import Client.Model.ErrorDictionary.ErrorDictionarySignUp;
 import Client.View.TextUI;
 import Client.View.UserInterface;
 import Network.ClientServer.Packets.CSPLogIn;
@@ -35,6 +37,7 @@ public class LogInSignUpState extends ClientState {
         super(model);
         TextUI.clearCMD();
         TextUI.displayGameTitle();
+        System.out.println("If you want to go back at the previous choice, type BACK \n");
         print();
     }
 
@@ -52,10 +55,11 @@ public class LogInSignUpState extends ClientState {
                     Enter your choice:
                      1 - Log in
                      2 - Sign up""");
-        } else if (inputCounter == 1)
+        } else if (inputCounter == 1) {
             System.out.println("\nEnter username:");
-        else if (inputCounter == 2)
-            System.out.println("Enter password:");
+        } else if (inputCounter == 2) {
+            System.out.println("\nEnter password:");
+        }
     }
 
     /**
@@ -72,17 +76,22 @@ public class LogInSignUpState extends ClientState {
      */
     @Override
     public void handleInput(String input) {
-        if (input.equalsIgnoreCase("back") && (inputCounter == 1 || inputCounter == 2)) {
-            inputCounter = 0;
+        if (input.equalsIgnoreCase("BACK")){
+            if (inputCounter == 1) {
+                inputCounter = 0;
+            } else if (inputCounter == 2) {
+                inputCounter = 1;
+                credentials.clear();
+            } else
+                print();
         } else if (inputCounter == 0) {
             if (UserInterface.getBinaryChoice(input)) {
                 choice = Integer.parseInt(input);
                 inputCounter++;
             }
             print();
-
         } else if (inputCounter == 1) {
-                if (!UserInterface.isNameInvalid(input)) {
+                if (UserInterface.isNameValid(input)) {
                     credentials.add(input);
                     inputCounter++;
                 }
@@ -111,10 +120,40 @@ public class LogInSignUpState extends ClientState {
         if (model.isLoggedIn()) {
             model.setClientState(new LobbySelectionState(model));
         } else {
-            System.out.println("The operation failed! Please try again.\n");
-            credentials.clear();
-            inputCounter = 1;
-            print();
+            if (choice == 1) {
+                switch (model.getErrorDictionaryLogIn()) {
+                    case ErrorDictionaryLogIn.WRONG_PASSWORD -> {
+                        System.out.println("Wrong password.");
+                        credentials.remove(1);
+                        inputCounter = 2;
+                    }
+                    case ErrorDictionaryLogIn.USERNAME_NOT_FOUND -> {
+                        System.out.println("Username not found.");
+                        credentials.clear();
+                        inputCounter = 1;
+                    }
+                    case ErrorDictionaryLogIn.YOU_ARE_ALREADY_LOGGED_IN -> {
+                        System.out.println("You are already logged in.");
+                        credentials.clear();
+                        inputCounter = 0;
+                    }
+                    case ErrorDictionaryLogIn.ACCOUNT_ALREADY_LOGGED_IN_BY_SOMEONE_ELSE -> {
+                        System.out.println("Account already logged in on another computer.");
+                        credentials.clear();
+                        inputCounter = 0;
+                    }
+                }
+                print();
+            }
+            else if (choice == 2) {
+                switch (model.getErrorDictionarySignUp()) {
+                    case ErrorDictionarySignUp.USERNAME_ALREADY_TAKEN -> System.out.println("Username already taken.");
+                    case ErrorDictionarySignUp.GENERIC_ERROR -> System.out.println("Something happened in the server, please try again.");
+                }
+                credentials.clear();
+                inputCounter = 1;
+                print();
+            }
         }
     }
 }
