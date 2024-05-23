@@ -7,6 +7,7 @@ import Server.Network.Listener.ListenerSocket;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Scanner;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -15,6 +16,12 @@ import java.util.logging.Logger;
  * This class initializes the server model, controller, and starts the server socket listener.
  */
 public class ServerMain {
+    private static ServerModel serverModel;
+    private static ServerController serverController;
+    private static ListenerSocket listenerSocket;
+    private static ListenerRMI listenerRMI;
+
+
     /**
      * The main method to start the server application.<br>
      * It initializes the server model, controller, initializes the local RMI registry, and starts the server socket and RMI listeners.
@@ -31,34 +38,53 @@ public class ServerMain {
         }
 
         Logger logger = Logger.getLogger(ServerMain.class.getName());
-        logger.info("Server started");
+        logger.info("Server application started");
 
+        ServerCentralManager serverCentralManager = new ServerCentralManager();
 
+        Scanner scanner = new Scanner(System.in);
+        String command;
 
+        while (true) {
+            System.out.println("Enter command (start, stop, status, exit): ");
+            command = scanner.nextLine();
 
-        // Creating and initializing the server model
-        logger.fine("Creating Server Model in ServerMain");
-        System.out.println("Creating server Model");
-        ServerModel serverModel = new ServerModel();
+            switch (command.toLowerCase()) {
+                case "start":
+                    if (!serverCentralManager.isRunning()) {
+                        serverCentralManager.startServer();
+                    } else {
+                        System.out.println("Server is already running.");
+                    }
+                    break;
 
-        // Creating the server controller and passing the server model
-        logger.fine("Creating Server Controller in ServerMain");
-        ServerController serverController = new ServerController(serverModel);
+                case "stop":
+                    if (serverCentralManager.isRunning()) {
+                        serverCentralManager.stopServer();
+                    } else {
+                        System.out.println("Server is not running.");
+                    }
+                    break;
 
-        // Creating the server socket listener and passing the server controller
-        logger.fine("Creating Server socket Listener in ServerMain");
-        ListenerSocket listenerSocket = new ListenerSocket(serverController);
+                case "status":
+                    if (serverCentralManager.isRunning()) {
+                        System.out.println("Server is running.");
+                    } else {
+                        System.out.println("Server is stopped.");
+                    }
+                    break;
 
-        //Creating the server RMI listener and passing the server controller
-        logger.fine("Creating Server RMI Listener in ServerMain");
-        ListenerRMI listenerRMI = new ListenerRMI(serverController);
+                case "exit":
+                    if (serverCentralManager.isRunning()) {
+                        serverCentralManager.stopServer();
+                    }
+                    scanner.close();
+                    System.exit(0);
+                    break;
 
-        // Starting the server listener threads
-        Thread socketThread = new Thread(listenerSocket);
-        Thread RMIThread = new Thread(listenerRMI);
-        logger.fine("Starting socket listener Thread in ServerMain");
-        socketThread.start();
-        logger.fine("Starting RMI listener Thread in ServerMain");
-        RMIThread.start();
+                default:
+                    System.out.println("Unknown command. Please enter 'start', 'stop', 'status', or 'exit'.");
+            }
+        }
     }
 }
