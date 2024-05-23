@@ -51,7 +51,7 @@ public class GameDrawState extends ClientState{
                      1 - Resource
                      2 - Golden""");
         else if (inputCounter == 1)
-            System.out.println();
+            System.out.println("\nEnter a number between 1 and 3 to pick a card: ");
     }
 
     /**
@@ -82,11 +82,10 @@ public class GameDrawState extends ClientState{
         } else if (inputCounter == 1) {
             if (UserInterface.checkInputBound(input,1,3)) {
                 cardChoice = Integer.parseInt(input);
-                inputCounter++;
-            }
-            print();
-        } else
-            model.getClientConnector().sendPacket(new CSPDrawCard(cardPoolTypes,cardChoice));
+                model.getClientConnector().sendPacket(new CSPDrawCard(cardPoolTypes,cardChoice - 2));
+            } else
+                print();
+        }
     }
 
     /**
@@ -98,7 +97,6 @@ public class GameDrawState extends ClientState{
      */
     @Override
     public void nextState() {
-        //todo reconsider removing "isOperationSuccessful" for input validation
         if(model.isGameOver()){
             model.setClientState(new GameOverState(model));
         }

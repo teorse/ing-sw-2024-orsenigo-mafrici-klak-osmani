@@ -112,12 +112,13 @@ public class TextUI extends UserInterface {
      * @return A Coordinates object representing the converted x and y coordinates.
      */
     public Coordinates inputToCoordinates(String row, String column) {
-        int maxCoordinate = this.maxCoordinate();
+        int maxBoardSide = this.maxCoordinate() + 1;
 
         //Insert before the row than the column but in the map the x-axis is the one of the column
-        int y = (int) (row.toUpperCase().charAt(0)) - 'A' + maxCoordinate;
-        int x = (int) (column.toUpperCase().charAt(0)) - 'A' - maxCoordinate;
-        return new Coordinates(x,y);
+        int x = (int) (column.toUpperCase().charAt(0)) - 'A' - maxBoardSide;
+        int y = (int) (row.toUpperCase().charAt(0)) - 'A' - maxBoardSide;
+
+        return new Coordinates(x,-y);
     }
 
 
@@ -138,7 +139,7 @@ public class TextUI extends UserInterface {
      */
     public void zoomCardMap(String row, String column, String username) {
         //The cards are previously set with only visible attribute
-        Coordinates coordinates = inputToCoordinates(column, row);
+        Coordinates coordinates = inputToCoordinates(row, column);
 
         //Get the card from the map of card visualized, checked in getInputCoordinates
         CardVisibilityRecord card = model.getCardMaps().get(username).getCardVisibilityRecord(coordinates);

@@ -95,7 +95,6 @@ public class LobbyJoined extends ClientState{
         logger.fine("Current gameStarted: " + model.isGameStarted()+
                 "\nCurrent ClientPlayerState: " + model.getMyPlayerGameState());
 
-
         PlayerStates myPlayerGameState = model.getMyPlayerGameState();
         if(model.isGameStarted() && myPlayerGameState != null){
             switch(myPlayerGameState){

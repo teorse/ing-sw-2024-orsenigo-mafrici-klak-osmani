@@ -82,8 +82,8 @@ public class LogInSignUpState extends ClientState {
             } else if (inputCounter == 2) {
                 inputCounter = 1;
                 credentials.clear();
-            } else
-                print();
+            }
+            print();
         } else if (inputCounter == 0) {
             if (UserInterface.getBinaryChoice(input)) {
                 choice = Integer.parseInt(input);

@@ -187,11 +187,8 @@ public class ClientController  implements ServerMessageExecutor {
         model.setInLobby(false);
         switch (errorCause) {
             case LOBBY_IS_CLOSED -> model.setErrorDictionaryJoinLobbyFailed(ErrorDictionaryJoinLobbyFailed.LOBBY_IS_CLOSED);
-                    //System.out.println("Lobby closed.");
             case GENERIC_ERROR -> model.setErrorDictionaryJoinLobbyFailed(ErrorDictionaryJoinLobbyFailed.GENERIC_ERROR);
-                    //System.out.println("Generic error.");
             case LOBBY_NAME_NOT_FOUND -> model.setErrorDictionaryJoinLobbyFailed(ErrorDictionaryJoinLobbyFailed.LOBBY_NAME_NOT_FOUND);
-                    //System.out.println("Lobby name not found.");
         }
         model.nextState();
     }
@@ -289,7 +286,8 @@ public class ClientController  implements ServerMessageExecutor {
     public void updateLobby(LobbyRecord lobby) {
         logger.info("updateLobby method called.");
         logger.fine("Received lobby: " + lobby);
-        //todo
+
+        model.setLobbyRecord(lobby);
     }
 
     @Override

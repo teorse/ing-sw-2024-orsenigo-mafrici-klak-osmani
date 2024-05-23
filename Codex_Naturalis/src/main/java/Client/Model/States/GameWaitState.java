@@ -28,10 +28,13 @@ public class GameWaitState extends ClientState{
      */
     public GameWaitState(ClientModel model) {
         super(model);
+
         logger = Logger.getLogger(GameWaitState.class.getName());
         logger.info("Initializing GameWaitState");
+
         TextUI.clearCMD();
         print();
+
         logger.fine("GameWaitStateInitialized");
     }
 
@@ -164,14 +167,14 @@ public class GameWaitState extends ClientState{
                     }
                 }
             } else if (inputCounter == 3 && choice == 1) {
-                if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide)) {
+                if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide - 1)) {
                     chosenRow = input;
                     inputCounter++;
                 }
             } else if (inputCounter == 4 && choice == 1) {
-                if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide)) {
+                if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide - 1)) {
                     chosenCol = input;
-                    Coordinates coordinatesChosen = textUI.inputToCoordinates(chosenCol, chosenRow);
+                    Coordinates coordinatesChosen = textUI.inputToCoordinates(chosenRow, chosenCol);
                     if (model.getCardMaps().get(chosenUsername).coordinatesPlaced().contains(coordinatesChosen)) {
                         textUI.zoomCardMap(chosenRow, chosenCol, chosenUsername);
                     } else {
@@ -189,7 +192,6 @@ public class GameWaitState extends ClientState{
     public void nextState() {
         logger.info("Choosing next state");
 
-        logger.fine("Operation Successful flag is true");
         logger.fine("Current value of myPR State: " + model.getMyPlayerGameState());
 
         if(model.isGameOver()){

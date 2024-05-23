@@ -34,6 +34,8 @@ public class GamePlaceState extends ClientState{
         logger.info("Initializing GamePlaceState");
         TextUI.clearCMD();
         System.out.println("It's your turn!");
+        textUI.showGameBoard();
+        textUI.zoomCardsHeld();
         print();
         logger.fine("GamePlaceState initialized");
     }
@@ -46,8 +48,6 @@ public class GamePlaceState extends ClientState{
      */
     @Override
     public void print() {
-        textUI.showGameBoard();
-        textUI.zoomCardsHeld();
         if (inputCounter == 0) {
             System.out.println("Choose a card from your hand to place.");
         } else if (inputCounter == 1) {
@@ -84,26 +84,27 @@ public class GamePlaceState extends ClientState{
                 inputCounter++;
             }
         } else if (inputCounter == 1) {
-            if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide)) {
+            if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide - 1)) {
                 chosenRow = input;
                 inputCounter++;
             }
         } else if (inputCounter == 2) {
-            if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide)) {
+            if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide - 1)) {
                 chosenCol = input;
                 inputCounter++;
                 Coordinates coordinatesChosen = textUI.inputToCoordinates(chosenRow, chosenCol);
+
                 if (model.getCardMaps().get(model.getMyUsername()).availablePlacements().contains(coordinatesChosen)) {
                     coordinateIndex = model.getCardMaps().get(model.getMyUsername()).availablePlacements().indexOf(coordinatesChosen);
                 } else {
-                    System.out.println("The coordinates you entered are not in the available placements! Try again.");
+                    System.out.println("The coordinates you entered are not in the available placements! Try again. \n");
                     inputCounter = 1;
                 }
             }
         } else if (inputCounter == 3) {
             if (TextUI.getBinaryChoice(input)) {
                 faceUp = (Integer.parseInt(input) == 1);
-                model.getClientConnector().sendPacket(new CSPPlayCard(cardIndex, coordinateIndex, faceUp));
+                model.getClientConnector().sendPacket(new CSPPlayCard(cardIndex - 1, coordinateIndex, faceUp));
             }
         }
         print();
