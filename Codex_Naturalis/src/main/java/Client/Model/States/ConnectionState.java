@@ -6,9 +6,12 @@ import Client.Network.ClientConnectorRMI;
 import Client.Network.ClientConnectorSocket;
 import Client.View.TextUI;
 import Client.View.UserInterface;
+import Utils.Utilities;
 
 import java.net.SocketTimeoutException;
 import java.rmi.ConnectException;
+import java.rmi.RemoteException;
+import java.util.logging.Logger;
 
 /**
  * Represents the state of establishing a connection to the game server.
@@ -23,6 +26,7 @@ import java.rmi.ConnectException;
 public class ConnectionState extends ClientState {
 
     private int choice;
+    private final Logger logger;
 
     /**
      * Constructs a new ConnectionState with the specified client model.
@@ -33,8 +37,12 @@ public class ConnectionState extends ClientState {
      */
     public ConnectionState(ClientModel model) {
         super(model);
+        logger = Logger.getLogger(ConnectionState.class.getName());
+        logger.info("Initializing ConnectionState");
+
         TextUI.clearCMD();
         print();
+        logger.fine("ConnectionState initialized");
     }
 
     /**
@@ -88,7 +96,18 @@ public class ConnectionState extends ClientState {
                         model.setClientConnector(new ClientConnectorRMI(input, new ClientController(model)));
                     }
                     catch (ConnectException connectException) {
-                        System.out.println("Server not found!\n");
+                        System.out.println("Connection timed-out!\n" +
+                                "Try with another server ip.");
+                        print();
+
+                        String stackTrace = Utilities.StackTraceToString(connectException);
+                        logger.warning("Connection timed out while connecting to RMI server: "+input+"\n" +
+                                "Stacktrace:\n"+stackTrace);
+                    }
+                    catch (RemoteException e){
+                        String stackTrace = Utilities.StackTraceToString(e);
+                        logger.warning("RemoteException was thrown while creating ClientConnectorRMI\nStacktrace:\n"+stackTrace);
+                        System.out.println("An error occurred while connecting to the server, please check the logs.");
                         print();
                     }
                 } else {

@@ -18,7 +18,7 @@ import java.net.SocketTimeoutException;
  * It is responsible for establishing a connection with the server, listening for packets from the server,
  * and sending packets to the server.
  */
-public class ClientConnectorSocket implements ClientConnector {
+public class ClientConnectorSocket implements ClientConnector, Runnable {
     //ATTRIBUTES
     private Socket socket;
     private ObjectInputStream ois;
@@ -44,6 +44,10 @@ public class ClientConnectorSocket implements ClientConnector {
             socket.connect(new InetSocketAddress(serverIp, serverPort), NetworkConstants.ServerSocketTimeOut);
             oos = new ObjectOutputStream(socket.getOutputStream());
             ois = new ObjectInputStream(socket.getInputStream());
+
+            //Setting this clientConnector to listen.
+            Thread thread = new Thread(this);
+            thread.start();
         }
         catch(SocketTimeoutException e){
             //Thrown when the server does not respond, possibly wrong ip address.

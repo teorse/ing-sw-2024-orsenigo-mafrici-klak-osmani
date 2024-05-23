@@ -9,7 +9,7 @@ import java.rmi.RemoteException;
  * The RMIClientConnector interface defines the remote methods that can be invoked
  * on the client side by the client handler to interact with the client.
  */
-public interface RMIClientConnector extends Remote {
+public interface ClientRemoteInterface extends Remote {
     /**
      * Delivers a ServerClientPacket from the server to the client side for further handling.
      *

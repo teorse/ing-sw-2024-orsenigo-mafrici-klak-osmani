@@ -131,8 +131,6 @@ public class ClientModel {
     public void setMyPlayerGameState(PlayerStates myPlayerGameState) {this.myPlayerGameState = myPlayerGameState;}
     public void setClientConnector(ClientConnector clientConnector) {
         this.clientConnector = clientConnector;
-        Thread clientConnectorThread = new Thread(this.clientConnector);
-        clientConnectorThread.start();
     }
 
     public void setCardMaps(Map<String, CardMapRecord> cardMaps) {
@@ -145,7 +143,6 @@ public class ClientModel {
             this.players = players;
         }
     }
-    //todo fix how map keys are updated
     public void setSpecificPlayer(PlayerRecord player){
         synchronized (playerMapThreadLock) {
 
