@@ -12,6 +12,7 @@ import Server.Model.Lobby.LobbyUserConnectionStates;
 import Server.Model.Lobby.ObserverRelay;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * The Model.Player.Player Class contains all the information about the player, and it stores contextual information about the
@@ -33,12 +34,17 @@ public class Player implements LayerUser {
 
     private final ObserverRelay sender;
 
+    private final Logger logger;
+
 
 
 
 
     //CONSTRUCTOR
     public Player(LobbyUser user, ObserverRelay gameObserverRelay) {
+        logger = Logger.getLogger(Player.class.getName());
+        logger.info("Initializing player: "+user.getUsername());
+
         this.user = user;
         this.sender = gameObserverRelay;
         this.cardMap = new CardMap(gameObserverRelay, user.getUsername());
@@ -49,6 +55,8 @@ public class Player implements LayerUser {
         this.roundsCompleted = 0;
         this.points = 0;
         this.objectivesCompleted = 0;
+
+        logger.fine("Player: "+user.getUsername()+" initialized");
     }
 
 
@@ -131,11 +139,21 @@ public class Player implements LayerUser {
      *             replace the one just taken), or the first card from one of the two decks.
      */
     public void addCardHeld(Card card) {
+        logger.info("Adding card to player: "+getUsername());
+        logger.fine("Card being added is:\n"+card.toRecord());
         //Creates a CardPlayability object which immediately reflects the card's playability given the player's
         //current cardMap.
         CardPlayability CP = new CardPlayability(card,false);
         CP.updatePlayability(cardMap);
         cardsHeld.add(CP);
+
+        //todo possibly move card playability into a map inside player
+
+        logger.finest("Printing all cards held");
+        for(int i = 0; i < cardsHeld.size(); i++){
+            CardRecord cardHeldRecord = cardsHeld.get(i).getCard().toRecord();
+            logger.finest("Card in position "+i+":\n"+cardHeldRecord);
+        }
 
         sender.update(user.getUsername(), new SCPUpdateSecret(this.toSecretPlayer()));
     }
