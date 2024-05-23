@@ -189,6 +189,7 @@ public class ObjectivesSetup implements GameState{
                 return;
         }
         //If all online players are ready then go to next state.
+        game.finishSetup();
         game.setState(new MainLoop(game));
     }
 }
