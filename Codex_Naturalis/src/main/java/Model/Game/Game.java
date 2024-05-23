@@ -168,12 +168,6 @@ public class Game implements ServerModelLayer {
 
 
 
-    //SETTER
-    public void finishSetup() { this.setupFinished = true; }
-
-
-
-
 
     //METHODS
     public void incrementRoundsCompleted(){
