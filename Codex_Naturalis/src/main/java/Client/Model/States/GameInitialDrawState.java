@@ -75,7 +75,6 @@ public class GameInitialDrawState extends ClientState{
      */
     @Override
     public void nextState() {
-        //todo reconsider removing "isOperationSuccessful" for input validation
         if(model.isGameOver()){
             model.setClientState(new GameOverState(model));
         }

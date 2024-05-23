@@ -35,7 +35,7 @@ public class LobbySelectionState extends ClientState {
         super(model);
         TextUI.clearCMD();
         TextUI.displayGameTitle();
-        System.out.println("If you want to go back at the previous choice, type BACK \n");
+        System.out.println("If you want to go back at the previous choice, type BACK ");
         print();
     }
 
@@ -57,7 +57,8 @@ public class LobbySelectionState extends ClientState {
     @Override
     public void print() {
         if (inputCounter == 0) {
-            System.out.println("""
+            System.out.println("\n" +
+                    """
                     Enter your choice:
                      1 - Create a lobby
                      2 - Join a lobby""");
@@ -65,7 +66,7 @@ public class LobbySelectionState extends ClientState {
             if (choice == 1) {
                 System.out.println("\nEnter lobby name: ");
             } else if (choice == 2) {
-                System.out.println("LOBBY PREVIEWS");
+                System.out.println("\nLOBBY PREVIEWS");
                 //For loop for printing lobbies
                 for (LobbyPreviewRecord lobbyPreviewRecord : model.getLobbyPreviewRecords()) {
                     System.out.print("\nLobby Name: " + lobbyPreviewRecord.lobbyName() + ",  ");
@@ -80,7 +81,7 @@ public class LobbySelectionState extends ClientState {
             }
         } else if (inputCounter == 2)
             if (choice == 1)
-                System.out.println("Enter the number of wanted users in the game: ");
+                System.out.println("\nEnter the number of wanted users in the game: ");
     }
 
     /**
@@ -103,40 +104,44 @@ public class LobbySelectionState extends ClientState {
     @Override
     public void handleInput(String input) {
         if (input.equalsIgnoreCase("BACK")) {
-            if (inputCounter == 1) {
-                inputCounter = 0;
-                print();
-            } else if (inputCounter == 2) {
-                inputCounter = 1;
-                print();
+            if (inputCounter > 0) {
+                inputCounter--;
             }
+            print();
         } else if (inputCounter == 0) {
             if (TextUI.getBinaryChoice(input)) {
                 choice = Integer.parseInt(input);
-                if (choice == 2)
+                if (choice == 2) {
                     model.getClientConnector().sendPacket(new CSPViewLobbyPreviews());
-                inputCounter++;
-            }
-            print();
-        } else if (inputCounter == 1) {
-                if (choice == 1) {
-                    if (TextUI.isNameValid(input)) {
-                        lobbyName = input;
-                        inputCounter++;
-                    }
-                    print();
-                } else if (choice == 2) {
-                    if (TextUI.isNameValid(input))
-                        model.getClientConnector().sendPacket(new CSPJoinLobby(input));
-                    else
-                        print();
                 }
-        } else if (inputCounter == 2 && choice == 1) {
-                if (TextUI.checkInputBound(input,2,4)) {
-                    targetNumberUsers = Integer.parseInt(input);
-                    model.getClientConnector().sendPacket(new CSPStartLobby(lobbyName, targetNumberUsers));
-                } else
+                inputCounter++;
+                print();
+            } else {
+                print();
+            }
+        } else if (inputCounter == 1) {
+            if (choice == 1) {
+                if (TextUI.isNameValid(input)) {
+                    lobbyName = input;
+                    inputCounter++;
                     print();
+                } else {
+                    print();
+                }
+            } else if (choice == 2) {
+                if (TextUI.isNameValid(input)) {
+                    model.getClientConnector().sendPacket(new CSPJoinLobby(input));
+                } else {
+                    print();
+                }
+            }
+        } else if (inputCounter == 2 && choice == 1) {
+            if (TextUI.checkInputBound(input, 2, 4)) {
+                targetNumberUsers = Integer.parseInt(input);
+                model.getClientConnector().sendPacket(new CSPStartLobby(lobbyName, targetNumberUsers));
+            } else {
+                print();
+            }
         }
     }
 
@@ -156,7 +161,7 @@ public class LobbySelectionState extends ClientState {
                 model.getClientConnector().sendPacket(new CSPStopViewingLobbyPreviews());
             model.setClientState(new LobbyJoined(model));
         } else {
-            if (choice == 1)
+            if (choice == 1) {
                 switch (model.getErrorDictionaryStartLobbyFailed()) {
                     case ErrorDictionaryStartLobbyFailed.GENERIC_ERROR -> {
                         System.out.println("Generic error.");
@@ -170,6 +175,8 @@ public class LobbySelectionState extends ClientState {
                         System.out.println("Lobby name already taken.");
                         inputCounter = 1;
                     }
+                }
+                print();
             }
             else if (choice == 2) {
                 switch (model.getErrorDictionaryJoinLobbyFailed()) {
@@ -178,8 +185,8 @@ public class LobbySelectionState extends ClientState {
                     case ErrorDictionaryJoinLobbyFailed.LOBBY_NAME_NOT_FOUND -> System.out.println("Lobby name not found.");
                 }
                 inputCounter = 1;
+                print();
             }
-            print();
         }
     }
 }
