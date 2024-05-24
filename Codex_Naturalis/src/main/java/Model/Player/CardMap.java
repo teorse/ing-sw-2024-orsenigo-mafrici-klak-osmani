@@ -323,6 +323,10 @@ public class CardMap {
                 CardVisibility coveredCard = cardsPlaced.get(placed.add(offset[i]));
                 coveredCard.coverCorner(cornersToCheck[i]);
                 Artifacts coveredArtifact = coveredCard.getCornerArtifact(cornersToCheck[i]);
+                if(coveredArtifact == null) {
+                    logger.warning("Found the corner with null artifact, coordinate of the card: "+placed.add(offset[i])+"\n" +
+                            "corner with null artifact is: "+cornersToCheck[i]);
+                }
                 //If the covered corner contained an artifact
                 if (coveredArtifact != Artifacts.NULL) {
                     //We decrease the amount of that artifact by 1
