@@ -47,11 +47,17 @@ public class GamePlaceState extends ClientState{
     @Override
     public void print() {
         if (inputCounter == 0) {
-            System.out.println("Choose a card from your hand to place.");
+            TextUI.clearCMD();
+            System.out.println("\nIf you want to go back at the previous choice, type BACK");
+            System.out.println("\nIt's your turn!");
+            textUI.showGameBoard();
+            textUI.zoomCardsHeld();
+
+            System.out.println("\nChoose a card from your hand to place.");
         } else if (inputCounter == 1) {
-            System.out.println("Choose a ROW to place the card. (Only white squares with an X are allowed)");
+            System.out.println("\nChoose a ROW to place the card. (Only white squares with an X are allowed)");
         } else if (inputCounter == 2) {
-            System.out.println("Choose a COLUMN to place the card. (Only white squares with an X are allowed)");
+            System.out.println("\nChoose a COLUMN to place the card. (Only white squares with an X are allowed)");
         } else if (inputCounter == 3) {
             System.out.println("\n" + """
                     On which side do you want to place the card? Enter your choice:
@@ -76,7 +82,12 @@ public class GamePlaceState extends ClientState{
     @Override
     public void handleInput(String input) {
         int maxBoardSide = (textUI.maxCoordinate() * 2) + 3;
-        if (inputCounter == 0) {
+
+        if(input.equalsIgnoreCase("BACK")) {
+            if(inputCounter > 0)
+                inputCounter--;
+            print();
+        } else if (inputCounter == 0) {
             if (TextUI.checkInputBound(input,1,3)) {
                 cardIndex = Integer.parseInt(input) - 1;
                 inputCounter++;
@@ -97,7 +108,7 @@ public class GamePlaceState extends ClientState{
                 if (model.getCardMaps().get(model.getMyUsername()).availablePlacements().contains(coordinatesChosen)) {
                     coordinateIndex = model.getCardMaps().get(model.getMyUsername()).availablePlacements().indexOf(coordinatesChosen);
                 } else {
-                    System.out.println("The coordinates you entered are not in the available placements! Try again. \n");
+                    System.out.println("\nThe coordinates you entered are not in the available placements! Try again.");
                     inputCounter = 1;
                 }
             }

@@ -51,6 +51,7 @@ public class LogInSignUpState extends ClientState {
         if (inputCounter == 0) {
             TextUI.clearCMD();
             TextUI.displayGameTitle();
+
             System.out.println("\nIf you want to go back at the previous choice, type BACK");
             System.out.println("\n" + """ 
                     Enter your choice:

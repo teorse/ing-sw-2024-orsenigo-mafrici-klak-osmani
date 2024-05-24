@@ -50,6 +50,7 @@ public class GamePickObjectiveState extends ClientState{
     public void print() {
         TextUI.clearCMD();
         TextUI.displayGameTitle();
+
         int i = 1;
         System.out.println("\nChoose a secret objective: \n");
         for (ObjectiveRecord objectiveRecord : model.getObjectiveCandidates()) {

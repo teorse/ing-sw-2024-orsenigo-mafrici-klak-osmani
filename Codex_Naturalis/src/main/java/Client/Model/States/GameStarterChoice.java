@@ -53,6 +53,7 @@ public class GameStarterChoice extends ClientState {
     public void print() {
         TextUI.clearCMD();
         TextUI.displayGameTitle();
+
         showCardStarter();
         System.out.println("\n" +
                     """
