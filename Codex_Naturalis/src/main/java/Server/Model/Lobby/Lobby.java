@@ -125,6 +125,9 @@ public class Lobby implements ServerModelLayer {
             String username = lobbyUser.getUsername();
             lobbyUsers.put(username, lobbyUser);
 
+            if(lobbyUsers.size() > 1)
+                gameStartable = true;
+
             if (lobbyUsers.size() == lobbySize)
                 lobbyClosed = true;
             logger.fine("lobby user "+lobbyUser.getUsername()+" added");
@@ -380,6 +383,9 @@ public class Lobby implements ServerModelLayer {
                 int nextAdminIndex = random.nextInt(lobbyUsersList.size()-1);
                 lobbyUsersList.get(nextAdminIndex).setAdmin();
             }
+
+            if(lobbyUsers.size() < 2)
+                gameStartable = false;
         }
         logger.fine("Lobby user "+lobbyUser.getUsername()+" removed from lobby "+lobbyName);
 
@@ -419,7 +425,7 @@ public class Lobby implements ServerModelLayer {
         if(!lobbyUsers.get(username).getLobbyRole().equals(LobbyRoles.ADMIN))
             throw new AdminRoleRequiredException("You need to be an admin to start the game in this lobby");
 
-        if(lobbyUsers.values().stream().toList().size() < 2)
+        if(lobbyUsers.size() < 2)
             throw new InvalidLobbySizeToStartGameException("You need at least two players in your lobby to start a game.");
 
         game = GameLoader.startNewGame(lobbyUsers.values().stream().toList(), this, lobbyObserver);
