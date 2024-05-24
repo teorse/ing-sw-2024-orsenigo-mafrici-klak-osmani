@@ -3,7 +3,7 @@ package Server.Model.Lobby;
 import Client.Model.Records.LobbyPreviewRecord;
 import Client.Model.Records.LobbyRecord;
 import Client.Model.Records.LobbyUserRecord;
-import Exceptions.Server.LobbyExceptions.UnavailableLobbyUserColorException;
+import Exceptions.Server.LobbyExceptions.*;
 import Exceptions.Server.PermissionExceptions.AdminRoleRequiredException;
 import Model.Game.Game;
 import Network.ServerClient.Packets.SCPUpdateLobby;
@@ -14,9 +14,6 @@ import Server.Controller.InputHandler.GameControllerObserver;
 import Server.Model.Lobby.Game.GameLoader;
 import Server.Controller.GameController;
 import Server.Interfaces.ServerModelLayer;
-import Exceptions.Server.LobbyExceptions.LobbyClosedException;
-import Exceptions.Server.LobbyExceptions.InvalidLobbySettingsException;
-import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
 import Server.Model.LobbyPreviewObserverRelay;
 import Server.Model.ServerModel;
 import Server.Model.ServerUser;
@@ -375,6 +372,13 @@ public class Lobby implements ServerModelLayer {
             lobbyUsers.remove(lobbyUser.getUsername());
             availableUserColors.add(lobbyUser.getColor());
             lobbyObserver.unsubscribe(lobbyUser.getUsername());
+
+            if(lobbyUser.getLobbyRole().equals(LobbyRoles.ADMIN)) {
+                Random random = new Random();
+                List<LobbyUser> lobbyUsersList = lobbyUsers.values().stream().toList();
+                int nextAdminIndex = random.nextInt(lobbyUsersList.size()-1);
+                lobbyUsersList.get(nextAdminIndex).setAdmin();
+            }
         }
         logger.fine("Lobby user "+lobbyUser.getUsername()+" removed from lobby "+lobbyName);
 
@@ -409,10 +413,13 @@ public class Lobby implements ServerModelLayer {
     /**
      * Starts the game in the lobby.
      */
-    public void startGame(String username) throws AdminRoleRequiredException{
+    public void startGame(String username) throws AdminRoleRequiredException, InvalidLobbySizeToStartGameException {
 
         if(!lobbyUsers.get(username).getLobbyRole().equals(LobbyRoles.ADMIN))
             throw new AdminRoleRequiredException("You need to be an admin to start the game in this lobby");
+
+        if(lobbyUsers.values().stream().toList().size() < 2)
+            throw new InvalidLobbySizeToStartGameException("You need at least two players in your lobby to start a game.");
 
         game = GameLoader.startNewGame(lobbyUsers.values().stream().toList(), this, lobbyObserver);
         updateGameController(new GameController(game));

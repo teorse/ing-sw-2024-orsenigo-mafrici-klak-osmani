@@ -7,10 +7,7 @@ import Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.Log
 import Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.MissingRequirementException;
 import Exceptions.Server.InputHandlerExceptions.MultipleAccessExceptions.MultipleLobbiesException;
 import Exceptions.Server.InputHandlerExceptions.MultipleAccessExceptions.MultipleLoginViolationException;
-import Exceptions.Server.LobbyExceptions.InvalidLobbySettingsException;
-import Exceptions.Server.LobbyExceptions.LobbyClosedException;
-import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
-import Exceptions.Server.LobbyExceptions.UnavailableLobbyUserColorException;
+import Exceptions.Server.LobbyExceptions.*;
 import Exceptions.Server.LobbyNameAlreadyTakenException;
 import Exceptions.Server.LobbyNotFoundException;
 import Exceptions.Server.LogInExceptions.AccountAlreadyExistsException;
@@ -286,10 +283,15 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
             //todo
             String stackTraceString = Utilities.StackTraceToString(e);
             logger.warning("LobbyRequiredException\nStacktrace:\n"+stackTraceString);
-        } catch (AdminRoleRequiredException e) {
+        }
+        catch (AdminRoleRequiredException e) {
             //todo
             String stackTraceString = Utilities.StackTraceToString(e);
             logger.warning("AdminRoleRequiredException, "+username+" attempted to start a game while not admin\nStacktrace:\n"+stackTraceString);
+        }
+        catch (InvalidLobbySizeToStartGameException e){
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("InvalidLobbySizeToStartGameException\nStacktrace:\n"+stackTraceString);
         }
     }
 

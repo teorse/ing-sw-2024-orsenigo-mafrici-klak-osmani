@@ -16,7 +16,7 @@ public class LobbyUser implements Serializable, LayerUser {
     @Serial
     private static final long serialVersionUID = -1039118189828128709L;
     private final ServerUser serverUser;
-    private final LobbyRoles role;
+    private LobbyRoles role;
     private LobbyUserColors color;
     private LobbyUserConnectionStates connectionStatus;
 
@@ -58,6 +58,10 @@ public class LobbyUser implements Serializable, LayerUser {
 
     public void setColor(LobbyUserColors color){
         this.color = color;
+    }
+
+    public void setAdmin(){
+        role = LobbyRoles.ADMIN;
     }
 
 

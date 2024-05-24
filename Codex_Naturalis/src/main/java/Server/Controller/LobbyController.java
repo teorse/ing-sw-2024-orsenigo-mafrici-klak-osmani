@@ -1,5 +1,6 @@
 package Server.Controller;
 
+import Exceptions.Server.LobbyExceptions.InvalidLobbySizeToStartGameException;
 import Exceptions.Server.LobbyExceptions.UnavailableLobbyUserColorException;
 import Exceptions.Server.PermissionExceptions.AdminRoleRequiredException;
 import Server.Controller.InputHandler.GameControllerObserver;
@@ -70,7 +71,7 @@ public class LobbyController {
     /**
      * Starts the game associated with the lobby.
      */
-    public void startGame(String username) throws AdminRoleRequiredException {
+    public void startGame(String username) throws AdminRoleRequiredException, InvalidLobbySizeToStartGameException {
         model.startGame(username);
     }
 
