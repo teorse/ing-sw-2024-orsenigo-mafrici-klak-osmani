@@ -11,6 +11,7 @@ import Network.ServerClient.Packets.SCPUpdateCardMap;
 import Server.Model.Lobby.ObserverRelay;
 
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 /**
@@ -53,6 +54,7 @@ public class CardMap {
 
     private final ObserverRelay gameObserverRelay;
     private final String username;
+    private final Logger logger;
 
 
 
@@ -65,6 +67,9 @@ public class CardMap {
      * the first coordinate [0,0] to allow for the starter card to be placed.
      */
     public CardMap(ObserverRelay gameObserverRelay, String username) {
+        logger = Logger.getLogger(CardMap.class.getName());
+        logger.info("Initializing CardMap for player "+username);
+
         cardsPlaced = new HashMap<>();
         availablePlacements = new ArrayList<>();
         availablePlacements.add(new Coordinates(0, 0));
@@ -74,6 +79,7 @@ public class CardMap {
 
         this.gameObserverRelay = gameObserverRelay;
         this.username = username;
+        logger.info("CardMap for player "+username+" initialized");
     }
 
 
@@ -133,6 +139,11 @@ public class CardMap {
      * @return Points earned by the player for placing the card.
      */
     public int place(Card cardToPlace, int coordinateIndex, boolean faceUp) {
+        logger.info("Player "+username+" is placing a card.");
+        logger.fine("Artifact Counter before place:\n"+artifactsCounter+
+                "\nCard that is being placed:\n"+cardToPlace.toRecord()+
+                "\nCoordinate where it is being placed: "+availablePlacements.get(coordinateIndex));
+
         //Coordinates of the card to be placed in the map
         Coordinates placed = availablePlacements.get(coordinateIndex);
 
@@ -165,6 +176,7 @@ public class CardMap {
         if(gameObserverRelay != null)
             gameObserverRelay.update(new SCPUpdateCardMap(username, this.toTransferableDataObject()));
 
+        logger.fine("Artifact Counter after placing the card: "+artifactsCounter);
         return points;
     }
 
@@ -312,6 +324,7 @@ public class CardMap {
                 if (coveredArtifact != Artifacts.NULL) {
                     //We decrease the amount of that artifact by 1
                     changeArtifactAmount(coveredArtifact, -1);
+                    logger.fine("Artifact: "+coveredArtifact+"\nDelta: -1");
                 }
             }
         }
