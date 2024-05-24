@@ -97,7 +97,7 @@ public class GameStarterChoice extends ClientState {
      * The central artifacts, front corners, and back corners are retrieved from the player's secret information record.
      */
     private void showCardStarter() {
-        CardRecord cardStarter = model.getPlayerSecretInfoRecord().cardsHeld().keySet().stream().toList().getFirst();
+        CardRecord cardStarter = model.getPlayerSecretInfoRecord().cardsHeld().getFirst();
 
         //Prints the central artifacts of the card
         System.out.println("Central Artifacts:");

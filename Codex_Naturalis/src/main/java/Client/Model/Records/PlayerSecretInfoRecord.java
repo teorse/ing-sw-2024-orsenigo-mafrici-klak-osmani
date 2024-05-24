@@ -1,6 +1,7 @@
 package Client.Model.Records;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -10,13 +11,14 @@ import java.util.Map;
  *
  * <p>This record implements the {@code Serializable} interface to support serialization.
  */
-public record PlayerSecretInfoRecord(Map<CardRecord, Boolean> cardsHeld, ObjectiveRecord secretObjectives)
+public record PlayerSecretInfoRecord(List<CardRecord> cardsHeld, Map<CardRecord, Boolean> cardPlayability, ObjectiveRecord secretObjectives)
         implements Serializable {
 
     /**
      * Constructs a new {@code PlayerSecretInfoRecord} with the specified parameters.
      *
-     * @param cardsHeld a map containing cards held by the player and their visibility status
+     * @param cardsHeld a list containing cards held by the player in the specific order that is also memorized by the server
+     * @param cardPlayability map containing the playability value for each card held by the player
      * @param secretObjectives the secret objectives of the player
      */
     public PlayerSecretInfoRecord {

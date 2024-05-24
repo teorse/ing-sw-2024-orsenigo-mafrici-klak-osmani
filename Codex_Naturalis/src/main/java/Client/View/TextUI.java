@@ -165,15 +165,16 @@ public class TextUI extends UserInterface {
      */
     public void zoomCardsHeld() {
         //Retrieve the list of cards held by the player
-        Map<CardRecord,Boolean> cardsHeld = model.getPlayerSecretInfoRecord().cardsHeld();
+        List<CardRecord> cardsHeld = model.getPlayerSecretInfoRecord().cardsHeld();
+        Map<CardRecord,Boolean> cardPlayability = model.getPlayerSecretInfoRecord().cardPlayability();
 
         int i = 1;
 
         //Loop through the map of cards held by the player
-        for (CardRecord cardRecord : cardsHeld.keySet()) {
+        for (CardRecord cardRecord : cardsHeld) {
 
             //Print if the card can be placed on both sides
-            out.println(i++ + " - This card can be placed on both sides: " + cardsHeld.get(cardRecord));
+            out.println(i++ + " - This card can be placed on both sides: " + cardPlayability.get(cardRecord));
 
             //Show the details of the card
             showCardDetails(cardRecord);

@@ -23,7 +23,8 @@ public class Player implements LayerUser {
     //ATTRIBUTES
     private final LobbyUser user;
     private int roundsCompleted;
-    private final List<CardPlayability> cardsHeld;
+    private final List<Card> cardsHeld;
+    private final Map<Card, Boolean> cardPlayability;
     private final List<Objective> secretObjectiveCandidates;
     private final List<Objective> secretObjectives;
     private final CardMap cardMap;
@@ -49,6 +50,7 @@ public class Player implements LayerUser {
         this.sender = gameObserverRelay;
         this.cardMap = new CardMap(gameObserverRelay, user.getUsername());
         this.cardsHeld = new ArrayList<>();
+        this.cardPlayability = new HashMap<>();
         this.secretObjectiveCandidates = new ArrayList<>();
         this.secretObjectives = new ArrayList<>();
         this.playerState = PlayerStates.WAIT;
@@ -143,15 +145,12 @@ public class Player implements LayerUser {
         logger.fine("Card being added is:\n"+card.toRecord());
         //Creates a CardPlayability object which immediately reflects the card's playability given the player's
         //current cardMap.
-        CardPlayability CP = new CardPlayability(card,false);
-        CP.updatePlayability(cardMap);
-        cardsHeld.add(CP);
-
-        //todo possibly move card playability into a map inside player
+        cardsHeld.add(card);
+        updatePlayableSides();
 
         logger.finest("Printing all cards held");
         for(int i = 0; i < cardsHeld.size(); i++){
-            CardRecord cardHeldRecord = cardsHeld.get(i).getCard().toRecord();
+            CardRecord cardHeldRecord = cardsHeld.get(i).toRecord();
             logger.finest("Card in position "+i+":\n"+cardHeldRecord);
         }
 
@@ -162,8 +161,8 @@ public class Player implements LayerUser {
      * Updates playable sides attribute of all cards in cardsHeld List.
      */
     private void updatePlayableSides() {
-        for (CardPlayability cardPlayability : cardsHeld) {
-            cardPlayability.updatePlayability(cardMap);
+        for(Card cardHeld : cardsHeld){
+            cardPlayability.put(cardHeld, cardHeld.isPlaceable(cardMap));
         }
     }
 
@@ -178,25 +177,27 @@ public class Player implements LayerUser {
      * @param faceUp
      */
     public void playCard(int cardIndex, int coordinateIndex, boolean faceUp) {
-        CardPlayability cardPlayability;
+        Card playedCard;
 
         try {
-             cardPlayability = cardsHeld.remove(cardIndex);
+            playedCard = cardsHeld.remove(cardIndex);
         }
         catch (IndexOutOfBoundsException i){
+            //todo add better exception handling
             throw new RuntimeException("Index provided is not a valid index");
         }
 
 
-        boolean cardCanBeFaceUp = cardPlayability.getPlayability();
+        boolean cardCanBeFaceUp = cardPlayability.remove(playedCard);
 
         //If the card can't be played faceUp but the player provided faceUp = true, throws an exception
         //Otherwise the card is played as expected.
         if(!cardCanBeFaceUp && faceUp)
+            //todo add better exception handling
             throw new RuntimeException("You can't play this card faceUp!");
 
         //Updates player's points after playing the card.
-        points = points + cardMap.place(cardPlayability.getCard(),coordinateIndex,faceUp);
+        points = points + cardMap.place(playedCard ,coordinateIndex,faceUp);
 
         //Updates the playable sides of the remaining cards held after placing the card in the card map.
         updatePlayableSides();
@@ -245,15 +246,18 @@ public class Player implements LayerUser {
     }
 
     public PlayerSecretInfoRecord toSecretPlayer() {
-        Map<CardRecord, Boolean> cardsHeld = new HashMap<>();
-        for (CardPlayability cardPlayability : this.cardsHeld) {
-            cardsHeld.put(cardPlayability.getCard().toRecord(), cardPlayability.getPlayability());
+        List<CardRecord> cardsHeldRecord = new ArrayList<>();
+        Map<CardRecord, Boolean> cardPlayabilityRecord = new HashMap<>();
+
+        for(Card cardHeld : cardsHeld){
+            cardsHeldRecord.add(cardHeld.toRecord());
+            cardPlayabilityRecord.put(cardHeld.toRecord(), cardPlayability.get(cardHeld));
         }
 
         if(!secretObjectives.isEmpty())
-            return new PlayerSecretInfoRecord(cardsHeld, secretObjectives.getFirst().toRecord());
+            return new PlayerSecretInfoRecord(cardsHeldRecord, cardPlayabilityRecord, secretObjectives.getFirst().toRecord());
         else
-            return new PlayerSecretInfoRecord(cardsHeld, null);
+            return new PlayerSecretInfoRecord(cardsHeldRecord, cardPlayabilityRecord, null);
     }
 
     public PlayerRecord toTransferableDataObject() {return new PlayerRecord(user.getUsername(), playerState, roundsCompleted, points, objectivesCompleted, winner);}
