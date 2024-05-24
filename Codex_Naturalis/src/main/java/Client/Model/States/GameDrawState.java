@@ -28,7 +28,6 @@ public class GameDrawState extends ClientState{
      */
     public GameDrawState(ClientModel model) {
         super(model);
-        TextUI.clearCMD();
         print();
     }
 
@@ -44,6 +43,7 @@ public class GameDrawState extends ClientState{
     public void print() {
         //TODO fix null pool cards
         if (inputCounter == 0) {
+            TextUI.clearCMD();
             textUI.zoomCardPool(CardPoolTypes.RESOURCE);
             textUI.zoomCardPool(CardPoolTypes.GOLDEN);
             System.out.println("\n" +
@@ -85,7 +85,7 @@ public class GameDrawState extends ClientState{
         } else if (inputCounter == 1) {
             if (UserInterface.checkInputBound(input,1,3)) {
                 cardChoice = Integer.parseInt(input);
-                model.getClientConnector().sendPacket(new CSPDrawCard(cardPoolTypes,cardChoice - 2));
+                model.getClientConnector().sendPacket(new CSPDrawCard(cardPoolTypes, cardChoice - 2));
             } else
                 print();
         }

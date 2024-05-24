@@ -476,6 +476,7 @@ public class Lobby implements ServerModelLayer {
                 throw new UnavailableLobbyUserColorException("Color is not available");
         }
         lobbyObserver.update(new SCPUpdateLobbyUsers(toLobbyUserRecord()));
+        lobbyObserver.update(new SCPUpdateLobby(toLobbyRecord()));
     }
 
 

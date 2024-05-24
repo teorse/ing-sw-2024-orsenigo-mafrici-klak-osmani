@@ -21,8 +21,7 @@ public class GameOverState extends ClientState{
      */
     public GameOverState(ClientModel model) {
         super(model);
-        TextUI.clearCMD();
-        TextUI.displayGameOver();
+
         print();
     }
 
@@ -35,6 +34,8 @@ public class GameOverState extends ClientState{
      */
     @Override
     public void print() {
+        TextUI.clearCMD();
+        TextUI.displayGameOver();
         System.out.println("THE GAME IS OVER. Final Rankings: ");
         int i = 1;
         for (PlayerRecord winners : model.getWinners()) {

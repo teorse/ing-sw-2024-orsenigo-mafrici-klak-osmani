@@ -4,8 +4,10 @@ import Client.Model.ClientModel;
 import Client.Model.Records.LobbyUserRecord;
 import Client.View.TextUI;
 import Model.Player.PlayerStates;
+import Network.ClientServer.Packets.CSPChangeColor;
 import Network.ClientServer.Packets.CSPQuitLobby;
 import Network.ClientServer.Packets.CSPStartGame;
+import Server.Model.Lobby.LobbyUserColors;
 
 import java.util.logging.Logger;
 
@@ -32,62 +34,110 @@ public class LobbyJoined extends ClientState{
         logger = Logger.getLogger(LobbyJoined.class.getName());
         logger.info("Initializing LobbyJoined");
 
-        TextUI.clearCMD();
-        TextUI.displayGameTitle();
-        System.out.println("If you want to go back at the previous choice, type BACK. If you want to quit the lobby, type QUIT \n");
         print();
 
         nextState();
     }
 
     /**
-     * Prints the list of users currently in the lobby along with their details.
+     * Prints the current state of the lobby to the console.
      *
-     * <p>The method iterates through the list of lobby users and prints their username, role, color, and connection status.
-     * Additionally, if the current user is identified as the admin, it prompts them to enter "START" to start the game.
+     * <p>This includes the list of users in the lobby with their details such as username, role, color,
+     * and connection status. Additionally, it lists the available colors if there are any, and provides
+     * instructions on how to change the color by typing its corresponding number. If the user is the
+     * admin, it informs them that they can type "START" to begin the game.</p>
+     *
+     * <p>This method overrides the print method to display the lobby information in a user-friendly format.</p>
      */
     @Override
     public void print() {
+        TextUI.clearCMD();
+        TextUI.displayGameTitle();
+
+        System.out.println("\nIf you want to go back at the previous choice, type BACK. If you want to quit the lobby, type QUIT \n");
+
         System.out.println("List of users in the lobby: ");
+
         for (LobbyUserRecord user : model.getLobbyUserRecords()) {
-            System.out.println("Username: " + user.username());
+            System.out.println("\nUsername: " + user.username());
             System.out.println("Role: " + user.role().name());
             System.out.println("Color: " + user.color().name());
-            System.out.println("Connection Status: " + user.connectionStatus() + "\n");
+            System.out.println("Connection Status: " + user.connectionStatus());
         }
+
+        if (!model.getLobbyRecord().availableUserColors().isEmpty()) {
+            System.out.println("\nAvailable colors: ");
+            int i = 1;
+            for (LobbyUserColors color : model.getLobbyRecord().availableUserColors()) {
+                System.out.println(i++ + " - " + color.name());
+            }
+            System.out.println("\nIf you want to change the color type the one you want by inserting its number");
+        }
+
         if (TextUI.areYouAdmin(model))
-            System.out.println("You are the Admin, type START to start the game!");
+            System.out.println("\nYou are the Admin, type START to start the game!");
     }
 
     /**
-     * Handles the input provided by the user to start the game.
+     * Handles user input for lobby interactions.
      *
-     * <p>If the current user is identified as the admin, the method checks if the input is "START" to initiate the game.
-     * If the input is not "START", it prompts the user to enter "START". If the current user is not the admin, it displays
-     * a message indicating that they are not authorized to start the game and should wait until the game starts.
+     * <p>This method processes the input commands provided by the user and performs the appropriate actions based on the input.
+     * If the input is "QUIT", the user is removed from the lobby and the client state is set to lobby selection.
+     * If the input is a valid color selection within the available user colors, the user's color is changed accordingly.
+     * If the user is the admin and types "START", the game is started. If the user is not the admin, an appropriate message is displayed.</p>
      *
-     * @param input the input provided by the user
+     * @param input The input command provided by the user.
      */
     @Override
     public void handleInput(String input) {
+        // If input is to quit the lobby
         if (input.equalsIgnoreCase("QUIT")) {
+            // Send packet to quit lobby
             model.getClientConnector().sendPacket(new CSPQuitLobby());
+            // Set client state to LobbySelectionState
             model.setClientState(new LobbySelectionState(model));
-        } else if (TextUI.areYouAdmin(model)) {
-           if(input.equalsIgnoreCase("START"))
-               model.getClientConnector().sendPacket(new CSPStartGame());
-           else
-               System.out.println("To start the game type START!");
-        } else
+        }
+        // If user is admin
+        else if (TextUI.areYouAdmin(model)) {
+            // If input is to start the game
+            if (input.equalsIgnoreCase("START")) {
+                // Send packet to start the game
+                model.getClientConnector().sendPacket(new CSPStartGame());
+            } else {
+                // Prompt to start the game
+                System.out.println("To start the game type START!");
+            }
+        }
+        // If input is to change color
+        else if (TextUI.checkInputBound(input, 1, model.getLobbyRecord().availableUserColors().size())) {
+            // Send packet to change color
+            model.getClientConnector().sendPacket(new CSPChangeColor(model.getLobbyRecord().availableUserColors().get(Integer.parseInt(input) - 1)));
+        }
+        // If user is not admin
+        else {
+            // Prompt to wait until the game starts
             System.out.println("You are not the admin. Please wait until the game starts!");
+        }
     }
 
+
     /**
-     * Moves the client to the next state based on the success of the previous operation and the player's current state.
+     * Transitions the client to the next state based on the current game status and player state.
      *
-     * <p>If the previous operation was successful and the player's state is set to "PLACE", the client transitions to the
-     * GameStarterChoice state. Otherwise, an error message is displayed, and the client remains in the current state,
-     * prompting the user to try again.
+     * <p>This method determines the next state of the client based on whether the game has started and the current state of the player.
+     * It logs the current status and then performs state transitions accordingly:</p>
+     * <ul>
+     *   <li>If the game has started and the player has a defined state, the method switches the client to the appropriate game state:
+     *     <ul>
+     *       <li>PLACE: Transitions to {@code GameStarterChoice} if the setup is not finished, otherwise to {@code GamePlaceState}.</li>
+     *       <li>DRAW: Transitions to {@code GameDrawState}.</li>
+     *       <li>DRAW_GOLDEN, DRAW_RESOURCE: Transitions to {@code GameInitialDrawState}.</li>
+     *       <li>PICK_OBJECTIVE: Transitions to {@code GamePickObjectiveState}.</li>
+     *       <li>WAIT: Transitions to {@code GameWaitState}.</li>
+     *     </ul>
+     *   </li>
+     *   <li>If the player state is not defined or conditions are not met for state transition, logs a message and remains in the current state.</li>
+     * </ul>
      */
     @Override
     public synchronized void nextState() {

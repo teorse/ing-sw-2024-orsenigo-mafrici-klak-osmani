@@ -32,11 +32,9 @@ public class GamePlaceState extends ClientState{
         super(model);
         logger = Logger.getLogger(GamePlaceState.class.getName());
         logger.info("Initializing GamePlaceState");
-        TextUI.clearCMD();
-        System.out.println("It's your turn!");
-        textUI.showGameBoard();
-        textUI.zoomCardsHeld();
+
         print();
+
         logger.fine("GamePlaceState initialized");
     }
 
@@ -55,7 +53,7 @@ public class GamePlaceState extends ClientState{
         } else if (inputCounter == 2) {
             System.out.println("Choose a COLUMN to place the card. (Only white squares with an X are allowed)");
         } else if (inputCounter == 3) {
-            System.out.println("""
+            System.out.println("\n" + """
                     On which side do you want to place the card? Enter your choice:
                      1 - Front
                      2 - Back""");
@@ -80,14 +78,16 @@ public class GamePlaceState extends ClientState{
         int maxBoardSide = (textUI.maxCoordinate() * 2) + 3;
         if (inputCounter == 0) {
             if (TextUI.checkInputBound(input,1,3)) {
-                cardIndex = Integer.parseInt(input);
+                cardIndex = Integer.parseInt(input) - 1;
                 inputCounter++;
             }
+            print();
         } else if (inputCounter == 1) {
             if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide - 1)) {
                 chosenRow = input;
                 inputCounter++;
             }
+            print();
         } else if (inputCounter == 2) {
             if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide - 1)) {
                 chosenCol = input;
@@ -101,13 +101,20 @@ public class GamePlaceState extends ClientState{
                     inputCounter = 1;
                 }
             }
+            print();
         } else if (inputCounter == 3) {
+            boolean cardPlayability = model.getPlayerSecretInfoRecord().cardPlayability().get(model.getPlayerSecretInfoRecord().cardsHeld().get(cardIndex));
             if (TextUI.getBinaryChoice(input)) {
                 faceUp = (Integer.parseInt(input) == 1);
-                model.getClientConnector().sendPacket(new CSPPlayCard(cardIndex - 1, coordinateIndex, faceUp));
-            }
+                if (cardPlayability || !faceUp)
+                    model.getClientConnector().sendPacket(new CSPPlayCard(cardIndex, coordinateIndex, faceUp));
+                else {
+                    System.out.println("\nThis can't be played face up. Select the other side or change card!");
+                    print();
+                }
+            } else
+                print();
         }
-        print();
     }
 
     /**

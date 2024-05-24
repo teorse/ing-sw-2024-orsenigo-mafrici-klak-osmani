@@ -56,19 +56,17 @@ public class TextUI extends UserInterface {
                 ██║     ██║   ██║██║  ██║██╔══╝   ██╔██╗     ██║╚██╗██║██╔══██║   ██║   ██║   ██║██╔══██╗██╔══██║██║     ██║╚════██║
                 ╚██████╗╚██████╔╝██████╔╝███████╗██╔╝ ██╗    ██║ ╚████║██║  ██║   ██║   ╚██████╔╝██║  ██║██║  ██║███████╗██║███████║
                  ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝    ╚═╝  ╚═══╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝╚══════╝
-                                                                                                                                   \s
                 """);
     }
 
     public static void displayGameOver() {
         System.out.print("""
-                 ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗\s
+                 ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗
                 ██╔════╝ ██╔══██╗████╗ ████║██╔════╝    ██╔═══██╗██║   ██║██╔════╝██╔══██╗
                 ██║  ███╗███████║██╔████╔██║█████╗      ██║   ██║██║   ██║█████╗  ██████╔╝
                 ██║   ██║██╔══██║██║╚██╔╝██║██╔══╝      ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗
                 ╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║
                  ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝
-                                                                                         \s
                 """);
     }
 
@@ -179,6 +177,7 @@ public class TextUI extends UserInterface {
             //Show the details of the card
             showCardDetails(cardRecord);
         }
+        System.out.println();
         displayArtifact(model.getMyUsername());
     }
 
@@ -304,7 +303,7 @@ public class TextUI extends UserInterface {
      */
     public void showCardPlacedDetails(CardVisibilityRecord cardVisibilityRecord) {
         //Prints the color of the card
-        out.println("Artifact Type: " + cardVisibilityRecord.cardColor());
+        out.println("\nArtifact Type: " + cardVisibilityRecord.cardColor());
 
         //Prints the corners of the card their details
         out.println("Corners: (Those covered will be printed in red)");
@@ -328,7 +327,7 @@ public class TextUI extends UserInterface {
             }
 
             // Reset the terminal color to avoid affecting other output
-            out.println(TerminalColor.RESET);
+            out.print(TerminalColor.RESET);
         }
     }
 
@@ -529,9 +528,6 @@ public class TextUI extends UserInterface {
         for (Artifacts artifact : artifactsCounter.keySet()) {
             out.println(artifact.name() + ": " + artifactsCounter.get(artifact)); //Display artifact name and count
         }
-
-        //Add a new line at the end for spacing
-        out.println();
     }
 
     /**

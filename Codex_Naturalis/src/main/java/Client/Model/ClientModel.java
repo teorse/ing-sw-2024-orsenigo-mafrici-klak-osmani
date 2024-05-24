@@ -215,16 +215,20 @@ public class ClientModel {
     public void setGameRecord(GameRecord gameRecord) {
         this.gameRecord = gameRecord;
         setUpFinished = gameRecord.setupFinished();
+        clientState.print();
     }
     public void setLobbyPreviewRecords(List<LobbyPreviewRecord> lobbyPreviewRecords) {
         this.lobbyPreviewRecords = lobbyPreviewRecords;
+        clientState.print();
     }
     public void setLobbyRecord(LobbyRecord lobbyRecord) {
         this.lobbyRecord = lobbyRecord;
         this.gameStartable = lobbyRecord.gameStartable();
+        clientState.print();
     }
     public void setLobbyUserRecords(List<LobbyUserRecord> lobbyUserRecords) {
         this.lobbyUserRecords = lobbyUserRecords;
+        clientState.print();
     }
 
     public void setPlayerSecretInfoRecord(PlayerSecretInfoRecord playerSecretInfoRecord) {

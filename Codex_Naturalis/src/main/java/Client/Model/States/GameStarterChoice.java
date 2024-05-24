@@ -40,8 +40,6 @@ public class GameStarterChoice extends ClientState {
         logger = Logger.getLogger(GameStarterChoice.class.getName());
         logger.info("Initializing GameStarterChoice state");
 
-        TextUI.clearCMD();
-        TextUI.displayGameTitle();
         print();
     }
 
@@ -53,6 +51,8 @@ public class GameStarterChoice extends ClientState {
      */
     @Override
     public void print() {
+        TextUI.clearCMD();
+        TextUI.displayGameTitle();
         showCardStarter();
         System.out.println("\n" +
                     """
@@ -100,7 +100,7 @@ public class GameStarterChoice extends ClientState {
         CardRecord cardStarter = model.getPlayerSecretInfoRecord().cardsHeld().getFirst();
 
         //Prints the central artifacts of the card
-        System.out.println("Central Artifacts:");
+        System.out.println("\nCentral Artifacts:");
         for (Artifacts artifacts : cardStarter.centralArtifacts().keySet()) {
             System.out.println(" - " + artifacts.name() + ": " + cardStarter.centralArtifacts().get(artifacts));
         }

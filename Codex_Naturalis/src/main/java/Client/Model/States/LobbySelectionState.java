@@ -33,9 +33,7 @@ public class LobbySelectionState extends ClientState {
      */
     public LobbySelectionState(ClientModel model) {
         super(model);
-        TextUI.clearCMD();
-        TextUI.displayGameTitle();
-        System.out.println("If you want to go back at the previous choice, type BACK ");
+
         print();
     }
 
@@ -55,8 +53,13 @@ public class LobbySelectionState extends ClientState {
      * </ul>
      */
     @Override
-    public void print() {
+    public synchronized void print() {
         if (inputCounter == 0) {
+            TextUI.clearCMD();
+            TextUI.displayGameTitle();
+
+            System.out.println("\nIf you want to go back at the previous choice, type BACK");
+
             System.out.println("\n" +
                     """
                     Enter your choice:
@@ -66,6 +69,8 @@ public class LobbySelectionState extends ClientState {
             if (choice == 1) {
                 System.out.println("\nEnter lobby name: ");
             } else if (choice == 2) {
+                TextUI.clearCMD();
+                TextUI.displayGameTitle();
                 System.out.println("\nLOBBY PREVIEWS");
                 //For loop for printing lobbies
                 for (LobbyPreviewRecord lobbyPreviewRecord : model.getLobbyPreviewRecords()) {
@@ -104,22 +109,33 @@ public class LobbySelectionState extends ClientState {
     @Override
     public void handleInput(String input) {
         if (input.equalsIgnoreCase("BACK")) {
-            if (inputCounter > 0) {
+
+            if(inputCounter == 1) {
+                choice = 0;
+                inputCounter--;
+            } else if(inputCounter == 2){
                 inputCounter--;
             }
             print();
-        } else if (inputCounter == 0) {
-            if (TextUI.getBinaryChoice(input)) {
-                choice = Integer.parseInt(input);
-                if (choice == 2) {
-                    model.getClientConnector().sendPacket(new CSPViewLobbyPreviews());
+        }
+        // If input counter is 0 (initial state)
+        else if (inputCounter == 0) {
+                if (TextUI.getBinaryChoice(input)) {
+                    // Increment input counter
+                    inputCounter++;
+                    // Parse choice to integer
+                    choice = Integer.parseInt(input);
+                    // If choice is 2 (view lobby previews)
+                    if (choice == 2) {
+                        model.getClientConnector().sendPacket(new CSPViewLobbyPreviews());
+                    }
                 }
-                inputCounter++;
+
                 print();
-            } else {
-                print();
-            }
-        } else if (inputCounter == 1) {
+        }
+        // If input counter is 1 (waiting for lobby name or join lobby input)
+        else if (inputCounter == 1) {
+            // If choice is 1 (create lobby)
             if (choice == 1) {
                 if (TextUI.isNameValid(input)) {
                     lobbyName = input;

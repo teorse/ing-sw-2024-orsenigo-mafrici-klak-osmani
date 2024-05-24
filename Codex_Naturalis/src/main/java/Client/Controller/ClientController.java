@@ -256,9 +256,6 @@ public class ClientController  implements ServerMessageExecutor {
         logger.fine("Received lobbyPreviewRecords: " + lobbyPreviewRecords);
 
         model.setLobbyPreviewRecords(lobbyPreviewRecords);
-        TextUI.clearCMD();
-        TextUI.displayGameTitle();
-        model.print();
     }
 
     /**
@@ -277,9 +274,6 @@ public class ClientController  implements ServerMessageExecutor {
         logger.fine("Received lobbyUsers: " + lobbyUsers);
 
         model.setLobbyUserRecords(lobbyUsers);
-        TextUI.clearCMD();
-        TextUI.displayGameTitle();
-        model.print();
     }
 
     @Override
@@ -293,7 +287,7 @@ public class ClientController  implements ServerMessageExecutor {
     @Override
     public void changeColorFailed() {
         logger.info("changeColorFailed method called");
-        //todo
+        //TODO
     }
 
     /**
