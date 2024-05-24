@@ -13,7 +13,7 @@ import java.util.List;
  *
  * <p>This record implements the {@code Serializable} interface to support serialization.
  */
-public record LobbyRecord(String lobbyName, int targetNumberUsers, List<LobbyUserColors> availableUserColors)
+public record LobbyRecord(String lobbyName, int targetNumberUsers, List<LobbyUserColors> availableUserColors, boolean gameStartable)
         implements Serializable {
 
     /**

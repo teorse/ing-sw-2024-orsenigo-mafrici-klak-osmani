@@ -46,6 +46,7 @@ public class Lobby implements ServerModelLayer {
 
     private GameController gameController;
     private Game game;
+    private boolean gameStartable;
     private boolean gameStarted;
 
 
@@ -518,7 +519,7 @@ public class Lobby implements ServerModelLayer {
 
     //TO RECORD METHODS
     private LobbyRecord toLobbyRecord(){
-        return new LobbyRecord(lobbyName, lobbySize, availableUserColors);
+        return new LobbyRecord(lobbyName, lobbySize, availableUserColors, gameStartable);
     }
 
     private List<LobbyUserRecord> toLobbyUserRecord(){

@@ -27,9 +27,10 @@ public class ClientModel {
     boolean connected;
     boolean loggedIn;
     boolean inLobby;
+    boolean gameStartable;
     boolean gameStarted;
-    boolean gameOver;
     boolean setUpFinished;
+    boolean gameOver;
     ClientState clientState;
     String myUsername;
     PlayerStates myPlayerGameState;
@@ -77,6 +78,14 @@ public class ClientModel {
         this.players = new ArrayList<>();
         this.winners = new ArrayList<>();
         clientState = new ConnectionState(this);
+
+        connected = false;
+        loggedIn = false;
+        inLobby = false;
+        gameStartable = false;
+        gameStarted = false;
+        setUpFinished = false;
+        gameOver = false;
     }
 
 
@@ -151,9 +160,15 @@ public class ClientModel {
     public boolean isInLobby() {
         return inLobby;
     }
+    public boolean isGameStartable() {
+        return gameStartable;
+    }
     public boolean isGameStarted() {
         return gameStarted;
     }
+
+
+
 
 
     //SETTERS
@@ -206,6 +221,7 @@ public class ClientModel {
     }
     public void setLobbyRecord(LobbyRecord lobbyRecord) {
         this.lobbyRecord = lobbyRecord;
+        this.gameStartable = lobbyRecord.gameStartable();
     }
     public void setLobbyUserRecords(List<LobbyUserRecord> lobbyUserRecords) {
         this.lobbyUserRecords = lobbyUserRecords;
