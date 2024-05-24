@@ -37,7 +37,7 @@ public class GameOverState extends ClientState{
         TextUI.clearCMD();
         TextUI.displayGameOver();
 
-        System.out.println("THE GAME IS OVER. Final Rankings: ");
+        System.out.println("\nTHE GAME IS OVER. Final Rankings: ");
         int i = 1;
         for (PlayerRecord winners : model.getWinners()) {
             if (winners.winner())

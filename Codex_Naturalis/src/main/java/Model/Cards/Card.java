@@ -103,7 +103,7 @@ public abstract class Card implements Serializable {
         for (CornerOrientation co : this.corners.keySet())
             if (co.equals(cornerRequired))
                 return this.corners.get(co).getArtifact();
-        return null;
+        return Artifacts.NULL;
     };
 
     /**
