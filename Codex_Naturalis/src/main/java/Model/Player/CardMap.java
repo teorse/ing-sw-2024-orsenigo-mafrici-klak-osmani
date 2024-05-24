@@ -116,11 +116,13 @@ public class CardMap {
      * @param delta
      */
     public void changeArtifactAmount(Artifacts artifact, int delta) {
+        logger.finest("Adding "+delta+" "+artifact);
         if(artifactsCounter.containsKey(artifact)) {
             artifactsCounter.put(artifact, artifactsCounter.get(artifact)+delta);
         } else {
             artifactsCounter.put(artifact, delta);
         }
+        logger.finest("Artifact Counter now:\n"+artifactsCounter);
     }
 
 
@@ -158,6 +160,7 @@ public class CardMap {
 
         //For loop which function is to increment the amount of artifacts in the counter
         Map<Artifacts, Integer> newArtifacts = cardVisibilityToPlace.getAllArtifacts();
+        logger.finest("Artifacts found on the card: "+newArtifacts);
         for(Map.Entry<Artifacts, Integer> entry : newArtifacts.entrySet()){
             changeArtifactAmount(entry.getKey(), entry.getValue());
         }
@@ -324,7 +327,6 @@ public class CardMap {
                 if (coveredArtifact != Artifacts.NULL) {
                     //We decrease the amount of that artifact by 1
                     changeArtifactAmount(coveredArtifact, -1);
-                    logger.fine("Artifact: "+coveredArtifact+"\nDelta: -1");
                 }
             }
         }
