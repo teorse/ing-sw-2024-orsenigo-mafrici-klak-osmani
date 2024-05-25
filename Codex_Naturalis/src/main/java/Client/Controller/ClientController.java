@@ -287,7 +287,7 @@ public class ClientController  implements ServerMessageExecutor {
     @Override
     public void changeColorFailed() {
         logger.info("changeColorFailed method called");
-        //TODO
+        //TODO implement this
     }
 
     /**
