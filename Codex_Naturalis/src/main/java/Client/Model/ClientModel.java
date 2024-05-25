@@ -137,6 +137,9 @@ public class ClientModel {
     public List<ObjectiveRecord> getObjectiveCandidates() {
         return objectiveCandidates;
     }
+    public boolean isWaitingForReconnections() {
+        return waitingForReconnections;
+    }
 
     //Getters for error managing
     public ErrorDictionaryLogIn getErrorDictionaryLogIn() {
