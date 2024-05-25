@@ -111,6 +111,16 @@ public class Table {
             return false;
     }
 
+    public boolean areAllCardPoolsEmpty(){
+        for(CardPool cardPool : cardPools.values()){
+            if (cardPool.getAmountLeftInDeck() > 0)
+                return false;
+            if(cardPool.getAmountOfVisibleCards() > 0)
+                return false;
+        }
+        return true;
+    }
+
     /**
      * Draws two objectives from the list and reveals them as the shared objectives.
      */

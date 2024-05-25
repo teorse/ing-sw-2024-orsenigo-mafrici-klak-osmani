@@ -14,7 +14,7 @@ import java.util.List;
  *
  * <p>This record implements the {@code Serializable} interface to support serialization.
  */
-public record GameRecord(int roundsCompleted, boolean lastRoundFlag, boolean setupFinished)
+public record GameRecord(int roundsCompleted, boolean lastRoundFlag, boolean setupFinished, boolean waitingForReconnections)
         implements Serializable {
 
     /**

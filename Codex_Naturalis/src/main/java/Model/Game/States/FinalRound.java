@@ -11,7 +11,6 @@ import Server.Model.Lobby.LobbyUserConnectionStates;
 import Server.Model.Lobby.ObserverRelay;
 
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -80,6 +79,7 @@ public class FinalRound implements GameState{
         player.playCard(cardIndex, coordinateIndex, faceUp);
         player.setPlayerState(PlayerStates.WAIT);
         gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.WAIT));
+        player.incrementRoundsCompleted();
 
         nextPlayer();
     }

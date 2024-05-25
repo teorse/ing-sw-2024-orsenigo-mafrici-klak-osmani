@@ -13,6 +13,7 @@ import Server.Model.Lobby.LobbyUser;
 import Server.Model.Lobby.ObserverRelay;
 
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -33,8 +34,10 @@ public class Game implements ServerModelLayer {
 
     private boolean waitingForReconnections;
 
+    private final Logger logger;
 
-    //todo add procedures to start time-out if only 1 player is left in session or if no players are left
+
+
 
 
     /**
@@ -60,6 +63,9 @@ public class Game implements ServerModelLayer {
      * @param objectives    List of Objectives to use during this game.
      */
     public Game(Lobby lobby, List<LobbyUser> lobbyUsers, ObserverRelay gameObserverRelay, List<Card> goldenCards, List<Card> resourceCards, List<Card> starterCards, List<Objective> objectives) {
+        logger = Logger.getLogger(Game.class.getName());
+        logger.info("Initializing Game");
+
         this.lobby = lobby;
         this.gameObserverRelay = gameObserverRelay;
         waitingForReconnections = false;
@@ -81,6 +87,7 @@ public class Game implements ServerModelLayer {
             if(gameObserverRelay != null)
                 gameObserverRelay.update(player.getUsername(), new SCPGameStarted(toPlayerRecordList(), toCardMapRecordsMap(), player.toSecretPlayer(), table.toRecord(), toRecord()));
         }
+        logger.info("Game Initialized");
     }
 
 
@@ -114,9 +121,11 @@ public class Game implements ServerModelLayer {
     //SETTERS
     public void finishSetup() {
         this.setupFinished = true;
+        gameObserverRelay.update(new SCPUpdateGame(toRecord()));
     }
     public void setWaitingForReconnections(boolean waitingForReconnections) {
         this.waitingForReconnections = waitingForReconnections;
+        gameObserverRelay.update(new SCPUpdateGame(toRecord()));
     }
 
 
@@ -152,12 +161,14 @@ public class Game implements ServerModelLayer {
     public void userDisconnectionProcedure(String username) {
         Player player = getPlayerByUsername(username);
         state.userDisconnectionProcedure(player);
+
     }
     public void userReconnectionProcedure(String username){
         Player player = getPlayerByUsername(username);
+        state.userReconnectionProcedure(player);
+
         gameObserverRelay.update(username, new SCPGameStarted(toPlayerRecordList(), toCardMapRecordsMap(), player.toSecretPlayer(), table.toRecord(), toRecord()));
         gameObserverRelay.update(username, new SCPUpdateClientGameState(player.getPlayerState()));
-        state.userReconnectionProcedure(player);
     }
     @Override
     public void quit(String username) {
@@ -209,7 +220,7 @@ public class Game implements ServerModelLayer {
         comparator = comparator.thenComparing(Player::getObjectivesCompleted);
 
         //Sort players using above comparator
-        Stream<Player> playerStream = players.stream().sorted(comparator);
+        Stream<Player> playerStream = players.stream().sorted(comparator.reversed());
         players = playerStream.collect(Collectors.toList());
 
         //Select winners, multiple winners if tie on points and objectives.
@@ -218,6 +229,8 @@ public class Game implements ServerModelLayer {
             if(player.getPoints() == referenceWinner.getPoints() && player.getObjectivesCompleted() == referenceWinner.getObjectivesCompleted())
                 player.setWinner();
         }
+
+        logger.info("Winners are:\n"+toPlayerRecordList());
     }
 
     public void gameOver(){
@@ -231,12 +244,7 @@ public class Game implements ServerModelLayer {
         //After all players are given their points the winner is calculated.
         selectWinners();
 
-        List<PlayerRecord> winners = new ArrayList<>();
-        for(Player player : players){
-            winners.add(player.toTransferableDataObject());
-        }
-
-        gameObserverRelay.update(new SCPGameOver(winners));
+        gameObserverRelay.update(new SCPGameOver(toPlayerRecordList()));
         lobby.gameOver();
     }
 
@@ -263,5 +271,5 @@ public class Game implements ServerModelLayer {
         return CardMapRecordsMap;
     }
 
-    public GameRecord toRecord() {return new GameRecord(roundsCompleted, lastRoundFlag, setupFinished);}
+    public GameRecord toRecord() {return new GameRecord(roundsCompleted, lastRoundFlag, setupFinished, waitingForReconnections);}
 }
