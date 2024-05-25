@@ -33,7 +33,7 @@ public class GamePlaceState extends ClientState{
         logger = Logger.getLogger(GamePlaceState.class.getName());
         logger.info("Initializing GamePlaceState");
 
-//        print();
+        print();
 
         logger.fine("GamePlaceState initialized");
     }
