@@ -18,6 +18,13 @@ public class GameDrawState extends ClientState{
 
     CardPoolTypes cardPoolTypes;
     int cardChoice;
+    //Bound to draw for a specific deck
+    int resourceLB = 1 + ((model.getTableRecord().topDeckResource() == null) ? 1 : 0);
+    int resourceUB = 1 + model.getTableRecord().visibleCardRecordResource().size();
+    int goldenLB = 1 + ((model.getTableRecord().topDeckGolden() == null) ? 1 : 0);
+    int goldenUB = 1 + model.getTableRecord().visibleCardRecordResource().size();
+    boolean isResourceOver = !(resourceLB <= resourceUB);
+    boolean isGoldenOver = !(goldenLB <= goldenUB);
 
     /**
      * Constructs a new GameDrawState with the specified client model.
@@ -41,20 +48,34 @@ public class GameDrawState extends ClientState{
      */
     @Override
     public void print() {
-        //TODO fix null pool cards
         if (inputCounter == 0) {
             TextUI.clearCMD();
             textUI.zoomCardPool(CardPoolTypes.RESOURCE);
             textUI.zoomCardPool(CardPoolTypes.GOLDEN);
-            System.out.println("\n" +
-                    """
-                    Enter from which pool you want to draw:
-                     1 - Resource
-                     2 - Golden""");
+            if (!isResourceOver && !isGoldenOver) {
+                System.out.println("\n" +
+                        """
+                        Enter from which pool you want to draw:
+                         1 - Resource
+                         2 - Golden""");
+            } else if (isResourceOver) {
+                System.out.println("\nYou can draw only from the Golden deck");
+                cardPoolTypes = CardPoolTypes.GOLDEN;
+                inputCounter++;
+                print();
+            } else {
+                System.out.println("\nYou can draw only from the Resource deck");
+                cardPoolTypes = CardPoolTypes.RESOURCE;
+                inputCounter++;
+                print();
+            }
         }
-
-        else if (inputCounter == 1)
-            System.out.println("\nEnter a number between 1 and 3 to pick a card: ");
+        else if (inputCounter == 1 && cardPoolTypes == CardPoolTypes.RESOURCE) {
+            System.out.println("\nEnter a number between " + resourceLB + " and " + resourceUB + " to pick a card: ");
+        }
+        else if (inputCounter == 1 && cardPoolTypes == CardPoolTypes.GOLDEN) {
+            System.out.println("\nEnter a number between " + goldenLB + " and " + goldenUB + " to pick a card: ");
+        }
     }
 
     /**
@@ -75,15 +96,24 @@ public class GameDrawState extends ClientState{
     public void handleInput(String input) {
         if (inputCounter == 0) {
             if (UserInterface.getBinaryChoice(input)) {
-                if (Integer.parseInt(input) == 1)
+                if (Integer.parseInt(input) == 1) {
                     cardPoolTypes = CardPoolTypes.RESOURCE;
-                else
+                } else {
                     cardPoolTypes = CardPoolTypes.GOLDEN;
+                }
                 inputCounter++;
             }
             print();
-        } else if (inputCounter == 1) {
-            if (UserInterface.checkInputBound(input,1,3)) {
+        } else if (inputCounter == 1 && cardPoolTypes == CardPoolTypes.RESOURCE) {
+
+            if (UserInterface.checkInputBound(input,resourceLB, resourceUB)) {
+                cardChoice = Integer.parseInt(input);
+                model.getClientConnector().sendPacket(new CSPDrawCard(cardPoolTypes, cardChoice - 2));
+            } else
+                print();
+
+        } else if (inputCounter == 1 && cardPoolTypes == CardPoolTypes.GOLDEN) {
+            if (UserInterface.checkInputBound(input,goldenLB, goldenUB)) {
                 cardChoice = Integer.parseInt(input);
                 model.getClientConnector().sendPacket(new CSPDrawCard(cardPoolTypes, cardChoice - 2));
             } else
