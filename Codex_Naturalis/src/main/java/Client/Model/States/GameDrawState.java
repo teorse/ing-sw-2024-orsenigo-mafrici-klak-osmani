@@ -98,38 +98,57 @@ public class GameDrawState extends ClientState{
      */
     @Override
     public void handleInput(String input) {
-
+        // Check if the input is "BACK"
         if(input.equalsIgnoreCase("BACK")) {
-
+            // Reset input counter to 0
             inputCounter = 0;
+            // Print the current state
             print();
 
+            // If input counter is 0, handle initial input
         } else if (inputCounter == 0) {
+            // Check if the input is a binary choice
             if (UserInterface.getBinaryChoice(input)) {
+                // Set card pool type based on input
                 if (Integer.parseInt(input) == 1) {
                     cardPoolTypes = CardPoolTypes.RESOURCE;
                 } else {
                     cardPoolTypes = CardPoolTypes.GOLDEN;
                 }
+                // Increment input counter
                 inputCounter++;
             }
+            // Print the current state
             print();
+
+            // If input counter is 1 and card pool type is RESOURCE
         } else if (inputCounter == 1 && cardPoolTypes == CardPoolTypes.RESOURCE) {
-
-            if (UserInterface.checkInputBound(input,resourceLB, resourceUB)) {
+            // Check if the input is within the bounds for RESOURCE cards
+            if (UserInterface.checkInputBound(input, resourceLB, resourceUB)) {
+                // Parse the card choice
                 cardChoice = Integer.parseInt(input);
+                // Send packet to draw the chosen RESOURCE card
                 model.getClientConnector().sendPacket(new CSPDrawCard(cardPoolTypes, cardChoice - 2));
-            } else
+            } else {
+                // Print the current state
                 print();
+            }
 
+            // If input counter is 1 and card pool type is GOLDEN
         } else if (inputCounter == 1 && cardPoolTypes == CardPoolTypes.GOLDEN) {
-            if (UserInterface.checkInputBound(input,goldenLB, goldenUB)) {
+            // Check if the input is within the bounds for GOLDEN cards
+            if (UserInterface.checkInputBound(input, goldenLB, goldenUB)) {
+                // Parse the card choice
                 cardChoice = Integer.parseInt(input);
+                // Send packet to draw the chosen GOLDEN card
                 model.getClientConnector().sendPacket(new CSPDrawCard(cardPoolTypes, cardChoice - 2));
-            } else
+            } else {
+                // Print the current state
                 print();
+            }
         }
     }
+
 
     /**
      * Moves the client to the next state based on the success of the previous operation and the player's current state.

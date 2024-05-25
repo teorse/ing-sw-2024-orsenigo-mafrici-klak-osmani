@@ -54,14 +54,13 @@ public class GameWaitState extends ClientState{
      *   <li>Step 3 (only if choice is 1): Prompts the user to choose a coordinate to zoom into the card.</li>
      * </ul>
      */
-    //TODO add the print of waiting other players
     @Override
     public void print() {
         if (model.isSetUpFinished()) {
             if (inputCounter == 0) {
                 TextUI.clearCMD();
                 textUI.showGameBoard();
-                System.out.println("Wait! (Enter ZOOM to look at the board)");
+                System.out.println("Wait! (Type ZOOM to look at the board)");
                 for (PlayerRecord playerRecord : model.getPlayers()) {
                     logger.info(playerRecord.username() + ": " + playerRecord.playerState());
                     if (playerRecord.playerState() == PlayerStates.PLACE || playerRecord.playerState() == PlayerStates.DRAW) {
@@ -96,7 +95,11 @@ public class GameWaitState extends ClientState{
         } else {
             TextUI.clearCMD();
             TextUI.displayGameTitle();
-            System.out.println("The Set Up is not completed. Please wait!");
+
+            if (!model.isWaitingForReconnections())
+                System.out.println("The Set Up is not completed. Please wait!");
+            else
+                System.out.println("You're the only player online. Waiting for reconnections!");
         }
     }
 
@@ -146,7 +149,7 @@ public class GameWaitState extends ClientState{
                     print();
                 } else {
                     // Prompt user to enter ZOOM
-                    System.out.println("To look at the board elements enter ZOOM");
+                    System.out.println("To look at the board elements type ZOOM");
                 }
             }
             // If input counter is 1
@@ -258,3 +261,10 @@ public class GameWaitState extends ClientState{
         }
     }
 }
+
+
+
+
+
+
+
