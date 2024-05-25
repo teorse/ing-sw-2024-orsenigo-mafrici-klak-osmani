@@ -195,8 +195,7 @@ public class FinalRound implements GameState{
      * Advances the game to the next player's turn.
      */
     private void nextPlayer(){
-        Player currentPlayer = players.get(currentPlayerIndex);
-        currentPlayer.setPlayerState(PlayerStates.WAIT);
+
         int playerCount = players.size();
 
         //If the current player is the last player then go to the next state
