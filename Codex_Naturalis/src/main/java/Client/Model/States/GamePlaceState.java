@@ -48,7 +48,7 @@ public class GamePlaceState extends ClientState{
     public void print() {
         if (inputCounter == 0) {
             TextUI.clearCMD();
-            System.out.println("\nIf you want to go back at the previous choice, type BACK");
+            System.out.println("\nIf you want to go back at the previous choice, type BACK. If you want to change the card selected, type CHOICE");
             System.out.println("\nIt's your turn!");
             textUI.showGameBoard();
             textUI.zoomCardsHeld();
@@ -79,14 +79,16 @@ public class GamePlaceState extends ClientState{
      *
      * @param input The user input to be processed.
      */
-    //TODO provide a better version of back
     @Override
     public void handleInput(String input) {
         int maxBoardSide = (textUI.maxCoordinate() * 2) + 3;
 
         if(input.equalsIgnoreCase("BACK")) {
-            if(inputCounter > 0)
+            if (inputCounter > 0)
                 inputCounter--;
+            print();
+        } else if (input.equalsIgnoreCase("CHOICE")) {
+            inputCounter = 0;
             print();
         } else if (inputCounter == 0) {
             if (TextUI.checkInputBound(input,1,3)) {
