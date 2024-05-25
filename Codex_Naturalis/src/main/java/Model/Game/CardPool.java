@@ -65,6 +65,10 @@ public class CardPool {
         return deck.cardsLeft();
     }
 
+    public int getAmountOfVisibleCards(){
+        return visibleCards.size();
+    }
+
 
 
 

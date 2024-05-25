@@ -101,10 +101,20 @@ public class MainLoop implements GameState{
 
         //The rest of the method is executed if the player is actually allowed to perform the move.
         player.playCard(cardIndex, coordinateIndex, faceUp);
-        player.setPlayerState(PlayerStates.DRAW);
-        gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.DRAW));
 
+        //After placing the card, if the two card pools are not empty then set the player to the DRAW state
+        if(!table.areAllCardPoolsEmpty())
+            player.setPlayerState(PlayerStates.DRAW);
+        else {
+            //If the two card Pools are empty then set the player state to wait and go to the next player
+            player.setPlayerState(PlayerStates.WAIT);
+            player.incrementRoundsCompleted();
+            game.checkGameEndingConditions();
+            nextPlayer();
+            return;
+        }
 
+        gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(player.getPlayerState()));
         game.checkGameEndingConditions();
     }
 
