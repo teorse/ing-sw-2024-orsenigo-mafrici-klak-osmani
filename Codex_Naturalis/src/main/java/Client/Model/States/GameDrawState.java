@@ -27,6 +27,7 @@ public class GameDrawState extends ClientState{
     boolean isResourceOver = !(resourceLB <= resourceUB);
     boolean isGoldenOver = !(goldenLB <= goldenUB);
 
+
     /**
      * Constructs a new GameDrawState with the specified client model.
      * <p>
@@ -51,6 +52,8 @@ public class GameDrawState extends ClientState{
     public void print() {
         if (inputCounter == 0) {
             TextUI.clearCMD();
+            System.out.println("\nIf you want to go back at the previous choice, type BACK");
+
             textUI.zoomCardPool(CardPoolTypes.RESOURCE);
             textUI.zoomCardPool(CardPoolTypes.GOLDEN);
             if (!isResourceOver && !isGoldenOver) {
@@ -95,7 +98,13 @@ public class GameDrawState extends ClientState{
      */
     @Override
     public void handleInput(String input) {
-        if (inputCounter == 0) {
+
+        if(input.equalsIgnoreCase("BACK")) {
+
+            inputCounter = 0;
+            print();
+
+        } else if (inputCounter == 0) {
             if (UserInterface.getBinaryChoice(input)) {
                 if (Integer.parseInt(input) == 1) {
                     cardPoolTypes = CardPoolTypes.RESOURCE;
@@ -140,3 +149,4 @@ public class GameDrawState extends ClientState{
             model.setClientState(new GameOverState(model));
     }
 }
+
