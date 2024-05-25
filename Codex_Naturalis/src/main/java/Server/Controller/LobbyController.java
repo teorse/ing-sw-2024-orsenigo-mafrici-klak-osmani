@@ -72,7 +72,7 @@ public class LobbyController {
      * Starts the game associated with the lobby.
      */
     public void startGame(String username) throws AdminRoleRequiredException, InvalidLobbySizeToStartGameException {
-        model.startGame(username);
+        model.startGameManually(username);
     }
 
     public void changeColor(String username, LobbyUserColors newColor) throws UnavailableLobbyUserColorException{

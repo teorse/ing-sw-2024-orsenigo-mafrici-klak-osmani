@@ -63,6 +63,7 @@ public class Lobby implements ServerModelLayer {
      */
     private final Map<String, Timer> reconnectionTimers;
     private Timer victoryByDefaultTimer;
+    private Timer startGameTimer;
 
 
 
@@ -106,6 +107,7 @@ public class Lobby implements ServerModelLayer {
 
         reconnectionTimers = new HashMap<>();
         victoryByDefaultTimer = null;
+        startGameTimer = null;
 
         LobbyUser lobbyUser = new LobbyUser(admin, LobbyRoles.ADMIN);
         addLobbyUserToLobby(ch, lobbyUser);
@@ -149,10 +151,15 @@ public class Lobby implements ServerModelLayer {
 
 
         String username = lobbyUser.getUsername();
-
         lobbyObserver.subscribe(username, ch);
-
         lobbyObserver.update(username, new SCPJoinLobbySuccessful(toLobbyRecord(), toLobbyUserRecord()));
+
+        if(lobbyUsers.size() == lobbySize){
+            startGameTimer = new Timer("startGameTimer");
+            startGameTimer.schedule(getStartGameTask(), LobbyConstants.gameStartTimerLength);
+            System.out.println("Game will start in "+(LobbyConstants.gameStartTimerLength/1000)+" seconds in lobby: "+lobbyName);
+            logger.info("Game start timer started in lobby: "+lobbyName);
+        }
     }
 
 
@@ -326,6 +333,14 @@ public class Lobby implements ServerModelLayer {
     private void removeUser(LobbyUser lobbyUser){
         logger.info("Removing user "+lobbyUser.getUsername()+" from lobby "+lobbyName);
         synchronized (usersLock) {
+            if(startGameTimer != null){
+                startGameTimer.cancel();
+                startGameTimer.purge();
+                startGameTimer = null;
+                logger.fine("Timer for game started was running and has now been stopped in lobby: "+lobbyName);
+                System.out.println("Start game timer has been stopped in lobby: "+lobbyName);
+            }
+
             lobbyUsers.remove(lobbyUser.getUsername());
             availableUserColors.add(lobbyUser.getColor());
             lobbyObserver.unsubscribe(lobbyUser.getUsername());
@@ -416,6 +431,17 @@ public class Lobby implements ServerModelLayer {
             }
         };
     }
+    private TimerTask getStartGameTask(){
+        return new TimerTask() {
+            @Override
+            public void run() {
+                if(!gameStarted) {
+                    startGame();
+                    logger.info("Game started by timer in Lobby: "+lobbyName);
+                }
+            }
+        };
+    }
 
 
 
@@ -425,7 +451,7 @@ public class Lobby implements ServerModelLayer {
     /**
      * Starts the game in the lobby.
      */
-    public void startGame(String username) throws AdminRoleRequiredException, InvalidLobbySizeToStartGameException {
+    public void startGameManually(String username) throws AdminRoleRequiredException, InvalidLobbySizeToStartGameException {
 
         if(!lobbyUsers.get(username).getLobbyRole().equals(LobbyRoles.ADMIN))
             throw new AdminRoleRequiredException("You need to be an admin to start the game in this lobby");
@@ -433,13 +459,24 @@ public class Lobby implements ServerModelLayer {
         if(lobbyUsers.size() < 2)
             throw new InvalidLobbySizeToStartGameException("You need at least two players in your lobby to start a game.");
 
+        logger.info("Game started manually in lobby: "+lobbyName);
+        if(startGameTimer != null) {
+            startGameTimer.cancel();
+            startGameTimer.purge();
+            logger.fine("Starting timer was already running so it has been now stopped in lobby: "+lobbyName);
+        }
+
+        startGame();
+    }
+
+    private void startGame(){
+        gameStarted = true;
+        lobbyClosed = true;
+
         game = GameLoader.startNewGame(lobbyUsers.values().stream().toList(), this, lobbyObserver);
         updateGameController(new GameController(game));
 
-        System.out.println("Game started in lobby: "+lobbyName);
-
-        gameStarted = true;
-        lobbyClosed = true;
+        startGameTimer = null;
 
         toLobbyPreview();
     }
