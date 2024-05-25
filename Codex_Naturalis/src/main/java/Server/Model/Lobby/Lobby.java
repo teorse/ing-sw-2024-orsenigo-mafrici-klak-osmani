@@ -261,15 +261,18 @@ public class Lobby implements ServerModelLayer {
             if(gameStarted){
                 logger.info("Disconnection method for "+username+": Standard Game + Lobby disconnection");
                 game.userDisconnectionProcedure(username);
-            }
-            else
-                logger.info("Disconnection method for "+username+": Standard Lobby disconnection");
 
-            logger.fine("Setting up lobby disconnection timer");
-            Timer lobbyDisconnectionTimer = new Timer("lobbyDisconnectionTimer");
-            reconnectionTimers.put(lobbyUser.getUsername(), lobbyDisconnectionTimer);
-            lobbyDisconnectionTimer.schedule(getDisconnectUserTimerTask(lobbyUser), LobbyConstants.disconnectionTimerLength);
-            logger.info("Disconnection timer started in lobby "+lobbyName+" for user: "+username);
+                logger.fine("Setting up lobby disconnection timer");
+                Timer lobbyDisconnectionTimer = new Timer("lobbyDisconnectionTimer");
+                reconnectionTimers.put(lobbyUser.getUsername(), lobbyDisconnectionTimer);
+                lobbyDisconnectionTimer.schedule(getDisconnectUserTimerTask(lobbyUser), LobbyConstants.disconnectionTimerLength);
+                logger.info("Disconnection timer started in lobby "+lobbyName+" for user: "+username);
+            }
+            else {
+                logger.info("Disconnection method for " + username + ": Standard Lobby disconnection.\nProceeding to remove from lobby.");
+                removeUser(lobbyUser);
+            }
+
         }
 
         //If the game has started and it is in a phase that does not allow for player removal and there are more than one
