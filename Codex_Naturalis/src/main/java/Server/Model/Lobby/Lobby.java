@@ -1,15 +1,13 @@
 package Server.Model.Lobby;
 
+import Client.Model.Records.ChatMessageRecord;
 import Client.Model.Records.LobbyPreviewRecord;
 import Client.Model.Records.LobbyRecord;
 import Client.Model.Records.LobbyUserRecord;
 import Exceptions.Server.LobbyExceptions.*;
 import Exceptions.Server.PermissionExceptions.AdminRoleRequiredException;
 import Model.Game.Game;
-import Network.ServerClient.Packets.SCPUpdateLobby;
-import Network.ServerClient.Packets.SCPUpdateLobbyUsers;
-import Network.ServerClient.Packets.SCPJoinLobbySuccessful;
-import Network.ServerClient.Packets.SCPStartLobbySuccess;
+import Network.ServerClient.Packets.*;
 import Server.Controller.InputHandler.GameControllerObserver;
 import Server.Model.Lobby.Game.GameLoader;
 import Server.Controller.GameController;
@@ -481,7 +479,6 @@ public class Lobby implements ServerModelLayer {
         toLobbyPreview();
     }
 
-    //todo
     public void gameOver(){
         updateGameController(null);
         game = null;
@@ -519,6 +516,20 @@ public class Lobby implements ServerModelLayer {
         }
         lobbyObserver.update(new SCPUpdateLobbyUsers(toLobbyUserRecord()));
         lobbyObserver.update(new SCPUpdateLobby(toLobbyRecord()));
+    }
+
+    public void sendChatMessage(ChatMessageRecord chatMessage) throws NoSuchRecipientException {
+        if(!chatMessage.isMessagePrivate())
+            lobbyObserver.update(new SCPReceiveMessage(chatMessage));
+        else {
+            String recipient = chatMessage.getRecipient();
+
+            if(!lobbyUsers.containsKey(recipient))
+                throw new NoSuchRecipientException("No recipient with the name of "+recipient+" was found in lobby: "+lobbyName);
+
+            lobbyObserver.update(chatMessage.getRecipient(), new SCPReceiveMessage(chatMessage));
+            lobbyObserver.update(chatMessage.getSender(), new SCPReceiveMessage(chatMessage));
+        }
     }
 
 

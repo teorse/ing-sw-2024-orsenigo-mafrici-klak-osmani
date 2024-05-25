@@ -1,5 +1,6 @@
 package Server.Controller.InputHandler;
 
+import Client.Model.Records.ChatMessageRecord;
 import Model.Game.CardPoolTypes;
 import Server.Model.Lobby.LobbyUserColors;
 
@@ -17,6 +18,7 @@ public interface ServerInputExecutor {
     void startGame();
     void quitLobby();
     void changeColor(LobbyUserColors newColor);
+    void sendChatMessage(ChatMessageRecord chatMessage);
 
     //GAME LAYER COMMANDS
     void playCard(int cardIndex, int coordinateIndex, boolean faceUp);

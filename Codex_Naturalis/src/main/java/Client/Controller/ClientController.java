@@ -290,6 +290,11 @@ public class ClientController  implements ServerMessageExecutor {
         //TODO implement this
     }
 
+    @Override
+    public void receiveMessage(ChatMessageRecord chatMessage) {
+        model.receiveChatMessage(chatMessage);
+    }
+
     /**
      * Signals the client that the game has started and provides initial game data.
      * <p>

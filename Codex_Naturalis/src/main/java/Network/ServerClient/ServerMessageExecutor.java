@@ -35,6 +35,8 @@ public interface ServerMessageExecutor extends Serializable {
 
     void changeColorFailed();
 
+    void receiveMessage(ChatMessageRecord chatMessage);
+
     void gameStarted(List<PlayerRecord> players, Map<String, CardMapRecord> cardMaps, PlayerSecretInfoRecord secret, TableRecord table, GameRecord game);
 
     void updatePlayers(List<PlayerRecord> players, Map<String, CardMapRecord> cardMaps);

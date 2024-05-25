@@ -1,5 +1,6 @@
 package Server.Controller.InputHandler;
 
+import Client.Model.Records.ChatMessageRecord;
 import Exceptions.Game.*;
 import Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.GameRequiredException;
 import Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.LobbyRequiredException;
@@ -341,6 +342,28 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
         }
     }
 
+    @Override
+    public void sendChatMessage(ChatMessageRecord chatMessage) {
+        try {
+            if(username == null)
+                throw new LogInRequiredException("You need to be logged in to perform this action");
+
+            if(lobbyController == null)
+                throw new LobbyRequiredException("You need to be in a Lobby to start a game");
+
+            chatMessage.setSender(username);
+            lobbyController.sendChatMessage(chatMessage);
+        } catch (LogInRequiredException e) {
+            String stackTrace = Utilities.StackTraceToString(e);
+            logger.info("Client Handler "+this+" attempted to send a chat message before they were logged in.\nStackTrace:\n"+stackTrace);
+        } catch (LobbyRequiredException e) {
+            String stackTrace = Utilities.StackTraceToString(e);
+            logger.info("User "+username+" attempted to send a chat message before joining a lobby.\nStackTrace:\n"+stackTrace);
+        } catch (NoSuchRecipientException e) {
+            String stackTrace = Utilities.StackTraceToString(e);
+            logger.info("NoSuchRecipientException caught by Server Input Handler of user "+username+".\nMessage:\n"+e.getMessage()+"\nStackTrace:\n"+stackTrace);
+        }
+    }
 
 
     //GAME LAYER

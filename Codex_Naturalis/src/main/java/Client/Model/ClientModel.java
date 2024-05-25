@@ -8,8 +8,8 @@ import Client.Model.Records.*;
 import Client.Model.States.ClientState;
 import Client.Model.States.ConnectionState;
 import Client.Network.ClientConnector;
-import Client.View.TextUI;
 import Model.Player.PlayerStates;
+import Server.Model.Lobby.LobbyConstants;
 
 import java.util.*;
 
@@ -54,6 +54,11 @@ public class ClientModel {
     List<LobbyPreviewRecord> lobbyPreviewRecords;
     LobbyRecord lobbyRecord;
     List<LobbyUserRecord> lobbyUserRecords;
+    //Chat attributes
+    ChatMessagesStack publicChatMessages;
+    Map<String, ChatMessagesStack> privateChatMessages;
+
+
 
     //GAME
     //Publicly-visible game attributes
@@ -88,6 +93,9 @@ public class ClientModel {
         setUpFinished = false;
         waitingForReconnections = false;
         gameOver = false;
+
+        publicChatMessages = new ChatMessagesStack(ClientModelConstants.PublicMessageStackSize);
+        privateChatMessages = new HashMap<>();
     }
 
 
@@ -234,7 +242,27 @@ public class ClientModel {
     }
     public void setLobbyUserRecords(List<LobbyUserRecord> lobbyUserRecords) {
         this.lobbyUserRecords = lobbyUserRecords;
+
+        Map<String, ChatMessagesStack> newPrivateMessagesMap = new HashMap<>();
+        for(LobbyUserRecord lobbyUser : lobbyUserRecords){
+            if(!privateChatMessages.containsKey(lobbyUser.username()))
+                newPrivateMessagesMap.put(lobbyUser.username(), new ChatMessagesStack(ClientModelConstants.PrivateMessageStackSize));
+            else
+                newPrivateMessagesMap.put(lobbyUser.username(), privateChatMessages.get(lobbyUser.username()));
+        }
+        privateChatMessages = newPrivateMessagesMap;
+
         clientState.print();
+    }
+    public void receiveChatMessage(ChatMessageRecord chatMessage){
+        if(chatMessage.isMessagePrivate()){
+            String sender = chatMessage.getSender();
+            privateChatMessages.get(sender).add(chatMessage);
+        }
+        else
+            publicChatMessages.add(chatMessage);
+
+        //todo refresh view with new messages.
     }
 
     public void setPlayerSecretInfoRecord(PlayerSecretInfoRecord playerSecretInfoRecord) {

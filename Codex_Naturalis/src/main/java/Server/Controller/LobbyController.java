@@ -1,11 +1,9 @@
 package Server.Controller;
 
-import Exceptions.Server.LobbyExceptions.InvalidLobbySizeToStartGameException;
-import Exceptions.Server.LobbyExceptions.UnavailableLobbyUserColorException;
+import Client.Model.Records.ChatMessageRecord;
+import Exceptions.Server.LobbyExceptions.*;
 import Exceptions.Server.PermissionExceptions.AdminRoleRequiredException;
 import Server.Controller.InputHandler.GameControllerObserver;
-import Exceptions.Server.LobbyExceptions.LobbyClosedException;
-import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
 import Server.Model.Lobby.Lobby;
 import Server.Model.Lobby.LobbyUserColors;
 import Server.Model.ServerUser;
@@ -77,6 +75,10 @@ public class LobbyController {
 
     public void changeColor(String username, LobbyUserColors newColor) throws UnavailableLobbyUserColorException{
         model.changeColor(username, newColor);
+    }
+
+    public void sendChatMessage(ChatMessageRecord chatMessage) throws NoSuchRecipientException {
+        model.sendChatMessage(chatMessage);
     }
 
 
