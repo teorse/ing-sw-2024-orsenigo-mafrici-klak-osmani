@@ -3,6 +3,7 @@ package Client.Model.States;
 import Client.Model.ClientModel;
 import Client.Model.Records.PlayerRecord;
 import Client.View.TextUI;
+import java.util.List;
 
 /**
  * Represents the state of the client when the game is over.
@@ -43,7 +44,7 @@ public class GameOverState extends ClientState{
             if (winners.winner())
                 System.out.println(" 1 - ");
             else
-                System.out.println(" " + i + " - ");
+                System.out.println(" " + i++ + " - ");
             System.out.println(winners.username() + "  Points: " + winners.points() + "  ObjectivesCompleted: "
                     + winners.objectivesCompleted() + " RoundsCompleted: " + winners.roundsCompleted());
         }
