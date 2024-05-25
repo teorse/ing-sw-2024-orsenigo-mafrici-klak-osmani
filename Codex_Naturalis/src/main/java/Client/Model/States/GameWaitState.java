@@ -60,7 +60,7 @@ public class GameWaitState extends ClientState{
             if (inputCounter == 0) {
                 TextUI.clearCMD();
                 textUI.showGameBoard();
-                System.out.println("Wait! (Enter ZOOM to look at the board)");
+                System.out.println("Wait! (Type ZOOM to look at the board)");
                 for (PlayerRecord playerRecord : model.getPlayers()) {
                     logger.info(playerRecord.username() + ": " + playerRecord.playerState());
                     if (playerRecord.playerState() == PlayerStates.PLACE || playerRecord.playerState() == PlayerStates.DRAW) {
@@ -149,7 +149,7 @@ public class GameWaitState extends ClientState{
                     print();
                 } else {
                     // Prompt user to enter ZOOM
-                    System.out.println("To look at the board elements enter ZOOM");
+                    System.out.println("To look at the board elements type ZOOM");
                 }
             }
             // If input counter is 1
