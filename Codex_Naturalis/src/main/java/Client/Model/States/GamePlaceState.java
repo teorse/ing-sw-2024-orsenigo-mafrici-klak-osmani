@@ -33,7 +33,7 @@ public class GamePlaceState extends ClientState{
         logger = Logger.getLogger(GamePlaceState.class.getName());
         logger.info("Initializing GamePlaceState");
 
-        print();
+//        print();
 
         logger.fine("GamePlaceState initialized");
     }
@@ -79,6 +79,7 @@ public class GamePlaceState extends ClientState{
      *
      * @param input The user input to be processed.
      */
+    //TODO provide a better version of back
     @Override
     public void handleInput(String input) {
         int maxBoardSide = (textUI.maxCoordinate() * 2) + 3;
@@ -142,6 +143,9 @@ public class GamePlaceState extends ClientState{
         }
         else if (model.getMyPlayerGameState() == PlayerStates.DRAW) {
             model.setClientState(new GameDrawState(model));
+        }
+        else if (model.getMyPlayerGameState() == PlayerStates.WAIT) {
+            model.setClientState(new GameWaitState(model));
         }
     }
 }
