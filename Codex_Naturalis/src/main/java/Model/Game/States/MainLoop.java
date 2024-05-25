@@ -290,7 +290,10 @@ public class MainLoop implements GameState{
         if(onlinePlayersCounter == 1){
             logger.info("Only 1 player was found online, while waiting for reconnections setting current player to wait.");
             logger.finest("Only online player found is: "+onlinePlayer.getUsername()+"\nAdding player state to playerStatesBeforeDisconnection");
-            playerStatesBeforeDisconnection.put(onlinePlayer.getUsername(), onlinePlayer.getPlayerState());
+
+            if(!onlinePlayer.getPlayerState().equals(PlayerStates.WAIT))
+                playerStatesBeforeDisconnection.put(onlinePlayer.getUsername(), onlinePlayer.getPlayerState());
+
             logger.finest("Setting current player to wait");
             onlinePlayer.setPlayerState(PlayerStates.WAIT);
             logger.finest("Updating client state");
@@ -339,7 +342,13 @@ public class MainLoop implements GameState{
                     //If the player had previously disconnected then the old saved value for their state is retrieved, otherwise
                     //by default they are assigned the PLACE state.
                     logger.fine("Checking if the player has a cached stated from a previous disconnection");
-                    nextPlayer.setPlayerState(playerStatesBeforeDisconnection.getOrDefault(nextPlayer.getUsername(), PlayerStates.PLACE));
+                    if(!game.isWaitingForReconnections())
+                        nextPlayer.setPlayerState(playerStatesBeforeDisconnection.getOrDefault(nextPlayer.getUsername(), PlayerStates.PLACE));
+                    else{
+                        if(!playerStatesBeforeDisconnection.containsKey(nextPlayer.getUsername()))
+                            playerStatesBeforeDisconnection.put(nextPlayer.getUsername(), PlayerStates.PLACE);
+                    }
+
                     logger.fine("Updating player "+nextPlayer.getUsername()+" client state to: "+nextPlayer.getPlayerState());
                     gameObserverRelay.update(nextPlayer.getUsername(), new SCPUpdateClientGameState(nextPlayer.getPlayerState()));
                     return;
