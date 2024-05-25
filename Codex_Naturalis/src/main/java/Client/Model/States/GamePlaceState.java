@@ -48,7 +48,7 @@ public class GamePlaceState extends ClientState{
     public void print() {
         if (inputCounter == 0) {
             TextUI.clearCMD();
-            System.out.println("\nIf you want to go back at the previous choice, type BACK");
+            System.out.println("\nIf you want to go back at the previous choice, type BACK. If you want to change the card selected, type CHOICE");
             System.out.println("\nIt's your turn!");
             textUI.showGameBoard();
             textUI.zoomCardsHeld();
@@ -84,8 +84,11 @@ public class GamePlaceState extends ClientState{
         int maxBoardSide = (textUI.maxCoordinate() * 2) + 3;
 
         if(input.equalsIgnoreCase("BACK")) {
-            if(inputCounter > 0)
+            if (inputCounter > 0)
                 inputCounter--;
+            print();
+        } else if (input.equalsIgnoreCase("CHOICE")) {
+            inputCounter = 0;
             print();
         } else if (inputCounter == 0) {
             if (TextUI.checkInputBound(input,1,3)) {
@@ -142,6 +145,9 @@ public class GamePlaceState extends ClientState{
         }
         else if (model.getMyPlayerGameState() == PlayerStates.DRAW) {
             model.setClientState(new GameDrawState(model));
+        }
+        else if (model.getMyPlayerGameState() == PlayerStates.WAIT) {
+            model.setClientState(new GameWaitState(model));
         }
     }
 }
