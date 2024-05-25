@@ -193,19 +193,19 @@ public class LobbySelectionState extends ClientState {
                 switch (model.getErrorDictionaryStartLobbyFailed()) {
                     // If a generic error occurred
                     case ErrorDictionaryStartLobbyFailed.GENERIC_ERROR -> {
-                        System.out.println("Generic error.");
+                        System.out.println("\nGeneric error.");
                         // Set input counter to 1
                         inputCounter = 1;
                     }
                     // If the lobby size is invalid
                     case ErrorDictionaryStartLobbyFailed.INVALID_LOBBY_SIZE -> {
-                        System.out.println("Invalid lobby size.");
+                        System.out.println("\nInvalid lobby size.");
                         // Set input counter to 2
                         inputCounter = 2;
                     }
                     // If the lobby name is already taken
                     case ErrorDictionaryStartLobbyFailed.LOBBY_NAME_ALREADY_TAKEN -> {
-                        System.out.println("Lobby name already taken.");
+                        System.out.println("\nLobby name already taken.");
                         // Set input counter to 1
                         inputCounter = 1;
                     }
@@ -218,11 +218,11 @@ public class LobbySelectionState extends ClientState {
                 // Switch based on the error dictionary for joining lobby
                 switch (model.getErrorDictionaryJoinLobbyFailed()) {
                     // If the lobby is closed
-                    case ErrorDictionaryJoinLobbyFailed.LOBBY_IS_CLOSED -> System.out.println("Lobby closed.");
+                    case ErrorDictionaryJoinLobbyFailed.LOBBY_IS_CLOSED -> System.out.println("\nLobby closed.");
                     // If a generic error occurred
-                    case ErrorDictionaryJoinLobbyFailed.GENERIC_ERROR -> System.out.println("Something happened in the server, please try again.");
+                    case ErrorDictionaryJoinLobbyFailed.GENERIC_ERROR -> System.out.println("\nSomething happened in the server, please try again.");
                     // If the lobby name is not found
-                    case ErrorDictionaryJoinLobbyFailed.LOBBY_NAME_NOT_FOUND -> System.out.println("Lobby name not found.");
+                    case ErrorDictionaryJoinLobbyFailed.LOBBY_NAME_NOT_FOUND -> System.out.println("\nLobby name not found.");
                 }
                 // Set input counter to 1
                 inputCounter = 1;
