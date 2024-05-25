@@ -20,6 +20,7 @@ import java.util.logging.Logger;
  * If the previous operation was successful and the player's state is set to "PLACE", the client transitions to the GameStarterChoice state.
  * Otherwise, an error message is displayed, and the client remains in the LobbyJoined state, prompting the user to try again.
  */
+//TODO aggiungere logica per gestire START quando mancano i giocatori
 public class LobbyJoined extends ClientState{
 
     private final Logger logger;
@@ -74,8 +75,13 @@ public class LobbyJoined extends ClientState{
             System.out.println("\nIf you want to change the color type the one you want by inserting its number");
         }
 
-        if (TextUI.areYouAdmin(model))
-            System.out.println("\nYou are the Admin, type START to start the game!");
+        if (TextUI.areYouAdmin(model)) {
+            if(model.getLobbyUserRecords().size() >= 2)
+                System.out.println("\nEnough players in the lobby, type START to start the game!");
+            else
+                System.out.println("\nNot enough players to start the game, please wait.");
+        } else
+            System.out.println("\nPlease wait for the Admin to start the game.");
     }
 
     /**

@@ -371,6 +371,7 @@ public class TextUI extends UserInterface {
     }
 
     public void showObjective(ObjectiveRecord objectiveRecord) {
+        System.out.println("Secret objective:");
         System.out.println("Description: " + objectiveRecord.description());
         System.out.println("Points: " + objectiveRecord.points());
     }

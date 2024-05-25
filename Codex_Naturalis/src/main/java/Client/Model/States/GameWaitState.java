@@ -61,12 +61,17 @@ public class GameWaitState extends ClientState{
                 TextUI.clearCMD();
                 textUI.showGameBoard();
                 System.out.println("Wait! (Type ZOOM to look at the board)");
-                for (PlayerRecord playerRecord : model.getPlayers()) {
-                    logger.info(playerRecord.username() + ": " + playerRecord.playerState());
-                    if (playerRecord.playerState() == PlayerStates.PLACE || playerRecord.playerState() == PlayerStates.DRAW) {
-                        System.out.println("It's " + playerRecord.username() + " turn. ");
+                if (!model.isWaitingForReconnections()) {
+                    for (PlayerRecord playerRecord : model.getPlayers()) {
+                        logger.info(playerRecord.username() + ": " + playerRecord.playerState());
+                        if (playerRecord.playerState() == PlayerStates.PLACE || playerRecord.playerState() == PlayerStates.DRAW) {
+                            System.out.println("It's " + playerRecord.username() + " turn. ");
+                        }
                     }
                 }
+                else
+                    System.out.println("You're the only player online. Waiting for reconnections!");
+
             } else if (inputCounter == 1) {
                 System.out.println("""
                         Enter what do you want to zoom:
@@ -95,11 +100,7 @@ public class GameWaitState extends ClientState{
         } else {
             TextUI.clearCMD();
             TextUI.displayGameTitle();
-
-            if (!model.isWaitingForReconnections())
-                System.out.println("The Set Up is not completed. Please wait!");
-            else
-                System.out.println("You're the only player online. Waiting for reconnections!");
+            System.out.println("The Set Up is not completed. Please wait!");
         }
     }
 
