@@ -57,6 +57,7 @@ public class Player implements LayerUser {
         this.roundsCompleted = 0;
         this.points = 0;
         this.objectivesCompleted = 0;
+        this.winner = false;
 
         logger.fine("Player: "+user.getUsername()+" initialized");
     }
