@@ -13,6 +13,7 @@ import Network.ServerClient.Packets.SCPUpdateClientGameState;
 import Server.Model.Lobby.ObserverRelay;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * Represents the setup state where players select their secret objectives.
@@ -31,6 +32,8 @@ public class ObjectivesSetup implements GameState{
      */
     private final Map<Player, Boolean> playerReadiness;
 
+    private final Logger logger;
+
 
 
 
@@ -42,6 +45,8 @@ public class ObjectivesSetup implements GameState{
      * @param game The game instance to which this MainLoop state belongs.
      */
     public ObjectivesSetup(Game game){
+        logger = Logger.getLogger(ObjectivesSetup.class.getName());
+
         this.game = game;
         players = game.getPlayers();
         Table table = game.getTable();
@@ -130,6 +135,11 @@ public class ObjectivesSetup implements GameState{
         nextState();
     }
 
+
+
+
+
+    //DISCONNECTION METHODS
     /**
      * {@inheritDoc}
      */
@@ -162,10 +172,12 @@ public class ObjectivesSetup implements GameState{
      */
     @Override
     public void userDisconnectionProcedure(Player player) {
-        String username = player.getUsername();
+        logger.info("Player "+player.getUsername()+" in Final Round of game, waiting for signal from lobby to remove the player");
+    }
 
-        System.out.println("Player " + username + " has disconnected from the game," +
-                "They have 90 seconds to reconnect before being kicked from the game");
+    @Override
+    public void userReconnectionProcedure(Player player) {
+        logger.info("Player "+player.getUsername()+" reconnected to Objectives Setup phase of game.");
     }
 
     /**
@@ -173,8 +185,12 @@ public class ObjectivesSetup implements GameState{
      */
     @Override
     public void quit(Player player) {
+        logger.info("Player "+player.getUsername()+" requested to quit from the game.");
         removePlayer(player);
     }
+
+
+
 
 
     //STATE SWITCHER

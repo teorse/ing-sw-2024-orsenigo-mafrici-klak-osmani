@@ -3,6 +3,7 @@ package Model.Game.States;
 import Exceptions.Game.*;
 import Model.Game.Game;
 import Model.Game.CardPoolTypes;
+import Model.Game.GameConstants;
 import Model.Game.Table;
 import Model.Player.Player;
 import Network.ServerClient.Packets.SCPUpdateClientGameState;
@@ -13,6 +14,7 @@ import Server.Model.Lobby.ObserverRelay;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class DrawInitialCards implements GameState{
 
@@ -32,6 +34,8 @@ public class DrawInitialCards implements GameState{
 
     private int setupStateCounter;
 
+    private final Logger logger;
+
 
 
     //CONSTRUCTOR
@@ -49,10 +53,12 @@ public class DrawInitialCards implements GameState{
         goldenCardsDrawn = new HashMap<>();
         resourceCardsDrawn = new HashMap<>();
 
-        goldenCardsToDraw = 1;
-        resourceCardsToDraw = 2;
+        goldenCardsToDraw = GameConstants.goldenCardsToDrawSetup;
+        resourceCardsToDraw = GameConstants.resourceCardsToDrawSetup;
 
         setupStateCounter = 0;
+
+        logger = Logger.getLogger(DrawInitialCards.class.getName());
 
 
         for(Player player : players){
@@ -164,6 +170,11 @@ public class DrawInitialCards implements GameState{
         throw new InvalidActionForGameStateException("You can't pick your secret objective in this game state");
     }
 
+
+
+
+
+    //DISCONNECTION METHODS
     /**
      * {@inheritDoc}
      */
@@ -177,14 +188,34 @@ public class DrawInitialCards implements GameState{
      */
     @Override
     public void removePlayer(Player player) {
-        Player currentPlayer = players.get(currentPlayerIndex);
-        players.remove(player);
+        logger.info("Removing player "+player.getUsername()+" from game.");
+        int indexPlayerToRemove = players.indexOf(player);
+        logger.fine("Player "+player.getUsername()+" is number "+indexPlayerToRemove+" in the current order of the game.");
 
-        //If we are removing the current player then we need to advance to the next player
-        if(player.equals(currentPlayer) && players.size() > 1)
+        //Remove the player from the player list
+        if(indexPlayerToRemove == currentPlayerIndex){
+            logger.fine("The player to remove is the current player");
+            players.remove(player);
+            logger.fine("Player removed");
+            currentPlayerIndex--;
+            logger.fine("Current player index decremented");
             nextPlayer();
-        else
-            game.gameOver();
+            logger.fine("Looking for the next player");
+        }
+
+        else if(indexPlayerToRemove < currentPlayerIndex){
+            logger.fine("The player to remove is before the current player");
+            players.remove(player);
+            logger.fine("Player removed");
+            currentPlayerIndex--;
+            logger.fine("Current player index decremented");
+        }
+
+        else{
+            logger.fine("The player to remove is after the current player");
+            players.remove(player);
+            logger.fine("Player removed");
+        }
     }
 
     /**
@@ -196,9 +227,12 @@ public class DrawInitialCards implements GameState{
      */
     @Override
     public void userDisconnectionProcedure(Player player) {
+        logger.info("Player "+player.getUsername()+" in Final Round of game, waiting for signal from lobby to remove the player");
+    }
 
-        if(players.equals(players.get(currentPlayerIndex)))
-            nextPlayer();
+    @Override
+    public void userReconnectionProcedure(Player player) {
+        logger.info("Player "+player.getUsername()+" reconnected to Final Round of game.");
     }
 
     /**
@@ -206,8 +240,12 @@ public class DrawInitialCards implements GameState{
      */
     @Override
     public void quit(Player player) {
+        logger.info("Player "+player.getUsername()+" requested to quit from the game.");
         removePlayer(player);
     }
+
+
+
 
 
     //TURN SWITCHER
@@ -216,6 +254,10 @@ public class DrawInitialCards implements GameState{
      */
     private void nextPlayer(){
         int playersSize = players.size();
+
+        if(playersSize < 2){
+            game.gameOver();
+        }
 
         //If current player is the last players call next state.
         if(currentPlayerIndex + 1 == playersSize)
@@ -261,7 +303,7 @@ public class DrawInitialCards implements GameState{
             if(players.get(i).getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)){
                 currentPlayerIndex = i;
                 //The player found is set as current player.
-                firstPlayer = players.get(currentPlayerIndex);
+                firstPlayer = players.get(i);
 
                 //The player's state is updated to reflect their next expected move
                 determinePlayerState(firstPlayer);
@@ -269,13 +311,14 @@ public class DrawInitialCards implements GameState{
             }
         }
 
-        if(currentPlayerIndex == -1)
-            throw new RuntimeException("No players found online");
+        //If the above return statement was not called then it means that no players were found online
+        // and an exception is thrown
+        throw new RuntimeException("No players found online");
     }
 
     /**
      * Determines the player's state based on what cards he has already drawn.
-     * @param player
+     * @param player    the player whose state is to be determined.
      */
     private void determinePlayerState(Player player) {
         PlayerStates playerState;
@@ -303,7 +346,7 @@ public class DrawInitialCards implements GameState{
         //Next state checks if the setup state has been completed, if so it starts the pick objective state
         //otherwise it continues this state by finding the next first player.
         setupStateCounter++;
-        if(setupStateCounter == 3)
+        if(setupStateCounter == goldenCardsToDraw+resourceCardsToDraw)
             game.setState(new ObjectivesSetup(game));
         else
             findFirstPlayer();

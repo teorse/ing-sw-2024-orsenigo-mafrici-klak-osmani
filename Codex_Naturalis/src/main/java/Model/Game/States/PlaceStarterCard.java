@@ -141,6 +141,12 @@ public class PlaceStarterCard implements GameState{
         throw new InvalidActionForGameStateException("You can't pick your objective yet.");
     }
 
+
+
+
+
+
+    //DISCONNECTION METHODS
     /**
      * {@inheritDoc}
      */
@@ -172,10 +178,12 @@ public class PlaceStarterCard implements GameState{
      */
     @Override
     public void userDisconnectionProcedure(Player player) {
-        String username = player.getUsername();
+        logger.info("Player "+player.getUsername()+" in Final Round of game, waiting for signal from lobby to remove the player");
+    }
 
-        System.out.println("Player "+username+" has disconnected from the game," +
-                "They have 90 seconds to reconnect before being kicked from the game");
+    @Override
+    public void userReconnectionProcedure(Player player) {
+        logger.info("Player "+player.getUsername()+" reconnected to Final Round of game.");
     }
 
     /**
@@ -183,11 +191,12 @@ public class PlaceStarterCard implements GameState{
      */
     @Override
     public void quit(Player player) {
-        String username = player.getUsername();
-
-        System.out.println("Player "+username+" has quit the game");
+        logger.info("Player "+player.getUsername()+" requested to quit from the game.");
         removePlayer(player);
     }
+
+
+
 
 
     //STATE SWITCHER
@@ -201,7 +210,7 @@ public class PlaceStarterCard implements GameState{
             if (!entry.getValue())
                 return;
         }
-        //If all online players are ready then go to next state.
+        //If all players are ready then go to next state.
         game.setState(new DrawInitialCards(game));
     }
 }

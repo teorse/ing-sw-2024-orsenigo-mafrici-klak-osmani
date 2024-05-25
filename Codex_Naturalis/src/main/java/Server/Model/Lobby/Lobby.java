@@ -61,8 +61,8 @@ public class Lobby implements ServerModelLayer {
     /**
      * Map that stores for each disconnected player their thread containing the count-down for their removal from the lobby
      */
-    private final Map<LobbyUser, Thread> reconnectionTimers;
-    private Thread victoryByDefaultTimer;
+    private final Map<String, Timer> reconnectionTimers;
+    private Timer victoryByDefaultTimer;
 
 
 
@@ -203,13 +203,15 @@ public class Lobby implements ServerModelLayer {
         logger.info("User "+lobbyUser.getUsername()+" is reconnecting to Lobby "+lobbyName);
 
         //Interrupt the disconnection timer
-        if(reconnectionTimers.containsKey(lobbyUser)) {
-            Thread reconnectionTimer = reconnectionTimers.remove(lobbyUser);
-            reconnectionTimer.interrupt();
+        if(reconnectionTimers.containsKey(lobbyUser.getUsername())) {
+            Timer reconnectionTimer = reconnectionTimers.remove(lobbyUser.getUsername());
+            reconnectionTimer.cancel();
+            reconnectionTimer.purge();
         }
 
         if(victoryByDefaultTimer!=null) {
-            victoryByDefaultTimer.interrupt();
+            victoryByDefaultTimer.cancel();
+            victoryByDefaultTimer.purge();
             victoryByDefaultTimer = null;
         }
 
@@ -251,43 +253,34 @@ public class Lobby implements ServerModelLayer {
         lobbyObserver.update(new SCPUpdateLobbyUsers(toLobbyUserRecord()));
 
         logger.info("Deciding which removal procedure to apply to "+username);
-        //Count how many players are left online
-        int onlineCounter = 0;
-        for(LobbyUser user : lobbyUsers.values())
-            if(user.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE))
-                onlineCounter++;
-        logger.fine(onlineCounter+" left online");
 
-        //If the game has not started then the disconnection need to only be handled on the lobby level with the timer
-        if(!gameStarted) {
-            logger.info("Disconnection method for "+username+": Standard Lobby disconnection");
-            timeOutDisconnection(lobbyUser);
+        //If the game has not started, or the game has started but allows for direct player removal
+        // then the disconnection needs to only be handled on the lobby level with the timer
+        if(!gameStarted || game.shouldRemovePlayerOnDisconnect()) {
+
+            if(gameStarted){
+                logger.info("Disconnection method for "+username+": Standard Game + Lobby disconnection");
+                game.userDisconnectionProcedure(username);
+            }
+            else
+                logger.info("Disconnection method for "+username+": Standard Lobby disconnection");
+
+            logger.fine("Setting up lobby disconnection timer");
+            Timer lobbyDisconnectionTimer = new Timer("lobbyDisconnectionTimer");
+            reconnectionTimers.put(lobbyUser.getUsername(), lobbyDisconnectionTimer);
+            lobbyDisconnectionTimer.schedule(getDisconnectUserTimerTask(lobbyUser), LobbyConstants.disconnectionTimerLength);
+            logger.info("Disconnection timer started in lobby "+lobbyName+" for user: "+username);
         }
-        else{
-            logger.fine("Game detected as started to looking for game-friendly disconnection methods for "+username);
-            //If the game has started and it is now in a phase that expects disconnected players to be removed then
-            //activate the disconnection procedure in the game and start the timer thread, the thread will remove the
-            //player both from the lobby and from the game.
-            if(game.shouldRemovePlayerOnDisconnect()){
-                logger.info("Disconnection method for "+username+": Standard Game disconnection");
-                game.userDisconnectionProcedure(username);
-                timeOutDisconnection(lobbyUser);
-            }
 
-            //If all users except one are offline then start the timer thread to mark as winner the remaining player.
-            else if(onlineCounter == 1){
-                logger.info("Disconnection method for "+username+": Lobby disconnection + VictoryByDefaultTimer");
-                game.userDisconnectionProcedure(username);
-                startVictoryByDefaultTimer();
-            }
+        //If the game has started and it is in a phase that does not allow for player removal and there are more than one
+        //players left online then you DON'T remove the player from the lobby and only start the user disconnection procedure in the game.
+        else if(!game.shouldRemovePlayerOnDisconnect()){
+            logger.info("Disconnection method for "+username+": Disconnection without removal");
+            game.userDisconnectionProcedure(username);
+            logger.fine("Finished game disconnection procedure, continuing in lobby");
 
-            //If the game has started and it is in a phase that does not allow for player removal and there are more than one
-            //players left online then you DON'T remove the player from the lobby and only start the user disconnection procedure in the game.
-
-            else {
-                logger.info("Disconnection method for "+username+": Disconnection without removal");
-                game.userDisconnectionProcedure(username);
-            }
+            logger.info("Entering tryForVictoryByDefault() method");
+            tryForVictoryByDefault();
         }
     }
 
@@ -298,76 +291,33 @@ public class Lobby implements ServerModelLayer {
      */
     @Override
     public void quit(String username){
-
         LobbyUser lobbyUser = lobbyUsers.get(username);
 
-        //todo make quit similar to disconnection with the various cases
-
         System.out.println("User "+username+" has quit from the lobby");
-        if(gameStarted)
+        if(gameStarted) {
             game.quit(username);
+            if(!game.shouldRemovePlayerOnDisconnect())
+                tryForVictoryByDefault();
+        }
         removeUser(lobbyUser);
     }
 
-    private void timeOutDisconnection(LobbyUser lobbyUser){
+    private void tryForVictoryByDefault(){
+        if(!gameStarted)
+            return;
 
-        String username = lobbyUser.getUsername();
+        int onlineCounter = 0;
+        for(LobbyUser user : lobbyUsers.values())
+            if(user.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE))
+                onlineCounter++;
+        logger.fine(onlineCounter+" left online");
 
-        Thread reconnectionTimer = new Thread(() -> {
-            logger.info("Disconnection Timer Thread started for user "+username);
-            System.out.println("Disconnection Timer Thread started for user "+username);
-            try {
-                //todo add timer sleep time to config
-                Thread.sleep(30000);
-                logger.info("Disconnection timer is over for "+username);
-                removeUser(lobbyUser);
-
-                if(gameStarted)
-                    game.removePlayer(username);
-
-                reconnectionTimers.remove(lobbyUser);
-            }
-            catch (InterruptedException e) {
-                System.out.println("User " + username + " has reconnected before the timeout, they will not be removed from lobby");
-            }
-        });
-        reconnectionTimers.put(lobbyUser, reconnectionTimer);
-        reconnectionTimer.setDaemon(true);
-        reconnectionTimer.start();
-    }
-
-    private void startVictoryByDefaultTimer(){
-        victoryByDefaultTimer = new Thread(() -> {
-
+        if(onlineCounter == 1){
+            logger.info("1 user left online detected, starting victory by default timer in lobby: "+lobbyName);
+            victoryByDefaultTimer = new Timer("victoryByDefaultTimer");
+            victoryByDefaultTimer.schedule(getVictoryByDefaultTimerTask(), LobbyConstants.victoryByDefaultTimerLength);
             logger.info("Victory by default timer started in lobby "+lobbyName);
-
-            try{
-                Thread.sleep(30000);
-                logger.info("Victory by default timer is over in lobby "+lobbyName);
-
-                List<LobbyUser> lobbyUserList = lobbyUsers.values().stream().toList();
-
-                logger.fine("Removing each offline user from lobby and game");
-                for(int i = 0; i < lobbyUserList.size(); i++){
-                    LobbyUser lobbyUser = lobbyUserList.get(i);
-                    if(!lobbyUser.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)){
-                        logger.info("Removing user "+i+": "+lobbyUser.getUsername());
-                        removeUser(lobbyUser);
-                        //No need to decrement counter i after removal as the removal is on the map, the list
-                        //over which we iterate does not change after remove, only the map.
-                    }
-                }
-
-                logger.fine("Starting game over procedure");
-                game.gameOver();
-            }
-            catch (InterruptedException e) {
-                logger.info("Victory By default timer stopped.");
-            }
-        });
-
-        victoryByDefaultTimer.setDaemon(true);
-        victoryByDefaultTimer.start();
+        }
     }
 
     private void removeUser(LobbyUser lobbyUser){
@@ -378,10 +328,20 @@ public class Lobby implements ServerModelLayer {
             lobbyObserver.unsubscribe(lobbyUser.getUsername());
 
             if(lobbyUser.getLobbyRole().equals(LobbyRoles.ADMIN)) {
-                Random random = new Random();
+                logger.fine("Removing old admin, generating new admin");
                 List<LobbyUser> lobbyUsersList = lobbyUsers.values().stream().toList();
-                int nextAdminIndex = random.nextInt(lobbyUsersList.size()-1);
-                lobbyUsersList.get(nextAdminIndex).setAdmin();
+                if(lobbyUsersList.size() > 1) {
+                    logger.fine("More than one user detected in lobby, generating new admin randomly");
+                    Random random = new Random();
+                    int nextAdminIndex = random.nextInt(lobbyUsersList.size() - 1);
+                    lobbyUsersList.get(nextAdminIndex).setAdmin();
+                    logger.fine("New admin is user number "+nextAdminIndex+": "+lobbyUsersList.get(nextAdminIndex).getUsername());
+                }
+                else if(lobbyUsers.size() == 1){
+                    logger.fine("Only one user left in the lobby, setting them as admin");
+                    lobbyUsersList.getFirst().setAdmin();
+                    logger.fine("New admin is user: "+lobbyUsersList.getFirst().getUsername());
+                }
             }
 
             if(lobbyUsers.size() < 2)
@@ -410,6 +370,48 @@ public class Lobby implements ServerModelLayer {
         lobbyPreviewObserverRelay.updateLobbyPreview(toLobbyPreview());
         lobbyObserver.update(new SCPUpdateLobbyUsers(toLobbyUserRecord()));
         lobbyObserver.update(new SCPUpdateLobby(toLobbyRecord()));
+    }
+
+    //TIMER TASKS
+    private TimerTask getDisconnectUserTimerTask(LobbyUser lobbyUser){
+
+        String username = lobbyUser.getUsername();
+
+        return new TimerTask() {
+            @Override
+            public void run() {
+                logger.info("Disconnection timer is over for "+username);
+                removeUser(lobbyUser);
+
+                if(gameStarted)
+                    game.removePlayer(username);
+
+                reconnectionTimers.remove(username);
+            }
+        };
+    }
+    private TimerTask getVictoryByDefaultTimerTask(){
+        return new TimerTask() {
+            @Override
+            public void run() {
+                logger.info("Victory by default timer is over in lobby "+lobbyName);
+
+                List<LobbyUser> lobbyUserList = lobbyUsers.values().stream().toList();
+
+                logger.fine("Removing each offline user from lobby and game");
+                for(int i = 0; i < lobbyUserList.size(); i++) {
+                    LobbyUser lobbyUser = lobbyUserList.get(i);
+                    if (!lobbyUser.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)) {
+                        logger.info("Removing user " + i + ": " + lobbyUser.getUsername());
+                        removeUser(lobbyUser);
+                        //No need to decrement counter i after removal as the removal is on the map, the list
+                        //over which we iterate does not change after remove, only the map.
+                    }
+                }
+                logger.fine("Starting game over procedure");
+                game.gameOver();
+            }
+        };
     }
 
 
@@ -476,6 +478,7 @@ public class Lobby implements ServerModelLayer {
                 throw new UnavailableLobbyUserColorException("Color is not available");
         }
         lobbyObserver.update(new SCPUpdateLobbyUsers(toLobbyUserRecord()));
+        lobbyObserver.update(new SCPUpdateLobby(toLobbyRecord()));
     }
 
 
