@@ -11,8 +11,6 @@ import Network.ClientServer.Packets.CSPSignUp;
 import java.util.ArrayList;
 import java.util.List;
 
-//todo add possibility to go back to the choice of log-in/sign-up
-
 /**
  * The LogInSignUpState represents the state of the client where the user is prompted to log in or sign up.
  *

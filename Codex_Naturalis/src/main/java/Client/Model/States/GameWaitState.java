@@ -54,6 +54,7 @@ public class GameWaitState extends ClientState{
      *   <li>Step 3 (only if choice is 1): Prompts the user to choose a coordinate to zoom into the card.</li>
      * </ul>
      */
+    //TODO add the print of waiting other players
     @Override
     public void print() {
         if (model.isSetUpFinished()) {

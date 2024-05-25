@@ -197,7 +197,10 @@ public class TextUI extends UserInterface {
             Artifacts tdr = model.getTableRecord().topDeckResource();
             List<CardRecord> vcvr = model.getTableRecord().visibleCardRecordResource();
             out.println("\nRESOURCE POOL:");
-            out.println("1 - Artifact Type: " + tdr.name() + " (covered card)");
+            if (tdr != null) {
+                out.println("1 - Artifact Type: " + tdr.name() + " (covered card)");
+            } else
+                out.println("1 - The covered resource deck is empty");
             for (int i = 0; i < vcvr.size(); i++) {
                 CardRecord card = vcvr.get(i);
                 out.print((i + 2) + " - ");
@@ -207,7 +210,10 @@ public class TextUI extends UserInterface {
             Artifacts tdg = model.getTableRecord().topDeckGolden();
             List<CardRecord> vcvg = model.getTableRecord().visibleCardRecordGolden();
             out.println("\nGOLDEN POOL:");
-            out.println("1 - Artifact Type: " + tdg.name() + " (covered card)");
+            if (tdg != null) {
+                out.println("1 - Artifact Type: " + tdg.name() + " (covered card)");
+            } else
+                out.println("1 - The covered golden deck is empty");
             for (int i = 0; i < vcvg.size(); i++) {
                 CardRecord card = vcvg.get(i);
                 out.print((i + 2) + " - ");
