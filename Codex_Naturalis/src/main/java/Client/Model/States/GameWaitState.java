@@ -96,7 +96,11 @@ public class GameWaitState extends ClientState{
         } else {
             TextUI.clearCMD();
             TextUI.displayGameTitle();
-            System.out.println("The Set Up is not completed. Please wait!");
+
+            if (!model.isWaitingForReconnections())
+                System.out.println("The Set Up is not completed. Please wait!");
+            else
+                System.out.println("You're the only player online. Waiting for reconnections!");
         }
     }
 
