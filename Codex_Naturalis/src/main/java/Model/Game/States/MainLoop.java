@@ -134,6 +134,7 @@ public class MainLoop implements GameState{
 
         player.setPlayerState(PlayerStates.WAIT);
         gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.WAIT));
+        player.incrementRoundsCompleted();
 
         game.checkGameEndingConditions();
         nextPlayer();
