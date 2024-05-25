@@ -69,9 +69,7 @@ public class Table {
     public Card drawCard(CardPoolTypes cardPoolType, int cardIndex){
         Card cardDrawn =  cardPools.get(cardPoolType).getCard(cardIndex);
 
-        //todo
-        if(gameObserverRelay != null)
-            gameObserverRelay.update(new SCPUpdateTable(this.toRecord()));
+        gameObserverRelay.update(new SCPUpdateTable(this.toRecord()));
 
         return cardDrawn;
     }
@@ -125,8 +123,10 @@ public class Table {
      * Draws two objectives from the list and reveals them as the shared objectives.
      */
     public void revealSharedObjectives(){
-        sharedObjectives.add(objectives.getLast());
-        sharedObjectives.add(objectives.getLast());
+        sharedObjectives.add(objectives.removeLast());
+        sharedObjectives.add(objectives.removeLast());
+
+        gameObserverRelay.update(new SCPUpdateTable(this.toRecord()));
     }
 
 
