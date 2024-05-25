@@ -5,6 +5,7 @@ import Client.View.TextUI;
 import Client.View.UserInterface;
 import Model.Game.CardPoolTypes;
 import Model.Player.PlayerStates;
+import Model.Utility.Artifacts;
 import Network.ClientServer.Packets.CSPDrawCard;
 
 /**
@@ -19,9 +20,9 @@ public class GameDrawState extends ClientState{
     CardPoolTypes cardPoolTypes;
     int cardChoice;
     //Bound to draw for a specific deck
-    int resourceLB = 1 + ((model.getTableRecord().topDeckResource() == null) ? 1 : 0);
+    int resourceLB = 1 + ((model.getTableRecord().topDeckResource() == Artifacts.NULL) ? 1 : 0);
     int resourceUB = 1 + model.getTableRecord().visibleCardRecordResource().size();
-    int goldenLB = 1 + ((model.getTableRecord().topDeckGolden() == null) ? 1 : 0);
+    int goldenLB = 1 + ((model.getTableRecord().topDeckGolden() == Artifacts.NULL) ? 1 : 0);
     int goldenUB = 1 + model.getTableRecord().visibleCardRecordResource().size();
     boolean isResourceOver = !(resourceLB <= resourceUB);
     boolean isGoldenOver = !(goldenLB <= goldenUB);
