@@ -41,14 +41,16 @@ public class GameOverState extends ClientState{
         System.out.println("\nTHE GAME IS OVER. Final Rankings: ");
         int i = 1;
         for (PlayerRecord winners : model.getWinners()) {
-            if (winners.winner())
+            if (winners.winner()) {
                 System.out.println(" 1 - ");
+                i++;
+            }
             else
                 System.out.println(" " + i++ + " - ");
             System.out.println(winners.username() + "  Points: " + winners.points() + "  ObjectivesCompleted: "
                     + winners.objectivesCompleted() + " RoundsCompleted: " + winners.roundsCompleted());
         }
-        System.out.println("\n" + "To exit the Final Rankings view enter EXIT.");
+        System.out.println("\n" + "To exit the Final Rankings view type EXIT.");
     }
 
     /**
@@ -64,7 +66,7 @@ public class GameOverState extends ClientState{
         if(input.equalsIgnoreCase("EXIT"))
             nextState();
         else
-            System.out.println("To exit enter EXIT!");
+            System.out.println("To exit type EXIT!");
     }
 
     /**
