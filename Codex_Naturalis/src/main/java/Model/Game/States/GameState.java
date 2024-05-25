@@ -78,6 +78,8 @@ public interface GameState {
      */
     void userDisconnectionProcedure(Player player);
 
+    void userReconnectionProcedure(Player player);
+
     /**
      * Handles the quitting of a user from the game.
      *

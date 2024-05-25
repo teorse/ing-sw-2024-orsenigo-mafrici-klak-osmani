@@ -11,6 +11,8 @@ import Server.Model.Lobby.LobbyUserConnectionStates;
 import Server.Model.Lobby.ObserverRelay;
 
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Represents the final round state in the game, where players can only place cards but not draw new ones.
@@ -24,6 +26,8 @@ public class FinalRound implements GameState{
 
     private int currentPlayerIndex;
 
+    private final Logger logger;
+
 
 
 
@@ -35,8 +39,12 @@ public class FinalRound implements GameState{
      * @param game The game instance to which this MainLoop state belongs.
      */
     public FinalRound(Game game){
+        logger = Logger.getLogger(MainLoop.class.getName());
+        logger.info("Initializing Main Loop State in game");
+
         this.game = game;
         players = game.getPlayers();
+
         gameObserverRelay = game.getGameObserverRelay();
 
         findFirstPlayer();
@@ -102,26 +110,17 @@ public class FinalRound implements GameState{
         throw new InvalidActionForGameStateException("You can't pick your secret objective in this state");
     }
 
+
+
+
+
+    //DISCONNECTION METHODS
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean shouldRemovePlayerOnDisconnect() {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void removePlayer(Player player) {
-        Player currentPlayer = players.get(currentPlayerIndex);
-        players.remove(player);
-
-        //If we are removing the current player then we need to advance to the next player
-        if(player.equals(currentPlayer) && players.size() > 1)
-            nextPlayer();
-        else game.gameOver();
+        return true;
     }
 
     /**
@@ -133,14 +132,47 @@ public class FinalRound implements GameState{
      */
     @Override
     public void userDisconnectionProcedure(Player player) {
+        logger.info("Player "+player.getUsername()+" in Final Round of game, waiting for signal from lobby to remove the player");
+    }
 
-        String username = player.getUsername();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removePlayer(Player player) {
+        logger.info("Removing player "+player.getUsername()+" from game.");
+        int indexPlayerToRemove = players.indexOf(player);
+        logger.fine("Player "+player.getUsername()+" is number "+indexPlayerToRemove+" in the current order of the game.");
 
-        System.out.println("Player "+username+" has disconnected from the game," +
-                "They will skip all the turns they will miss until they reconnect.");
-
-        if(players.equals(players.get(currentPlayerIndex)))
+        //Remove the player from the player list
+        if(indexPlayerToRemove == currentPlayerIndex){
+            logger.fine("The player to remove is the current player");
+            players.remove(player);
+            logger.fine("Player removed");
+            currentPlayerIndex--;
+            logger.fine("Current player index decremented");
             nextPlayer();
+            logger.fine("Looking for the next player");
+        }
+
+        else if(indexPlayerToRemove < currentPlayerIndex){
+            logger.fine("The player to remove is before the current player");
+            players.remove(player);
+            logger.fine("Player removed");
+            currentPlayerIndex--;
+            logger.fine("Current player index decremented");
+        }
+
+        else{
+            logger.fine("The player to remove is after the current player");
+            players.remove(player);
+            logger.fine("Player removed");
+        }
+    }
+
+    @Override
+    public void userReconnectionProcedure(Player player) {
+        logger.info("Player "+player.getUsername()+" reconnected to Final Round of game.");
     }
 
     /**
@@ -150,11 +182,12 @@ public class FinalRound implements GameState{
      */
     @Override
     public void quit(Player player) {
-        String username = player.getUsername();
-
-        System.out.println("Player "+username+" has quit the game");
+        logger.info("Player "+player.getUsername()+" requested to quit from the game.");
         removePlayer(player);
     }
+
+
+
 
 
     //TURN SWITCHER

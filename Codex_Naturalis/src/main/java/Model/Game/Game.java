@@ -31,6 +31,8 @@ public class Game implements ServerModelLayer {
     private boolean lastRoundFlag;
     private GameState state;
 
+    private boolean waitingForReconnections;
+
 
     //todo add procedures to start time-out if only 1 player is left in session or if no players are left
 
@@ -60,6 +62,7 @@ public class Game implements ServerModelLayer {
     public Game(Lobby lobby, List<LobbyUser> lobbyUsers, ObserverRelay gameObserverRelay, List<Card> goldenCards, List<Card> resourceCards, List<Card> starterCards, List<Objective> objectives) {
         this.lobby = lobby;
         this.gameObserverRelay = gameObserverRelay;
+        waitingForReconnections = false;
 
         players = new ArrayList<>();
         for(LobbyUser lobbyUser : lobbyUsers){
@@ -100,6 +103,22 @@ public class Game implements ServerModelLayer {
     public ObserverRelay getGameObserverRelay(){
         return this.gameObserverRelay;
     }
+    public boolean isWaitingForReconnections() {
+        return waitingForReconnections;
+    }
+
+
+
+
+
+    //SETTERS
+    public void finishSetup() {
+        this.setupFinished = true;
+    }
+    public void setWaitingForReconnections(boolean waitingForReconnections) {
+        this.waitingForReconnections = waitingForReconnections;
+    }
+
 
 
 
@@ -134,13 +153,12 @@ public class Game implements ServerModelLayer {
         Player player = getPlayerByUsername(username);
         state.userDisconnectionProcedure(player);
     }
-
     public void userReconnectionProcedure(String username){
         Player player = getPlayerByUsername(username);
         gameObserverRelay.update(username, new SCPGameStarted(toPlayerRecordList(), toCardMapRecordsMap(), player.toSecretPlayer(), table.toRecord(), toRecord()));
         gameObserverRelay.update(username, new SCPUpdateClientGameState(player.getPlayerState()));
+        state.userReconnectionProcedure(player);
     }
-
     @Override
     public void quit(String username) {
         Player player = getPlayerByUsername(username);
@@ -154,16 +172,6 @@ public class Game implements ServerModelLayer {
         }
         throw new PlayerNotFoundException();
     }
-
-
-
-
-
-    //SETTER
-    public void finishSetup() {
-        this.setupFinished = true;
-    }
-
 
 
 
