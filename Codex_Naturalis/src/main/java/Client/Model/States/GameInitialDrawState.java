@@ -25,8 +25,7 @@ public class GameInitialDrawState extends ClientState{
      */
     public GameInitialDrawState(ClientModel model) {
         super(model);
-        TextUI.clearCMD();
-        TextUI.displayGameTitle();
+
         print();
     }
 
@@ -38,6 +37,8 @@ public class GameInitialDrawState extends ClientState{
      */
     @Override
     public void print() {
+        TextUI.clearCMD();
+        TextUI.displayGameTitle();
         if (model.getMyPlayerGameState() == PlayerStates.DRAW_RESOURCE)
             textUI.zoomCardPool(CardPoolTypes.RESOURCE);
         else if (model.getMyPlayerGameState() == PlayerStates.DRAW_GOLDEN)

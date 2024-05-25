@@ -28,7 +28,7 @@ public abstract class UserInterface {
 
         // The IP address should have exactly 4 parts
         if (parts.length != 4) {
-            System.out.println("The IP address should have exactly 4 parts.\n");
+            System.out.println("\nThe IP address should have exactly 4 parts.");
             return false;
         }
 
@@ -38,11 +38,11 @@ public abstract class UserInterface {
 
                 // Check that the number is between 0 and 255
                 if (num < 0 || num > 255) {
-                    System.out.println("Each part of the address should be between 0 and 255. \n");
+                    System.out.println("\nEach part of the address should be between 0 and 255.");
                     return false;
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Error in the format of IP address.\n");
+                System.out.println("\nError in the format of IP address.");
                 return false; // If the part is not a valid number
             }
         }
@@ -67,37 +67,37 @@ public abstract class UserInterface {
     public static boolean isNameValid(String name) {
 
         if (name == null || name.isEmpty()) {
-            System.out.println("Invalid input: name can't be empty.\n");
+            System.out.println("\nInvalid input: name can't be empty.");
             return false;
         }
 
         if (name.contains(" ")) {
-            System.out.println("Invalid input: name can't contain spaces.\n");
+            System.out.println("\nInvalid input: name can't contain spaces.");
             return false;
         }
 
         if (!name.matches("^[a-zA-Z0-9_]+$")) {
-            System.out.println("Invalid input: name can contain only letters, numbers and underscore.\n");
+            System.out.println("\nInvalid input: name can contain only letters, numbers and underscore.");
             return false;
         }
 
         if (name.equalsIgnoreCase("back")) {
-            System.out.println("Invalid input: name can't be 'back'.\n");
+            System.out.println("\nInvalid input: name can't be 'back'.");
             return false;
         }
 
         if (name.equalsIgnoreCase("quit")) {
-            System.out.println("Invalid input: name can't be 'quit'.\n");
+            System.out.println("\nInvalid input: name can't be 'quit'.");
             return false;
         }
 
         if (name.length() < 4) {
-            System.out.println("Invalid input: name must be at least 4 characters long.\n");
+            System.out.println("\nInvalid input: name must be at least 4 characters long.");
             return false;
         }
 
         if (name.length() > 14) {
-            System.out.println("Invalid input: name can't be longer than 15 characters.\n");
+            System.out.println("\nInvalid input: name can't be longer than 15 characters.");
             return false;
         }
 
@@ -123,32 +123,32 @@ public abstract class UserInterface {
     public static boolean isPasswordValid(String password) {
 
         if (password == null || password.isEmpty()) {
-            System.out.println("Invalid input: password can't be empty.\n");
+            System.out.println("\nInvalid input: password can't be empty.");
             return false;
         }
 
         if (password.contains(" ")) {
-            System.out.println("Invalid input: password can't contain spaces.\n");
+            System.out.println("\nInvalid input: password can't contain spaces.");
             return false;
         }
 
         if (password.equalsIgnoreCase("back")) {
-            System.out.println("Invalid input: password can't be 'back'.\n");
+            System.out.println("\nInvalid input: password can't be 'back'.");
             return false;
         }
 
         if (password.equalsIgnoreCase("quit")) {
-            System.out.println("Invalid input: password can't be 'quit'.\n");
+            System.out.println("\nInvalid input: password can't be 'quit'.");
             return false;
         }
 
         if (password.length() < 5) {
-            System.out.println("Invalid input: password must be at least 5 characters long.\n");
+            System.out.println("\nInvalid input: password must be at least 5 characters long.");
             return false;
         }
 
         if (password.length() > 20) {
-            System.out.println("Invalid input: password can't be longer than 20 characters.\n");
+            System.out.println("\nInvalid input: password can't be longer than 20 characters.");
             return false;
         }
 
@@ -173,14 +173,14 @@ public abstract class UserInterface {
         try {
             choice = Integer.parseInt(input);
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input format: please enter a number between " + lowerBound + " and " + upperBound + "\n");
+            System.out.println("\nInvalid input format: please enter a number between " + lowerBound + " and " + upperBound);
             return false;
         }
 
         if(choice >= lowerBound && choice <= upperBound)
             return true;
         else {
-            System.out.println("Invalid input: number must be between " + lowerBound + " and " + upperBound + "\n");
+            System.out.println("\nInvalid input: number must be between " + lowerBound + " and " + upperBound);
             return false;
         }
     }
@@ -200,7 +200,7 @@ public abstract class UserInterface {
         char upperBoundChar = (char) upperBound;
 
         if (!withinBounds) {
-            System.out.println("Error: The character '" + ch + "' is not within the bounds '" +
+            System.out.println("\nError: The character '" + ch + "' is not within the bounds '" +
                     lowerBoundChar + "' and '" + upperBoundChar + "'.");
         }
 
@@ -223,7 +223,7 @@ public abstract class UserInterface {
         try {
             choice = Integer.parseInt(input);
         } catch (NumberFormatException e) {
-            System.out.println("Invalid format input. Please enter 1 or 2! \n");
+            System.out.println("\nInvalid format input. Please enter 1 or 2!");
             return false;
         }
 
@@ -231,7 +231,7 @@ public abstract class UserInterface {
         if (choice == 1 || choice == 2) {
             return true;
         } else {
-            System.out.println("Invalid input. Please enter 1 or 2! \n");
+            System.out.println("\nInvalid input. Please enter 1 or 2!");
             return false;
         }
     }

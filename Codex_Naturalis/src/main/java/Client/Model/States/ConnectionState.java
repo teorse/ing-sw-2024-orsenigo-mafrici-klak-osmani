@@ -40,8 +40,8 @@ public class ConnectionState extends ClientState {
         logger = Logger.getLogger(ConnectionState.class.getName());
         logger.info("Initializing ConnectionState");
 
-        TextUI.clearCMD();
         print();
+
         logger.fine("ConnectionState initialized");
     }
 
@@ -54,6 +54,7 @@ public class ConnectionState extends ClientState {
     @Override
     public void print() {
         if (inputCounter == 0) {
+            TextUI.clearCMD();
             System.out.println("""
                     Enter your choice:
                      1 - RMI
@@ -110,6 +111,7 @@ public class ConnectionState extends ClientState {
                         System.out.println("An error occurred while connecting to the server, please check the logs.");
                         print();
                     }
+
                 } else {
                     try {
                         model.setClientConnector(new ClientConnectorSocket(input, new ClientController(model)));

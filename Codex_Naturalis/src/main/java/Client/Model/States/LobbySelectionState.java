@@ -33,9 +33,7 @@ public class LobbySelectionState extends ClientState {
      */
     public LobbySelectionState(ClientModel model) {
         super(model);
-        TextUI.clearCMD();
-        TextUI.displayGameTitle();
-        System.out.println("If you want to go back at the previous choice, type BACK ");
+
         print();
     }
 
@@ -55,8 +53,13 @@ public class LobbySelectionState extends ClientState {
      * </ul>
      */
     @Override
-    public void print() {
+    public synchronized void print() {
         if (inputCounter == 0) {
+            TextUI.clearCMD();
+            TextUI.displayGameTitle();
+
+            System.out.println("\nIf you want to go back at the previous choice, type BACK ");
+
             System.out.println("\n" +
                     """
                     Enter your choice:
@@ -66,6 +69,8 @@ public class LobbySelectionState extends ClientState {
             if (choice == 1) {
                 System.out.println("\nEnter lobby name: ");
             } else if (choice == 2) {
+                TextUI.clearCMD();
+                TextUI.displayGameTitle();
                 System.out.println("\nLOBBY PREVIEWS");
                 //For loop for printing lobbies
                 for (LobbyPreviewRecord lobbyPreviewRecord : model.getLobbyPreviewRecords()) {
@@ -103,44 +108,61 @@ public class LobbySelectionState extends ClientState {
      */
     @Override
     public void handleInput(String input) {
+        // If the input is to go back
         if (input.equalsIgnoreCase("BACK")) {
-            if (inputCounter > 0) {
+
+            if(inputCounter == 1) {
+                choice = 0;
+                inputCounter--;
+            } else if(inputCounter == 2){
                 inputCounter--;
             }
             print();
-        } else if (inputCounter == 0) {
-            if (TextUI.getBinaryChoice(input)) {
-                choice = Integer.parseInt(input);
-                if (choice == 2) {
-                    model.getClientConnector().sendPacket(new CSPViewLobbyPreviews());
+        }
+        // If input counter is 0 (initial state)
+        else if (inputCounter == 0) {
+                if (TextUI.getBinaryChoice(input)) {
+                    // Increment input counter
+                    inputCounter++;
+                    // Parse choice to integer
+                    choice = Integer.parseInt(input);
+                    // If choice is 2 (view lobby previews)
+                    if (choice == 2) {
+                        model.getClientConnector().sendPacket(new CSPViewLobbyPreviews());
+                    }
                 }
-                inputCounter++;
+
                 print();
-            } else {
-                print();
-            }
-        } else if (inputCounter == 1) {
+        }
+        // If input counter is 1 (waiting for lobby name or join lobby input)
+        else if (inputCounter == 1) {
+            // If choice is 1 (create lobby)
             if (choice == 1) {
+                // If input is a valid lobby name
                 if (TextUI.isNameValid(input)) {
+                    // Set lobby name and move to next input step
                     lobbyName = input;
                     inputCounter++;
-                    print();
-                } else {
-                    print();
                 }
-            } else if (choice == 2) {
+                print();
+            }
+            // If choice is 2 (join lobby)
+            else if (choice == 2) {
+                // If input is a valid lobby name
                 if (TextUI.isNameValid(input)) {
+                    // Send join lobby packet
                     model.getClientConnector().sendPacket(new CSPJoinLobby(input));
-                } else {
-                    print();
                 }
             }
-        } else if (inputCounter == 2 && choice == 1) {
+        }
+        // If input counter is 2 and choice is 1 (waiting for target number of users)
+        else if (inputCounter == 2 && choice == 1) {
+            // If input is within the specified bounds (2-4)
             if (TextUI.checkInputBound(input, 2, 4)) {
+                // Parse input to integer
                 targetNumberUsers = Integer.parseInt(input);
+                // Send start lobby packet
                 model.getClientConnector().sendPacket(new CSPStartLobby(lobbyName, targetNumberUsers));
-            } else {
-                print();
             }
         }
     }
@@ -155,36 +177,56 @@ public class LobbySelectionState extends ClientState {
      */
     @Override
     public void nextState() {
+        // If the user is in a lobby
         if (model.isInLobby()) {
-            //Unsubscribe from lobby preview observer list if user choose to join lobby
+            // Unsubscribe from lobby preview observer list if user chose to join lobby
             if (choice == 2)
                 model.getClientConnector().sendPacket(new CSPStopViewingLobbyPreviews());
+            // Set client state to LobbyJoined
             model.setClientState(new LobbyJoined(model));
-        } else {
+        }
+        // If the user is not in a lobby
+        else {
+            // If choice is 1 (failed to start lobby)
             if (choice == 1) {
+                // Switch based on the error dictionary for starting lobby
                 switch (model.getErrorDictionaryStartLobbyFailed()) {
+                    // If a generic error occurred
                     case ErrorDictionaryStartLobbyFailed.GENERIC_ERROR -> {
                         System.out.println("Generic error.");
+                        // Set input counter to 1
                         inputCounter = 1;
                     }
+                    // If the lobby size is invalid
                     case ErrorDictionaryStartLobbyFailed.INVALID_LOBBY_SIZE -> {
                         System.out.println("Invalid lobby size.");
+                        // Set input counter to 2
                         inputCounter = 2;
                     }
+                    // If the lobby name is already taken
                     case ErrorDictionaryStartLobbyFailed.LOBBY_NAME_ALREADY_TAKEN -> {
                         System.out.println("Lobby name already taken.");
+                        // Set input counter to 1
                         inputCounter = 1;
                     }
                 }
+                // Print after handling input
                 print();
             }
+            // If choice is 2 (failed to join lobby)
             else if (choice == 2) {
+                // Switch based on the error dictionary for joining lobby
                 switch (model.getErrorDictionaryJoinLobbyFailed()) {
+                    // If the lobby is closed
                     case ErrorDictionaryJoinLobbyFailed.LOBBY_IS_CLOSED -> System.out.println("Lobby closed.");
+                    // If a generic error occurred
                     case ErrorDictionaryJoinLobbyFailed.GENERIC_ERROR -> System.out.println("Something happened in the server, please try again.");
+                    // If the lobby name is not found
                     case ErrorDictionaryJoinLobbyFailed.LOBBY_NAME_NOT_FOUND -> System.out.println("Lobby name not found.");
                 }
+                // Set input counter to 1
                 inputCounter = 1;
+                // Print after handling input
                 print();
             }
         }

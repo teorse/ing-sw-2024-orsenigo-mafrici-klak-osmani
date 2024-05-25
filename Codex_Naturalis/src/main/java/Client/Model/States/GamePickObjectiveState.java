@@ -35,8 +35,6 @@ public class GamePickObjectiveState extends ClientState{
         logger = Logger.getLogger(GamePickObjectiveState.class.getName());
         logger.info("Initializing GamePickObjectiveState");
 
-        TextUI.clearCMD();
-        TextUI.displayGameTitle();
         print();
 
         logger.fine("GamePickObjectiveState initialized");
@@ -50,8 +48,11 @@ public class GamePickObjectiveState extends ClientState{
      */
     @Override
     public void print() {
+        TextUI.clearCMD();
+        TextUI.displayGameTitle();
+
         int i = 1;
-        System.out.println("Choose a secret objective: \n");
+        System.out.println("\nChoose a secret objective: \n");
         for (ObjectiveRecord objectiveRecord : model.getObjectiveCandidates()) {
             System.out.print(i + " - ");
             textUI.showObjective(objectiveRecord);

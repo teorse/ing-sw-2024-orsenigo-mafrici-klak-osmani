@@ -35,9 +35,7 @@ public class LogInSignUpState extends ClientState {
      */
     public LogInSignUpState(ClientModel model) {
         super(model);
-        TextUI.clearCMD();
-        TextUI.displayGameTitle();
-        System.out.println("If you want to go back at the previous choice, type BACK");
+
         print();
     }
 
@@ -51,6 +49,10 @@ public class LogInSignUpState extends ClientState {
     @Override
     public void print() {
         if (inputCounter == 0) {
+            TextUI.clearCMD();
+            TextUI.displayGameTitle();
+
+            System.out.println("\nIf you want to go back at the previous choice, type BACK");
             System.out.println("\n" + """ 
                     Enter your choice:
                      1 - Log in
@@ -76,33 +78,45 @@ public class LogInSignUpState extends ClientState {
      */
     @Override
     public void handleInput(String input) {
-        if (input.equalsIgnoreCase("BACK")){
+        // If the input is "BACK", handle the back navigation
+        if (input.equalsIgnoreCase("BACK")) {
+            // If the user is at the first input stage, reset the counter to 0
             if (inputCounter == 1) {
                 inputCounter = 0;
+                // If the user is at the second input stage, reset the counter to 1 and clear credentials
             } else if (inputCounter == 2) {
                 inputCounter = 1;
                 credentials.clear();
             }
             print();
+            // If the user is at the initial choice stage
         } else if (inputCounter == 0) {
+            // Validate the binary choice input
             if (UserInterface.getBinaryChoice(input)) {
                 choice = Integer.parseInt(input);
                 inputCounter++;
             }
             print();
+            // If the user is at the username input stage
         } else if (inputCounter == 1) {
-                if (UserInterface.isNameValid(input)) {
-                    credentials.add(input);
-                    inputCounter++;
-                }
-                print();
+            // Validate the username input
+            if (UserInterface.isNameValid(input)) {
+                credentials.add(input);
+                inputCounter++;
+            }
+            print();
+            // If the user is at the password input stage
         } else if (inputCounter == 2) {
+            // Validate the password input
             if (UserInterface.isPasswordValid(input)) {
                 credentials.add(input);
-                if (choice == 1)
+                // If the user chose to log in, send a log in packet
+                if (choice == 1) {
                     model.getClientConnector().sendPacket(new CSPLogIn(credentials.get(0), credentials.get(1)));
-                else
+                    // If the user chose to sign up, send a sign up packet
+                } else {
                     model.getClientConnector().sendPacket(new CSPSignUp(credentials.get(0), credentials.get(1)));
+                }
             } else {
                 print();
             }
@@ -117,39 +131,49 @@ public class LogInSignUpState extends ClientState {
      */
     @Override
     public void nextState() {
+        // If the user is logged in, transition to the lobby selection state
         if (model.isLoggedIn()) {
             model.setClientState(new LobbySelectionState(model));
         } else {
+            // If the user chose to log in
             if (choice == 1) {
+                // Handle different error cases from the login attempt
                 switch (model.getErrorDictionaryLogIn()) {
                     case ErrorDictionaryLogIn.WRONG_PASSWORD -> {
                         System.out.println("Wrong password.");
+                        // Remove the password from credentials and set input counter to 2
                         credentials.remove(1);
                         inputCounter = 2;
                     }
                     case ErrorDictionaryLogIn.USERNAME_NOT_FOUND -> {
                         System.out.println("Username not found.");
+                        // Clear credentials and set input counter to 1 for username input
                         credentials.clear();
                         inputCounter = 1;
                     }
                     case ErrorDictionaryLogIn.YOU_ARE_ALREADY_LOGGED_IN -> {
                         System.out.println("You are already logged in.");
+                        // Clear credentials and reset input counter to 0
                         credentials.clear();
                         inputCounter = 0;
                     }
                     case ErrorDictionaryLogIn.ACCOUNT_ALREADY_LOGGED_IN_BY_SOMEONE_ELSE -> {
                         System.out.println("Account already logged in on another computer.");
+                        // Clear credentials and reset input counter to 0
                         credentials.clear();
                         inputCounter = 0;
                     }
                 }
                 print();
             }
+            // If the user chose to sign up
             else if (choice == 2) {
+                // Handle different error cases from the sign up attempt
                 switch (model.getErrorDictionarySignUp()) {
                     case ErrorDictionarySignUp.USERNAME_ALREADY_TAKEN -> System.out.println("Username already taken.");
                     case ErrorDictionarySignUp.GENERIC_ERROR -> System.out.println("Something happened in the server, please try again.");
                 }
+                // Clear credentials, set input counter to 1 for username input, and print
                 credentials.clear();
                 inputCounter = 1;
                 print();
