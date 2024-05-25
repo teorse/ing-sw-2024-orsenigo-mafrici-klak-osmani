@@ -121,9 +121,11 @@ public class Game implements ServerModelLayer {
     //SETTERS
     public void finishSetup() {
         this.setupFinished = true;
+        gameObserverRelay.update(new SCPUpdateGame(toRecord()));
     }
     public void setWaitingForReconnections(boolean waitingForReconnections) {
         this.waitingForReconnections = waitingForReconnections;
+        gameObserverRelay.update(new SCPUpdateGame(toRecord()));
     }
 
 
@@ -159,12 +161,14 @@ public class Game implements ServerModelLayer {
     public void userDisconnectionProcedure(String username) {
         Player player = getPlayerByUsername(username);
         state.userDisconnectionProcedure(player);
+
     }
     public void userReconnectionProcedure(String username){
         Player player = getPlayerByUsername(username);
+        state.userReconnectionProcedure(player);
+
         gameObserverRelay.update(username, new SCPGameStarted(toPlayerRecordList(), toCardMapRecordsMap(), player.toSecretPlayer(), table.toRecord(), toRecord()));
         gameObserverRelay.update(username, new SCPUpdateClientGameState(player.getPlayerState()));
-        state.userReconnectionProcedure(player);
     }
     @Override
     public void quit(String username) {
@@ -267,5 +271,5 @@ public class Game implements ServerModelLayer {
         return CardMapRecordsMap;
     }
 
-    public GameRecord toRecord() {return new GameRecord(roundsCompleted, lastRoundFlag, setupFinished);}
+    public GameRecord toRecord() {return new GameRecord(roundsCompleted, lastRoundFlag, setupFinished, waitingForReconnections);}
 }

@@ -30,6 +30,7 @@ public class ClientModel {
     boolean gameStartable;
     boolean gameStarted;
     boolean setUpFinished;
+    boolean waitingForReconnections;
     boolean gameOver;
     ClientState clientState;
     String myUsername;
@@ -85,6 +86,7 @@ public class ClientModel {
         gameStartable = false;
         gameStarted = false;
         setUpFinished = false;
+        waitingForReconnections = false;
         gameOver = false;
     }
 
@@ -215,6 +217,7 @@ public class ClientModel {
     public void setGameRecord(GameRecord gameRecord) {
         this.gameRecord = gameRecord;
         setUpFinished = gameRecord.setupFinished();
+        waitingForReconnections = gameRecord.waitingForReconnections();
         clientState.print();
     }
     public void setLobbyPreviewRecords(List<LobbyPreviewRecord> lobbyPreviewRecords) {
