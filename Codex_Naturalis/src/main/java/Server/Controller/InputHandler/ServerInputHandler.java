@@ -344,6 +344,9 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
 
     @Override
     public void sendChatMessage(ChatMessageRecord chatMessage) {
+        logger.info("sendChatMessage message received");
+        logger.fine("Message contents:\nNew Color: "+chatMessage);
+
         try {
             if(username == null)
                 throw new LogInRequiredException("You need to be logged in to perform this action");

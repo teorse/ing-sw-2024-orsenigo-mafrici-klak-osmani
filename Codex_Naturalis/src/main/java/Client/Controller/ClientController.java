@@ -292,6 +292,9 @@ public class ClientController  implements ServerMessageExecutor {
 
     @Override
     public void receiveMessage(ChatMessageRecord chatMessage) {
+        logger.info("receiveMessage method called.");
+        logger.fine("Received newState: " + chatMessage);
+
         model.receiveChatMessage(chatMessage);
     }
 

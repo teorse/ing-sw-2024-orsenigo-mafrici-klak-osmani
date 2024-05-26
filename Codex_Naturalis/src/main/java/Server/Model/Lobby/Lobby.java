@@ -519,13 +519,19 @@ public class Lobby implements ServerModelLayer {
     }
 
     public void sendChatMessage(ChatMessageRecord chatMessage) throws NoSuchRecipientException {
-        if(!chatMessage.isMessagePrivate())
+        logger.info("Sending message in Lobby "+lobbyName);
+        if(!chatMessage.isMessagePrivate()) {
+            logger.fine("The message is not private, proceeding to broadcast the message to all lobby users");
             lobbyObserver.update(new SCPReceiveMessage(chatMessage));
+        }
         else {
             String recipient = chatMessage.getRecipient();
+            logger.fine("The message is private, checking if the recipient is in this lobby");
 
             if(!lobbyUsers.containsKey(recipient))
                 throw new NoSuchRecipientException("No recipient with the name of "+recipient+" was found in lobby: "+lobbyName);
+
+            logger.fine("Sending the message to "+recipient);
 
             lobbyObserver.update(chatMessage.getRecipient(), new SCPReceiveMessage(chatMessage));
             lobbyObserver.update(chatMessage.getSender(), new SCPReceiveMessage(chatMessage));
