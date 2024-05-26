@@ -39,6 +39,8 @@ public class ChatState extends ClientState{
     }
 
     //TODO use game color in the chat
+    //TODO update the chat after a message is received
+
     @Override
     public void print() {
         if (inputCounter == 0) {
