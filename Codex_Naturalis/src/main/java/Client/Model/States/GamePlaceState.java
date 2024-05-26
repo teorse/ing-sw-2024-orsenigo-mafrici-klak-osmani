@@ -160,6 +160,8 @@ public class GamePlaceState extends ClientState{
         else if (model.getMyPlayerGameState() == PlayerStates.WAIT) {
             model.setClientState(new GameWaitState(model));
         }
+        else
+            print();
     }
 }
 

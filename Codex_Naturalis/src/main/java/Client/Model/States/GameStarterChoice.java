@@ -99,6 +99,8 @@ public class GameStarterChoice extends ClientState {
             model.setClientState(new GameInitialDrawState(model));
         else if (model.getMyPlayerGameState() == PlayerStates.WAIT)
             model.setClientState(new GameWaitState(model));
+        else
+            print();
     }
 
     /**

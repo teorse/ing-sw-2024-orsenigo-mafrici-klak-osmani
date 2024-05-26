@@ -102,5 +102,7 @@ public class GamePickObjectiveState extends ClientState{
             logger.fine("Entering GamePlaceState");
             model.setClientState(new GamePlaceState(model));
         }
+        else
+            print();
     }
 }

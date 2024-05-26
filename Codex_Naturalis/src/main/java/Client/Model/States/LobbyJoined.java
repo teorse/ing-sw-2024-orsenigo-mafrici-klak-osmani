@@ -176,8 +176,10 @@ public class LobbyJoined extends ClientState{
                     case PICK_OBJECTIVE -> model.setClientState(new GamePickObjectiveState(model));
                     case WAIT -> model.setClientState(new GameWaitState(model));
                 }
-            } else
-                 logger.fine("Conditions were not met to switch state, staying in LobbyJoined");
+            } else {
+                logger.fine("Conditions were not met to switch state, staying in LobbyJoined");
+                print();
+            }
         }
     }
 }

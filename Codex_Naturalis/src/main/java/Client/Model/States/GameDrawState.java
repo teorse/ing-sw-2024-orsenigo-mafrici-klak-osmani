@@ -173,7 +173,8 @@ public class GameDrawState extends ClientState{
         if (model.getMyPlayerGameState() == PlayerStates.WAIT)
             model.setClientState(new GameWaitState(model));
         else
-            model.setClientState(new GameOverState(model));
+            print();
+//            model.setClientState(new GameOverState(model));
     }
 }
 
