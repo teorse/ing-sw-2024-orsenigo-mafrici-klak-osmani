@@ -3,6 +3,7 @@ package Client.Model.States;
 import Client.Model.ChatMessagesStack;
 import Client.Model.ClientModel;
 import Client.Model.Records.ChatMessageRecord;
+import Client.Model.Records.LobbyUserRecord;
 import Client.Model.Records.PlayerRecord;
 import Client.View.TextUI;
 import Network.ClientServer.Packets.CSPSendChatMessage;
@@ -37,6 +38,7 @@ public class ChatState extends ClientState{
         logger.fine("ChatState initialized");
     }
 
+    //TODO use game color in the chat
     @Override
     public void print() {
         if (inputCounter == 0) {
@@ -62,9 +64,9 @@ public class ChatState extends ClientState{
             } else if (choice == 2) {
                 System.out.println("\nSelect a player username to send a private message to by inserting an integer:");
                 int i = 1;
-                for (PlayerRecord playerRecord : model.getPlayers()) {
-                    if (!playerRecord.username().equals(model.getMyUsername()))
-                        System.out.println(i++ + " - Player username: " + playerRecord.username());
+                for (LobbyUserRecord lobbyUserRecord : model.getLobbyUserRecords()) {
+                    if (!lobbyUserRecord.username().equals(model.getMyUsername()))
+                        System.out.println(i++ + " - Player username: " + lobbyUserRecord.username());
                 }
             }
         } else if (inputCounter == 2 && choice == 2) {

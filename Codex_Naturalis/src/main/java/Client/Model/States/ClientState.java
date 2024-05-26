@@ -19,6 +19,9 @@ public abstract class ClientState {
     protected TextUI textUI;
     protected int inputCounter;
 
+    //TODO implement quit command also in other states
+    //TODO after crash of the server go in the ConnectionState
+
     /**
      * Constructs a new ClientState with the specified client model.
      * <p>
