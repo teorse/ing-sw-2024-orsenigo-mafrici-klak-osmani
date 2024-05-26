@@ -71,7 +71,7 @@ public class LobbyJoined extends ClientState{
             for (LobbyUserColors color : model.getLobbyRecord().availableUserColors()) {
                 System.out.println(i++ + " - " + color.name());
             }
-            System.out.println("\nIf you want to change the color type the one you want by inserting its number");
+            System.out.println("\nIf you want to change the color type the one you want by typing its number.");
         }
 
         if (TextUI.areYouAdmin(model)) {
@@ -101,27 +101,31 @@ public class LobbyJoined extends ClientState{
             model.getClientConnector().sendPacket(new CSPQuitLobby());
             // Set client state to LobbySelectionState
             model.setClientState(new LobbySelectionState(model));
-        }
-        // If user is admin
-        else if (TextUI.areYouAdmin(model) && !TextUI.checkInputBound(input, 1, model.getLobbyRecord().availableUserColors().size())) {
-            // If input is to start the game
-            if (input.equalsIgnoreCase("START")) {
-                // Send packet to start the game
-                model.getClientConnector().sendPacket(new CSPStartGame());
-            } else {
-                // Prompt to start the game
-                System.out.println("To start the game type START!");
-            }
-        }
-        // If input is to change color
-        else if (TextUI.checkInputBound(input, 1, model.getLobbyRecord().availableUserColors().size())) {
+        } // If input is to change color
+        else if (TextUI.isParsableAsInt(input) && TextUI.checkInputBound(input, 1, model.getLobbyRecord().availableUserColors().size())) {
             // Send packet to change color
             model.getClientConnector().sendPacket(new CSPChangeColor(model.getLobbyRecord().availableUserColors().get(Integer.parseInt(input) - 1)));
         }
+        // If user is admin
+        else if (TextUI.areYouAdmin(model)) {
+            //If there are enough players to start a game
+            if(model.getLobbyUserRecords().size() >= 2) {
+                //If the input is "start"
+                if (input.equalsIgnoreCase("START")) {
+                    // Send packet to start the game
+                    model.getClientConnector().sendPacket(new CSPStartGame());
+                } else {
+                    // Prompt to start the game
+                    System.out.println("Wrong command, to start the game type START!");
+                }
+            } else {
+                System.out.println("Please wait until there are enough players to start the game.");
+            }
+        }
         // If user is not admin
-        else {
+        else if(!TextUI.areYouAdmin(model) && input.equalsIgnoreCase("START")){
             // Prompt to wait until the game starts
-            System.out.println("You are not the admin. Please wait until the game starts!");
+            System.out.println("Only the admin can start the game, please wait.");
         }
     }
 
