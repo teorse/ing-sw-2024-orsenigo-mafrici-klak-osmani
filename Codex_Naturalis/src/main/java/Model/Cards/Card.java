@@ -1,13 +1,16 @@
 package Model.Cards;
 
 import Client.Model.Records.CardRecord;
+import Exceptions.Game.Model.CornerNotFoundException;
 import Model.Player.CardMap;
 import Model.Utility.*;
+import Utils.Utilities;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public abstract class Card implements Serializable {
 
@@ -100,11 +103,23 @@ public abstract class Card implements Serializable {
      */
     public Artifacts getCornerArtifact(CornerDirection direction, boolean faceUp) {
         CornerOrientation cornerRequired = new CornerOrientation(direction, faceUp);
-        for (CornerOrientation co : this.corners.keySet())
-            if (co.equals(cornerRequired))
-                return this.corners.get(co).getArtifact();
-        return Artifacts.NULL;
-    };
+
+        try {
+            for (CornerOrientation co : this.corners.keySet())
+                if (co.equals(cornerRequired))
+                    return this.corners.get(co).getArtifact();
+            throw new CornerNotFoundException();
+        }
+
+        catch (CornerNotFoundException e) {
+            Logger logger = Logger.getLogger(CardResource.class.getName());
+            String stackTrace = Utilities.StackTraceToString(e);
+            logger.warning("CornerNotFoundException thrown while getting corner artifact from corner: "
+                    +direction+" faceUp: "+true+"\nCard with the problem: "+toRecord()+"\nStackTrace: "+stackTrace);
+            System.exit(666);
+        }
+        return null;
+    }
 
     /**
      * @param direction
