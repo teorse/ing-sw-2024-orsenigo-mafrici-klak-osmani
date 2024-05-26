@@ -59,48 +59,49 @@ public class GameWaitState extends ClientState{
         if (model.isSetUpFinished()) {
             if (inputCounter == 0) {
                 TextUI.clearCMD();
-                textUI.showGameBoard();
-                System.out.println("Wait! (Type ZOOM to look at the board)");
+                TextUI.displayGameTitle();
+
                 if (!model.isWaitingForReconnections()) {
+                    textUI.showGameBoard();
+                    System.out.println("Wait! (Type ZOOM if you want to look at the board)");
                     for (PlayerRecord playerRecord : model.getPlayers()) {
                         logger.info(playerRecord.username() + ": " + playerRecord.playerState());
                         if (playerRecord.playerState() == PlayerStates.PLACE || playerRecord.playerState() == PlayerStates.DRAW) {
-                            System.out.println("It's " + playerRecord.username() + " turn. ");
+                            System.out.println("\nIt's " + playerRecord.username() + " turn. ");
                         }
                     }
                 }
                 else
-                    System.out.println("You're the only player online. Waiting for reconnections!");
+                    System.out.println("\nYou're the only player online. Waiting for reconnections!");
 
             } else if (inputCounter == 1) {
-                System.out.println("""
+                System.out.println("\n" + """
                         Enter what do you want to zoom:
                          1 - CardMap details
                          2 - CardHeld
                          3 - CardPool""");
             } else if (inputCounter == 2) {
                 if (choice == 1) {
-                    System.out.println("Select a player username to zoom its CardMap by inserting an integer");
+                    System.out.println("\nSelect a player username to zoom its CardMap by inserting an integer");
                     int i = 1;
                     for (PlayerRecord playerRecord : model.getPlayers()) {
                         System.out.println(i++ + " - Player username: " + playerRecord.username());
                     }
-                    System.out.println();
                 } else if (choice == 3) {
-                    System.out.println("""
+                    System.out.println("\n" + """
                             Enter the pool you want to zoom:
                              1 - Resource Pool
                              2 - Golden Pool""");
                 }
             } else if (inputCounter == 3 && choice == 1) {
-                System.out.println("Choose a ROW to zoom the card.");
+                System.out.println("\nChoose a ROW to zoom the card.");
             } else if (inputCounter == 4 && choice == 1) {
-                System.out.println("Choose a COLUMN to zoom the card.");
+                System.out.println("\nChoose a COLUMN to zoom the card.");
             }
         } else {
             TextUI.clearCMD();
             TextUI.displayGameTitle();
-            System.out.println("The Set Up is not completed. Please wait!");
+            System.out.println("\nThe Set Up is not completed. Please wait!");
         }
     }
 
@@ -150,7 +151,7 @@ public class GameWaitState extends ClientState{
                     print();
                 } else {
                     // Prompt user to enter ZOOM
-                    System.out.println("To look at the board elements type ZOOM");
+                    System.out.println("\nTo look at the board elements type ZOOM");
                 }
             }
             // If input counter is 1
@@ -164,12 +165,13 @@ public class GameWaitState extends ClientState{
                 if (choice == 2) {
                     // Zoom into cards held
                     textUI.zoomCardsHeld();
+                    inputCounter = 0;
+                    System.out.println("\nWait! (Type ZOOM if you want to look at the board)");
                 } else {
                     // Increment input counter
                     inputCounter++;
+                    print();
                 }
-                // Print current state
-                print();
             }
             // If input counter is 2
             else if (inputCounter == 2) {
@@ -192,6 +194,8 @@ public class GameWaitState extends ClientState{
                             textUI.zoomCardPool(CardPoolTypes.RESOURCE);
                         else
                             textUI.zoomCardPool(CardPoolTypes.GOLDEN);
+                        inputCounter = 0;
+                        System.out.println("\nWait! (Type ZOOM if you want to look at the board)");
                     }
                 }
             }
@@ -217,6 +221,8 @@ public class GameWaitState extends ClientState{
                     // If coordinates are placed, zoom into card map
                     if (model.getCardMaps().get(chosenUsername).coordinatesPlaced().contains(coordinatesChosen)) {
                         textUI.zoomCardMap(chosenRow, chosenCol, chosenUsername);
+                        inputCounter = 0;
+                        System.out.println("\nWait! (Type ZOOM if you want to look at the board)");
                     } else {
                         // Prompt user to choose valid coordinates
                         System.out.println("The coordinates you entered are not in the used placements of the player you selected! Try again.");
