@@ -26,6 +26,8 @@ public class ChatState extends ClientState{
     public ChatState(ClientModel model, ClientState previousState) {
         super(model);
         this.previousState = previousState;
+        model.setChatState(true);
+        model.setNewMessage(false);
 
         logger = Logger.getLogger(ConnectionState.class.getName());
         logger.info("Initializing ChatState");
@@ -41,7 +43,7 @@ public class ChatState extends ClientState{
             TextUI.clearCMD();
             TextUI.displayChatState();
 
-            System.out.println("\nIf you want to go back at the previous choice, type BACK. If you want to exit the Chat State, type EXIT.");
+            System.out.println("If you want to go back at the previous choice, type BACK. If you want to exit the Chat State, type EXIT.");
             System.out.println("\n" + """ 
                     Enter your choice:
                      1 - Public Chat
@@ -112,6 +114,7 @@ public class ChatState extends ClientState{
 
     @Override
     public void nextState() {
+        model.setChatState(false);
         previousState.print();
     }
 }
