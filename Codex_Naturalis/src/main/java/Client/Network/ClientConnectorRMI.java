@@ -9,6 +9,7 @@ import Network.RMI.ServerRemoteInterfaces.ServerListenerRemoteInterface;
 import Network.ServerClient.Packets.ServerClientPacket;
 import Network.ServerClient.ServerMessageExecutor;
 import Utils.Utilities;
+import jdk.jshell.execution.Util;
 
 import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
@@ -155,6 +156,10 @@ public class ClientConnectorRMI implements ClientConnector, ClientRemoteInterfac
         }
         catch (RemoteException e){
             System.out.println("Could not send packet to the server");
+            String stackTrace = Utilities.StackTraceToString(e);
+            logger.warning("Remote Exception in Client while sending packet to Server Through RMI"+
+                    "\nStacktrace: "+stackTrace+
+                    "\nMessage type: "+packet.getClass().getSimpleName());
         }
     }
 
