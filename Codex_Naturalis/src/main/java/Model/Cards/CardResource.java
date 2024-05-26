@@ -1,13 +1,16 @@
 package Model.Cards;
 
 import Client.Model.Records.CardRecord;
+import Exceptions.Game.Model.CornerNotFoundException;
 import Model.Player.CardMap;
 import Model.Utility.*;
+import Utils.Utilities;
 
 import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public class CardResource extends Card {
 
@@ -89,6 +92,13 @@ public class CardResource extends Card {
             return super.getCornerType(direction, true);
     }
 
+    @Override
+    public Artifacts getCornerArtifact(CornerDirection direction, boolean faceUp){
+        if(!faceUp)
+            return Artifacts.NULL;
+        else
+            return super.getCornerArtifact(direction, true);
+    }
 
 
 

@@ -1,10 +1,14 @@
 package Client.Model.Records;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.security.Timestamp;
 import java.util.Date;
 
-public class ChatMessageRecord {
+public class ChatMessageRecord implements Serializable {
     //ATTRIBUTES
+    @Serial
+    private final static long serialVersionUID = 6154356794185554694L;
     private final Date timestamp;
     private String sender;
     private final String message;
