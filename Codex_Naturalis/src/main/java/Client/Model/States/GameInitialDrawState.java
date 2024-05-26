@@ -43,7 +43,7 @@ public class GameInitialDrawState extends ClientState{
         if (model.isNewMessage())
             System.out.println(" (NEW MESSAGE)\n");
         else
-            System.out.println("\n");
+            System.out.println();
 
         if (model.getMyPlayerGameState() == PlayerStates.DRAW_RESOURCE)
             textUI.zoomCardPool(CardPoolTypes.RESOURCE);

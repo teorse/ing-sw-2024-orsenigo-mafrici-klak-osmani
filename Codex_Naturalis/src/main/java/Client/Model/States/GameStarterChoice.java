@@ -57,7 +57,7 @@ public class GameStarterChoice extends ClientState {
         if (model.isNewMessage())
             System.out.println(" (NEW MESSAGE)\n");
         else
-            System.out.println("\n");
+            System.out.println();
 
         showCardStarter();
         System.out.println("\n" +
