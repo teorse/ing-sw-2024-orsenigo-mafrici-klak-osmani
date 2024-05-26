@@ -103,9 +103,8 @@ public class LobbyJoined extends ClientState{
             model.getClientConnector().sendPacket(new CSPQuitLobby());
             // Set client state to LobbySelectionState
             model.setClientState(new LobbySelectionState(model));
-        }
-        else if (input.equalsIgnoreCase("CHAT")) {
-            model.setClientState(new ChatState(model,this));
+        } else if (input.equalsIgnoreCase("CHAT")) {
+            model.setClientState(new ChatState(model, this));
         }
         // If input is to change color
         else if (TextUI.checkInputBound(input, 1, model.getLobbyRecord().availableUserColors().size())) {
@@ -114,21 +113,25 @@ public class LobbyJoined extends ClientState{
         }
         // If user is admin
         else if (TextUI.areYouAdmin(model) && !TextUI.checkInputBound(input, 1, model.getLobbyRecord().availableUserColors().size())) {
-            // If input is to start the game
-            if (input.equalsIgnoreCase("START")) {
-                // Send packet to start the game
-                model.getClientConnector().sendPacket(new CSPStartGame());
+            if (model.getLobbyUserRecords().size() >= 2) {
+                // If input is to start the game
+                if (input.equalsIgnoreCase("START")) {
+                    // Send packet to start the game
+                    model.getClientConnector().sendPacket(new CSPStartGame());
+                } else {
+                    // Prompt to start the game
+                    System.out.println("Wrong command, to start the game type START!");
+                }
             } else {
-                // Prompt to start the game
-                System.out.println("Wrong command, to start the game type START!");
-        } else {
-            System.out.println("Please wait until there are enough players to start the game.");
+                System.out.println("Please wait until there are enough players to start the game.");
+            }
         }
-    // If user is not admin
-        else if(!TextUI.areYouAdmin(model) && input.equalsIgnoreCase("START")){
-        // Prompt to wait until the game starts
-        System.out.println("Only the admin can start the game, please wait.");
-    }
+            // If user is not admin
+        else if (!TextUI.areYouAdmin(model) && input.equalsIgnoreCase("START")) {
+                // Prompt to wait until the game starts
+                System.out.println("Only the admin can start the game, please wait.");
+            }
+        }
 
     /**
      * Transitions the client to the next state based on the current game status and player state.
