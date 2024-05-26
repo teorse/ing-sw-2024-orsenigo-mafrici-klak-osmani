@@ -374,6 +374,8 @@ public class TextUI extends UserInterface {
         System.out.println("Secret objective:");
         System.out.println("Description: " + objectiveRecord.description());
         System.out.println("Points: " + objectiveRecord.points());
+
+        out.println();
     }
 
     /**
@@ -393,6 +395,7 @@ public class TextUI extends UserInterface {
             else
                 out.println(playerRecord.username() + ": " + playerRecord.points());
         }
+        out.println();
     }
 
     /**
