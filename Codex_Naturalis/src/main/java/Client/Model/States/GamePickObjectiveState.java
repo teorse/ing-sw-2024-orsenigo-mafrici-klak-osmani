@@ -56,7 +56,6 @@ public class GamePickObjectiveState extends ClientState{
         for (ObjectiveRecord objectiveRecord : model.getObjectiveCandidates()) {
             System.out.print(i + " - ");
             textUI.showObjective(objectiveRecord);
-            System.out.println();
             i++;
         }
     }
