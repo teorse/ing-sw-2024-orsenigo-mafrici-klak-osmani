@@ -77,7 +77,7 @@ public class LobbyController {
         model.changeColor(username, newColor);
     }
 
-    public void sendChatMessage(ChatMessageRecord chatMessage) throws NoSuchRecipientException {
+    public void sendChatMessage(ChatMessageRecord chatMessage) throws NoSuchRecipientException, InvalidRecipientException {
         model.sendChatMessage(chatMessage);
     }
 

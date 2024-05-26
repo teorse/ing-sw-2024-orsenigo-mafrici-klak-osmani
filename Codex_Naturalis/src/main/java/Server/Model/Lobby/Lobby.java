@@ -518,7 +518,7 @@ public class Lobby implements ServerModelLayer {
         lobbyObserver.update(new SCPUpdateLobby(toLobbyRecord()));
     }
 
-    public void sendChatMessage(ChatMessageRecord chatMessage) throws NoSuchRecipientException {
+    public void sendChatMessage(ChatMessageRecord chatMessage) throws NoSuchRecipientException, InvalidRecipientException {
         logger.info("Sending message in Lobby "+lobbyName);
         if(!chatMessage.isMessagePrivate()) {
             logger.fine("The message is not private, proceeding to broadcast the message to all lobby users");
@@ -527,6 +527,9 @@ public class Lobby implements ServerModelLayer {
         else {
             String recipient = chatMessage.getRecipient();
             logger.fine("The message is private, checking if the recipient is in this lobby");
+
+            if(recipient.equals(chatMessage.getSender()))
+                throw new InvalidRecipientException("User "+chatMessage.getSender()+" attempted to send a message to themself");
 
             if(!lobbyUsers.containsKey(recipient))
                 throw new NoSuchRecipientException("No recipient with the name of "+recipient+" was found in lobby: "+lobbyName);

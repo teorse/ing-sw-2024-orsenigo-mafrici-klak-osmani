@@ -362,9 +362,9 @@ public class ServerInputHandler implements ServerInputExecutor, InputHandler, Ga
         } catch (LobbyRequiredException e) {
             String stackTrace = Utilities.StackTraceToString(e);
             logger.info("User "+username+" attempted to send a chat message before joining a lobby.\nStackTrace:\n"+stackTrace);
-        } catch (NoSuchRecipientException e) {
+        } catch (NoSuchRecipientException | InvalidRecipientException e) {
             String stackTrace = Utilities.StackTraceToString(e);
-            logger.info("NoSuchRecipientException caught by Server Input Handler of user "+username+".\nMessage:\n"+e.getMessage()+"\nStackTrace:\n"+stackTrace);
+            logger.info("Exception caught by Server Input Handler while sending a chat message from user "+username+".\nMessage:\n"+e.getMessage()+"\nStackTrace:\n"+stackTrace);
         }
     }
 
