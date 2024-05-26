@@ -59,13 +59,15 @@ public class ChatState extends ClientState{
                 System.out.println("\nSelect a player username to send a private message to by inserting an integer:");
                 int i = 1;
                 for (PlayerRecord playerRecord : model.getPlayers()) {
-                    System.out.println(i++ + " - Player username: " + playerRecord.username());
+                    if (!playerRecord.username().equals(model.getMyUsername()))
+                        System.out.println(i++ + " - Player username: " + playerRecord.username());
                 }
             }
         } else if (inputCounter == 2 && choice == 2) {
             System.out.println("\nPRIVATE CHAT");
-            for (int i = 0; i < model.getPrivateChatMessages().get(chosenUser).size(); i++)
+            for (int i = 0; i < model.getPrivateChatMessages().get(chosenUser).size(); i++) {
                 System.out.println(model.getPrivateChatMessages().get(chosenUser).get(i).toString());
+            }
             System.out.println("\nPlese type your private message, to send it press ENTER");
         }
     }
