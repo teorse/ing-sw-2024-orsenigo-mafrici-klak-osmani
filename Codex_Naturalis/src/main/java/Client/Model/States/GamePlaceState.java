@@ -50,7 +50,9 @@ public class GamePlaceState extends ClientState{
             TextUI.clearCMD();
             TextUI.displayGameTitle();
             System.out.println("\nIf you want to go back at the previous choice, type BACK. If you want to change the card selected, type CHOICE");
-            System.out.println("If you want to see the Chat State, type CHAT.\n");
+            System.out.print("If you want to see the Chat State, type CHAT.");
+            if (model.isNewMessage())
+                System.out.println(" (NEW MESSAGE)\n");
             System.out.println("\nIt's your turn!");
             textUI.showGameBoard();
             textUI.zoomCardsHeld();

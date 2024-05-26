@@ -39,7 +39,10 @@ public class GameInitialDrawState extends ClientState{
     public void print() {
         TextUI.clearCMD();
         TextUI.displayGameTitle();
-        System.out.println("\nIf you want to see the Chat State, type CHAT.\n");
+        System.out.print("\nIf you want to see the Chat State, type CHAT.");
+        if (model.isNewMessage())
+            System.out.println(" (NEW MESSAGE)\n");
+
         if (model.getMyPlayerGameState() == PlayerStates.DRAW_RESOURCE)
             textUI.zoomCardPool(CardPoolTypes.RESOURCE);
         else if (model.getMyPlayerGameState() == PlayerStates.DRAW_GOLDEN)

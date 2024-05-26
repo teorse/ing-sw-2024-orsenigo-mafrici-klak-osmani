@@ -54,7 +54,9 @@ public class GameDrawState extends ClientState{
             TextUI.clearCMD();
             TextUI.displayGameTitle();
             System.out.println("\nIf you want to go back at the previous choice, type BACK");
-            System.out.println("If you want to see the Chat State, type CHAT.");
+            System.out.print("If you want to see the Chat State, type CHAT.");
+            if (model.isNewMessage())
+                System.out.println(" (NEW MESSAGE)\n");
 
             textUI.zoomCardPool(CardPoolTypes.RESOURCE);
             textUI.zoomCardPool(CardPoolTypes.GOLDEN);
