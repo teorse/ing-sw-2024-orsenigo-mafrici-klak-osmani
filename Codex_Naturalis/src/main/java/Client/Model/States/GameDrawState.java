@@ -54,6 +54,7 @@ public class GameDrawState extends ClientState{
             TextUI.clearCMD();
             TextUI.displayGameTitle();
             System.out.println("\nIf you want to go back at the previous choice, type BACK");
+            System.out.println("If you want to see the Chat State, type CHAT.");
 
             textUI.zoomCardPool(CardPoolTypes.RESOURCE);
             textUI.zoomCardPool(CardPoolTypes.GOLDEN);
@@ -105,9 +106,11 @@ public class GameDrawState extends ClientState{
             inputCounter = 0;
             // Print the current state
             print();
-
-            // If input counter is 0, handle initial input
-        } else if (inputCounter == 0) {
+        }
+        else if (input.equalsIgnoreCase("CHAT")) {
+            model.setClientState(new ChatState(model,this));
+        }
+        else if (inputCounter == 0) {
             // Check if the input is a binary choice
             if (UserInterface.getBinaryChoice(input)) {
                 // Set card pool type based on input

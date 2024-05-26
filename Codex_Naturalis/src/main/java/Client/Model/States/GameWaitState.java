@@ -60,6 +60,7 @@ public class GameWaitState extends ClientState{
             if (inputCounter == 0) {
                 TextUI.clearCMD();
                 TextUI.displayGameTitle();
+                System.out.println("\nIf you want to see the Chat State, type CHAT.\n");
                 textUI.showGameBoard();
                 System.out.println("Wait! (Type ZOOM if you want to look at the board)");
 
@@ -138,7 +139,9 @@ public class GameWaitState extends ClientState{
             // Print current state
             print();
         }
-
+        else if (input.equalsIgnoreCase("CHAT")) {
+            model.setClientState(new ChatState(model,this));
+        }
         // If game setup is finished
         else if (model.isSetUpFinished()) {
             // If input counter is 0

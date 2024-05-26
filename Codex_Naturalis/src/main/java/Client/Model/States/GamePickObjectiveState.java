@@ -50,6 +50,7 @@ public class GamePickObjectiveState extends ClientState{
     public void print() {
         TextUI.clearCMD();
         TextUI.displayGameTitle();
+        System.out.println("\nIf you want to see the Chat State, type CHAT.\n");
 
         int i = 1;
         System.out.println("\nChoose a secret objective: \n");
@@ -71,7 +72,10 @@ public class GamePickObjectiveState extends ClientState{
      */
     @Override
     public void handleInput(String input) {
-        if (TextUI.getBinaryChoice(input)) {
+        if (input.equalsIgnoreCase("CHAT")) {
+            model.setClientState(new ChatState(model,this));
+        }
+        else if (TextUI.getBinaryChoice(input)) {
             int choice = Integer.parseInt(input);
             model.getClientConnector().sendPacket(new CSPPickObjective(choice - 1));
         } else

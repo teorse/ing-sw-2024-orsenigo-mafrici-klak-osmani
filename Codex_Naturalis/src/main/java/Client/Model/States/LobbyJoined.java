@@ -54,7 +54,8 @@ public class LobbyJoined extends ClientState{
         TextUI.clearCMD();
         TextUI.displayGameTitle();
 
-        System.out.println("\nIf you want to go back at the previous choice, type BACK. If you want to quit the lobby, type QUIT \n");
+        System.out.println("\nIf you want to go back at the previous choice, type BACK. If you want to quit the lobby, type QUIT.");
+        System.out.println("If you want to see the Chat State, type CHAT.\n");
 
         System.out.println("List of users in the lobby: ");
 
@@ -81,6 +82,7 @@ public class LobbyJoined extends ClientState{
                 System.out.println("\nNot enough players to start the game, please wait!");
         } else
             System.out.println("\nPlease wait for the Admin to start the game.");
+        //TODO print game start in 20 seconds
     }
 
     /**
@@ -112,6 +114,9 @@ public class LobbyJoined extends ClientState{
                 // Prompt to start the game
                 System.out.println("To start the game type START!");
             }
+        }
+        else if (input.equalsIgnoreCase("CHAT")) {
+            model.setClientState(new ChatState(model,this));
         }
         // If input is to change color
         else if (TextUI.checkInputBound(input, 1, model.getLobbyRecord().availableUserColors().size())) {

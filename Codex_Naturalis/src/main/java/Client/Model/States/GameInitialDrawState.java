@@ -39,6 +39,7 @@ public class GameInitialDrawState extends ClientState{
     public void print() {
         TextUI.clearCMD();
         TextUI.displayGameTitle();
+        System.out.println("\nIf you want to see the Chat State, type CHAT.\n");
         if (model.getMyPlayerGameState() == PlayerStates.DRAW_RESOURCE)
             textUI.zoomCardPool(CardPoolTypes.RESOURCE);
         else if (model.getMyPlayerGameState() == PlayerStates.DRAW_GOLDEN)
@@ -58,7 +59,10 @@ public class GameInitialDrawState extends ClientState{
      */
     @Override
     public void handleInput(String input) {
-        if (UserInterface.checkInputBound(input,1,3)) {
+        if (input.equalsIgnoreCase("CHAT")) {
+            model.setClientState(new ChatState(model,this));
+        }
+        else if (UserInterface.checkInputBound(input,1,3)) {
             int choice = Integer.parseInt(input);
             if (model.getMyPlayerGameState() == PlayerStates.DRAW_RESOURCE)
                 model.getClientConnector().sendPacket(new CSPDrawCard(CardPoolTypes.RESOURCE, choice - 2));
