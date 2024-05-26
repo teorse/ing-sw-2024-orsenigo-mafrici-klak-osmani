@@ -48,6 +48,7 @@ public class GamePlaceState extends ClientState{
     public void print() {
         if (inputCounter == 0) {
             TextUI.clearCMD();
+            TextUI.displayGameTitle();
             System.out.println("\nIf you want to go back at the previous choice, type BACK. If you want to change the card selected, type CHOICE");
             System.out.println("\nIt's your turn!");
             textUI.showGameBoard();

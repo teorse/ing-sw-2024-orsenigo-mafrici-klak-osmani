@@ -52,6 +52,7 @@ public class GameDrawState extends ClientState{
     public void print() {
         if (inputCounter == 0) {
             TextUI.clearCMD();
+            TextUI.displayGameTitle();
             System.out.println("\nIf you want to go back at the previous choice, type BACK");
 
             textUI.zoomCardPool(CardPoolTypes.RESOURCE);
