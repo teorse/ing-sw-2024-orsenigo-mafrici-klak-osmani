@@ -1,5 +1,6 @@
 package Model.Game.States;
 
+import Client.Model.Records.GameRecord;
 import Exceptions.Game.*;
 import Model.Game.CardPoolTypes;
 import Model.Player.Player;
@@ -86,4 +87,6 @@ public interface GameState {
      * @param player The user who is quitting.
      */
     void quit(Player player);
+
+    GameRecord toRecord();
 }

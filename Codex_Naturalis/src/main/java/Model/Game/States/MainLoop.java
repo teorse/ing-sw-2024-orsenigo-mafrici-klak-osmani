@@ -1,5 +1,6 @@
 package Model.Game.States;
 
+import Client.Model.Records.GameRecord;
 import Model.Cards.Card;
 import Exceptions.Game.InvalidActionForGameStateException;
 import Exceptions.Game.InvalidActionForPlayerStateException;
@@ -9,6 +10,7 @@ import Model.Game.CardPoolTypes;
 import Model.Game.Table;
 import Model.Player.Player;
 import Network.ServerClient.Packets.SCPUpdateClientGameState;
+import Network.ServerClient.Packets.SCPUpdateGame;
 import Server.Model.Lobby.LobbyUserConnectionStates;
 import Model.Player.PlayerStates;
 import Server.Model.Lobby.ObserverRelay;
@@ -32,6 +34,9 @@ public class MainLoop implements GameState{
     private int currentPlayerIndex;
     private final Map<String, PlayerStates> playerStatesBeforeDisconnection;
 
+    private boolean lastRound;
+    private boolean waitingForReconnections;
+
     private final Logger logger;
 
 
@@ -54,22 +59,21 @@ public class MainLoop implements GameState{
         gameObserverRelay = game.getGameObserverRelay();
         playerStatesBeforeDisconnection = new HashMap<>();
 
+        lastRound = false;
+        waitingForReconnections = false;
+
         findFirstPlayer();
         logger.info("Main Loop State in game initialized");
     }
 
-    public MainLoop(Game game, Map<String, PlayerStates> playerStatesBeforeDisconnection){
-        logger = Logger.getLogger(MainLoop.class.getName());
-        logger.info("Initializing Main Loop State in game");
-
-        this.game = game;
-        players = game.getPlayers();
-        table = game.getTable();
-        gameObserverRelay = game.getGameObserverRelay();
-        this.playerStatesBeforeDisconnection = playerStatesBeforeDisconnection;
-
-        findFirstPlayer();
-        logger.info("Main Loop State in game initialized");
+    //PRIVATE SETTERS
+    private void setLastRound(boolean value){
+        lastRound = value;
+        gameObserverRelay.update(new SCPUpdateGame(game.toRecord()));
+    }
+    private void setWaitingForReconnections(boolean value){
+        waitingForReconnections = value;
+        gameObserverRelay.update(new SCPUpdateGame(game.toRecord()));
     }
 
 
@@ -103,13 +107,12 @@ public class MainLoop implements GameState{
         player.playCard(cardIndex, coordinateIndex, faceUp);
 
         //After placing the card, if the two card pools are not empty then set the player to the DRAW state
-        if(!table.areAllCardPoolsEmpty())
+        if(!table.areAllCardPoolsEmpty() && !lastRound)
             player.setPlayerState(PlayerStates.DRAW);
         else {
             //If the two card Pools are empty then set the player state to wait and go to the next player
             player.setPlayerState(PlayerStates.WAIT);
             player.incrementRoundsCompleted();
-            game.checkGameEndingConditions();
             nextPlayer();
             return;
         }
@@ -146,7 +149,6 @@ public class MainLoop implements GameState{
         gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.WAIT));
         player.incrementRoundsCompleted();
 
-        game.checkGameEndingConditions();
         nextPlayer();
     }
 
@@ -186,7 +188,7 @@ public class MainLoop implements GameState{
     public void userDisconnectionProcedure(Player player) {
         logger.info("Disconnection procedure initiated for player "+player.getUsername()+" in game.");
 
-        if(!game.isWaitingForReconnections())
+        if(!waitingForReconnections)
             oneOnlinePlayerLeftProcedure();
 
         if(player.getPlayerState()!=PlayerStates.WAIT) {
@@ -206,9 +208,9 @@ public class MainLoop implements GameState{
     @Override
     public void userReconnectionProcedure(Player player) {
         logger.info("Player "+player.getUsername()+" is reconnecting to the game Main Loop state");
-        if(game.isWaitingForReconnections()){
+        if(waitingForReconnections){
             logger.info("Detected waitingForReconnection true, restoring the old current player from their wait state");
-            game.setWaitingForReconnections(false);
+            setWaitingForReconnections(false);
             Player currentPlayer = players.get(currentPlayerIndex);
             currentPlayer.setPlayerState(playerStatesBeforeDisconnection.remove(currentPlayer.getUsername()));
             gameObserverRelay.update(currentPlayer.getUsername(), new SCPUpdateClientGameState(currentPlayer.getPlayerState()));
@@ -240,7 +242,7 @@ public class MainLoop implements GameState{
             players.remove(player);
             logger.fine("Player removed");
 
-            if(!game.isWaitingForReconnections())
+            if(!waitingForReconnections)
                 oneOnlinePlayerLeftProcedure();
 
             currentPlayerIndex--;
@@ -254,7 +256,7 @@ public class MainLoop implements GameState{
             players.remove(player);
             logger.fine("Player removed");
 
-            if(!game.isWaitingForReconnections())
+            if(waitingForReconnections)
                 oneOnlinePlayerLeftProcedure();
 
             currentPlayerIndex--;
@@ -266,7 +268,7 @@ public class MainLoop implements GameState{
             players.remove(player);
             logger.fine("Player removed");
 
-            if(!game.isWaitingForReconnections())
+            if(waitingForReconnections)
                 oneOnlinePlayerLeftProcedure();
         }
     }
@@ -299,7 +301,7 @@ public class MainLoop implements GameState{
             logger.finest("Updating client state");
             gameObserverRelay.update(onlinePlayer.getUsername(), new SCPUpdateClientGameState(onlinePlayer.getPlayerState()));
             logger.finest("Setting waiting for reconnection to true.");
-            game.setWaitingForReconnections(true);
+            setWaitingForReconnections(true);
         }
         logger.fine("Exiting Game disconnection procedure");
     }
@@ -342,8 +344,12 @@ public class MainLoop implements GameState{
                     //If the player had previously disconnected then the old saved value for their state is retrieved, otherwise
                     //by default they are assigned the PLACE state.
                     logger.fine("Checking if the player has a cached stated from a previous disconnection");
-                    if(!game.isWaitingForReconnections())
-                        nextPlayer.setPlayerState(playerStatesBeforeDisconnection.getOrDefault(nextPlayer.getUsername(), PlayerStates.PLACE));
+                    if(!waitingForReconnections) {
+                        if(!lastRound)
+                            nextPlayer.setPlayerState(playerStatesBeforeDisconnection.getOrDefault(nextPlayer.getUsername(), PlayerStates.PLACE));
+                        else
+                            nextPlayer.setPlayerState( PlayerStates.PLACE);
+                    }
                     else{
                         if(!playerStatesBeforeDisconnection.containsKey(nextPlayer.getUsername()))
                             playerStatesBeforeDisconnection.put(nextPlayer.getUsername(), PlayerStates.PLACE);
@@ -388,7 +394,7 @@ public class MainLoop implements GameState{
 
 
                 //Check which state to assign to the first player
-                if(!game.isWaitingForReconnections()) {
+                if(!waitingForReconnections) {
                     //If the game is not waiting for reconnections then assign to the first player either their state before disconnections
                     //or give them the default state of PLACE
                     firstPlayer.setPlayerState(playerStatesBeforeDisconnection.getOrDefault(firstPlayer.getUsername(), PlayerStates.PLACE));
@@ -423,18 +429,24 @@ public class MainLoop implements GameState{
     private void nextState(){
         game.incrementRoundsCompleted();
 
-
         int playersSize = players.size();
-
-        if(playersSize < 2){
+        if(playersSize < 2 || this.lastRound){
             game.gameOver();
             return;
         }
 
+        if(game.checkGameEndingConditions())
+            setLastRound(true);
 
-        if(game.isLastRoundFlag())
-            game.setState(new FinalRound(game));
-        else
-            game.setState(new MainLoop(game, playerStatesBeforeDisconnection));
+        findFirstPlayer();
+    }
+
+
+
+
+    //TO RECORD
+    @Override
+    public GameRecord toRecord() {
+        return new GameRecord(0, lastRound, true, waitingForReconnections);
     }
 }

@@ -1,5 +1,6 @@
 package Model.Game.States;
 
+import Client.Model.Records.GameRecord;
 import Model.Game.CardPoolTypes;
 import Exceptions.Game.InvalidActionForGameStateException;
 import Exceptions.Game.InvalidActionForPlayerStateException;
@@ -205,7 +206,16 @@ public class ObjectivesSetup implements GameState{
                 return;
         }
         //If all online players are ready then go to next state.
-        game.finishSetup();
         game.setState(new MainLoop(game));
+    }
+
+
+
+
+
+    //TO RECORD
+    @Override
+    public GameRecord toRecord() {
+        return new GameRecord(0, false, false, false);
     }
 }

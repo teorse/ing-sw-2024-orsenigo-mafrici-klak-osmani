@@ -520,9 +520,7 @@ class GameTest {
                 Game game = games.get(i);
                 boolean expectedLastRoundTrigger = expectedLastRoundTriggers.get(i);
 
-                game.checkGameEndingConditions();
-
-                assertEquals(expectedLastRoundTrigger, game.isLastRoundFlag(),"Trigger is not as expected in scenario "+i);
+                assertEquals(expectedLastRoundTrigger, game.checkGameEndingConditions(),"Trigger is not as expected in scenario "+i);
             }
         }
     }

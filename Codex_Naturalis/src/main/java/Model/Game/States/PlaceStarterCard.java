@@ -1,5 +1,6 @@
 package Model.Game.States;
 
+import Client.Model.Records.GameRecord;
 import Exceptions.Game.*;
 import Model.Game.CardPoolTypes;
 import Model.Game.Game;
@@ -212,5 +213,15 @@ public class PlaceStarterCard implements GameState{
         }
         //If all players are ready then go to next state.
         game.setState(new DrawInitialCards(game));
+    }
+
+
+
+
+
+    //TO RECORD
+    @Override
+    public GameRecord toRecord() {
+        return new GameRecord(0, false, false, false);
     }
 }

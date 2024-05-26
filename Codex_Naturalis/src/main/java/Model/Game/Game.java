@@ -28,11 +28,7 @@ public class Game implements ServerModelLayer {
     private final ObserverRelay gameObserverRelay;
 
     private final Table table;
-    private boolean setupFinished;
-    private boolean lastRoundFlag;
     private GameState state;
-
-    private boolean waitingForReconnections;
 
     private final Logger logger;
 
@@ -68,7 +64,6 @@ public class Game implements ServerModelLayer {
 
         this.lobby = lobby;
         this.gameObserverRelay = gameObserverRelay;
-        waitingForReconnections = false;
 
         players = new ArrayList<>();
         for(LobbyUser lobbyUser : lobbyUsers){
@@ -78,8 +73,6 @@ public class Game implements ServerModelLayer {
 
         Collections.shuffle(this.players);
         this.table = new Table(goldenCards, resourceCards, starterCards, objectives, gameObserverRelay);
-        this.lastRoundFlag = false;
-        this.setupFinished = false;
         state = new PlaceStarterCard(this);
         
         for(Player player : players) {
@@ -101,33 +94,12 @@ public class Game implements ServerModelLayer {
     public Table getTable() {
         return table;
     }
-    public boolean isLastRoundFlag(){
-        return this.lastRoundFlag;
-    }
     public Lobby getLobby(){
         return this.lobby;
     }
     public ObserverRelay getGameObserverRelay(){
         return this.gameObserverRelay;
     }
-    public boolean isWaitingForReconnections() {
-        return waitingForReconnections;
-    }
-
-
-
-
-
-    //SETTERS
-    public void finishSetup() {
-        this.setupFinished = true;
-        gameObserverRelay.update(new SCPUpdateGame(toRecord()));
-    }
-    public void setWaitingForReconnections(boolean waitingForReconnections) {
-        this.waitingForReconnections = waitingForReconnections;
-        gameObserverRelay.update(new SCPUpdateGame(toRecord()));
-    }
-
 
 
 
@@ -199,19 +171,19 @@ public class Game implements ServerModelLayer {
     /**
      * Method verifies whether the conditions for the game-end are met, if so sets to true the lastRound flag.
      */
-    public void checkGameEndingConditions(){
+    public boolean checkGameEndingConditions(){
 
         if(table.areDecksEmpty()){
-            this.lastRoundFlag = true;
-            return;
+            return true;
         }
 
         for(Player player : players){
             if(player.getPoints() >= 20){
-                this.lastRoundFlag = true;
-                return;
+                return true;
             }
         }
+
+        return false;
     }
 
     protected void selectWinners(){
@@ -271,5 +243,9 @@ public class Game implements ServerModelLayer {
         return CardMapRecordsMap;
     }
 
-    public GameRecord toRecord() {return new GameRecord(roundsCompleted, lastRoundFlag, setupFinished, waitingForReconnections);}
+    public GameRecord toRecord() {
+        GameRecord gameRecord = state.toRecord();
+
+        return new GameRecord(roundsCompleted, gameRecord.lastRoundFlag(), gameRecord.setupFinished(), gameRecord.waitingForReconnections());
+    }
 }

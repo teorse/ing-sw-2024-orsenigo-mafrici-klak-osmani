@@ -1,5 +1,6 @@
 package Model.Game.States;
 
+import Client.Model.Records.GameRecord;
 import Exceptions.Game.*;
 import Model.Game.Game;
 import Model.Game.CardPoolTypes;
@@ -350,5 +351,15 @@ public class DrawInitialCards implements GameState{
             game.setState(new ObjectivesSetup(game));
         else
             findFirstPlayer();
+    }
+
+
+
+
+
+    //TO RECORD
+    @Override
+    public GameRecord toRecord() {
+        return new GameRecord(0, false, false, false);
     }
 }
