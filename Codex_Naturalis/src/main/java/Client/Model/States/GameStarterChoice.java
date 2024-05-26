@@ -53,7 +53,11 @@ public class GameStarterChoice extends ClientState {
     public void print() {
         TextUI.clearCMD();
         TextUI.displayGameTitle();
-        System.out.println("\nIf you want to see the Chat State, type CHAT.\n");
+        System.out.print("\nIf you want to see the Chat State, type CHAT.");
+        if (model.isNewMessage())
+            System.out.println(" (NEW MESSAGE)\n");
+        else
+            System.out.println("\n");
 
         showCardStarter();
         System.out.println("\n" +
@@ -95,6 +99,8 @@ public class GameStarterChoice extends ClientState {
             model.setClientState(new GameInitialDrawState(model));
         else if (model.getMyPlayerGameState() == PlayerStates.WAIT)
             model.setClientState(new GameWaitState(model));
+        else
+            print();
     }
 
     /**

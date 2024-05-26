@@ -60,7 +60,12 @@ public class GameWaitState extends ClientState{
             if (inputCounter == 0) {
                 TextUI.clearCMD();
                 TextUI.displayGameTitle();
-                System.out.println("\nIf you want to see the Chat State, type CHAT.\n");
+                System.out.print("\nIf you want to see the Chat State, type CHAT.");
+                if (model.isNewMessage())
+                    System.out.println(" (NEW MESSAGE)\n");
+                else
+                    System.out.println("\n");
+
                 textUI.showGameBoard();
                 System.out.println("Wait! (Type ZOOM if you want to look at the board)");
 

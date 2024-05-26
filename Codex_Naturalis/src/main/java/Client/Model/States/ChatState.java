@@ -26,6 +26,8 @@ public class ChatState extends ClientState{
     public ChatState(ClientModel model, ClientState previousState) {
         super(model);
         this.previousState = previousState;
+        model.setChatState(true);
+        model.setNewMessage(false);
 
         logger = Logger.getLogger(ConnectionState.class.getName());
         logger.info("Initializing ChatState");
@@ -41,14 +43,14 @@ public class ChatState extends ClientState{
             TextUI.clearCMD();
             TextUI.displayChatState();
 
-            System.out.println("\nIf you want to go back at the previous choice, type BACK. If you want to exit the Chat State, type EXIT.");
+            System.out.println("If you want to go back at the previous choice, type BACK. If you want to exit the Chat State, type EXIT.");
             System.out.println("\n" + """ 
                     Enter your choice:
                      1 - Public Chat
                      2 - Private Chat""");
         } else if (inputCounter == 1) {
             if (choice == 1) {
-                System.out.println("PUBLIC CHAT");
+                System.out.println("\nPUBLIC CHAT");
                 for (int i = 0; i < model.getPublicChatMessages().size(); i++) {
                     System.out.println(model.getPublicChatMessages().get(i).toString());
                 }
@@ -61,7 +63,7 @@ public class ChatState extends ClientState{
                 }
             }
         } else if (inputCounter == 2 && choice == 2) {
-            System.out.println("PRIVATE CHAT");
+            System.out.println("\nPRIVATE CHAT");
             for (int i = 0; i < model.getPrivateChatMessages().get(chosenUser).size(); i++)
                 System.out.println(model.getPrivateChatMessages().get(chosenUser).get(i).toString());
             System.out.println("\nPlese type your private message, to send it press ENTER");
@@ -91,7 +93,6 @@ public class ChatState extends ClientState{
         else if (inputCounter == 1) {
             if (choice == 1) {
                 model.getClientConnector().sendPacket(new CSPSendChatMessage(new ChatMessageRecord(input)));
-                model.getPublicChatMessages().add(new ChatMessageRecord(input));
                 inputCounter = 0;
                 print();
             } else if (choice == 2) {
@@ -104,7 +105,6 @@ public class ChatState extends ClientState{
         }
         else if (inputCounter == 2 && choice == 2) {
                 model.getClientConnector().sendPacket(new CSPSendChatMessage(new ChatMessageRecord(input,chosenUser)));
-                model.getPrivateChatMessages().get(chosenUser).add(new ChatMessageRecord(input,chosenUser));
                 inputCounter = 0;
                 print();
         }
@@ -112,6 +112,7 @@ public class ChatState extends ClientState{
 
     @Override
     public void nextState() {
-        previousState.print();
+        model.setChatState(false);
+        previousState.nextState();
     }
 }

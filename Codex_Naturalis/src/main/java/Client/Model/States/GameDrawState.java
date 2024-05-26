@@ -54,7 +54,11 @@ public class GameDrawState extends ClientState{
             TextUI.clearCMD();
             TextUI.displayGameTitle();
             System.out.println("\nIf you want to go back at the previous choice, type BACK");
-            System.out.println("If you want to see the Chat State, type CHAT.");
+            System.out.print("If you want to see the Chat State, type CHAT.");
+            if (model.isNewMessage())
+                System.out.println(" (NEW MESSAGE)\n");
+            else
+                System.out.println("\n");
 
             textUI.zoomCardPool(CardPoolTypes.RESOURCE);
             textUI.zoomCardPool(CardPoolTypes.GOLDEN);
@@ -169,7 +173,8 @@ public class GameDrawState extends ClientState{
         if (model.getMyPlayerGameState() == PlayerStates.WAIT)
             model.setClientState(new GameWaitState(model));
         else
-            model.setClientState(new GameOverState(model));
+            print();
+//            model.setClientState(new GameOverState(model));
     }
 }
 
