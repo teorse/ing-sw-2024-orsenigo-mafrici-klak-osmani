@@ -3,6 +3,7 @@ package Client.Model.States;
 import Client.Model.ChatMessagesStack;
 import Client.Model.ClientModel;
 import Client.Model.Records.ChatMessageRecord;
+import Client.Model.Records.LobbyUserRecord;
 import Client.Model.Records.PlayerRecord;
 import Client.View.TextUI;
 import Network.ClientServer.Packets.CSPSendChatMessage;
@@ -37,6 +38,9 @@ public class ChatState extends ClientState{
         logger.fine("ChatState initialized");
     }
 
+    //TODO use game color in the chat
+    //TODO update the chat after a message is received
+
     @Override
     public void print() {
         if (inputCounter == 0) {
@@ -49,6 +53,10 @@ public class ChatState extends ClientState{
                      1 - Public Chat
                      2 - Private Chat""");
         } else if (inputCounter == 1) {
+            TextUI.clearCMD();
+            TextUI.displayChatState();
+
+            System.out.println("If you want to go back at the previous choice, type BACK. If you want to exit the Chat State, type EXIT.");
             if (choice == 1) {
                 System.out.println("\nPUBLIC CHAT");
                 for (int i = 0; i < model.getPublicChatMessages().size(); i++) {
@@ -58,12 +66,16 @@ public class ChatState extends ClientState{
             } else if (choice == 2) {
                 System.out.println("\nSelect a player username to send a private message to by inserting an integer:");
                 int i = 1;
-                for (PlayerRecord playerRecord : model.getPlayers()) {
-                    if (!playerRecord.username().equals(model.getMyUsername()))
-                        System.out.println(i++ + " - Player username: " + playerRecord.username());
+                for (LobbyUserRecord lobbyUserRecord : model.getLobbyUserRecords()) {
+                    if (!lobbyUserRecord.username().equals(model.getMyUsername()))
+                        System.out.println(i++ + " - Player username: " + lobbyUserRecord.username());
                 }
             }
         } else if (inputCounter == 2 && choice == 2) {
+            TextUI.clearCMD();
+            TextUI.displayChatState();
+
+            System.out.println("If you want to go back at the previous choice, type BACK. If you want to exit the Chat State, type EXIT.");
             System.out.println("\nPRIVATE CHAT");
             for (int i = 0; i < model.getPrivateChatMessages().get(chosenUser).size(); i++) {
                 System.out.println(model.getPrivateChatMessages().get(chosenUser).get(i).toString());
@@ -95,7 +107,6 @@ public class ChatState extends ClientState{
         else if (inputCounter == 1) {
             if (choice == 1) {
                 model.getClientConnector().sendPacket(new CSPSendChatMessage(new ChatMessageRecord(input)));
-                inputCounter = 0;
                 print();
             } else if (choice == 2) {
                 if (TextUI.checkInputBound(input, 1, model.getLobbyUserRecords().size())) {
@@ -107,7 +118,6 @@ public class ChatState extends ClientState{
         }
         else if (inputCounter == 2 && choice == 2) {
                 model.getClientConnector().sendPacket(new CSPSendChatMessage(new ChatMessageRecord(input,chosenUser)));
-                inputCounter = 0;
                 print();
         }
     }

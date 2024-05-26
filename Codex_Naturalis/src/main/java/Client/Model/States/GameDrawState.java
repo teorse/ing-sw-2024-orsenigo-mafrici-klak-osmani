@@ -58,7 +58,7 @@ public class GameDrawState extends ClientState{
             if (model.isNewMessage())
                 System.out.println(" (NEW MESSAGE)\n");
             else
-                System.out.println("\n");
+                System.out.println();
 
             textUI.zoomCardPool(CardPoolTypes.RESOURCE);
             textUI.zoomCardPool(CardPoolTypes.GOLDEN);

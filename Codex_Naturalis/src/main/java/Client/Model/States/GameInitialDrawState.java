@@ -43,7 +43,7 @@ public class GameInitialDrawState extends ClientState{
         if (model.isNewMessage())
             System.out.println(" (NEW MESSAGE)\n");
         else
-            System.out.println("\n");
+            System.out.println();
 
         if (model.getMyPlayerGameState() == PlayerStates.DRAW_RESOURCE)
             textUI.zoomCardPool(CardPoolTypes.RESOURCE);
@@ -83,6 +83,7 @@ public class GameInitialDrawState extends ClientState{
      * If the player's state is "PICK_OBJECTIVE", transitions to the GamePickObjectiveState.
      * If the operation fails, prints an error message and remains in the current state, prompting the user to try again.
      */
+    //TODO fix wait state after disconnection but goes in chat state
     @Override
     public void nextState() {
         if(model.isGameOver()){
