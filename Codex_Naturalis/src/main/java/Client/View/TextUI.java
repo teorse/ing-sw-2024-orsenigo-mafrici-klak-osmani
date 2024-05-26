@@ -70,6 +70,17 @@ public class TextUI extends UserInterface {
                 """);
     }
 
+    public static void displayChatState() {
+        System.out.println("""
+                 ██████╗██╗  ██╗ █████╗ ████████╗    ███████╗████████╗ █████╗ ████████╗███████╗
+                ██╔════╝██║  ██║██╔══██╗╚══██╔══╝    ██╔════╝╚══██╔══╝██╔══██╗╚══██╔══╝██╔════╝
+                ██║     ███████║███████║   ██║       ███████╗   ██║   ███████║   ██║   █████╗
+                ██║     ██╔══██║██╔══██║   ██║       ╚════██║   ██║   ██╔══██║   ██║   ██╔══╝
+                ╚██████╗██║  ██║██║  ██║   ██║       ███████║   ██║   ██║  ██║   ██║   ███████╗
+                 ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝       ╚══════╝   ╚═╝   ╚═╝  ╚═╝   ╚═╝   ╚══════╝
+                """);
+    }
+
     /**
      * Clears the terminal screen to remove any existing text.
      * <p>
@@ -374,6 +385,8 @@ public class TextUI extends UserInterface {
         System.out.println("Secret objective:");
         System.out.println("Description: " + objectiveRecord.description());
         System.out.println("Points: " + objectiveRecord.points());
+
+        out.println();
     }
 
     /**
@@ -393,6 +406,7 @@ public class TextUI extends UserInterface {
             else
                 out.println(playerRecord.username() + ": " + playerRecord.points());
         }
+        out.println();
     }
 
     /**

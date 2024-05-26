@@ -50,4 +50,8 @@ public class ChatMessageRecord implements Serializable {
     public String getMessage() {
         return message;
     }
+    @Override
+    public String toString() {
+        return timestamp + " - " + sender + ": " + message;
+    }
 }

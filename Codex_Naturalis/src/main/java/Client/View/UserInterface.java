@@ -155,6 +155,23 @@ public abstract class UserInterface {
         return true;
     }
 
+    /**
+     * Checks if a given string can be parsed as an integer.
+     *
+     * @param input the string to check
+     * @return true if the string can be parsed as an integer, false otherwise
+     */
+    public static boolean isParsableAsInt(String input) {
+        if (input == null || input.isEmpty()) {
+            return false;
+        }
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 
     /**
      * Checks user input against specified bounds.

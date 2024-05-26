@@ -148,6 +148,12 @@ public class ClientModel {
     public boolean isWaitingForReconnections() {
         return waitingForReconnections;
     }
+    public Map<String, ChatMessagesStack> getPrivateChatMessages() {
+        return privateChatMessages;
+    }
+    public ChatMessagesStack getPublicChatMessages() {
+        return publicChatMessages;
+    }
 
     //Getters for error managing
     public ErrorDictionaryLogIn getErrorDictionaryLogIn() {
@@ -192,7 +198,6 @@ public class ClientModel {
     public void setClientConnector(ClientConnector clientConnector) {
         this.clientConnector = clientConnector;
     }
-
     public void setCardMaps(Map<String, CardMapRecord> cardMaps) {
         synchronized (playerMapThreadLock) {
             this.cardMaps = cardMaps;
@@ -218,13 +223,11 @@ public class ClientModel {
             }
         }
     }
-
     public void setSpecificCardMap(String owner, CardMapRecord cardMap){
         synchronized (playerMapThreadLock) {
             cardMaps.put(owner, cardMap);
         }
     }
-
     public void setGameRecord(GameRecord gameRecord) {
         this.gameRecord = gameRecord;
         setUpFinished = gameRecord.setupFinished();
@@ -264,7 +267,6 @@ public class ClientModel {
 
         //todo refresh view with new messages.
     }
-
     public void setPlayerSecretInfoRecord(PlayerSecretInfoRecord playerSecretInfoRecord) {
         this.playerSecretInfoRecord = playerSecretInfoRecord;
     }
@@ -280,7 +282,6 @@ public class ClientModel {
     public void setObjectiveCandidates(List<ObjectiveRecord> objectiveCandidates) {
         this.objectiveCandidates = objectiveCandidates;
     }
-
     public void setSetUpFinished(boolean setUpFinished) {
         this.setUpFinished = setUpFinished;
     }

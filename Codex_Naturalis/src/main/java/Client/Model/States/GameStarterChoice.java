@@ -53,6 +53,7 @@ public class GameStarterChoice extends ClientState {
     public void print() {
         TextUI.clearCMD();
         TextUI.displayGameTitle();
+        System.out.println("\nIf you want to see the Chat State, type CHAT.\n");
 
         showCardStarter();
         System.out.println("\n" +
@@ -72,7 +73,10 @@ public class GameStarterChoice extends ClientState {
      */
     @Override
     public void handleInput(String input) {
-        if (TextUI.getBinaryChoice(input)) {
+        if (input.equalsIgnoreCase("CHAT")) {
+            model.setClientState(new ChatState(model,this));
+        }
+        else if (TextUI.getBinaryChoice(input)) {
             boolean faceUp = (Integer.parseInt(input) == 1);
             model.getClientConnector().sendPacket(new CSPPlayCard(0, 0, faceUp));
         }
