@@ -32,6 +32,8 @@ public class ClientModel {
     boolean setUpFinished;
     boolean waitingForReconnections;
     boolean gameOver;
+    boolean chatState;
+    boolean newMessage;
     ClientState clientState;
     String myUsername;
     PlayerStates myPlayerGameState;
@@ -182,6 +184,12 @@ public class ClientModel {
     public boolean isGameStartable() {
         return gameStartable;
     }
+    public boolean isChatState() {
+        return chatState;
+    }
+    public boolean isNewMessage() {
+        return newMessage;
+    }
     public boolean isGameStarted() {
         return gameStarted;
     }
@@ -265,7 +273,10 @@ public class ClientModel {
         else
             publicChatMessages.add(chatMessage);
 
-        //todo refresh view with new messages.
+        if (this.isChatState()) {
+            print();
+        } else
+            this.setNewMessage(true);
     }
     public void setPlayerSecretInfoRecord(PlayerSecretInfoRecord playerSecretInfoRecord) {
         this.playerSecretInfoRecord = playerSecretInfoRecord;
@@ -295,6 +306,12 @@ public class ClientModel {
     }
     public void setInLobby(boolean inLobby) {
         this.inLobby = inLobby;
+    }
+    public void setChatState(boolean chatState) {
+        this.chatState = chatState;
+    }
+    public void setNewMessage(boolean newMessage) {
+        this.newMessage = newMessage;
     }
     public void setGameStarted(boolean gameStarted) {
         this.gameStarted = gameStarted;
