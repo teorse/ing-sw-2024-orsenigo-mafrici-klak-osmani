@@ -67,8 +67,8 @@ public class MainLoop implements GameState{
     }
 
     //PRIVATE SETTERS
-    private void setLastRound(boolean value){
-        lastRound = value;
+    private void startLastRound(){
+        lastRound = true;
         gameObserverRelay.update(new SCPUpdateGame(game.toRecord()));
     }
     private void setWaitingForReconnections(boolean value){
@@ -436,7 +436,7 @@ public class MainLoop implements GameState{
         }
 
         if(game.checkGameEndingConditions())
-            setLastRound(true);
+            startLastRound();
 
         findFirstPlayer();
     }

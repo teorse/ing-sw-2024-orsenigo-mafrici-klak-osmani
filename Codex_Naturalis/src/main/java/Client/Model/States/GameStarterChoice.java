@@ -95,8 +95,8 @@ public class GameStarterChoice extends ClientState {
     public void nextState() {
         if(model.isGameOver())
             model.setClientState(new GameOverState(model));
-        else if (model.getMyPlayerGameState() == PlayerStates.DRAW_RESOURCE || model.getMyPlayerGameState() == PlayerStates.DRAW_GOLDEN)
-            model.setClientState(new GameInitialDrawState(model));
+        else if (model.getMyPlayerGameState() == PlayerStates.DRAW)
+            model.setClientState(new GameDrawState(model));
         else if (model.getMyPlayerGameState() == PlayerStates.WAIT)
             model.setClientState(new GameWaitState(model));
         else

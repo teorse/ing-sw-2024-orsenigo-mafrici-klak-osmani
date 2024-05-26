@@ -8,8 +8,8 @@ import Client.Model.Records.*;
 import Client.Model.States.ClientState;
 import Client.Model.States.ConnectionState;
 import Client.Network.ClientConnector;
+import Model.Game.CardPoolTypes;
 import Model.Player.PlayerStates;
-import Server.Model.Lobby.LobbyConstants;
 
 import java.util.*;
 
@@ -71,6 +71,7 @@ public class ClientModel {
     List<PlayerRecord> winners;
 
     //Player private game attributes
+    Map<CardPoolTypes, Boolean> cardPoolDrawability;
     List<ObjectiveRecord> objectiveCandidates;
     PlayerSecretInfoRecord playerSecretInfoRecord;
 
@@ -156,6 +157,10 @@ public class ClientModel {
     public ChatMessagesStack getPublicChatMessages() {
         return publicChatMessages;
     }
+    public Map<CardPoolTypes, Boolean> getCardPoolDrawability() {
+        return cardPoolDrawability;
+    }
+
 
     //Getters for error managing
     public ErrorDictionaryLogIn getErrorDictionaryLogIn() {
@@ -316,6 +321,10 @@ public class ClientModel {
     public void setGameStarted(boolean gameStarted) {
         this.gameStarted = gameStarted;
     }
+    public void setCardPoolDrawability(Map<CardPoolTypes, Boolean> cardPoolDrawability) {
+        this.cardPoolDrawability = cardPoolDrawability;
+    }
+
 
     //Setters for error managing
     public void setErrorDictionaryLogIn(ErrorDictionaryLogIn errorDictionaryLogIn) {

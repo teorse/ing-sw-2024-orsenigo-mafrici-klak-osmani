@@ -449,6 +449,11 @@ public class ClientController  implements ServerMessageExecutor {
         model.setObjectiveCandidates(candidates);
     }
 
+    @Override
+    public void updateCardPoolDrawability(CardPoolDrawabilityRecord cardPoolDrawability) {
+        model.setCardPoolDrawability(cardPoolDrawability.cardDrawability());
+    }
+
     /**
      * Updates the client game state in the client model.
      * <p>

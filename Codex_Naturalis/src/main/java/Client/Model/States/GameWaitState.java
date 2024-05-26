@@ -262,9 +262,9 @@ public class GameWaitState extends ClientState{
             logger.fine("Staying in Wait state");
             print();
         }
-        else if (model.getMyPlayerGameState() == PlayerStates.DRAW_RESOURCE || model.getMyPlayerGameState() == PlayerStates.DRAW_GOLDEN) {
-            logger.fine("Entering GameInitialDrawState");
-            model.setClientState(new GameInitialDrawState(model));
+        else if (model.getMyPlayerGameState() == PlayerStates.DRAW) {
+            logger.fine("Entering GameDrawState");
+            model.setClientState(new GameDrawState(model));
         }
         else if (model.getMyPlayerGameState() == PlayerStates.PICK_OBJECTIVE) {
             logger.fine("Entering GamePickObjectiveState");

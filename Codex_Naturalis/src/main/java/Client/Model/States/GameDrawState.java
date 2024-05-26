@@ -8,6 +8,8 @@ import Model.Player.PlayerStates;
 import Model.Utility.Artifacts;
 import Network.ClientServer.Packets.CSPDrawCard;
 
+import java.util.Map;
+
 /**
  * Represents the state where the player chooses to draw a card from the resource or golden pool during the game.
  * Upon instantiation, the command-line interface is cleared, and the initial draw state of the game is printed.
@@ -37,6 +39,12 @@ public class GameDrawState extends ClientState{
      */
     public GameDrawState(ClientModel model) {
         super(model);
+        Map<CardPoolTypes, Boolean> cardDrawability = model.getCardPoolDrawability();
+        if(!cardDrawability.get(CardPoolTypes.GOLDEN))
+            isGoldenOver = true;
+        if(!cardDrawability.get(CardPoolTypes.RESOURCE))
+            isResourceOver = true;
+
         print();
     }
 

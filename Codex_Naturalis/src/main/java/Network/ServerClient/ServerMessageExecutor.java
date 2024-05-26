@@ -53,6 +53,8 @@ public interface ServerMessageExecutor extends Serializable {
 
     void updateSecretObjectiveCandidates(List<ObjectiveRecord> candidates);
 
+    void updateCardPoolDrawability(CardPoolDrawabilityRecord cardPoolDrawability);
+
     void updateClientGameState(PlayerStates newState);
 
     void gameOver(List<PlayerRecord> players);

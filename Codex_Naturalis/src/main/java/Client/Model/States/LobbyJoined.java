@@ -172,7 +172,6 @@ public class LobbyJoined extends ClientState{
                             model.setClientState(new GamePlaceState(model));
                     }
                     case DRAW -> model.setClientState(new GameDrawState(model));
-                    case DRAW_GOLDEN, DRAW_RESOURCE -> model.setClientState(new GameInitialDrawState(model));
                     case PICK_OBJECTIVE -> model.setClientState(new GamePickObjectiveState(model));
                     case WAIT -> model.setClientState(new GameWaitState(model));
                 }

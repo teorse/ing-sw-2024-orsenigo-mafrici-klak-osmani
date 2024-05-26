@@ -1,5 +1,6 @@
 package Model.Game.States;
 
+import Client.Model.Records.CardPoolDrawabilityRecord;
 import Client.Model.Records.GameRecord;
 import Exceptions.Game.*;
 import Model.Game.Game;
@@ -7,6 +8,7 @@ import Model.Game.CardPoolTypes;
 import Model.Game.GameConstants;
 import Model.Game.Table;
 import Model.Player.Player;
+import Network.ServerClient.Packets.SCPUpdateCardPoolDrawability;
 import Network.ServerClient.Packets.SCPUpdateClientGameState;
 import Server.Model.Lobby.LobbyUserConnectionStates;
 import Model.Player.PlayerStates;
@@ -69,6 +71,12 @@ public class DrawInitialCards implements GameState{
             goldenCardsDrawn.put(player,0);
         }
 
+        Map<CardPoolTypes, Boolean> drawability = new HashMap<>();
+        drawability.put(CardPoolTypes.GOLDEN, true);
+        drawability.put(CardPoolTypes.RESOURCE, true);
+
+        gameObserverRelay.update(new SCPUpdateCardPoolDrawability(new CardPoolDrawabilityRecord(drawability)));
+
         findFirstPlayer();
     }
 
@@ -110,15 +118,15 @@ public class DrawInitialCards implements GameState{
 
         //Throws exception if the player can't perform this move.
         PlayerStates playerState = player.getPlayerState();
-        if(playerState != PlayerStates.DRAW && playerState != PlayerStates.DRAW_RESOURCE && playerState != PlayerStates.DRAW_GOLDEN)
+        if(playerState != PlayerStates.DRAW)
             //todo implement exception
             throw new RuntimeException("You can't perform this move in your current state.");
 
-        if(playerState.equals(PlayerStates.DRAW_GOLDEN) && cardPoolType != CardPoolTypes.GOLDEN){
+        if(goldenCardsDrawn.get(player) == goldenCardsToDraw && cardPoolType == CardPoolTypes.GOLDEN){
             //todo implement exception
             throw new RuntimeException("Player State DRAW_GOLDEN but player wants to draw something else");
         }
-        if(playerState.equals(PlayerStates.DRAW_RESOURCE) && cardPoolType != CardPoolTypes.RESOURCE)
+        if(resourceCardsDrawn.get(player) == resourceCardsToDraw  && cardPoolType != CardPoolTypes.RESOURCE)
             //todo implement exception
             throw new RuntimeException("Player State DRAW_RESOURCE but player wants to draw something else");
 
@@ -126,8 +134,10 @@ public class DrawInitialCards implements GameState{
 
         //The rest of the method is executed if the player is actually allowed to perform the move.
 
+        logger.fine("Deciding which card to draw");
         switch (cardPoolType) {
-            case GOLDEN: {
+            case GOLDEN -> {
+                logger.fine("Drawing golden card");
                 if (goldenCardsDrawn.containsKey(player)) {
                     int counter = goldenCardsDrawn.get(player);
                     if (counter >= goldenCardsToDraw)
@@ -142,7 +152,8 @@ public class DrawInitialCards implements GameState{
                 }
             }
 
-            case RESOURCE: {
+            case RESOURCE -> {
+                logger.fine("Drawing golden card");
                 if (resourceCardsDrawn.containsKey(player)) {
                     int counter = resourceCardsDrawn.get(player);
                     if (counter >= resourceCardsToDraw)
@@ -157,6 +168,20 @@ public class DrawInitialCards implements GameState{
                 }
             }
         }
+
+        Map<CardPoolTypes, Boolean> drawability = new HashMap<>();
+        if(goldenCardsDrawn.get(player) == goldenCardsToDraw)
+            drawability.put(CardPoolTypes.GOLDEN, false);
+        else
+            drawability.put(CardPoolTypes.GOLDEN, true);
+
+        if(resourceCardsDrawn.get(player) == resourceCardsToDraw)
+            drawability.put(CardPoolTypes.RESOURCE, false);
+        else
+            drawability.put(CardPoolTypes.RESOURCE, true);
+
+        gameObserverRelay.update(player.getUsername(), new SCPUpdateCardPoolDrawability(new CardPoolDrawabilityRecord(drawability)));
+
     }
 
     /**
@@ -254,6 +279,7 @@ public class DrawInitialCards implements GameState{
      * Advances the round to the next player's turn.
      */
     private void nextPlayer(){
+        logger.info("Looking for the next player, current player was: "+players.get(currentPlayerIndex).getUsername());
         int playersSize = players.size();
 
         if(playersSize < 2){
@@ -261,25 +287,33 @@ public class DrawInitialCards implements GameState{
         }
 
         //If current player is the last players call next state.
-        if(currentPlayerIndex + 1 == playersSize)
+        if(currentPlayerIndex + 1 == playersSize) {
+            logger.fine("Current player was last player of the round, advancing to next state");
             nextState();
+        }
 
         else {
+            logger.fine("Current player was not last player of the round, proceeding to look for next player");
             //For all the remaining players
             for (int i = currentPlayerIndex + 1; i < playersSize; i++) {
                 Player nextPlayer = players.get(i);
+                logger.fine("Looking at player "+nextPlayer);
                 //Set as current player the first online player found among the remaining ones.
                 if(nextPlayer.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)){
+                    logger.fine("Player "+nextPlayer.getUsername()+" is ONLINE, making them new current player");
                     currentPlayerIndex = i;
 
                     //Evaluates what cards the next player has still to draw.
-                    determinePlayerState(nextPlayer);
+                    nextPlayer.setPlayerState(PlayerStates.DRAW);
+                    logger.fine("Current player now is: "+players.get(currentPlayerIndex)+" and their state is: "+players.get(currentPlayerIndex).getPlayerState());
+                    gameObserverRelay.update(nextPlayer.getUsername(), new SCPUpdateClientGameState(PlayerStates.DRAW));
 
                     return;
                 }
             }
 
             //If no eligible players were found after the current player then advance to next round.
+            logger.fine("No eligible player was found, proceeding to next state");
             nextState();
         }
     }
@@ -296,18 +330,23 @@ public class DrawInitialCards implements GameState{
      * @throws RuntimeException If no players are found online.
      */
     private void findFirstPlayer(){
+        logger.info("Looking for the first player.");
         currentPlayerIndex = -1;
         Player firstPlayer;
 
         //Look for the first(in the list's order) online player in the list and set them as the current player
-        for(int i = 0; i < game.getPlayers().size(); i++){
+        for(int i = 0; i < players.size(); i++){
+            logger.fine("Looking at player: "+players.get(i).getUsername());
             if(players.get(i).getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)){
                 currentPlayerIndex = i;
                 //The player found is set as current player.
                 firstPlayer = players.get(i);
 
                 //The player's state is updated to reflect their next expected move
-                determinePlayerState(firstPlayer);
+                firstPlayer.setPlayerState(PlayerStates.DRAW);
+
+                logger.fine("Current player is now: "+players.get(currentPlayerIndex).getUsername()+" and their state is: "+players.get(currentPlayerIndex).getPlayerState());
+                gameObserverRelay.update(firstPlayer.getUsername(), new SCPUpdateClientGameState(PlayerStates.DRAW));
                 return;
             }
         }
@@ -317,24 +356,8 @@ public class DrawInitialCards implements GameState{
         throw new RuntimeException("No players found online");
     }
 
-    /**
-     * Determines the player's state based on what cards he has already drawn.
-     * @param player    the player whose state is to be determined.
-     */
-    private void determinePlayerState(Player player) {
-        PlayerStates playerState;
-        if(resourceCardsDrawn.get(player) < resourceCardsToDraw)
-            playerState = PlayerStates.DRAW_RESOURCE;
-        else if(goldenCardsDrawn.get(player) < goldenCardsToDraw)
-            playerState = PlayerStates.DRAW_GOLDEN;
-        else {
-            playerState = PlayerStates.WAIT;
-        }
 
 
-        player.setPlayerState(playerState);
-        gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(playerState));
-    }
 
 
     //STATE SWITCHER
@@ -344,13 +367,25 @@ public class DrawInitialCards implements GameState{
      * the next state will be another MainLoop.
      */
     private void nextState(){
+        logger.info("Checking for next state");
         //Next state checks if the setup state has been completed, if so it starts the pick objective state
         //otherwise it continues this state by finding the next first player.
         setupStateCounter++;
-        if(setupStateCounter == goldenCardsToDraw+resourceCardsToDraw)
+        if(setupStateCounter == goldenCardsToDraw+resourceCardsToDraw) {
+            logger.fine("Setup Draw state has finished, proceeding to next state.");
             game.setState(new ObjectivesSetup(game));
-        else
+
+            Map<CardPoolTypes, Boolean> drawability = new HashMap<>();
+            drawability.put(CardPoolTypes.GOLDEN, true);
+            drawability.put(CardPoolTypes.RESOURCE, true);
+
+            gameObserverRelay.update(new SCPUpdateCardPoolDrawability(new CardPoolDrawabilityRecord(drawability)));
+
+        }
+        else {
+            logger.fine("Setup Draw state has not yet finished, proceeding to another round of drawing.");
             findFirstPlayer();
+        }
     }
 
 
