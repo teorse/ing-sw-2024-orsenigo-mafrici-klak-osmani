@@ -60,10 +60,10 @@ public class GameWaitState extends ClientState{
             if (inputCounter == 0) {
                 TextUI.clearCMD();
                 TextUI.displayGameTitle();
+                textUI.showGameBoard();
+                System.out.println("Wait! (Type ZOOM if you want to look at the board)");
 
                 if (!model.isWaitingForReconnections()) {
-                    textUI.showGameBoard();
-                    System.out.println("Wait! (Type ZOOM if you want to look at the board)");
                     for (PlayerRecord playerRecord : model.getPlayers()) {
                         logger.info(playerRecord.username() + ": " + playerRecord.playerState());
                         if (playerRecord.playerState() == PlayerStates.PLACE || playerRecord.playerState() == PlayerStates.DRAW) {
