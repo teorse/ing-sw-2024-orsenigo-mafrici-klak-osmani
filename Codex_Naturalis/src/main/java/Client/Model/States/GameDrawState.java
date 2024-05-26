@@ -57,6 +57,8 @@ public class GameDrawState extends ClientState{
             System.out.print("If you want to see the Chat State, type CHAT.");
             if (model.isNewMessage())
                 System.out.println(" (NEW MESSAGE)\n");
+            else
+                System.out.println("\n");
 
             textUI.zoomCardPool(CardPoolTypes.RESOURCE);
             textUI.zoomCardPool(CardPoolTypes.GOLDEN);

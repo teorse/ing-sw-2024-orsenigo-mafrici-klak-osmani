@@ -53,6 +53,9 @@ public class GamePlaceState extends ClientState{
             System.out.print("If you want to see the Chat State, type CHAT.");
             if (model.isNewMessage())
                 System.out.println(" (NEW MESSAGE)\n");
+            else
+                System.out.println("\n");
+
             System.out.println("\nIt's your turn!");
             textUI.showGameBoard();
             textUI.zoomCardsHeld();

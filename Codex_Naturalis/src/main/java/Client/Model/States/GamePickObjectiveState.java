@@ -53,6 +53,8 @@ public class GamePickObjectiveState extends ClientState{
         System.out.print("\nIf you want to see the Chat State, type CHAT.");
         if (model.isNewMessage())
             System.out.println(" (NEW MESSAGE)\n");
+        else
+            System.out.println("\n");
 
         int i = 1;
         System.out.println("\nChoose a secret objective: \n");

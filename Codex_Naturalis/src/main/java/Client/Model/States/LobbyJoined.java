@@ -58,6 +58,8 @@ public class LobbyJoined extends ClientState{
         System.out.print("If you want to see the Chat State, type CHAT.");
         if (model.isNewMessage())
             System.out.println(" (NEW MESSAGE)\n");
+        else
+            System.out.println("\n");
 
         System.out.println("List of users in the lobby: ");
 
