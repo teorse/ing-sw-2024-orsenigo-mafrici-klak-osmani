@@ -519,7 +519,7 @@ public class Lobby implements ServerModelLayer {
     }
 
     public void sendChatMessage(ChatMessageRecord chatMessage) throws NoSuchRecipientException, InvalidRecipientException {
-        logger.info("Sending message in Lobby "+lobbyName);
+        logger.info("Sending message in Lobby "+lobbyName+" from user "+chatMessage.getSender());
         if(!chatMessage.isMessagePrivate()) {
             logger.fine("The message is not private, proceeding to broadcast the message to all lobby users");
             lobbyObserver.update(new SCPReceiveMessage(chatMessage));
