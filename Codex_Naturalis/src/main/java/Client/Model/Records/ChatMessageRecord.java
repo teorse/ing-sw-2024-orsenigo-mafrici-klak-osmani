@@ -46,4 +46,8 @@ public class ChatMessageRecord {
     public String getMessage() {
         return message;
     }
+    @Override
+    public String toString() {
+        return timestamp + " - " + sender + ": " + message;
+    }
 }
