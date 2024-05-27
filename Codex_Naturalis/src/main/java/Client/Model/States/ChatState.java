@@ -1,12 +1,12 @@
 package Client.Model.States;
 
-import Client.Model.ChatMessagesStack;
 import Client.Model.ClientModel;
 import Client.Model.Records.ChatMessageRecord;
 import Client.Model.Records.LobbyUserRecord;
 import Client.Model.Records.PlayerRecord;
 import Client.View.TextUI;
 import Network.ClientServer.Packets.CSPSendChatMessage;
+
 import java.util.logging.Logger;
 
 public class ChatState extends ClientState{
@@ -38,8 +38,7 @@ public class ChatState extends ClientState{
         logger.fine("ChatState initialized");
     }
 
-    //TODO use game color in the chat
-    //TODO update the chat after a message is received
+    //TODO fix private chat state
 
     @Override
     public void print() {
@@ -62,7 +61,7 @@ public class ChatState extends ClientState{
                 for (int i = 0; i < model.getPublicChatMessages().size(); i++) {
                     System.out.println(model.getPublicChatMessages().get(i).toString());
                 }
-                System.out.println("\nPlese type your public message, to send it press ENTER");
+                System.out.println("\nPlease type your public message, to send it press ENTER");
             } else if (choice == 2) {
                 System.out.println("\nSelect a player username to send a private message to by inserting an integer:");
                 int i = 1;
@@ -78,9 +77,9 @@ public class ChatState extends ClientState{
             System.out.println("If you want to go back at the previous choice, type BACK. If you want to exit the Chat State, type EXIT.");
             System.out.println("\nPRIVATE CHAT");
             for (int i = 0; i < model.getPrivateChatMessages().get(chosenUser).size(); i++) {
-                System.out.println(model.getPrivateChatMessages().get(chosenUser).get(i).toString());
+                System.out.println(displayMessage(model.getPrivateChatMessages().get(chosenUser).get(i)));
             }
-            System.out.println("\nPlese type your private message, to send it press ENTER");
+            System.out.println("\nPlease type your private message, to send it press ENTER");
         }
     }
 

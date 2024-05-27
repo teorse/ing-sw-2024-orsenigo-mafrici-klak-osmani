@@ -2,7 +2,6 @@ package Client.Model.Records;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.security.Timestamp;
 import java.util.Date;
 
 public class ChatMessageRecord implements Serializable {
@@ -49,9 +48,5 @@ public class ChatMessageRecord implements Serializable {
     }
     public String getMessage() {
         return message;
-    }
-    @Override
-    public String toString() {
-        return timestamp + " - " + sender + ": " + message;
     }
 }
