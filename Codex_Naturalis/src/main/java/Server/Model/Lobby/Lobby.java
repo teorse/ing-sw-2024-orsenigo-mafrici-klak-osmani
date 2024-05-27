@@ -6,7 +6,7 @@ import CommunicationProtocol.ServerClient.DataTransferObjects.LobbyRecord;
 import CommunicationProtocol.ServerClient.DataTransferObjects.LobbyUserRecord;
 import Exceptions.Server.LobbyExceptions.*;
 import Exceptions.Server.PermissionExceptions.AdminRoleRequiredException;
-import Server.Model.Game.Game.Game;
+import Server.Model.Game.Logic.Game;
 import CommunicationProtocol.ServerClient.Packets.*;
 import Server.Controller.InputHandler.GameControllerObserver;
 import Server.Model.Game.GameLoader;

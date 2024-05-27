@@ -1,7 +1,7 @@
 package CommunicationProtocol.ServerClient.DataTransferObjects;
 
-import Server.Model.Game.Utility.Artifacts;
-import Server.Model.Game.Utility.Coordinates;
+import Server.Model.Game.Artifacts;
+import Server.Model.Game.Player.Coordinates;
 
 import java.io.Serializable;
 import java.util.List;

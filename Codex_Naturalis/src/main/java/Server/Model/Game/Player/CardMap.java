@@ -5,8 +5,7 @@ import CommunicationProtocol.ServerClient.DataTransferObjects.CardVisibilityReco
 import Server.Model.Game.Cards.Card;
 import Server.Model.Game.Cards.CornerDirection;
 import Server.Model.Game.Cards.CornerType;
-import Server.Model.Game.Utility.Coordinates;
-import Server.Model.Game.Utility.Artifacts;
+import Server.Model.Game.Artifacts;
 import CommunicationProtocol.ServerClient.Packets.SCPUpdateCardMap;
 import Server.Model.Lobby.ObserverRelay;
 

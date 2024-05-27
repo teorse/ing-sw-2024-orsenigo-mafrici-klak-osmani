@@ -3,9 +3,9 @@ package Client.Model.States;
 import Client.Model.ClientModel;
 import Client.View.TextUI;
 import Client.View.UserInterface;
-import Server.Model.Game.Game.CardPoolTypes;
+import Server.Model.Game.Table.CardPoolTypes;
 import Server.Model.Game.Player.PlayerStates;
-import Server.Model.Game.Utility.Artifacts;
+import Server.Model.Game.Artifacts;
 import CommunicationProtocol.ClientServer.Packets.CSPDrawCard;
 import CommunicationProtocol.ClientServer.Packets.CSPQuitLobby;
 

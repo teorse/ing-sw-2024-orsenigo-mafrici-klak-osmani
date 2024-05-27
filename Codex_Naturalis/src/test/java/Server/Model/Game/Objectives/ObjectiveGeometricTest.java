@@ -1,12 +1,11 @@
 package Server.Model.Game.Objectives;
 
 import Server.Model.Game.Cards.Card;
-import Server.Model.Game.Objectives.ObjectiveGeometric;
 import Server.Model.Game.Player.CardMap;
 import Server.Model.Game.Player.CardVisibility;
-import Server.Model.Game.Utility.Artifacts;
-import Server.Model.Game.Utility.Coordinates;
-import Server.Model.Game.Utility.JsonParser.CardJsonSerializerDebug;
+import Server.Model.Game.Artifacts;
+import Server.Model.Game.Player.Coordinates;
+import Utils.JsonParser.CardJsonSerializerDebug;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -196,7 +195,7 @@ class ObjectiveGeometricTest {
             Map<Coordinates,CardVisibility> cardsToBePlaced = new HashMap<>();
             List<Coordinates> listOfCoordinatesToBeUsed = new ArrayList<>();
             Map<Artifacts, Integer> artifactsCounter = new HashMap<>();
-            String cardJsonPath = "src/test/java/Server/Model/Game/Game/Resources/RandomCardList.txt";
+            String cardJsonPath = "src/test/java/Server/Model/Game/Logic/Resources/RandomCardList.txt";
             String cardJson;
             try {
                 cardJson = Files.readString(Path.of(cardJsonPath));
@@ -250,7 +249,7 @@ class ObjectiveGeometricTest {
         Map<Coordinates,CardVisibility> cardsToBePlaced = new HashMap<>();
         List<Coordinates> listOfCoordinatesToBeUsed = new ArrayList<>();
         Map<Artifacts, Integer> artifactsCounter = new HashMap<>();
-        String cardJsonPath = "src/test/java/Server/Model/Game/Game/Resources/Scenario3.txt";
+        String cardJsonPath = "src/test/java/Server/Model/Game/Logic/Resources/Scenario3.txt";
         String cardJson;
         try {
             cardJson = Files.readString(Path.of(cardJsonPath));

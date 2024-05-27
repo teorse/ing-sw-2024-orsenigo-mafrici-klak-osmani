@@ -1,7 +1,7 @@
 package CommunicationProtocol.ClientServer;
 
 import CommunicationProtocol.ServerClient.DataTransferObjects.ChatMessageRecord;
-import Server.Model.Game.Game.CardPoolTypes;
+import Server.Model.Game.Table.CardPoolTypes;
 import Server.Model.Lobby.LobbyUserColors;
 
 public interface ClientServerMessageExecutor {

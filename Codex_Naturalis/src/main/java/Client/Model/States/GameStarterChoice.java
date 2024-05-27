@@ -7,7 +7,7 @@ import Server.Model.Game.Cards.Corner;
 import Server.Model.Game.Cards.CornerOrientation;
 import Server.Model.Game.Cards.CornerType;
 import Server.Model.Game.Player.PlayerStates;
-import Server.Model.Game.Utility.Artifacts;
+import Server.Model.Game.Artifacts;
 
 import CommunicationProtocol.ClientServer.Packets.CSPPlayCard;
 import CommunicationProtocol.ClientServer.Packets.CSPQuitLobby;

@@ -2,8 +2,8 @@ package Server.Model.Game.Objectives;
 
 import Server.Model.Game.Player.CardMap;
 import Server.Model.Game.Player.CardVisibility;
-import Server.Model.Game.Utility.Artifacts;
-import Server.Model.Game.Utility.Coordinates;
+import Server.Model.Game.Artifacts;
+import Server.Model.Game.Player.Coordinates;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

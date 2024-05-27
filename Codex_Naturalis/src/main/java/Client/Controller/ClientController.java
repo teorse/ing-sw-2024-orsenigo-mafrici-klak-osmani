@@ -6,7 +6,7 @@ import Client.Model.ErrorDictionary.ErrorDictionaryLogIn;
 import Client.Model.ErrorDictionary.ErrorDictionarySignUp;
 import Client.Model.ErrorDictionary.ErrorDictionaryStartLobbyFailed;
 import CommunicationProtocol.ServerClient.DataTransferObjects.*;
-import Server.Model.Game.Game.CardPoolTypes;
+import Server.Model.Game.Table.CardPoolTypes;
 import Server.Model.Game.Player.PlayerStates;
 import CommunicationProtocol.ServerClient.Packets.ErrorsDictionary;
 import CommunicationProtocol.ServerClient.ServerClientMessageExecutor;

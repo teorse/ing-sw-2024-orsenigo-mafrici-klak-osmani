@@ -2,7 +2,7 @@ package CommunicationProtocol.ServerClient.DataTransferObjects;
 
 import Server.Model.Game.Cards.Corner;
 import Server.Model.Game.Cards.CornerOrientation;
-import Server.Model.Game.Utility.Artifacts;
+import Server.Model.Game.Artifacts;
 
 import java.io.Serializable;
 import java.util.Map;

@@ -8,7 +8,7 @@ import Client.Model.States.ClientState;
 import Client.Model.States.ConnectionState;
 import Client.Network.ClientConnector;
 import CommunicationProtocol.ServerClient.DataTransferObjects.*;
-import Server.Model.Game.Game.CardPoolTypes;
+import Server.Model.Game.Table.CardPoolTypes;
 import Server.Model.Game.Player.PlayerStates;
 import Server.Model.Lobby.LobbyUserColors;
 

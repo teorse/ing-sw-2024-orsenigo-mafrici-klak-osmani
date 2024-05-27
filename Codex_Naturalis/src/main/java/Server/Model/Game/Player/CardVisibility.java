@@ -1,7 +1,7 @@
 package Server.Model.Game.Player;
 
 import CommunicationProtocol.ServerClient.DataTransferObjects.CardVisibilityRecord;
-import Server.Model.Game.Utility.Artifacts;
+import Server.Model.Game.Artifacts;
 import Server.Model.Game.Cards.*;
 
 import java.io.Serializable;

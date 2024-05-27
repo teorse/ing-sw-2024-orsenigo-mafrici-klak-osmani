@@ -3,8 +3,8 @@ package Server.Model.Game.Cards;
 import CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
 import Exceptions.Game.Model.CornerNotFoundException;
 import Server.Model.Game.Player.CardMap;
-import Server.Model.Game.Utility.Artifacts;
-import Server.Model.Game.Utility.Coordinates;
+import Server.Model.Game.Artifacts;
+import Server.Model.Game.Player.Coordinates;
 import Utils.Utilities;
 
 import java.io.Serial;

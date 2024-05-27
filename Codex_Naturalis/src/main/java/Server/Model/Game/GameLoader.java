@@ -1,7 +1,7 @@
 package Server.Model.Game;
 
 import Server.Model.Game.Cards.Card;
-import Server.Model.Game.Game.Game;
+import Server.Model.Game.Logic.Game;
 import Server.Model.Game.Objectives.Objective;
 import Server.Model.Lobby.Lobby;
 import Server.Model.Lobby.LobbyUser;

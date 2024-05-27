@@ -1,6 +1,6 @@
 package Server.Model.Game.Cards;
 
-import Server.Model.Game.Utility.Artifacts;
+import Server.Model.Game.Artifacts;
 
 import java.io.Serial;
 import java.io.Serializable;

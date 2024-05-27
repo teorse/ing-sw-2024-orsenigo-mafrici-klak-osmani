@@ -1,10 +1,9 @@
 package Server.Model.Game.Player;
 
 import Server.Model.Game.Cards.*;
-import Server.Model.Game.Utility.Artifacts;
+import Server.Model.Game.Artifacts;
 
-import Server.Model.Game.Utility.Coordinates;
-import Server.Model.Game.Utility.JsonParser.CardJsonSerializerDebug;
+import Utils.JsonParser.CardJsonSerializerDebug;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

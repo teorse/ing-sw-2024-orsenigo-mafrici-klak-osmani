@@ -6,9 +6,9 @@ import Server.Model.Game.Cards.Corner;
 import Server.Model.Game.Cards.CornerDirection;
 import Server.Model.Game.Cards.CornerOrientation;
 import Server.Model.Game.Cards.CornerType;
-import Server.Model.Game.Game.CardPoolTypes;
-import Server.Model.Game.Utility.Artifacts;
-import Server.Model.Game.Utility.Coordinates;
+import Server.Model.Game.Table.CardPoolTypes;
+import Server.Model.Game.Artifacts;
+import Server.Model.Game.Player.Coordinates;
 import Server.Model.Lobby.LobbyUserConnectionStates;
 
 import java.io.IOException;

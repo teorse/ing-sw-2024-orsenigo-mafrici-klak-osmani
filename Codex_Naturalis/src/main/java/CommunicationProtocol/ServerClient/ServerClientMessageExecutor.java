@@ -1,7 +1,7 @@
 package CommunicationProtocol.ServerClient;
 
 import CommunicationProtocol.ServerClient.DataTransferObjects.*;
-import Server.Model.Game.Game.CardPoolTypes;
+import Server.Model.Game.Table.CardPoolTypes;
 import Server.Model.Game.Player.PlayerStates;
 import CommunicationProtocol.ServerClient.Packets.ErrorsDictionary;
 

@@ -2,8 +2,8 @@ package Server.Model.Game.Cards;
 
 import CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
 import Server.Model.Game.Player.CardMap;
-import Server.Model.Game.Utility.Artifacts;
-import Server.Model.Game.Utility.Coordinates;
+import Server.Model.Game.Artifacts;
+import Server.Model.Game.Player.Coordinates;
 
 import java.io.Serial;
 import java.util.HashMap;

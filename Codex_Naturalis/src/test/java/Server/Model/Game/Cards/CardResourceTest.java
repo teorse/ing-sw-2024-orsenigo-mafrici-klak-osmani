@@ -1,6 +1,6 @@
 package Server.Model.Game.Cards;
 
-import Server.Model.Game.Utility.Artifacts;
+import Server.Model.Game.Artifacts;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;

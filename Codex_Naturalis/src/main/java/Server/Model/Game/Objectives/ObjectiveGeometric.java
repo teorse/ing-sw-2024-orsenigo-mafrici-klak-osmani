@@ -1,8 +1,8 @@
 package Server.Model.Game.Objectives;
 
 import Server.Model.Game.Player.CardMap;
-import Server.Model.Game.Utility.Coordinates;
-import Server.Model.Game.Utility.Artifacts;
+import Server.Model.Game.Player.Coordinates;
+import Server.Model.Game.Artifacts;
 
 import java.io.Serial;
 import java.util.Map;

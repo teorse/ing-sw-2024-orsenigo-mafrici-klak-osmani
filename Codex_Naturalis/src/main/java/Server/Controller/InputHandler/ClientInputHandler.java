@@ -17,7 +17,7 @@ import Exceptions.Server.LogInExceptions.AccountAlreadyLoggedInException;
 import Exceptions.Server.LogInExceptions.AccountNotFoundException;
 import Exceptions.Server.LogInExceptions.IncorrectPasswordException;
 import Exceptions.Server.PermissionExceptions.AdminRoleRequiredException;
-import Server.Model.Game.Game.CardPoolTypes;
+import Server.Model.Game.Table.CardPoolTypes;
 import CommunicationProtocol.ClientServer.Packets.ClientServerPacket;
 import CommunicationProtocol.ServerClient.Packets.*;
 import Server.Controller.GameController;
