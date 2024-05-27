@@ -1,4 +1,4 @@
-package Server.Model.Game.Utility;
+package Server.Model.Game.Player;
 
 import Server.Model.Game.Player.Coordinates;
 import org.junit.jupiter.api.BeforeEach;
