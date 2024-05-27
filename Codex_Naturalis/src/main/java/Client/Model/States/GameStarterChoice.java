@@ -10,6 +10,7 @@ import Model.Player.PlayerStates;
 import Model.Utility.Artifacts;
 
 import Network.ClientServer.Packets.CSPPlayCard;
+import Network.ClientServer.Packets.CSPQuitLobby;
 
 import java.util.logging.Logger;
 
@@ -79,6 +80,10 @@ public class GameStarterChoice extends ClientState {
     public void handleInput(String input) {
         if (input.equalsIgnoreCase("CHAT")) {
             model.setClientState(new ChatState(model,this));
+        }
+        else if(input.equalsIgnoreCase("QUIT")) {
+            model.getClientConnector().sendPacket(new CSPQuitLobby());
+            model.setClientState(new LobbySelectionState(model));
         }
         else if (TextUI.getBinaryChoice(input)) {
             boolean faceUp = (Integer.parseInt(input) == 1);

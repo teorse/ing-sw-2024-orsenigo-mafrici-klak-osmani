@@ -6,6 +6,7 @@ import Client.View.TextUI;
 import Model.Game.CardPoolTypes;
 import Model.Player.PlayerStates;
 import Model.Utility.Coordinates;
+import Network.ClientServer.Packets.CSPQuitLobby;
 
 import java.util.logging.Logger;
 
@@ -151,6 +152,10 @@ public class GameWaitState extends ClientState{
         }
         else if (input.equalsIgnoreCase("CHAT")) {
             model.setClientState(new ChatState(model,this));
+        }
+        else if(input.equalsIgnoreCase("QUIT")) {
+            model.getClientConnector().sendPacket(new CSPQuitLobby());
+            model.setClientState(new LobbySelectionState(model));
         }
         // If game setup is finished
         else if (model.isSetUpFinished()) {
