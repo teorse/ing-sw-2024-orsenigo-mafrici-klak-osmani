@@ -97,6 +97,8 @@ public class ClientModel {
         setUpFinished = false;
         waitingForReconnections = false;
         gameOver = false;
+        chatState = false;
+        newMessage = false;
 
         publicChatMessages = new ChatMessagesStack(ClientModelConstants.PublicMessageStackSize);
         privateChatMessages = new HashMap<>();
@@ -347,7 +349,6 @@ public class ClientModel {
     }
     public void handleInput(String input) {clientState.handleInput(input);}
     public void print() {clientState.print();}
-
     public LobbyUserColors getLobbyUserColors(String username) {
         for (LobbyUserRecord lobbyUserRecord : lobbyUserRecords) {
             if (lobbyUserRecord.username().equals(username)) {
@@ -355,5 +356,28 @@ public class ClientModel {
             }
         }
         return null;
+    }
+    public void resetConnection() {
+        this.cardMaps = new HashMap<>();
+        this.lobbyPreviewRecords = new ArrayList<>();
+        this.lobbyUserRecords = new ArrayList<>();
+        this.players = new ArrayList<>();
+        this.winners = new ArrayList<>();
+        clientState = new ConnectionState(this);
+        myUsername = null;
+
+        connected = false;
+        loggedIn = false;
+        inLobby = false;
+        gameStartable = false;
+        gameStarted = false;
+        setUpFinished = false;
+        waitingForReconnections = false;
+        gameOver = false;
+        chatState = false;
+        newMessage = false;
+
+        publicChatMessages = new ChatMessagesStack(ClientModelConstants.PublicMessageStackSize);
+        privateChatMessages = new HashMap<>();
     }
 }

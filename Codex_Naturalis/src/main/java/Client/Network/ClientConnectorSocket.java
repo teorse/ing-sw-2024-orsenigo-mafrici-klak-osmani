@@ -1,9 +1,12 @@
 package Client.Network;
 
 import Client.Controller.ClientController;
+import Client.Model.ClientModel;
+import Client.Model.States.ConnectionState;
 import Network.ClientServer.Packets.ClientServerPacket;
 import Network.NetworkConstants;
 import Network.ServerClient.Packets.ServerClientPacket;
+import Utils.Utilities;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -12,6 +15,7 @@ import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.logging.Logger;
 
 /**
  * The ClientConnectorSocket class is an implementation of the ClientConnector interface using sockets.<br>
@@ -24,6 +28,8 @@ public class ClientConnectorSocket implements ClientConnector, Runnable {
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
     private final ClientController controller;
+    private final Logger logger;
+    private final ClientModel model;
 
 
 
@@ -36,8 +42,11 @@ public class ClientConnectorSocket implements ClientConnector, Runnable {
      * @param serverIp    The IP address of the server to connect to.
      * @param controller  The ClientController to interact with this client's local model.
      */
-    public ClientConnectorSocket(String serverIp, ClientController controller) throws SocketTimeoutException {
+    public ClientConnectorSocket(String serverIp, ClientController controller, ClientModel model) throws SocketTimeoutException {
         this.controller = controller;
+        this.model = model;
+        logger = Logger.getLogger(ConnectionState.class.getName());
+
         try {
             int serverPort = NetworkConstants.ServerSocketListenerPort;
             socket = new Socket();
@@ -99,7 +108,9 @@ public class ClientConnectorSocket implements ClientConnector, Runnable {
                 }
             }
         } catch (IOException e) {
-            System.out.println("The server just died, RIP.");
+            String stackTrace = Utilities.StackTraceToString(e);
+            logger.warning("The server just died, RIP.\n" + "Stack Trace:\n" + stackTrace);
+            model.resetConnection();
         }
         finally {
             closeSocket();

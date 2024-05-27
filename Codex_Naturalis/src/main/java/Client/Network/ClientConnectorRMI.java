@@ -1,6 +1,7 @@
 package Client.Network;
 
 import Client.Controller.ClientController;
+import Client.Model.ClientModel;
 import Network.ClientServer.Packets.ClientServerPacket;
 import Network.NetworkConstants;
 import Network.RMI.ClientRemoteInterfaces.ClientRemoteInterface;
@@ -36,6 +37,7 @@ public class ClientConnectorRMI implements ClientConnector, ClientRemoteInterfac
     private final ClientRemoteInterface thisRemote;
     private final ServerMessageExecutor controller;
     private final Logger logger;
+    private final ClientModel model;
 
 
 
@@ -51,11 +53,12 @@ public class ClientConnectorRMI implements ClientConnector, ClientRemoteInterfac
      * @param serverIp    The IP address of the server to connect to.
      * @param controller  The client controller associated with this client connector.
      */
-    public ClientConnectorRMI(String serverIp, ClientController controller) throws RemoteException {
+    public ClientConnectorRMI(String serverIp, ClientController controller, ClientModel model) throws RemoteException {
         logger = Logger.getLogger(ClientConnectorRMI.class.getName());
         logger.info("Initializing Client Connector RMI");
 
         this.controller = controller;
+        this.model = model;
 
         //Exporting the remote object that the server will use to connect back to this client.
         thisRemote = (ClientRemoteInterface) UnicastRemoteObject.exportObject(this, 0);
@@ -132,7 +135,9 @@ public class ClientConnectorRMI implements ClientConnector, ClientRemoteInterfac
                     //If remote exception is thrown then the connection to the server has died and
                     //the while loop is broken
                     //todo add method in client to handle server death.
-                    System.out.println("The server just died, RIP");
+                    String stackTrace = Utilities.StackTraceToString(e);
+                    logger.warning("The server just died, RIP.\n" + "Stack Trace: \n" + stackTrace);
+                    model.resetConnection();
                     serverAlive = false;
                 }
             }
