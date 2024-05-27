@@ -10,6 +10,7 @@ import Client.Model.States.ConnectionState;
 import Client.Network.ClientConnector;
 import Model.Game.CardPoolTypes;
 import Model.Player.PlayerStates;
+import Server.Model.Lobby.LobbyUserColors;
 
 import java.util.*;
 
@@ -245,16 +246,16 @@ public class ClientModel {
         this.gameRecord = gameRecord;
         setUpFinished = gameRecord.setupFinished();
         waitingForReconnections = gameRecord.waitingForReconnections();
-        clientState.print();
+        print();
     }
     public void setLobbyPreviewRecords(List<LobbyPreviewRecord> lobbyPreviewRecords) {
         this.lobbyPreviewRecords = lobbyPreviewRecords;
-        clientState.print();
+        print();
     }
     public void setLobbyRecord(LobbyRecord lobbyRecord) {
         this.lobbyRecord = lobbyRecord;
         this.gameStartable = lobbyRecord.gameStartable();
-        clientState.print();
+        print();
     }
     public void setLobbyUserRecords(List<LobbyUserRecord> lobbyUserRecords) {
         this.lobbyUserRecords = lobbyUserRecords;
@@ -268,7 +269,7 @@ public class ClientModel {
         }
         privateChatMessages = newPrivateMessagesMap;
 
-        clientState.print();
+        print();
     }
     public void receiveChatMessage(ChatMessageRecord chatMessage){
         if(chatMessage.isMessagePrivate()){
@@ -278,10 +279,9 @@ public class ClientModel {
         else
             publicChatMessages.add(chatMessage);
 
-        if (this.isChatState()) {
-            print();
-        } else
+        if (!this.isChatState())
             this.setNewMessage(true);
+        print();
     }
     public void setPlayerSecretInfoRecord(PlayerSecretInfoRecord playerSecretInfoRecord) {
         this.playerSecretInfoRecord = playerSecretInfoRecord;
@@ -347,4 +347,13 @@ public class ClientModel {
     }
     public void handleInput(String input) {clientState.handleInput(input);}
     public void print() {clientState.print();}
+
+    public LobbyUserColors getLobbyUserColors(String username) {
+        for (LobbyUserRecord lobbyUserRecord : lobbyUserRecords) {
+            if (lobbyUserRecord.username().equals(username)) {
+                return lobbyUserRecord.color();
+            }
+        }
+        return null;
+    }
 }

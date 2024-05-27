@@ -55,7 +55,7 @@ public class GameStarterChoice extends ClientState {
         TextUI.displayGameTitle();
         System.out.print("\nIf you want to see the Chat State, type CHAT.");
         if (model.isNewMessage())
-            System.out.println(" (NEW MESSAGE)\n");
+            System.out.println(" (NEW MESSAGE)");
         else
             System.out.println();
 
