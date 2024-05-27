@@ -37,5 +37,10 @@ public abstract class ASynchronousGameState extends GameState {
     public void removePlayer(Player player) {
         playerReadiness.remove(player);
         players.remove(player);
+
+        if(players.size() > 1)
+            nextState();
+        else
+            game.gameOver();
     }
 }

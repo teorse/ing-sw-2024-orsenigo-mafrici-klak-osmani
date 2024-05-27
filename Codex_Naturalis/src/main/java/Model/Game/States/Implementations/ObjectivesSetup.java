@@ -99,21 +99,6 @@ public class ObjectivesSetup extends ASynchronousGameState {
 
 
 
-    //DISCONNECTION METHODS
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void removePlayer(Player player) {
-        super.removePlayer(player);
-
-        if(players.size() > 1)
-            nextState();
-        else
-            game.gameOver();
-    }
-
     //RECONNECTION
     @Override
     public void userReconnectionProcedure(Player player){

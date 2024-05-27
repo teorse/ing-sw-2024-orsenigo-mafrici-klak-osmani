@@ -303,9 +303,9 @@ public class Lobby implements ServerModelLayer {
 
         System.out.println("User "+username+" has quit from the lobby");
         if(gameStarted) {
-            game.quit(username);
             if(!game.shouldRemovePlayerOnDisconnect())
                 tryForVictoryByDefault();
+            game.quit(username);
         }
         removeUser(lobbyUser);
     }
@@ -369,10 +369,6 @@ public class Lobby implements ServerModelLayer {
         //to meet the required max players
         if(!gameStarted)
             lobbyClosed = false;
-        else {
-            logger.info("Removing user "+lobbyUser.getUsername()+" from Game in lobby "+lobbyName);
-            game.removePlayer(lobbyUser.getUsername());
-        }
 
 
         if(lobbyUsers.isEmpty()){
@@ -420,6 +416,7 @@ public class Lobby implements ServerModelLayer {
                     if (!lobbyUser.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)) {
                         logger.info("Removing user " + i + ": " + lobbyUser.getUsername());
                         removeUser(lobbyUser);
+                        game.removePlayer(lobbyUser.getUsername());
                         //No need to decrement counter i after removal as the removal is on the map, the list
                         //over which we iterate does not change after remove, only the map.
                     }
@@ -444,7 +441,7 @@ public class Lobby implements ServerModelLayer {
 
 
 
-
+//todo fix bug not updating game started in previews
     //LOBBY METHODS
     /**
      * Starts the game in the lobby.

@@ -73,6 +73,9 @@ public abstract class SynchronousGameState extends GameState {
             players.remove(player);
             logger.fine("Player removed");
         }
+
+        if(players.size() <= 1)
+            game.gameOver();
     }
 
     /**

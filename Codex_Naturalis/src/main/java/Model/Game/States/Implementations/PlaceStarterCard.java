@@ -88,24 +88,6 @@ public class PlaceStarterCard extends ASynchronousGameState {
 
 
 
-    //DISCONNECTION METHODS
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void removePlayer(Player player) {
-        super.removePlayer(player);
-
-        if(players.size() > 1)
-            nextState();
-        else
-            game.gameOver();
-    }
-
-
-
-
-
     //STATE SWITCHER
     /**
      * Handles the logic to determine whether the conditions for switching to the next state are met and performs
