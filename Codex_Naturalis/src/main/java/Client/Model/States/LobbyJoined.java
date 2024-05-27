@@ -80,7 +80,7 @@ public class LobbyJoined extends ClientState{
         }
 
         if(model.getLobbyUserRecords().size() == model.getLobbyRecord().targetNumberUsers())
-            System.out.println("\nGame will start in 20 seconds.");
+            System.out.println("\nTarget number of users reached. Game will start in 20 seconds.");
 
         if (TextUI.areYouAdmin(model)) {
             if(model.getLobbyUserRecords().size() >= 2)

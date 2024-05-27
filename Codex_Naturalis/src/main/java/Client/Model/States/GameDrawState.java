@@ -19,6 +19,7 @@ import java.util.Map;
  * The chosen card is then drawn from the selected pool.
  */
 public class GameDrawState extends ClientState{
+    //TODO fixare la stampa ripetuta di "Enter a number between 1 and 3 to pick a card:" quando crashano persone e nella schermata di game over
 
     CardPoolTypes cardPoolTypes;
     int cardChoice;
