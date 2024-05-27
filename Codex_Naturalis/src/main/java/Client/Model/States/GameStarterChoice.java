@@ -3,11 +3,11 @@ package Client.Model.States;
 import Client.Model.ClientModel;
 import Client.Model.Records.CardRecord;
 import Client.View.TextUI;
-import Model.Cards.Corner;
-import Model.Cards.CornerOrientation;
-import Model.Cards.CornerType;
-import Model.Player.PlayerStates;
-import Model.Utility.Artifacts;
+import Server.Model.Game.Cards.Corner;
+import Server.Model.Game.Cards.CornerOrientation;
+import Server.Model.Game.Cards.CornerType;
+import Server.Model.Game.Player.PlayerStates;
+import Server.Model.Game.Utility.Artifacts;
 
 import Network.ClientServer.Packets.CSPPlayCard;
 import Network.ClientServer.Packets.CSPQuitLobby;

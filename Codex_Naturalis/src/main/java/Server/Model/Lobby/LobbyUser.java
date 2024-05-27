@@ -2,7 +2,7 @@ package Server.Model.Lobby;
 
 import Client.Model.Records.LobbyUserRecord;
 import Server.Interfaces.LayerUser;
-import Server.Model.ServerUser;
+import Server.Model.Server.ServerUser;
 
 import java.io.Serial;
 import java.io.Serializable;

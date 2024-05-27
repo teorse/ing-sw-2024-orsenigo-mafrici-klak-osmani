@@ -1,8 +1,8 @@
 package Network.ServerClient;
 
 import Client.Model.Records.*;
-import Model.Game.CardPoolTypes;
-import Model.Player.PlayerStates;
+import Server.Model.Game.Game.CardPoolTypes;
+import Server.Model.Game.Player.PlayerStates;
 import Network.ServerClient.Packets.ErrorsDictionary;
 
 import java.io.Serializable;

@@ -1,6 +1,6 @@
 package Network.ServerClient.Packets;
 
-import Model.Game.CardPoolTypes;
+import Server.Model.Game.Game.CardPoolTypes;
 import Network.ServerClient.ServerMessageExecutor;
 
 import java.util.Map;

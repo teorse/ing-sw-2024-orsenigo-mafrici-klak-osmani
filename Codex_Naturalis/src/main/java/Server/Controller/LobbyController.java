@@ -6,7 +6,7 @@ import Exceptions.Server.PermissionExceptions.AdminRoleRequiredException;
 import Server.Controller.InputHandler.GameControllerObserver;
 import Server.Model.Lobby.Lobby;
 import Server.Model.Lobby.LobbyUserColors;
-import Server.Model.ServerUser;
+import Server.Model.Server.ServerUser;
 import Server.Network.ClientHandler.ClientHandler;
 
 /**

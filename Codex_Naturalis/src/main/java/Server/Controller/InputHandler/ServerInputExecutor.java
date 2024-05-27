@@ -1,7 +1,7 @@
 package Server.Controller.InputHandler;
 
 import Client.Model.Records.ChatMessageRecord;
-import Model.Game.CardPoolTypes;
+import Server.Model.Game.Game.CardPoolTypes;
 import Server.Model.Lobby.LobbyUserColors;
 
 public interface ServerInputExecutor {

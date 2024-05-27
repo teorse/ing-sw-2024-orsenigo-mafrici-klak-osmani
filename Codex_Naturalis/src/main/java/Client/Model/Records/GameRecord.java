@@ -1,10 +1,7 @@
 package Client.Model.Records;
 
 
-import Model.Game.States.GameState;
-
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Represents a record containing information about a game.

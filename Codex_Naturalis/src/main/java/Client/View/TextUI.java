@@ -2,13 +2,13 @@ package Client.View;
 
 import Client.Model.ClientModel;
 import Client.Model.Records.*;
-import Model.Cards.Corner;
-import Model.Cards.CornerDirection;
-import Model.Cards.CornerOrientation;
-import Model.Cards.CornerType;
-import Model.Game.CardPoolTypes;
-import Model.Utility.Artifacts;
-import Model.Utility.Coordinates;
+import Server.Model.Game.Cards.Corner;
+import Server.Model.Game.Cards.CornerDirection;
+import Server.Model.Game.Cards.CornerOrientation;
+import Server.Model.Game.Cards.CornerType;
+import Server.Model.Game.Game.CardPoolTypes;
+import Server.Model.Game.Utility.Artifacts;
+import Server.Model.Game.Utility.Coordinates;
 import Server.Model.Lobby.LobbyUserConnectionStates;
 
 import java.io.IOException;

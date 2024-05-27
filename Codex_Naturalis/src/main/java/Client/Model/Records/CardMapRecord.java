@@ -1,7 +1,7 @@
 package Client.Model.Records;
 
-import Model.Utility.Artifacts;
-import Model.Utility.Coordinates;
+import Server.Model.Game.Utility.Artifacts;
+import Server.Model.Game.Utility.Coordinates;
 
 import java.io.Serializable;
 import java.util.List;

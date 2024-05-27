@@ -1,8 +1,8 @@
 package Server.Controller;
 
 import Exceptions.Game.*;
-import Model.Game.CardPoolTypes;
-import Model.Game.Game;
+import Server.Model.Game.Game.CardPoolTypes;
+import Server.Model.Game.Game.Game;
 
 /**
  * The GameController class serves as the controller for the game.<br>

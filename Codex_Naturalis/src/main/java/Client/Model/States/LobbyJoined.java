@@ -3,7 +3,7 @@ package Client.Model.States;
 import Client.Model.ClientModel;
 import Client.Model.Records.LobbyUserRecord;
 import Client.View.TextUI;
-import Model.Player.PlayerStates;
+import Server.Model.Game.Player.PlayerStates;
 import Network.ClientServer.Packets.CSPChangeColor;
 import Network.ClientServer.Packets.CSPQuitLobby;
 import Network.ClientServer.Packets.CSPStartGame;

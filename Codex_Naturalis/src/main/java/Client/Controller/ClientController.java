@@ -7,9 +7,8 @@ import Client.Model.ErrorDictionary.ErrorDictionarySignUp;
 import Client.Model.ErrorDictionary.ErrorDictionaryStartLobbyFailed;
 import Client.Model.Records.*;
 import Client.Model.Records.LobbyPreviewRecord;
-import Client.View.TextUI;
-import Model.Game.CardPoolTypes;
-import Model.Player.PlayerStates;
+import Server.Model.Game.Game.CardPoolTypes;
+import Server.Model.Game.Player.PlayerStates;
 import Network.ServerClient.Packets.ErrorsDictionary;
 import Network.ServerClient.ServerMessageExecutor;
 

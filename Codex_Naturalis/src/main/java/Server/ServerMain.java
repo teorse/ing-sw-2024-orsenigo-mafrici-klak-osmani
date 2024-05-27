@@ -1,7 +1,7 @@
 package Server;
 
 import Server.Controller.ServerController;
-import Server.Model.ServerModel;
+import Server.Model.Server.ServerModel;
 import Server.Network.Listener.ListenerRMI;
 import Server.Network.Listener.ListenerSocket;
 

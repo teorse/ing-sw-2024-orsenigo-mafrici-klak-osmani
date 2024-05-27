@@ -9,7 +9,7 @@ import Exceptions.Server.LogInExceptions.IncorrectPasswordException;
 import Exceptions.Server.LobbyExceptions.InvalidLobbySettingsException;
 import Exceptions.Server.LobbyExceptions.LobbyClosedException;
 import Exceptions.Server.LobbyExceptions.LobbyUserAlreadyConnectedException;
-import Server.Model.ServerModel;
+import Server.Model.Server.ServerModel;
 import Server.Network.ClientHandler.ClientHandler;
 import Server.ServerMain;
 

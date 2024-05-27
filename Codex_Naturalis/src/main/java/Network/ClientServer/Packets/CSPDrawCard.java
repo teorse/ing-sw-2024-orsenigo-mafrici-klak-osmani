@@ -1,6 +1,6 @@
 package Network.ClientServer.Packets;
 
-import Model.Game.CardPoolTypes;
+import Server.Model.Game.Game.CardPoolTypes;
 import Server.Controller.InputHandler.ServerInputExecutor;
 
 public class CSPDrawCard implements ClientServerPacket{

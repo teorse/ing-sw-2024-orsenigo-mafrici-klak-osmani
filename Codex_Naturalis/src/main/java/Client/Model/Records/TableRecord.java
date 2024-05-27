@@ -1,6 +1,6 @@
 package Client.Model.Records;
 
-import Model.Utility.Artifacts;
+import Server.Model.Game.Utility.Artifacts;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,7 +1,7 @@
 package Client.Controller;
 
 import Client.Network.ClientConnector;
-import Model.Game.CardPoolTypes;
+import Server.Model.Game.Game.CardPoolTypes;
 import Network.ClientServer.CommandTypes;
 import Network.ClientServer.GameCommands;
 import Network.ClientServer.LobbyCommands;

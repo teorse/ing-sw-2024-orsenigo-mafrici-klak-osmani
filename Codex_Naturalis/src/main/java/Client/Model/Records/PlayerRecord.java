@@ -1,6 +1,6 @@
 package Client.Model.Records;
 
-import Model.Player.PlayerStates;
+import Server.Model.Game.Player.PlayerStates;
 
 import java.io.Serializable;
 

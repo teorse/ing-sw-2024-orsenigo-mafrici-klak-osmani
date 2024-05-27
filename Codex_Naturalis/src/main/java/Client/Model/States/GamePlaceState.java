@@ -2,9 +2,8 @@ package Client.Model.States;
 
 import Client.Model.ClientModel;
 import Client.View.TextUI;
-import Model.Player.PlayerStates;
-import Model.Utility.Coordinates;
-import Network.ClientServer.Packets.CSPPickObjective;
+import Server.Model.Game.Player.PlayerStates;
+import Server.Model.Game.Utility.Coordinates;
 import Network.ClientServer.Packets.CSPPlayCard;
 import Network.ClientServer.Packets.CSPQuitLobby;
 

@@ -3,9 +3,9 @@ package Client.Model.States;
 import Client.Model.ClientModel;
 import Client.Model.Records.PlayerRecord;
 import Client.View.TextUI;
-import Model.Game.CardPoolTypes;
-import Model.Player.PlayerStates;
-import Model.Utility.Coordinates;
+import Server.Model.Game.Game.CardPoolTypes;
+import Server.Model.Game.Player.PlayerStates;
+import Server.Model.Game.Utility.Coordinates;
 import Network.ClientServer.Packets.CSPQuitLobby;
 
 import java.util.logging.Logger;

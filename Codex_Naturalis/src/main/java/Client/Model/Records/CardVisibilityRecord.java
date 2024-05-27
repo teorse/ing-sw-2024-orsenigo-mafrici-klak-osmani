@@ -1,8 +1,8 @@
 package Client.Model.Records;
 
-import Model.Cards.Corner;
-import Model.Cards.CornerDirection;
-import Model.Utility.Artifacts;
+import Server.Model.Game.Cards.Corner;
+import Server.Model.Game.Cards.CornerDirection;
+import Server.Model.Game.Utility.Artifacts;
 
 import java.io.Serializable;
 import java.util.Map;
