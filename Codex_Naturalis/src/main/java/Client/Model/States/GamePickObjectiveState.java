@@ -5,6 +5,7 @@ import Client.Model.Records.ObjectiveRecord;
 import Client.View.TextUI;
 import Model.Player.PlayerStates;
 import Network.ClientServer.Packets.CSPPickObjective;
+import Network.ClientServer.Packets.CSPQuitLobby;
 
 import java.util.logging.Logger;
 
@@ -78,6 +79,10 @@ public class GamePickObjectiveState extends ClientState{
     public void handleInput(String input) {
         if (input.equalsIgnoreCase("CHAT")) {
             model.setClientState(new ChatState(model,this));
+        }
+        else if(input.equalsIgnoreCase("QUIT")) {
+            model.getClientConnector().sendPacket(new CSPQuitLobby());
+            model.setClientState(new LobbySelectionState(model));
         }
         else if (TextUI.getBinaryChoice(input)) {
             int choice = Integer.parseInt(input);

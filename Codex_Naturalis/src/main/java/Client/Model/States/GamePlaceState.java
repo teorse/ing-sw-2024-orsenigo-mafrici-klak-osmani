@@ -6,6 +6,7 @@ import Model.Player.PlayerStates;
 import Model.Utility.Coordinates;
 import Network.ClientServer.Packets.CSPPickObjective;
 import Network.ClientServer.Packets.CSPPlayCard;
+import Network.ClientServer.Packets.CSPQuitLobby;
 
 import java.util.logging.Logger;
 
@@ -103,6 +104,10 @@ public class GamePlaceState extends ClientState{
         }
         else if (input.equalsIgnoreCase("CHAT")) {
             model.setClientState(new ChatState(model,this));
+        }
+        else if(input.equalsIgnoreCase("QUIT")) {
+            model.getClientConnector().sendPacket(new CSPQuitLobby());
+            model.setClientState(new LobbySelectionState(model));
         }
         else if (inputCounter == 0) {
             if (TextUI.checkInputBound(input,1,3)) {
