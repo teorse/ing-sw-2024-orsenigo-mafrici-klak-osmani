@@ -363,16 +363,22 @@ public class ClientModel {
         return null;
     }
     public void resetConnection() {
-        this.cardMaps = new HashMap<>();
-        this.lobbyPreviewRecords = new ArrayList<>();
-        this.lobbyUserRecords = new ArrayList<>();
-        this.players = new ArrayList<>();
-        this.winners = new ArrayList<>();
         clientState = new ConnectionState(this);
         myUsername = null;
 
         connected = false;
         loggedIn = false;
+
+        quitLobby();
+    }
+
+    public void quitLobby() {
+        this.cardMaps = new HashMap<>();
+        this.lobbyPreviewRecords = new ArrayList<>();
+        this.lobbyUserRecords = new ArrayList<>();
+        this.players = new ArrayList<>();
+        this.winners = new ArrayList<>();
+
         inLobby = false;
         gameStartable = false;
         gameStarted = false;

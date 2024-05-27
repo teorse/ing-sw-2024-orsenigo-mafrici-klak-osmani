@@ -105,6 +105,7 @@ public class LobbyJoined extends ClientState{
     public void handleInput(String input) {
         // If input is to quit the lobby
         if (input.equalsIgnoreCase("QUIT")) {
+            model.quitLobby();
             // Send packet to quit lobby
             model.getClientConnector().sendPacket(new CSPQuitLobby());
             // Set client state to LobbySelectionState

@@ -46,9 +46,9 @@ public class ChatState extends ClientState{
 
             System.out.println("If you want to go back at the previous choice, type BACK. If you want to exit the Chat State, type EXIT.");
             System.out.println("\n" + """ 
-                    Enter your choice:
-                     1 - Public Chat
-                     2 - Private Chat""");
+                Enter your choice:
+                 1 - Public Chat
+                 2 - Private Chat""");
         } else if (inputCounter == 1) {
             TextUI.clearCMD();
             TextUI.displayChatState();
@@ -82,12 +82,25 @@ public class ChatState extends ClientState{
 
             System.out.println("If you want to go back at the previous choice, type BACK. If you want to exit the Chat State, type EXIT.");
             System.out.println("\nPRIVATE CHAT");
-            for (int i = 0; i < model.getPrivateChatMessages().get(chosenUser).size(); i++) {
-                System.out.println(displayMessage(model.getPrivateChatMessages().get(chosenUser).get(i)));
+
+            // Debug: verifica se chosenUser è impostato correttamente
+            System.out.println("Debug: chosenUser = " + chosenUser);
+
+            // Debug: verifica se ci sono messaggi privati per l'utente scelto
+            if (model.getPrivateChatMessages().containsKey(chosenUser)) {
+                System.out.println("Debug: private messages found for user " + chosenUser);
+
+                for (int i = 0; i < model.getPrivateChatMessages().get(chosenUser).size(); i++) {
+                    System.out.println(displayMessage(model.getPrivateChatMessages().get(chosenUser).get(i)));
+                }
+            } else {
+                System.out.println("No private messages found for user " + chosenUser);
             }
+
             System.out.println("\nPlease type your private message, to send it press ENTER");
         }
     }
+
 
     @Override
     public void handleInput(String input) {
