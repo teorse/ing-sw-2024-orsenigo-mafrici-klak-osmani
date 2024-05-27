@@ -11,7 +11,7 @@ import java.util.List;
  * In this state, the final rankings of players are displayed along with prompts to exit the view.
  */
 public class GameOverState extends ClientState{
-
+    //TODO fixare shermata di game over non stampata in DrawStarter
     /**
      * Constructs a new GameOverState with the specified client model.
      * <p>
