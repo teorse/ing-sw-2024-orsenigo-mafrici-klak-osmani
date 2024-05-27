@@ -59,8 +59,12 @@ public class GameWaitState extends ClientState{
         if (model.isSetUpFinished()) {
             if (inputCounter == 0) {
                 TextUI.clearCMD();
-                TextUI.displayGameTitle();
-                System.out.print("\nIf you want to see the Chat State, type CHAT.");
+                if (!model.getGameRecord().lastRoundFlag())
+                    TextUI.displayGameTitle();
+                else
+                    TextUI.displayLastRound();
+
+                System.out.print("\nIf you want to quit the lobby, type QUIT. If you want to see the Chat State, type CHAT.");
                 if (model.isNewMessage())
                     System.out.println(" (NEW MESSAGE)\n");
                 else

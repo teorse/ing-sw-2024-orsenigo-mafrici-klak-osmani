@@ -53,7 +53,7 @@ public class GameStarterChoice extends ClientState {
     public void print() {
         TextUI.clearCMD();
         TextUI.displayGameTitle();
-        System.out.print("\nIf you want to see the Chat State, type CHAT.");
+        System.out.print("\nIf you want to quit the lobby, type QUIT. If you want to see the Chat State, type CHAT.");
         if (model.isNewMessage())
             System.out.println(" (NEW MESSAGE)");
         else
