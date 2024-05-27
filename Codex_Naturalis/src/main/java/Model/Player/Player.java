@@ -3,8 +3,8 @@ package Model.Player;
 import Client.Model.Records.*;
 import Model.Cards.Card;
 import Model.Objectives.Objective;
+import Network.ServerClient.Packets.SCPUpdateClientGameState;
 import Network.ServerClient.Packets.SCPUpdateSecret;
-import Network.ServerClient.Packets.SCPUpdateSecretObjectiveCandidates;
 import Network.ServerClient.Packets.SCPUpdateSpecificPlayer;
 import Server.Interfaces.LayerUser;
 import Server.Model.Lobby.LobbyUser;
@@ -25,7 +25,6 @@ public class Player implements LayerUser {
     private int roundsCompleted;
     private final List<Card> cardsHeld;
     private final Map<Card, Boolean> cardPlayability;
-    private final List<Objective> secretObjectiveCandidates;
     private final List<Objective> secretObjectives;
     private final CardMap cardMap;
     private PlayerStates playerState;
@@ -33,7 +32,7 @@ public class Player implements LayerUser {
     private int objectivesCompleted;
     private boolean winner;
 
-    private final ObserverRelay sender;
+    private final ObserverRelay observer;
 
     private final Logger logger;
 
@@ -47,11 +46,10 @@ public class Player implements LayerUser {
         logger.info("Initializing player: "+user.getUsername());
 
         this.user = user;
-        this.sender = gameObserverRelay;
+        this.observer = gameObserverRelay;
         this.cardMap = new CardMap(gameObserverRelay, user.getUsername());
         this.cardsHeld = new ArrayList<>();
         this.cardPlayability = new HashMap<>();
-        this.secretObjectiveCandidates = new ArrayList<>();
         this.secretObjectives = new ArrayList<>();
         this.playerState = PlayerStates.WAIT;
         this.roundsCompleted = 0;
@@ -91,10 +89,10 @@ public class Player implements LayerUser {
     //SETTERS
     public void setPlayerState(PlayerStates playerState){
         this.playerState = playerState;
+        observer.update(new SCPUpdateSpecificPlayer(this.toTransferableDataObject()));
 
-        //todo
-        if(sender != null)
-            sender.update(new SCPUpdateSpecificPlayer(this.toTransferableDataObject()));
+        if(user.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE))
+            observer.update(user.getUsername(), new SCPUpdateClientGameState(playerState));
     }
     public void setWinner(){
         winner = true;
@@ -105,29 +103,16 @@ public class Player implements LayerUser {
 
 
     //METHODS
-    public void setSecretObjectiveCandidate(List<Objective> candidates){
-        secretObjectiveCandidates.addAll(candidates);
-        List<ObjectiveRecord> secretObjectiveCandidatesRecord = new ArrayList<>();
-        for(Objective candidate : secretObjectiveCandidates)
-            secretObjectiveCandidatesRecord.add(candidate.toRecord());
-
-        //todo
-        if(sender != null)
-            sender.update(user.getUsername(), new SCPUpdateSecretObjectiveCandidates(secretObjectiveCandidatesRecord));
-    }
-
+    //todo update javadoc
     /**
      * Method allows to select an objective from the list of secret objective candidates and adds it to
      * the player's actually confirmed objectives that will be used to count points at the end of the game.
-     * @param index Index of the objective candidate the player wants to select.
+     * @param selectedObjective Index of the objective candidate the player wants to select.
      */
-    public void selectSecretObjective(int index){
-        Objective selectedObjective = secretObjectiveCandidates.get(index);
+    public void addSecretObjective(Objective selectedObjective){
         secretObjectives.add(selectedObjective);
 
-        //todo
-        if(sender != null)
-            sender.update(user.getUsername(), new SCPUpdateSecret(this.toSecretPlayer()));
+        observer.update(user.getUsername(), new SCPUpdateSecret(this.toSecretPlayer()));
     }
 
     public void incrementRoundsCompleted() {
@@ -155,7 +140,7 @@ public class Player implements LayerUser {
             logger.finest("Card in position "+i+":\n"+cardHeldRecord);
         }
 
-        sender.update(user.getUsername(), new SCPUpdateSecret(this.toSecretPlayer()));
+        observer.update(user.getUsername(), new SCPUpdateSecret(this.toSecretPlayer()));
     }
 
     /**
@@ -203,7 +188,7 @@ public class Player implements LayerUser {
         //Updates the playable sides of the remaining cards held after placing the card in the card map.
         updatePlayableSides();
 
-        sender.update(new SCPUpdateSpecificPlayer(this.toTransferableDataObject()));
+        observer.update(new SCPUpdateSpecificPlayer(this.toTransferableDataObject()));
     }
 
     /**

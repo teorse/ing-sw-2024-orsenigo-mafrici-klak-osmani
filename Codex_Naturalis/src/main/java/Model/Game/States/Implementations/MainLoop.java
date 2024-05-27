@@ -1,43 +1,38 @@
-package Model.Game.States;
+package Model.Game.States.Implementations;
 
 import Client.Model.Records.GameRecord;
 import Model.Cards.Card;
-import Exceptions.Game.InvalidActionForGameStateException;
 import Exceptions.Game.InvalidActionForPlayerStateException;
 import Exceptions.Game.NotYourTurnException;
 import Model.Game.Game;
 import Model.Game.CardPoolTypes;
+import Model.Game.States.PlayerSwitchers.PlayerSwitcherResilient;
+import Model.Game.States.SynchronousGameState;
 import Model.Game.Table;
 import Model.Player.Player;
 import Network.ServerClient.Packets.SCPUpdateClientGameState;
 import Network.ServerClient.Packets.SCPUpdateGame;
 import Server.Model.Lobby.LobbyUserConnectionStates;
 import Model.Player.PlayerStates;
-import Server.Model.Lobby.ObserverRelay;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
+//todo fix javadoc
 
 /**
  * Represents the main loop state in the game, where players take turns to place cards and draw new cards.<br>
  * This state implements the GameState interface and defines methods to handle actions during the main gameplay loop.
  */
-public class MainLoop implements GameState{
+public class MainLoop extends SynchronousGameState {
     //ATTRIBUTES
-    private final Game game;
-    private final List<Player> players;
     private final Table table;
-    private final ObserverRelay gameObserverRelay;
 
-    private int currentPlayerIndex;
     private final Map<String, PlayerStates> playerStatesBeforeDisconnection;
 
     private boolean lastRound;
     private boolean waitingForReconnections;
-
-    private final Logger logger;
 
 
 
@@ -50,13 +45,12 @@ public class MainLoop implements GameState{
      * @param game The game instance to which this MainLoop state belongs.
      */
     public MainLoop(Game game){
+        super(game, new PlayerSwitcherResilient(game.getPlayers()));
+
         logger = Logger.getLogger(MainLoop.class.getName());
         logger.info("Initializing Main Loop State in game");
 
-        this.game = game;
-        players = game.getPlayers();
         table = game.getTable();
-        gameObserverRelay = game.getGameObserverRelay();
         playerStatesBeforeDisconnection = new HashMap<>();
 
         lastRound = false;
@@ -113,11 +107,10 @@ public class MainLoop implements GameState{
             //If the two card Pools are empty then set the player state to wait and go to the next player
             player.setPlayerState(PlayerStates.WAIT);
             player.incrementRoundsCompleted();
-            nextPlayer();
+            findNextPlayer();
             return;
         }
 
-        gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(player.getPlayerState()));
         game.checkGameEndingConditions();
     }
 
@@ -146,22 +139,9 @@ public class MainLoop implements GameState{
         player.addCardHeld(cardDrawn);
 
         player.setPlayerState(PlayerStates.WAIT);
-        gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.WAIT));
         player.incrementRoundsCompleted();
 
-        nextPlayer();
-    }
-
-    /**
-     * The method throws an exception as players are not allowed to perform this move during this state of the game.
-     *
-     * @param player        The player who is picking the objective.
-     * @param objectiveIndex The index of the objective the player is picking.
-     * @throws InvalidActionForGameStateException   Always thrown as players are not allowed to pick objectives in the main loop state.
-     */
-    @Override
-    public void pickPlayerObjective(Player player, int objectiveIndex) throws InvalidActionForGameStateException {
-        throw new InvalidActionForGameStateException("You can't pick your secret objective in this game state");
+        findNextPlayer();
     }
 
 
@@ -201,7 +181,7 @@ public class MainLoop implements GameState{
 
         if(player.equals(players.get(currentPlayerIndex))) {
             logger.fine("The disconnecting player was the current player, proceeding to look for next player");
-            nextPlayer();
+            findNextPlayer();
         }
     }
 
@@ -213,7 +193,6 @@ public class MainLoop implements GameState{
             setWaitingForReconnections(false);
             Player currentPlayer = players.get(currentPlayerIndex);
             currentPlayer.setPlayerState(playerStatesBeforeDisconnection.remove(currentPlayer.getUsername()));
-            gameObserverRelay.update(currentPlayer.getUsername(), new SCPUpdateClientGameState(currentPlayer.getPlayerState()));
             logger.info("Game Loop restored");
         }
     }
@@ -222,55 +201,11 @@ public class MainLoop implements GameState{
      * {@inheritDoc}
      */
     @Override
-    public void quit(Player player) {
-        logger.info("Player "+player.getUsername()+" requested to quit from the game.");
-        removePlayer(player);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public synchronized void removePlayer(Player player) {
-        logger.info("Removing player "+player.getUsername()+" from game.");
-        int indexPlayerToRemove = players.indexOf(player);
-        logger.fine("Player "+player.getUsername()+" is number "+indexPlayerToRemove+" in the current order of the game.");
+        if(!waitingForReconnections)
+            oneOnlinePlayerLeftProcedure();
 
-        //Remove the player from the player list
-        if(indexPlayerToRemove == currentPlayerIndex){
-            logger.fine("The player to remove is the current player");
-            players.remove(player);
-            logger.fine("Player removed");
-
-            if(!waitingForReconnections)
-                oneOnlinePlayerLeftProcedure();
-
-            currentPlayerIndex--;
-            logger.fine("Current player index decremented");
-            nextPlayer();
-            logger.fine("Looking for the next player");
-        }
-
-        else if(indexPlayerToRemove < currentPlayerIndex){
-            logger.fine("The player to remove is before the current player");
-            players.remove(player);
-            logger.fine("Player removed");
-
-            if(waitingForReconnections)
-                oneOnlinePlayerLeftProcedure();
-
-            currentPlayerIndex--;
-            logger.fine("Current player index decremented");
-        }
-
-        else{
-            logger.fine("The player to remove is after the current player");
-            players.remove(player);
-            logger.fine("Player removed");
-
-            if(waitingForReconnections)
-                oneOnlinePlayerLeftProcedure();
-        }
+        super.removePlayer(player);
     }
 
     private void oneOnlinePlayerLeftProcedure(){
@@ -293,6 +228,8 @@ public class MainLoop implements GameState{
             logger.info("Only 1 player was found online, while waiting for reconnections setting current player to wait.");
             logger.finest("Only online player found is: "+onlinePlayer.getUsername()+"\nAdding player state to playerStatesBeforeDisconnection");
 
+            setWaitingForReconnections(true);
+
             if(!onlinePlayer.getPlayerState().equals(PlayerStates.WAIT))
                 playerStatesBeforeDisconnection.put(onlinePlayer.getUsername(), onlinePlayer.getPlayerState());
 
@@ -301,119 +238,30 @@ public class MainLoop implements GameState{
             logger.finest("Updating client state");
             gameObserverRelay.update(onlinePlayer.getUsername(), new SCPUpdateClientGameState(onlinePlayer.getPlayerState()));
             logger.finest("Setting waiting for reconnection to true.");
-            setWaitingForReconnections(true);
+
         }
         logger.fine("Exiting Game disconnection procedure");
     }
 
+    public PlayerStates determinePlayerState(Player player){
+        //Check which state to assign to the player
 
-
-
-
-    //TURN SWITCHER
-    /**
-     * Advances the round to the next player's turn.
-     */
-    private void nextPlayer(){
-        logger.info("Looking for the next player");
-
-        int playersSize = players.size();
-
-        logger.fine("Current player was: "+players.get(currentPlayerIndex).getUsername()+
-                "\nCurrent player index was: "+currentPlayerIndex+", real life number is: "+currentPlayerIndex+1+
-                "\nTotal players in this game: "+playersSize);
-
-        //If current player is the last players call next state.
-        if(currentPlayerIndex +1 == playersSize) {
-            logger.fine("Player index+1 equals player size (the current player was the last player for the round), proceeding to next state");
-            nextState();
+        if(!waitingForReconnections) {
+            //If the game is not waiting for reconnections then assign to the first player either their state before disconnections
+            //or give them the default state of PLACE
+            if(!lastRound)
+                //If we are not in the last round then the player can both place and draw cards so we recover their state from the cache
+                return playerStatesBeforeDisconnection.getOrDefault(player.getUsername(), PlayerStates.PLACE);
+            else
+                //If we are in the last round then they can only place cards
+                return PlayerStates.PLACE;
         }
+        else{
+            if(!playerStatesBeforeDisconnection.containsKey(player.getUsername()))
+                playerStatesBeforeDisconnection.put(player.getUsername(), PlayerStates.PLACE);
 
-        else {
-            logger.fine("Current player was not the last player");
-            //For all the remaining players
-            for (int i = currentPlayerIndex + 1; i < playersSize; i++) {
-                logger.fine("Checking player number "+i);
-                Player nextPlayer = players.get(i);
-                logger.fine("Player number "+i+" is "+nextPlayer.getUsername()+"\nTheir connection status is: "+nextPlayer.getConnectionStatus());
-                //Set as current player the first online player found among the remaining ones.
-                if(nextPlayer.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)){
-                    logger.fine("Setting current player index to: "+i);
-                    currentPlayerIndex = i;
-
-                    //If the player had previously disconnected then the old saved value for their state is retrieved, otherwise
-                    //by default they are assigned the PLACE state.
-                    logger.fine("Checking if the player has a cached stated from a previous disconnection");
-                    if(!waitingForReconnections) {
-                        if(!lastRound)
-                            nextPlayer.setPlayerState(playerStatesBeforeDisconnection.getOrDefault(nextPlayer.getUsername(), PlayerStates.PLACE));
-                        else
-                            nextPlayer.setPlayerState( PlayerStates.PLACE);
-                    }
-                    else{
-                        if(!playerStatesBeforeDisconnection.containsKey(nextPlayer.getUsername()))
-                            playerStatesBeforeDisconnection.put(nextPlayer.getUsername(), PlayerStates.PLACE);
-                    }
-
-                    logger.fine("Updating player "+nextPlayer.getUsername()+" client state to: "+nextPlayer.getPlayerState());
-                    gameObserverRelay.update(nextPlayer.getUsername(), new SCPUpdateClientGameState(nextPlayer.getPlayerState()));
-                    return;
-                }
-            }
-            logger.fine("No eligible players were found in this round, proceeding to next round.");
-            //If no eligible players were found after the current player then advance to next round.
-            nextState();
+            return PlayerStates.WAIT;
         }
-    }
-
-
-
-
-
-    //FIRST PLAYER FINDER
-    /**
-     * Determines the initial player for each round.<br>
-     * It is necessary to prevent the game from stalling if the player at position 0 in the list has temporarily disconnected.
-     *
-     * @throws RuntimeException If no players are found online.
-     */
-    private void findFirstPlayer(){
-        logger.info("Looking for first player of this round");
-        currentPlayerIndex = -1;
-        Player firstPlayer;
-
-        //Look for the first(in the list's order) online player in the list and set them as the current player
-        for(int i = 0; i < game.getPlayers().size(); i++){
-            logger.fine("Checking player: "+players.get(i).getUsername()+"\nConnection status: "+players.get(i).getConnectionStatus());
-            if(players.get(i).getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)){
-                logger.fine("Setting player "+players.get(i)+" as current player");
-                currentPlayerIndex = i;
-                //The player found is set as current player.
-                firstPlayer = players.get(currentPlayerIndex);
-                //The player's state is updated to reflect their next expected move
-
-
-                //Check which state to assign to the first player
-                if(!waitingForReconnections) {
-                    //If the game is not waiting for reconnections then assign to the first player either their state before disconnections
-                    //or give them the default state of PLACE
-                    firstPlayer.setPlayerState(playerStatesBeforeDisconnection.getOrDefault(firstPlayer.getUsername(), PlayerStates.PLACE));
-                    gameObserverRelay.update(firstPlayer.getUsername(), new SCPUpdateClientGameState(firstPlayer.getPlayerState()));
-                }
-                else{
-                    //If the game is waiting for reconnections then set the first player to wait and if they do not have any cached
-                    //state from earlier disconnections then cache their state as PLACE
-                    firstPlayer.setPlayerState(PlayerStates.WAIT);
-                    if(!playerStatesBeforeDisconnection.containsKey(firstPlayer.getUsername()))
-                        playerStatesBeforeDisconnection.put(firstPlayer.getUsername(), PlayerStates.PLACE);
-                    gameObserverRelay.update(firstPlayer.getUsername(), new SCPUpdateClientGameState(PlayerStates.WAIT));
-                }
-                break;
-            }
-        }
-
-        if(currentPlayerIndex == -1)
-            logger.warning("No players found online in game");
     }
 
 
@@ -426,7 +274,7 @@ public class MainLoop implements GameState{
      * Check for the boolean LastRoundFlag. If true then the next state will be the FinalRound, otherwise
      * the next state will be another MainLoop.
      */
-    private void nextState(){
+    protected void nextState(){
         game.incrementRoundsCompleted();
 
         int playersSize = players.size();
