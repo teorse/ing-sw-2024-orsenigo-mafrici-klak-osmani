@@ -26,8 +26,8 @@ public class GameDrawState extends ClientState{
     int resourceUB = 1 + model.getTableRecord().visibleCardRecordResource().size();
     int goldenLB = 1 + ((model.getTableRecord().topDeckGolden() == Artifacts.NULL) ? 1 : 0);
     int goldenUB = 1 + model.getTableRecord().visibleCardRecordResource().size();
-    boolean isResourceOver = !(resourceLB <= resourceUB);
-    boolean isGoldenOver = !(goldenLB <= goldenUB);
+    boolean isResourceOver = resourceLB > resourceUB;
+    boolean isGoldenOver = goldenLB > goldenUB;
 
 
     /**
@@ -64,7 +64,7 @@ public class GameDrawState extends ClientState{
             System.out.println("\nIf you want to go back at the previous choice, type BACK");
             System.out.print("If you want to see the Chat State, type CHAT.");
             if (model.isNewMessage())
-                System.out.println(" (NEW MESSAGE)\n");
+                System.out.println(" (NEW MESSAGE)");
             else
                 System.out.println();
 
