@@ -7,6 +7,7 @@ import Model.Game.CardPoolTypes;
 import Model.Player.PlayerStates;
 import Model.Utility.Artifacts;
 import Network.ClientServer.Packets.CSPDrawCard;
+import Network.ClientServer.Packets.CSPQuitLobby;
 
 import java.util.Map;
 
@@ -125,6 +126,10 @@ public class GameDrawState extends ClientState{
         }
         else if (input.equalsIgnoreCase("CHAT")) {
             model.setClientState(new ChatState(model,this));
+        }
+        else if(input.equalsIgnoreCase("QUIT")) {
+            model.getClientConnector().sendPacket(new CSPQuitLobby());
+            model.setClientState(new LobbySelectionState(model));
         }
         else if (inputCounter == 0) {
             // Check if the input is a binary choice

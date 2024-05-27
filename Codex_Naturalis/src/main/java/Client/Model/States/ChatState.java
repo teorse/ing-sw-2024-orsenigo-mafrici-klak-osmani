@@ -152,5 +152,6 @@ public class ChatState extends ClientState{
             case BLUE -> usernameColorPrint = TerminalColor.BLUE;
             case RED -> usernameColorPrint = TerminalColor.RED;
         }
-        return messageRecord.getTimestamp() + " - " + usernameColorPrint + messageRecord.getSender() + TerminalColor.RESET + ": " + messageRecord.getMessage();    }
+        return messageRecord.getTimestamp() + " - " + usernameColorPrint + messageRecord.getSender() + TerminalColor.RESET + ": " + messageRecord.getMessage();
+    }
 }
