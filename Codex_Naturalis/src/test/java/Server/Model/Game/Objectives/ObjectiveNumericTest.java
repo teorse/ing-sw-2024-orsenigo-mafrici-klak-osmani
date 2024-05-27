@@ -1,6 +1,5 @@
-package Model.Objectives;
+package Server.Model.Game.Objectives;
 
-import Server.Model.Game.Objectives.ObjectiveNumeric;
 import Server.Model.Game.Player.CardMap;
 import Server.Model.Game.Player.CardVisibility;
 import Server.Model.Game.Utility.Artifacts;
