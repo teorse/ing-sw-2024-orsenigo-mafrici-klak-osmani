@@ -263,20 +263,25 @@ public class ClientModel {
         this.lobbyUserRecords = lobbyUserRecords;
 
         Map<String, ChatMessagesStack> newPrivateMessagesMap = new HashMap<>();
-        for(LobbyUserRecord lobbyUser : lobbyUserRecords){
-            if(!privateChatMessages.containsKey(lobbyUser.username()))
-                newPrivateMessagesMap.put(lobbyUser.username(), new ChatMessagesStack(ClientModelConstants.PrivateMessageStackSize));
-            else
-                newPrivateMessagesMap.put(lobbyUser.username(), privateChatMessages.get(lobbyUser.username()));
-        }
-        privateChatMessages = newPrivateMessagesMap;
+        for(LobbyUserRecord lobbyUser : lobbyUserRecords) {
+            if (!lobbyUser.username().equals(myUsername)) {
+                if (!privateChatMessages.containsKey(lobbyUser.username()))
+                    newPrivateMessagesMap.put(lobbyUser.username(), new ChatMessagesStack(ClientModelConstants.PrivateMessageStackSize));
+                else
+                    newPrivateMessagesMap.put(lobbyUser.username(), privateChatMessages.get(lobbyUser.username()));
+            }
+            privateChatMessages = newPrivateMessagesMap;
 
-        print();
+            print();
+        }
     }
     public void receiveChatMessage(ChatMessageRecord chatMessage){
         if(chatMessage.isMessagePrivate()){
             String sender = chatMessage.getSender();
-            privateChatMessages.get(sender).add(chatMessage);
+            if (sender.equals(myUsername))
+                privateChatMessages.get(chatMessage.getRecipient()).add(chatMessage);
+            else
+                privateChatMessages.get(sender).add(chatMessage);
         }
         else
             publicChatMessages.add(chatMessage);
@@ -358,16 +363,22 @@ public class ClientModel {
         return null;
     }
     public void resetConnection() {
-        this.cardMaps = new HashMap<>();
-        this.lobbyPreviewRecords = new ArrayList<>();
-        this.lobbyUserRecords = new ArrayList<>();
-        this.players = new ArrayList<>();
-        this.winners = new ArrayList<>();
         clientState = new ConnectionState(this);
         myUsername = null;
 
         connected = false;
         loggedIn = false;
+
+        quitLobby();
+    }
+
+    public void quitLobby() {
+        this.cardMaps = new HashMap<>();
+        this.lobbyPreviewRecords = new ArrayList<>();
+        this.lobbyUserRecords = new ArrayList<>();
+        this.players = new ArrayList<>();
+        this.winners = new ArrayList<>();
+
         inLobby = false;
         gameStartable = false;
         gameStarted = false;

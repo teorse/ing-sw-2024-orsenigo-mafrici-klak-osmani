@@ -81,6 +81,7 @@ public class GamePickObjectiveState extends ClientState{
             model.setClientState(new ChatState(model,this));
         }
         else if(input.equalsIgnoreCase("QUIT")) {
+            model.quitLobby();
             model.getClientConnector().sendPacket(new CSPQuitLobby());
             model.setClientState(new LobbySelectionState(model));
         }

@@ -19,6 +19,7 @@ public abstract class ClientState {
     protected TextUI textUI;
     protected int inputCounter;
 
+    //TODO fix the QUIT command!
     /**
      * Constructs a new ClientState with the specified client model.
      * <p>
