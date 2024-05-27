@@ -1,12 +1,12 @@
 package Client.Model.States;
 
 import Client.Model.ClientModel;
-import Client.Model.Records.PlayerRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
 import Client.View.TextUI;
 import Server.Model.Game.Game.CardPoolTypes;
 import Server.Model.Game.Player.PlayerStates;
 import Server.Model.Game.Utility.Coordinates;
-import Network.ClientServer.Packets.CSPQuitLobby;
+import CommunicationProtocol.ClientServer.Packets.CSPQuitLobby;
 
 import java.util.logging.Logger;
 

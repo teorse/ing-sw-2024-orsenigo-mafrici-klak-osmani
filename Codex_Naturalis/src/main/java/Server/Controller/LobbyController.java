@@ -1,6 +1,6 @@
 package Server.Controller;
 
-import Client.Model.Records.ChatMessageRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.ChatMessageRecord;
 import Exceptions.Server.LobbyExceptions.*;
 import Exceptions.Server.PermissionExceptions.AdminRoleRequiredException;
 import Server.Controller.InputHandler.GameControllerObserver;

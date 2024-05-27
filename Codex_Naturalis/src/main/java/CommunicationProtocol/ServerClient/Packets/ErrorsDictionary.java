@@ -1,0 +1,18 @@
+package CommunicationProtocol.ServerClient.Packets;
+
+public enum ErrorsDictionary {
+    YOU_ARE_ALREADY_LOGGED_IN,
+    WRONG_PASSWORD,
+    USERNAME_NOT_FOUND,
+    USERNAME_ALREADY_TAKEN,
+    ACCOUNT_ALREADY_LOGGED_IN_BY_SOMEONE_ELSE,
+
+    LOBBY_NAME_ALREADY_TAKEN,
+    INVALID_LOBBY_SIZE,
+    LOBBY_NAME_NOT_FOUND,
+    LOBBY_IS_CLOSED,
+
+
+    GENERIC_ERROR,
+
+}

@@ -1,12 +1,14 @@
 package Server.Model.Game.Game;
 
-import Client.Model.Records.*;
+import CommunicationProtocol.ServerClient.DataTransferObjects.CardMapRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.GameRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
 import Exceptions.Game.*;
 import Server.Model.Game.Cards.Card;
 import Server.Model.Game.Game.States.Implementations.PlaceStarterCard;
 import Server.Model.Game.Objectives.Objective;
 import Server.Model.Game.Player.Player;
-import Network.ServerClient.Packets.*;
+import CommunicationProtocol.ServerClient.Packets.*;
 import Server.Interfaces.ServerModelLayer;
 import Server.Model.Game.Game.States.GameState;
 import Server.Model.Lobby.Lobby;

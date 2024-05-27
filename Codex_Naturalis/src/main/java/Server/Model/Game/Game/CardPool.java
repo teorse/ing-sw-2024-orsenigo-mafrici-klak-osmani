@@ -1,6 +1,6 @@
 package Server.Model.Game.Game;
 
-import Client.Model.Records.CardRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
 import Server.Model.Game.Cards.Card;
 
 import java.util.ArrayList;

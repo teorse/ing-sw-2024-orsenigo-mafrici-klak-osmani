@@ -6,7 +6,7 @@ import Server.Model.Game.Game.States.ASynchronousGameState;
 import Server.Model.Game.Player.Player;
 import Server.Model.Game.Game.Table;
 import Server.Model.Game.Player.PlayerStates;
-import Network.ServerClient.Packets.SCPUpdateClientGameState;
+import CommunicationProtocol.ServerClient.Packets.SCPUpdateClientGameState;
 
 import java.util.Map;
 import java.util.logging.Logger;

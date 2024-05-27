@@ -1,12 +1,12 @@
 package Server.Network.ClientHandler;
 
 import Exceptions.Network.RMI.ClientDisconnectedException;
-import Network.ClientServer.Packets.ClientServerPacket;
-import Network.NetworkConstants;
-import Network.RMI.ClientRemoteInterfaces.ClientRemoteInterface;
-import Network.RMI.ServerRemoteInterfaces.ClientHandlerRemoteInterface;
-import Network.ServerClient.Packets.SCPConnectionAck;
-import Network.ServerClient.Packets.ServerClientPacket;
+import CommunicationProtocol.ClientServer.Packets.ClientServerPacket;
+import CommunicationProtocol.NetworkConstants;
+import CommunicationProtocol.RMI.ClientRemoteInterfaces.ClientRemoteInterface;
+import CommunicationProtocol.RMI.ServerRemoteInterfaces.ClientHandlerRemoteInterface;
+import CommunicationProtocol.ServerClient.Packets.SCPConnectionAck;
+import CommunicationProtocol.ServerClient.Packets.ServerClientPacket;
 import Server.Controller.InputHandler.InputHandler;
 import Utils.Utilities;
 

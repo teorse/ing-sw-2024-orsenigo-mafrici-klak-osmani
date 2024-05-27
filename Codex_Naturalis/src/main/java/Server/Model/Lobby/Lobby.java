@@ -1,13 +1,13 @@
 package Server.Model.Lobby;
 
-import Client.Model.Records.ChatMessageRecord;
-import Client.Model.Records.LobbyPreviewRecord;
-import Client.Model.Records.LobbyRecord;
-import Client.Model.Records.LobbyUserRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.ChatMessageRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.LobbyPreviewRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.LobbyRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.LobbyUserRecord;
 import Exceptions.Server.LobbyExceptions.*;
 import Exceptions.Server.PermissionExceptions.AdminRoleRequiredException;
 import Server.Model.Game.Game.Game;
-import Network.ServerClient.Packets.*;
+import CommunicationProtocol.ServerClient.Packets.*;
 import Server.Controller.InputHandler.GameControllerObserver;
 import Server.Model.Game.GameLoader;
 import Server.Controller.GameController;

@@ -1,6 +1,6 @@
 package Client.Network;
 
-import Network.NetworkConstants;
+import CommunicationProtocol.NetworkConstants;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

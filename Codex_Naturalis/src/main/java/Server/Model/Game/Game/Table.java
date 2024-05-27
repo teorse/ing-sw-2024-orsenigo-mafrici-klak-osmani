@@ -1,12 +1,12 @@
 package Server.Model.Game.Game;
 
-import Client.Model.Records.CardRecord;
-import Client.Model.Records.ObjectiveRecord;
-import Client.Model.Records.TableRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.ObjectiveRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.TableRecord;
 import Server.Model.Game.Cards.Card;
 import Server.Model.Game.Objectives.Objective;
 import Server.Model.Game.Utility.Artifacts;
-import Network.ServerClient.Packets.SCPUpdateTable;
+import CommunicationProtocol.ServerClient.Packets.SCPUpdateTable;
 import Server.Model.Lobby.ObserverRelay;
 
 import java.util.*;

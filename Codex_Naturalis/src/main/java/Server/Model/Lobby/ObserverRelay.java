@@ -1,6 +1,6 @@
 package Server.Model.Lobby;
 
-import Network.ServerClient.Packets.ServerClientPacket;
+import CommunicationProtocol.ServerClient.Packets.ServerClientPacket;
 import Server.Network.ClientHandler.ClientHandler;
 
 import java.util.HashMap;

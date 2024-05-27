@@ -1,6 +1,6 @@
 package Server.Network.ClientHandler;
 
-import Network.ServerClient.Packets.ServerClientPacket;
+import CommunicationProtocol.ServerClient.Packets.ServerClientPacket;
 import Server.Controller.InputHandler.InputHandler;
 
 /**

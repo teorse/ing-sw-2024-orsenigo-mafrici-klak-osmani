@@ -3,15 +3,14 @@ package Client.Network;
 import Client.Controller.ClientController;
 import Client.Model.ClientModel;
 import Client.Model.States.ConnectionState;
-import Network.ClientServer.Packets.ClientServerPacket;
-import Network.NetworkConstants;
-import Network.ServerClient.Packets.ServerClientPacket;
+import CommunicationProtocol.ClientServer.Packets.ClientServerPacket;
+import CommunicationProtocol.NetworkConstants;
+import CommunicationProtocol.ServerClient.Packets.ServerClientPacket;
 import Utils.Utilities;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;

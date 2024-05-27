@@ -1,6 +1,6 @@
 package Server.Controller.InputHandler;
 
-import Network.ClientServer.Packets.ClientServerPacket;
+import CommunicationProtocol.ClientServer.Packets.ClientServerPacket;
 
 /**
  * The InputHandler interface defines the contract for classes that handle input messages.<br>

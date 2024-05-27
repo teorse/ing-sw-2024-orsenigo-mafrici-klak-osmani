@@ -1,11 +1,11 @@
 package Client.Model.States;
 
 import Client.Model.ClientModel;
-import Client.Model.Records.ChatMessageRecord;
-import Client.Model.Records.LobbyUserRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.ChatMessageRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.LobbyUserRecord;
 import Client.View.TerminalColor;
 import Client.View.TextUI;
-import Network.ClientServer.Packets.CSPSendChatMessage;
+import CommunicationProtocol.ClientServer.Packets.CSPSendChatMessage;
 
 import java.util.logging.Logger;
 

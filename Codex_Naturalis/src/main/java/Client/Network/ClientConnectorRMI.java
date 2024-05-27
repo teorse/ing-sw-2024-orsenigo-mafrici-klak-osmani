@@ -2,15 +2,14 @@ package Client.Network;
 
 import Client.Controller.ClientController;
 import Client.Model.ClientModel;
-import Network.ClientServer.Packets.ClientServerPacket;
-import Network.NetworkConstants;
-import Network.RMI.ClientRemoteInterfaces.ClientRemoteInterface;
-import Network.RMI.ServerRemoteInterfaces.ClientHandlerRemoteInterface;
-import Network.RMI.ServerRemoteInterfaces.ServerListenerRemoteInterface;
-import Network.ServerClient.Packets.ServerClientPacket;
-import Network.ServerClient.ServerMessageExecutor;
+import CommunicationProtocol.ClientServer.Packets.ClientServerPacket;
+import CommunicationProtocol.NetworkConstants;
+import CommunicationProtocol.RMI.ClientRemoteInterfaces.ClientRemoteInterface;
+import CommunicationProtocol.RMI.ServerRemoteInterfaces.ClientHandlerRemoteInterface;
+import CommunicationProtocol.RMI.ServerRemoteInterfaces.ServerListenerRemoteInterface;
+import CommunicationProtocol.ServerClient.Packets.ServerClientPacket;
+import CommunicationProtocol.ServerClient.ServerClientMessageExecutor;
 import Utils.Utilities;
-import jdk.jshell.execution.Util;
 
 import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
@@ -35,7 +34,7 @@ public class ClientConnectorRMI implements ClientConnector, ClientRemoteInterfac
      * The thisRemote representing this client connector's RMI object.
      */
     private final ClientRemoteInterface thisRemote;
-    private final ServerMessageExecutor controller;
+    private final ServerClientMessageExecutor controller;
     private final Logger logger;
     private final ClientModel model;
 

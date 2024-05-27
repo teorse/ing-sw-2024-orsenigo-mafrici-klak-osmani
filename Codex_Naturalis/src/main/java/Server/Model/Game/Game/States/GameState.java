@@ -1,6 +1,6 @@
 package Server.Model.Game.Game.States;
 
-import Client.Model.Records.GameRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.GameRecord;
 import Exceptions.Game.*;
 import Server.Model.Game.Game.CardPoolTypes;
 import Server.Model.Game.Game.Game;

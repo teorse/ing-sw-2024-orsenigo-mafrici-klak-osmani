@@ -1,7 +1,7 @@
 package Server.Network.Listener;
 
-import Network.NetworkConstants;
-import Server.Controller.InputHandler.ServerInputHandler;
+import CommunicationProtocol.NetworkConstants;
+import Server.Controller.InputHandler.ClientInputHandler;
 import Server.Controller.ServerController;
 import Server.Network.ClientHandler.ClientHandler;
 import Server.Network.ClientHandler.ClientHandlerSocket;
@@ -80,7 +80,7 @@ public class ListenerSocket implements Runnable{
 
                 //Giving the ClientHandler an Input interpreter to interact with the server
                 logger.fine("Setting client Handler's input handler");
-                handler.setInputHandler(new ServerInputHandler(handler, serverController));
+                handler.setInputHandler(new ClientInputHandler(handler, serverController));
 
                 // Start the thread for the new clientHandler.
                 Thread thread = new Thread(handler);

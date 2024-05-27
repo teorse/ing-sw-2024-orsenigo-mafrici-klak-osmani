@@ -1,11 +1,11 @@
 package Server.Network.Listener;
 
-import Network.LanIpFinder;
-import Network.NetworkConstants;
-import Network.RMI.ClientRemoteInterfaces.ClientRemoteInterface;
-import Network.RMI.ServerRemoteInterfaces.ClientHandlerRemoteInterface;
-import Network.RMI.ServerRemoteInterfaces.ServerListenerRemoteInterface;
-import Server.Controller.InputHandler.ServerInputHandler;
+import CommunicationProtocol.LanIpFinder;
+import CommunicationProtocol.NetworkConstants;
+import CommunicationProtocol.RMI.ClientRemoteInterfaces.ClientRemoteInterface;
+import CommunicationProtocol.RMI.ServerRemoteInterfaces.ClientHandlerRemoteInterface;
+import CommunicationProtocol.RMI.ServerRemoteInterfaces.ServerListenerRemoteInterface;
+import Server.Controller.InputHandler.ClientInputHandler;
 import Server.Controller.ServerController;
 import Server.Network.ClientHandler.ClientHandlerRMI;
 import Utils.Utilities;
@@ -140,7 +140,7 @@ public class ListenerRMI implements Runnable, ServerListenerRemoteInterface, Unr
         ClientHandlerRMI clientHandler = new ClientHandlerRMI(client);
 
         logger.fine("Setting client Handler's input handler");
-        clientHandler.setInputHandler(new ServerInputHandler(clientHandler, serverController));
+        clientHandler.setInputHandler(new ClientInputHandler(clientHandler, serverController));
 
 
         Thread thread = new Thread(clientHandler);

@@ -1,8 +1,8 @@
 package Server.Model.Server;
 
-import Network.ServerClient.Packets.SCPUpdateLobbyPreviews;
-import Network.ServerClient.Packets.ServerClientPacket;
-import Client.Model.Records.LobbyPreviewRecord;
+import CommunicationProtocol.ServerClient.Packets.SCPUpdateLobbyPreviews;
+import CommunicationProtocol.ServerClient.Packets.ServerClientPacket;
+import CommunicationProtocol.ServerClient.DataTransferObjects.LobbyPreviewRecord;
 import Server.Network.ClientHandler.ClientHandler;
 
 import java.util.*;

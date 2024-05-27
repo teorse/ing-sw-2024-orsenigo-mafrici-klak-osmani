@@ -1,6 +1,6 @@
 package Server.Model.Game.Cards;
 
-import Client.Model.Records.CardRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
 import Server.Model.Game.Player.CardMap;
 import Server.Model.Game.Utility.Artifacts;
 import Server.Model.Game.Utility.Coordinates;

@@ -1,7 +1,7 @@
 package Client.Model.States;
 
 import Client.Model.ClientModel;
-import Client.Model.Records.CardRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
 import Client.View.TextUI;
 import Server.Model.Game.Cards.Corner;
 import Server.Model.Game.Cards.CornerOrientation;
@@ -9,8 +9,8 @@ import Server.Model.Game.Cards.CornerType;
 import Server.Model.Game.Player.PlayerStates;
 import Server.Model.Game.Utility.Artifacts;
 
-import Network.ClientServer.Packets.CSPPlayCard;
-import Network.ClientServer.Packets.CSPQuitLobby;
+import CommunicationProtocol.ClientServer.Packets.CSPPlayCard;
+import CommunicationProtocol.ClientServer.Packets.CSPQuitLobby;
 
 import java.util.logging.Logger;
 

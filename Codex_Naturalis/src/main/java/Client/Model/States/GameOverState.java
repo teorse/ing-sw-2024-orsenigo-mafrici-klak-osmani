@@ -1,9 +1,8 @@
 package Client.Model.States;
 
 import Client.Model.ClientModel;
-import Client.Model.Records.PlayerRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
 import Client.View.TextUI;
-import java.util.List;
 
 /**
  * Represents the state of the client when the game is over.

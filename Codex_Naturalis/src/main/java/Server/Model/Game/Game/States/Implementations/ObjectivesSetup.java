@@ -1,6 +1,6 @@
 package Server.Model.Game.Game.States.Implementations;
 
-import Client.Model.Records.ObjectiveRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.ObjectiveRecord;
 import Exceptions.Game.InvalidActionForPlayerStateException;
 import Exceptions.Game.MoveAttemptOnWaitStateException;
 import Server.Model.Game.Game.Game;
@@ -9,8 +9,8 @@ import Server.Model.Game.Game.Table;
 import Server.Model.Game.Objectives.Objective;
 import Server.Model.Game.Player.Player;
 import Server.Model.Game.Player.PlayerStates;
-import Network.ServerClient.Packets.SCPUpdateClientGameState;
-import Network.ServerClient.Packets.SCPUpdateSecretObjectiveCandidates;
+import CommunicationProtocol.ServerClient.Packets.SCPUpdateClientGameState;
+import CommunicationProtocol.ServerClient.Packets.SCPUpdateSecretObjectiveCandidates;
 
 import java.util.*;
 import java.util.logging.Logger;

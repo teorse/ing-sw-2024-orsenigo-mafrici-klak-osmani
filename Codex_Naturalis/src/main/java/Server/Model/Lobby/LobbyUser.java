@@ -1,6 +1,6 @@
 package Server.Model.Lobby;
 
-import Client.Model.Records.LobbyUserRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.LobbyUserRecord;
 import Server.Interfaces.LayerUser;
 import Server.Model.Server.ServerUser;
 

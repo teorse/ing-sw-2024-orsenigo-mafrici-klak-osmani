@@ -1,6 +1,6 @@
 package Server.Model.Game.Objectives;
 
-import Client.Model.Records.ObjectiveRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.ObjectiveRecord;
 import Server.Model.Game.Player.CardMap;
 
 import java.io.Serial;

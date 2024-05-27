@@ -8,8 +8,8 @@ import Server.Model.Game.Game.States.PlayerSwitchers.PlayerSwitcherNonResilient;
 import Server.Model.Game.Game.States.SynchronousGameState;
 import Server.Model.Game.Game.Table;
 import Server.Model.Game.Player.Player;
-import Network.ServerClient.Packets.SCPUpdateCardPoolDrawability;
-import Network.ServerClient.Packets.SCPUpdateClientGameState;
+import CommunicationProtocol.ServerClient.Packets.SCPUpdateCardPoolDrawability;
+import CommunicationProtocol.ServerClient.Packets.SCPUpdateClientGameState;
 import Server.Model.Game.Player.PlayerStates;
 
 import java.util.HashMap;

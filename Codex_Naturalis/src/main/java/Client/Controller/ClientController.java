@@ -5,12 +5,11 @@ import Client.Model.ErrorDictionary.ErrorDictionaryJoinLobbyFailed;
 import Client.Model.ErrorDictionary.ErrorDictionaryLogIn;
 import Client.Model.ErrorDictionary.ErrorDictionarySignUp;
 import Client.Model.ErrorDictionary.ErrorDictionaryStartLobbyFailed;
-import Client.Model.Records.*;
-import Client.Model.Records.LobbyPreviewRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.*;
 import Server.Model.Game.Game.CardPoolTypes;
 import Server.Model.Game.Player.PlayerStates;
-import Network.ServerClient.Packets.ErrorsDictionary;
-import Network.ServerClient.ServerMessageExecutor;
+import CommunicationProtocol.ServerClient.Packets.ErrorsDictionary;
+import CommunicationProtocol.ServerClient.ServerClientMessageExecutor;
 
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,7 @@ import java.util.logging.Logger;
  * and more. The controller also interacts with the ClientModel to update the client state
  * and data based on server messages and user inputs.
  */
-public class ClientController  implements ServerMessageExecutor {
+public class ClientController  implements ServerClientMessageExecutor {
     private final ClientModel model;
     private final Logger logger;
 

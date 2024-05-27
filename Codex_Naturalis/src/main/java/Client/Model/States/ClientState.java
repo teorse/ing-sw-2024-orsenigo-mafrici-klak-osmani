@@ -1,8 +1,6 @@
 package Client.Model.States;
 
 import Client.Model.ClientModel;
-import Client.Model.Records.LobbyUserRecord;
-import Client.Model.Records.PlayerRecord;
 import Client.View.TextUI;
 
 /**

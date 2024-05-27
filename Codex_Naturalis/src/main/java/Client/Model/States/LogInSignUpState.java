@@ -5,8 +5,8 @@ import Client.Model.ErrorDictionary.ErrorDictionaryLogIn;
 import Client.Model.ErrorDictionary.ErrorDictionarySignUp;
 import Client.View.TextUI;
 import Client.View.UserInterface;
-import Network.ClientServer.Packets.CSPLogIn;
-import Network.ClientServer.Packets.CSPSignUp;
+import CommunicationProtocol.ClientServer.Packets.CSPLogIn;
+import CommunicationProtocol.ClientServer.Packets.CSPSignUp;
 
 import java.util.ArrayList;
 import java.util.List;

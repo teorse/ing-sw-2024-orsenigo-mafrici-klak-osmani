@@ -1,6 +1,6 @@
 package Client.Model;
 
-import Client.Model.Records.ChatMessageRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.ChatMessageRecord;
 
 public class ChatMessagesStack {
 

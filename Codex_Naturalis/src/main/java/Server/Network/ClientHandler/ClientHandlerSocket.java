@@ -1,8 +1,8 @@
 package Server.Network.ClientHandler;
 
-import Network.ClientServer.Packets.ClientServerPacket;
-import Network.ServerClient.Packets.SCPConnectionAck;
-import Network.ServerClient.Packets.ServerClientPacket;
+import CommunicationProtocol.ClientServer.Packets.ClientServerPacket;
+import CommunicationProtocol.ServerClient.Packets.SCPConnectionAck;
+import CommunicationProtocol.ServerClient.Packets.ServerClientPacket;
 import Server.Controller.InputHandler.InputHandler;
 import Utils.Utilities;
 

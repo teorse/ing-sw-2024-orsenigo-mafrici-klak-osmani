@@ -4,8 +4,8 @@ import Client.Model.ClientModel;
 import Client.View.TextUI;
 import Server.Model.Game.Player.PlayerStates;
 import Server.Model.Game.Utility.Coordinates;
-import Network.ClientServer.Packets.CSPPlayCard;
-import Network.ClientServer.Packets.CSPQuitLobby;
+import CommunicationProtocol.ClientServer.Packets.CSPPlayCard;
+import CommunicationProtocol.ClientServer.Packets.CSPQuitLobby;
 
 import java.util.logging.Logger;
 

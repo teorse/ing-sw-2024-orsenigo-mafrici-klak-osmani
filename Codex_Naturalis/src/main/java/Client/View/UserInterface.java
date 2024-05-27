@@ -1,8 +1,8 @@
 package Client.View;
 
 import Client.Model.ClientModel;
-import Client.Model.Records.LobbyUserRecord;
-import Client.Model.Records.PlayerRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.LobbyUserRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
 import Server.Model.Lobby.LobbyRoles;
 
 public abstract class UserInterface {

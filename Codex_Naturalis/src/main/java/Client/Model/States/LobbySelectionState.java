@@ -3,12 +3,12 @@ package Client.Model.States;
 import Client.Model.ClientModel;
 import Client.Model.ErrorDictionary.ErrorDictionaryJoinLobbyFailed;
 import Client.Model.ErrorDictionary.ErrorDictionaryStartLobbyFailed;
-import Client.Model.Records.LobbyPreviewRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.LobbyPreviewRecord;
 import Client.View.TextUI;
-import Network.ClientServer.Packets.CSPJoinLobby;
-import Network.ClientServer.Packets.CSPStartLobby;
-import Network.ClientServer.Packets.CSPStopViewingLobbyPreviews;
-import Network.ClientServer.Packets.CSPViewLobbyPreviews;
+import CommunicationProtocol.ClientServer.Packets.CSPJoinLobby;
+import CommunicationProtocol.ClientServer.Packets.CSPStartLobby;
+import CommunicationProtocol.ClientServer.Packets.CSPStopViewingLobbyPreviews;
+import CommunicationProtocol.ClientServer.Packets.CSPViewLobbyPreviews;
 
 /**
  * The LobbySelectionState represents the state where the client is presented with options to create or join a lobby.

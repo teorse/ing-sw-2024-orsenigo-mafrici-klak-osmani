@@ -6,8 +6,8 @@ import Client.View.UserInterface;
 import Server.Model.Game.Game.CardPoolTypes;
 import Server.Model.Game.Player.PlayerStates;
 import Server.Model.Game.Utility.Artifacts;
-import Network.ClientServer.Packets.CSPDrawCard;
-import Network.ClientServer.Packets.CSPQuitLobby;
+import CommunicationProtocol.ClientServer.Packets.CSPDrawCard;
+import CommunicationProtocol.ClientServer.Packets.CSPQuitLobby;
 
 import java.util.Map;
 

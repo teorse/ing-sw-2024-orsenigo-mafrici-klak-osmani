@@ -1,6 +1,6 @@
 package Server.Model.Game.Game.States.Implementations;
 
-import Client.Model.Records.GameRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.GameRecord;
 import Server.Model.Game.Cards.Card;
 import Exceptions.Game.InvalidActionForPlayerStateException;
 import Exceptions.Game.NotYourTurnException;
@@ -10,9 +10,9 @@ import Server.Model.Game.Game.States.PlayerSwitchers.PlayerSwitcherResilient;
 import Server.Model.Game.Game.States.SynchronousGameState;
 import Server.Model.Game.Game.Table;
 import Server.Model.Game.Player.Player;
-import Network.ServerClient.Packets.SCPUpdateCardPoolDrawability;
-import Network.ServerClient.Packets.SCPUpdateClientGameState;
-import Network.ServerClient.Packets.SCPUpdateGame;
+import CommunicationProtocol.ServerClient.Packets.SCPUpdateCardPoolDrawability;
+import CommunicationProtocol.ServerClient.Packets.SCPUpdateClientGameState;
+import CommunicationProtocol.ServerClient.Packets.SCPUpdateGame;
 import Server.Model.Game.Player.PlayerStates;
 import Server.Model.Lobby.LobbyUserConnectionStates;
 

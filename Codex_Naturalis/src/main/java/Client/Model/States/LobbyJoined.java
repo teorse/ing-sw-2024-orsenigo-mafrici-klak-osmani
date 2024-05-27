@@ -1,12 +1,12 @@
 package Client.Model.States;
 
 import Client.Model.ClientModel;
-import Client.Model.Records.LobbyUserRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.LobbyUserRecord;
 import Client.View.TextUI;
 import Server.Model.Game.Player.PlayerStates;
-import Network.ClientServer.Packets.CSPChangeColor;
-import Network.ClientServer.Packets.CSPQuitLobby;
-import Network.ClientServer.Packets.CSPStartGame;
+import CommunicationProtocol.ClientServer.Packets.CSPChangeColor;
+import CommunicationProtocol.ClientServer.Packets.CSPQuitLobby;
+import CommunicationProtocol.ClientServer.Packets.CSPStartGame;
 import Server.Model.Lobby.LobbyUserColors;
 
 import java.util.logging.Logger;

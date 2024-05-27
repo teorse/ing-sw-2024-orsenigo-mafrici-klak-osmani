@@ -1,11 +1,14 @@
 package Server.Model.Game.Player;
 
-import Client.Model.Records.*;
+import CommunicationProtocol.ServerClient.DataTransferObjects.CardMapRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.PlayerSecretInfoRecord;
 import Server.Model.Game.Cards.Card;
 import Server.Model.Game.Objectives.Objective;
-import Network.ServerClient.Packets.SCPUpdateClientGameState;
-import Network.ServerClient.Packets.SCPUpdateSecret;
-import Network.ServerClient.Packets.SCPUpdateSpecificPlayer;
+import CommunicationProtocol.ServerClient.Packets.SCPUpdateClientGameState;
+import CommunicationProtocol.ServerClient.Packets.SCPUpdateSecret;
+import CommunicationProtocol.ServerClient.Packets.SCPUpdateSpecificPlayer;
 import Server.Interfaces.LayerUser;
 import Server.Model.Lobby.LobbyUser;
 import Server.Model.Lobby.LobbyUserConnectionStates;

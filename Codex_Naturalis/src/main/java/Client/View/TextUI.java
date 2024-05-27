@@ -1,7 +1,7 @@
 package Client.View;
 
 import Client.Model.ClientModel;
-import Client.Model.Records.*;
+import CommunicationProtocol.ServerClient.DataTransferObjects.*;
 import Server.Model.Game.Cards.Corner;
 import Server.Model.Game.Cards.CornerDirection;
 import Server.Model.Game.Cards.CornerOrientation;

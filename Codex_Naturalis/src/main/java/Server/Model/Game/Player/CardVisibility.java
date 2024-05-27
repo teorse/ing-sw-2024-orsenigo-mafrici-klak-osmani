@@ -1,6 +1,6 @@
 package Server.Model.Game.Player;
 
-import Client.Model.Records.CardVisibilityRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.CardVisibilityRecord;
 import Server.Model.Game.Utility.Artifacts;
 import Server.Model.Game.Cards.*;
 

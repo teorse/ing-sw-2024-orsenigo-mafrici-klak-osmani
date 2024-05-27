@@ -1,13 +1,13 @@
 package Server.Model.Game.Player;
 
-import Client.Model.Records.CardMapRecord;
-import Client.Model.Records.CardVisibilityRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.CardMapRecord;
+import CommunicationProtocol.ServerClient.DataTransferObjects.CardVisibilityRecord;
 import Server.Model.Game.Cards.Card;
 import Server.Model.Game.Cards.CornerDirection;
 import Server.Model.Game.Cards.CornerType;
 import Server.Model.Game.Utility.Coordinates;
 import Server.Model.Game.Utility.Artifacts;
-import Network.ServerClient.Packets.SCPUpdateCardMap;
+import CommunicationProtocol.ServerClient.Packets.SCPUpdateCardMap;
 import Server.Model.Lobby.ObserverRelay;
 
 import java.util.*;
