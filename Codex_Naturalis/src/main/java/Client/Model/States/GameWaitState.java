@@ -73,7 +73,7 @@ public class GameWaitState extends ClientState{
                     for (PlayerRecord playerRecord : model.getPlayers()) {
                         logger.info(playerRecord.username() + ": " + playerRecord.playerState());
                         if (playerRecord.playerState() == PlayerStates.PLACE || playerRecord.playerState() == PlayerStates.DRAW) {
-                            System.out.println("\nIt's " + playerRecord.username() + " turn. ");
+                            System.out.println("\nIt's " + playerRecord.username() + " turn.");
                         }
                     }
                 }
@@ -107,6 +107,7 @@ public class GameWaitState extends ClientState{
         } else {
             TextUI.clearCMD();
             TextUI.displayGameTitle();
+            System.out.print("\nIf you want to see the Chat State, type CHAT.");
             System.out.println("\nThe Set Up is not completed. Please wait!");
         }
     }
