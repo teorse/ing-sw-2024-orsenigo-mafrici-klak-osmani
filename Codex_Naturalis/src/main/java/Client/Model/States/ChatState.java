@@ -3,7 +3,7 @@ package Client.Model.States;
 import Client.Model.ClientModel;
 import Client.Model.Records.ChatMessageRecord;
 import Client.Model.Records.LobbyUserRecord;
-import Client.Model.Records.PlayerRecord;
+import Client.View.TerminalColor;
 import Client.View.TextUI;
 import Network.ClientServer.Packets.CSPSendChatMessage;
 
@@ -59,15 +59,23 @@ public class ChatState extends ClientState{
             if (choice == 1) {
                 System.out.println("\nPUBLIC CHAT");
                 for (int i = 0; i < model.getPublicChatMessages().size(); i++) {
-                    System.out.println(model.getPublicChatMessages().get(i).toString());
+                    System.out.println(displayMessage(model.getPublicChatMessages().get(i)));
                 }
                 System.out.println("\nPlease type your public message, to send it press ENTER");
             } else if (choice == 2) {
                 System.out.println("\nSelect a player username to send a private message to by inserting an integer:");
                 int i = 1;
                 for (LobbyUserRecord lobbyUserRecord : model.getLobbyUserRecords()) {
-                    if (!lobbyUserRecord.username().equals(model.getMyUsername()))
-                        System.out.println(i++ + " - Player username: " + lobbyUserRecord.username());
+                    String usernameColorPrint = null;
+                    if (!lobbyUserRecord.username().equals(model.getMyUsername())) {
+                        switch (lobbyUserRecord.color()) {
+                            case GREEN -> usernameColorPrint = TerminalColor.GREEN;
+                            case YELLOW -> usernameColorPrint = TerminalColor.YELLOW;
+                            case BLUE -> usernameColorPrint = TerminalColor.BLUE;
+                            case RED -> usernameColorPrint = TerminalColor.RED;
+                        }
+                        System.out.println(i++ + " - Player username: " + usernameColorPrint + lobbyUserRecord.username() + TerminalColor.RESET);
+                    }
                 }
             }
         } else if (inputCounter == 2 && choice == 2) {
@@ -94,6 +102,8 @@ public class ChatState extends ClientState{
             }
             print();
         } else if (input.equalsIgnoreCase("EXIT")) {
+            inputCounter = 0;
+            choice = 0;
             nextState();
         }
         else if (inputCounter == 0) {
@@ -105,7 +115,10 @@ public class ChatState extends ClientState{
         }
         else if (inputCounter == 1) {
             if (choice == 1) {
-                model.getClientConnector().sendPacket(new CSPSendChatMessage(new ChatMessageRecord(input)));
+                if (!input.trim().isEmpty())
+                    model.getClientConnector().sendPacket(new CSPSendChatMessage(new ChatMessageRecord(input.replaceFirst("^\\s+", ""))));
+                else
+                    System.out.println("You cannot send empty message!");
                 print();
             } else if (choice == 2) {
                 if (TextUI.checkInputBound(input, 1, model.getLobbyUserRecords().size())) {
@@ -116,14 +129,28 @@ public class ChatState extends ClientState{
             }
         }
         else if (inputCounter == 2 && choice == 2) {
-                model.getClientConnector().sendPacket(new CSPSendChatMessage(new ChatMessageRecord(input,chosenUser)));
-                print();
+            if (!input.trim().isEmpty())
+                model.getClientConnector().sendPacket(new CSPSendChatMessage(new ChatMessageRecord(input.replaceFirst("^\\s+", ""),chosenUser)));
+            else
+                System.out.println("You cannot send empty message!");
+            print();
         }
     }
 
     @Override
     public void nextState() {
         model.setChatState(false);
+        model.setClientState(previousState);
         previousState.nextState();
     }
+
+    public String displayMessage(ChatMessageRecord messageRecord) {
+        String usernameColorPrint = null;
+        switch (model.getLobbyUserColors(messageRecord.getSender())) {
+            case GREEN -> usernameColorPrint = TerminalColor.GREEN;
+            case YELLOW -> usernameColorPrint = TerminalColor.YELLOW;
+            case BLUE -> usernameColorPrint = TerminalColor.BLUE;
+            case RED -> usernameColorPrint = TerminalColor.RED;
+        }
+        return messageRecord.getTimestamp() + " - " + usernameColorPrint + messageRecord.getSender() + TerminalColor.RESET + ": " + messageRecord.getMessage();    }
 }
