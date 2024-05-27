@@ -1,6 +1,5 @@
 package Model.Game.States.Implementations;
 
-import Client.Model.Records.CardPoolDrawabilityRecord;
 import Exceptions.Game.*;
 import Model.Game.Game;
 import Model.Game.CardPoolTypes;
@@ -60,7 +59,7 @@ public class DrawInitialCards extends SynchronousGameState {
         drawability.put(CardPoolTypes.GOLDEN, true);
         drawability.put(CardPoolTypes.RESOURCE, true);
 
-        gameObserverRelay.update(new SCPUpdateCardPoolDrawability(new CardPoolDrawabilityRecord(drawability)));
+        gameObserverRelay.update(new SCPUpdateCardPoolDrawability(drawability));
 
         findFirstPlayer();
     }
@@ -151,7 +150,7 @@ public class DrawInitialCards extends SynchronousGameState {
         else
             drawability.put(CardPoolTypes.RESOURCE, true);
 
-        gameObserverRelay.update(player.getUsername(), new SCPUpdateCardPoolDrawability(new CardPoolDrawabilityRecord(drawability)));
+        gameObserverRelay.update(player.getUsername(), new SCPUpdateCardPoolDrawability(drawability));
     }
 
 
@@ -189,7 +188,7 @@ public class DrawInitialCards extends SynchronousGameState {
             drawability.put(CardPoolTypes.GOLDEN, true);
             drawability.put(CardPoolTypes.RESOURCE, true);
 
-            gameObserverRelay.update(new SCPUpdateCardPoolDrawability(new CardPoolDrawabilityRecord(drawability)));
+            gameObserverRelay.update(new SCPUpdateCardPoolDrawability(drawability));
 
         }
         else {

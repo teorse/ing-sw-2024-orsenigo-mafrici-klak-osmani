@@ -10,6 +10,7 @@ import Model.Game.States.PlayerSwitchers.PlayerSwitcherResilient;
 import Model.Game.States.SynchronousGameState;
 import Model.Game.Table;
 import Model.Player.Player;
+import Network.ServerClient.Packets.SCPUpdateCardPoolDrawability;
 import Network.ServerClient.Packets.SCPUpdateClientGameState;
 import Network.ServerClient.Packets.SCPUpdateGame;
 import Server.Model.Lobby.LobbyUserConnectionStates;
@@ -20,7 +21,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 //todo fix javadoc
-
 /**
  * Represents the main loop state in the game, where players take turns to place cards and draw new cards.<br>
  * This state implements the GameState interface and defines methods to handle actions during the main gameplay loop.
@@ -195,6 +195,11 @@ public class MainLoop extends SynchronousGameState {
             currentPlayer.setPlayerState(playerStatesBeforeDisconnection.remove(currentPlayer.getUsername()));
             logger.info("Game Loop restored");
         }
+        Map<CardPoolTypes, Boolean> cardDrawbilityMap = new HashMap<>();
+        cardDrawbilityMap.put(CardPoolTypes.GOLDEN, true);
+        cardDrawbilityMap.put(CardPoolTypes.RESOURCE, true);
+
+        gameObserverRelay.update(player.getUsername(), new SCPUpdateCardPoolDrawability(cardDrawbilityMap));
     }
 
     /**

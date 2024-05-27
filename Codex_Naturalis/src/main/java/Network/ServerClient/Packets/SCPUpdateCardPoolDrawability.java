@@ -1,13 +1,15 @@
 package Network.ServerClient.Packets;
 
-import Client.Model.Records.CardPoolDrawabilityRecord;
+import Model.Game.CardPoolTypes;
 import Network.ServerClient.ServerMessageExecutor;
+
+import java.util.Map;
 
 public class SCPUpdateCardPoolDrawability implements ServerClientPacket{
 
-    private final CardPoolDrawabilityRecord cardPoolDrawability;
+    private final Map<CardPoolTypes, Boolean> cardPoolDrawability;
 
-    public SCPUpdateCardPoolDrawability(CardPoolDrawabilityRecord cardPoolDrawability) {
+    public SCPUpdateCardPoolDrawability(Map<CardPoolTypes, Boolean> cardPoolDrawability) {
         this.cardPoolDrawability = cardPoolDrawability;
     }
 

@@ -8,6 +8,7 @@ import Client.Model.ErrorDictionary.ErrorDictionaryStartLobbyFailed;
 import Client.Model.Records.*;
 import Client.Model.Records.LobbyPreviewRecord;
 import Client.View.TextUI;
+import Model.Game.CardPoolTypes;
 import Model.Player.PlayerStates;
 import Network.ServerClient.Packets.ErrorsDictionary;
 import Network.ServerClient.ServerMessageExecutor;
@@ -449,8 +450,8 @@ public class ClientController  implements ServerMessageExecutor {
     }
 
     @Override
-    public void updateCardPoolDrawability(CardPoolDrawabilityRecord cardPoolDrawability) {
-        model.setCardPoolDrawability(cardPoolDrawability.cardDrawability());
+    public void updateCardPoolDrawability(Map<CardPoolTypes, Boolean> cardPoolDrawability) {
+        model.setCardPoolDrawability(cardPoolDrawability);
     }
 
     /**

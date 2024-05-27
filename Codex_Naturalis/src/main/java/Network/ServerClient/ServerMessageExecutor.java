@@ -1,6 +1,7 @@
 package Network.ServerClient;
 
 import Client.Model.Records.*;
+import Model.Game.CardPoolTypes;
 import Model.Player.PlayerStates;
 import Network.ServerClient.Packets.ErrorsDictionary;
 
@@ -53,7 +54,7 @@ public interface ServerMessageExecutor extends Serializable {
 
     void updateSecretObjectiveCandidates(List<ObjectiveRecord> candidates);
 
-    void updateCardPoolDrawability(CardPoolDrawabilityRecord cardPoolDrawability);
+    void updateCardPoolDrawability(Map<CardPoolTypes, Boolean> drawabilityMap);
 
     void updateClientGameState(PlayerStates newState);
 
