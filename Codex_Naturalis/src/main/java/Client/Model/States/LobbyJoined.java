@@ -57,11 +57,11 @@ public class LobbyJoined extends ClientState{
         System.out.println("\nIf you want to go back at the previous choice, type BACK. If you want to quit the lobby, type QUIT.");
         System.out.print("If you want to see the Chat State, type CHAT.");
         if (model.isNewMessage())
-            System.out.println(" (NEW MESSAGE)\n");
+            System.out.println(" (NEW MESSAGE)");
         else
-            System.out.println("\n");
+            System.out.println();
 
-        System.out.println("List of users in the lobby: ");
+        System.out.println("\nList of users in the lobby: ");
 
         for (LobbyUserRecord user : model.getLobbyUserRecords()) {
             System.out.println("\nUsername: " + user.username());
@@ -89,7 +89,6 @@ public class LobbyJoined extends ClientState{
                 System.out.println("\nNot enough players to start the game, please wait!");
         } else
             System.out.println("\nPlease wait for the Admin to start the game.");
-        //TODO print game start in 20 seconds
     }
 
     /**

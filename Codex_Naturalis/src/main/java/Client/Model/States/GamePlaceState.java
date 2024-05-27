@@ -54,9 +54,8 @@ public class GamePlaceState extends ClientState{
             if (model.isNewMessage())
                 System.out.println(" (NEW MESSAGE)\n");
             else
-                System.out.println();
+                System.out.println("\n");
 
-            System.out.println("\nIt's your turn!");
             textUI.showGameBoard();
             textUI.zoomCardsHeld();
 
