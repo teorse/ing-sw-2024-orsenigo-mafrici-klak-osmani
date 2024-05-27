@@ -134,7 +134,7 @@ public class GamePlaceState extends ClientState{
                 if (cardPlayability || !faceUp)
                     model.getClientConnector().sendPacket(new CSPPlayCard(cardIndex, coordinateIndex, faceUp));
                 else {
-                    System.out.println("\nThis can't be played face up. Select the other side or change card!");
+                    System.out.println("\nThis card can't be played face up. Select the other side or change card!");
                     print();
                 }
             } else

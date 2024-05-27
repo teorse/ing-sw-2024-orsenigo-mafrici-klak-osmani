@@ -126,7 +126,7 @@ public class DrawInitialCards implements GameState{
             //todo implement exception
             throw new RuntimeException("Player State DRAW_GOLDEN but player wants to draw something else");
         }
-        if(resourceCardsDrawn.get(player) == resourceCardsToDraw  && cardPoolType != CardPoolTypes.RESOURCE)
+        if(resourceCardsDrawn.get(player) == resourceCardsToDraw  && cardPoolType == CardPoolTypes.RESOURCE)
             //todo implement exception
             throw new RuntimeException("Player State DRAW_RESOURCE but player wants to draw something else");
 
