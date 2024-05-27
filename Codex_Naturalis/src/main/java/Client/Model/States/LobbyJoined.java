@@ -79,7 +79,7 @@ public class LobbyJoined extends ClientState{
             System.out.println("\nIf you want to change the color type the one you want by typing its number.");
         }
 
-        if(model.getLobbyUserRecords().size() >= 2)
+        if(model.getLobbyUserRecords().size() == model.getLobbyRecord().targetNumberUsers())
             System.out.println("\nGame will start in 20 seconds.");
 
         if (TextUI.areYouAdmin(model)) {

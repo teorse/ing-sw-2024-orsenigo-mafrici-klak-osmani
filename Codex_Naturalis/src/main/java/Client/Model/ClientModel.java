@@ -263,20 +263,25 @@ public class ClientModel {
         this.lobbyUserRecords = lobbyUserRecords;
 
         Map<String, ChatMessagesStack> newPrivateMessagesMap = new HashMap<>();
-        for(LobbyUserRecord lobbyUser : lobbyUserRecords){
-            if(!privateChatMessages.containsKey(lobbyUser.username()))
-                newPrivateMessagesMap.put(lobbyUser.username(), new ChatMessagesStack(ClientModelConstants.PrivateMessageStackSize));
-            else
-                newPrivateMessagesMap.put(lobbyUser.username(), privateChatMessages.get(lobbyUser.username()));
-        }
-        privateChatMessages = newPrivateMessagesMap;
+        for(LobbyUserRecord lobbyUser : lobbyUserRecords) {
+            if (!lobbyUser.username().equals(myUsername)) {
+                if (!privateChatMessages.containsKey(lobbyUser.username()))
+                    newPrivateMessagesMap.put(lobbyUser.username(), new ChatMessagesStack(ClientModelConstants.PrivateMessageStackSize));
+                else
+                    newPrivateMessagesMap.put(lobbyUser.username(), privateChatMessages.get(lobbyUser.username()));
+            }
+            privateChatMessages = newPrivateMessagesMap;
 
-        print();
+            print();
+        }
     }
     public void receiveChatMessage(ChatMessageRecord chatMessage){
         if(chatMessage.isMessagePrivate()){
             String sender = chatMessage.getSender();
-            privateChatMessages.get(sender).add(chatMessage);
+            if (sender.equals(myUsername))
+                privateChatMessages.get(chatMessage.getRecipient()).add(chatMessage);
+            else
+                privateChatMessages.get(sender).add(chatMessage);
         }
         else
             publicChatMessages.add(chatMessage);

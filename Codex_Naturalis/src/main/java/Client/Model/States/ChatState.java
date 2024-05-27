@@ -38,8 +38,6 @@ public class ChatState extends ClientState{
         logger.fine("ChatState initialized");
     }
 
-    //TODO fix private chat state
-
     @Override
     public void print() {
         if (inputCounter == 0) {
@@ -121,8 +119,11 @@ public class ChatState extends ClientState{
                     System.out.println("You cannot send empty message!");
                 print();
             } else if (choice == 2) {
-                if (TextUI.checkInputBound(input, 1, model.getLobbyUserRecords().size())) {
-                    chosenUser = model.getLobbyUserRecords().get(Integer.parseInt(input)).username();
+                if (TextUI.checkInputBound(input, 1, model.getLobbyUserRecords().size() - 1)) {
+                    chosenUser = model.getLobbyUserRecords().get(Integer.parseInt(input) - 1).username();
+                    if (chosenUser.equals(model.getMyUsername())) {
+                        chosenUser = model.getLobbyUserRecords().get(Integer.parseInt(input)).username();
+                    }
                     inputCounter++;
                 }
                 print();
