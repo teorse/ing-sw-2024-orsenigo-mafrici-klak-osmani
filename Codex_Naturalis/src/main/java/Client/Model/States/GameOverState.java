@@ -42,11 +42,11 @@ public class GameOverState extends ClientState{
         int i = 1;
         for (PlayerRecord winners : model.getWinners()) {
             if (winners.winner()) {
-                System.out.println(" 1 - ");
+                System.out.print(" 1 - ");
                 i++;
             }
             else
-                System.out.println(" " + i++ + " - ");
+                System.out.print(" " + i++ + " - ");
             System.out.println(winners.username() + "  Points: " + winners.points() + "  ObjectivesCompleted: "
                     + winners.objectivesCompleted() + " RoundsCompleted: " + winners.roundsCompleted());
         }

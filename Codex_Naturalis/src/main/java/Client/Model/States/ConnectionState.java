@@ -94,7 +94,7 @@ public class ConnectionState extends ClientState {
             else {
                 if (choice == 1) {
                     try {
-                        model.setClientConnector(new ClientConnectorRMI(input, new ClientController(model)));
+                        model.setClientConnector(new ClientConnectorRMI(input, new ClientController(model), model));
                     }
                     catch (ConnectException connectException) {
                         System.out.println("Connection timed-out!\n" +
@@ -114,7 +114,7 @@ public class ConnectionState extends ClientState {
 
                 } else {
                     try {
-                        model.setClientConnector(new ClientConnectorSocket(input, new ClientController(model)));
+                        model.setClientConnector(new ClientConnectorSocket(input, new ClientController(model), model));
                     } catch (SocketTimeoutException socketTimeoutException) {
                         System.out.println("Server not found!\n");
                         print();

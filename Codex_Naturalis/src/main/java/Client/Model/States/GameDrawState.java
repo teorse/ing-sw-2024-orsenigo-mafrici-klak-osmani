@@ -60,8 +60,12 @@ public class GameDrawState extends ClientState{
     public void print() {
         if (inputCounter == 0) {
             TextUI.clearCMD();
-            TextUI.displayGameTitle();
-            System.out.println("\nIf you want to go back at the previous choice, type BACK");
+            if (!model.getGameRecord().lastRoundFlag())
+                TextUI.displayGameTitle();
+            else
+                TextUI.displayLastRound();
+
+            System.out.println("\nIf you want to go back at the previous choice, type BACK. If you want to quit the lobby, type QUIT.");
             System.out.print("If you want to see the Chat State, type CHAT.");
             if (model.isNewMessage())
                 System.out.println(" (NEW MESSAGE)");
