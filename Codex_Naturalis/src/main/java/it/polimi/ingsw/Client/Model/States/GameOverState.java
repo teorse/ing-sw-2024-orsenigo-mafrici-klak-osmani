@@ -9,8 +9,7 @@ import it.polimi.ingsw.Client.View.TextUI;
  * It provides functionality to handle user input for exiting the current state and moving to the next state.
  * In this state, the final rankings of players are displayed along with prompts to exit the view.
  */
-public class GameOverState extends ClientState{
-    //TODO fixare shermata di game over non stampata in DrawStarter
+public class GameOverState extends ClientState {
     /**
      * Constructs a new GameOverState with the specified client model.
      * <p>
@@ -62,8 +61,10 @@ public class GameOverState extends ClientState{
      */
     @Override
     public void handleInput(String input) {
-        if(input.equalsIgnoreCase("EXIT"))
+        if(input.equalsIgnoreCase("EXIT")) {
+            model.gameOver();
             nextState();
+        }
         else
             System.out.println("To exit type EXIT!");
     }

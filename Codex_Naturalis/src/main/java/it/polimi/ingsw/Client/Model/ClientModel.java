@@ -373,22 +373,27 @@ public class ClientModel {
     }
 
     public void quitLobby() {
-        this.cardMaps = new HashMap<>();
+        gameOver();
+
         this.lobbyPreviewRecords = new ArrayList<>();
         this.lobbyUserRecords = new ArrayList<>();
         this.players = new ArrayList<>();
-        this.winners = new ArrayList<>();
 
         inLobby = false;
-        gameStartable = false;
+
+        publicChatMessages = new ChatMessagesStack(ClientModelConstants.PublicMessageStackSize);
+        privateChatMessages = new HashMap<>();
+    }
+
+    public void gameOver() {
+        this.cardMaps = new HashMap<>();
+        this.winners = new ArrayList<>();
+
         gameStarted = false;
         setUpFinished = false;
         waitingForReconnections = false;
         gameOver = false;
         chatState = false;
         newMessage = false;
-
-        publicChatMessages = new ChatMessagesStack(ClientModelConstants.PublicMessageStackSize);
-        privateChatMessages = new HashMap<>();
     }
 }
