@@ -473,7 +473,7 @@ public class Lobby implements ServerModelLayer {
 
         startGameTimer = null;
 
-        toLobbyPreview();
+        lobbyPreviewObserverRelay.updateLobbyPreview(toLobbyPreview());
     }
 
     public void gameOver(){
@@ -485,6 +485,7 @@ public class Lobby implements ServerModelLayer {
             lobbyClosed = false;
 
         System.out.println("Game finished in lobby: "+lobbyName);
+        lobbyPreviewObserverRelay.updateLobbyPreview(toLobbyPreview());
     }
 
     /**
