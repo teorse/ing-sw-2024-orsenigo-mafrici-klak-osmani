@@ -166,7 +166,7 @@ public class LogInSignUpState extends ClientState {
             }
             // If the user chose to sign up
             else if (choice == 2) {
-                // Handle different error cases from the sign up attempt
+                // Handle different error cases from the sign-up attempt
                 switch (model.getErrorDictionarySignUp()) {
                     case ErrorDictionarySignUp.USERNAME_ALREADY_TAKEN -> System.out.println("Username already taken.");
                     case ErrorDictionarySignUp.GENERIC_ERROR -> System.out.println("Something happened in the server, please try again.");

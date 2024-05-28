@@ -52,7 +52,6 @@ public class LobbySelectionState extends ClientState {
      *   <li>Step 2 (only if the choice is 1): Prompts the user to enter the desired number of users for the game.</li>
      * </ul>
      */
-    //TODO fix game started/not started in the LobbyPreviewRecord
     @Override
     public synchronized void print() {
         if (inputCounter == 0) {

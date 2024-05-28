@@ -112,7 +112,7 @@ public class GameWaitState extends ClientState{
         } else {
             TextUI.clearCMD();
             TextUI.displayGameTitle();
-            System.out.print("\nIf you want to see the Chat State, type CHAT.");
+            System.out.println("\nIf you want to see the Chat State, type CHAT.");
             System.out.println("\nThe Set Up is not completed. Please wait!");
         }
     }
@@ -284,7 +284,8 @@ public class GameWaitState extends ClientState{
         else if (model.getMyPlayerGameState() == PlayerStates.PLACE) {
             logger.fine("Entering GamePlaceState");
             model.setClientState(new GamePlaceState(model));
-        }
+        } else
+            print();
     }
 }
 
