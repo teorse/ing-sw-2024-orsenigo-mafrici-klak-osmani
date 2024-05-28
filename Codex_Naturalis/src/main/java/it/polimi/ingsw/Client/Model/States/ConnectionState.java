@@ -1,0 +1,142 @@
+package it.polimi.ingsw.Client.Model.States;
+
+import it.polimi.ingsw.Client.Controller.ClientController;
+import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.Network.ClientConnectorRMI;
+import it.polimi.ingsw.Client.Network.ClientConnectorSocket;
+import it.polimi.ingsw.Client.View.TextUI;
+import it.polimi.ingsw.Client.View.UserInterface;
+import it.polimi.ingsw.Utils.Utilities;
+
+import java.net.SocketTimeoutException;
+import java.rmi.ConnectException;
+import java.rmi.RemoteException;
+import java.util.logging.Logger;
+
+/**
+ * Represents the state of establishing a connection to the game server.
+ * <p>
+ * This state manages the process of selecting the communication method (RMI or Socket) and providing the server's IP address.
+ * Upon instantiation, it clears the command-line interface and prompts the user for connection details.
+ * It handles user input to choose the communication method and validate the server's IP address.
+ * Once the connection is successfully established, it transitions to the LogInSignUpState to handle user authentication.
+ *
+ * @see LogInSignUpState
+ */
+public class ConnectionState extends ClientState {
+
+    private int choice;
+    private final Logger logger;
+
+    /**
+     * Constructs a new ConnectionState with the specified client model.
+     * <p>
+     * Upon instantiation, this constructor clears the command-line interface and prints the initial state of the connection.
+     *
+     * @param model the client model
+     */
+    public ConnectionState(ClientModel model) {
+        super(model);
+        logger = Logger.getLogger(ConnectionState.class.getName());
+        logger.info("Initializing ConnectionState");
+
+        print();
+
+        logger.fine("ConnectionState initialized");
+    }
+
+    /**
+     * Prints the options for selecting the communication method and the server IP address.
+     * <p>
+     * If the input counter is 0, it prompts the user to choose between RMI and Socket communication methods.
+     * If the input counter is 1, it prompts the user to enter the IP address of the server, with an option to leave it empty for localhost.
+     */
+    @Override
+    public void print() {
+        if (inputCounter == 0) {
+            TextUI.clearCMD();
+            System.out.println("""
+                    Enter your choice:
+                     1 - RMI
+                     2 - Socket""");
+        } else if (inputCounter == 1) {
+            System.out.println("\nEnter the IP address of the server, leave empty for localhost: ");
+        }
+    }
+
+    /**
+     * Handles the input provided by the user.
+     *
+     * <p>This method processes the input based on the current input step.
+     * In the first step, it expects a binary choice (1 or 2) to determine
+     * the type of connection. In the second step, it validates the provided
+     * IP address and attempts to establish a connection using either RMI
+     * or Socket based on the user's choice. If the IP address is invalid
+     * or the server cannot be found, it prompts the user again.
+     *
+     * @param input the input provided by the user
+     */
+    @Override
+    public void handleInput(String input) {
+        if (inputCounter == 0) {
+            if (TextUI.getBinaryChoice(input)) {
+                choice = Integer.parseInt(input);
+                inputCounter++;
+            }
+            print();
+
+        } else if (inputCounter == 1) {
+            if (input.isEmpty())
+                input = "127.0.0.1";
+
+            if (!UserInterface.isValidIPAddress(input))
+                print();
+            else {
+                if (choice == 1) {
+                    try {
+                        model.setClientConnector(new ClientConnectorRMI(input, new ClientController(model), model));
+                    }
+                    catch (ConnectException connectException) {
+                        System.out.println("Connection timed-out!\n" +
+                                "Try with another server ip.");
+                        print();
+
+                        String stackTrace = Utilities.StackTraceToString(connectException);
+                        logger.warning("Connection timed out while connecting to RMI server: "+input+"\n" +
+                                "Stacktrace:\n"+stackTrace);
+                    }
+                    catch (RemoteException e){
+                        String stackTrace = Utilities.StackTraceToString(e);
+                        logger.warning("RemoteException was thrown while creating ClientConnectorRMI\nStacktrace:\n"+stackTrace);
+                        System.out.println("An error occurred while connecting to the server, please check the logs.");
+                        print();
+                    }
+
+                } else {
+                    try {
+                        model.setClientConnector(new ClientConnectorSocket(input, new ClientController(model), model));
+                    } catch (SocketTimeoutException socketTimeoutException) {
+                        System.out.println("Server not found!\n");
+                        print();
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Moves the client to the next state based on the success of the previous operation.
+     * If the previous operation was successful, transitions to the LogInSignUpState to handle user authentication.
+     * If the operation fails, prints an error message and remains in the current state, prompting the user to try again.
+     */
+    @Override
+    public void nextState() {
+        if(model.isConnected()) {
+            model.setClientState(new LogInSignUpState(model));
+        }
+        else {
+            System.out.println("The operation failed! Please try again.\n");
+            print();
+        }
+    }
+}
