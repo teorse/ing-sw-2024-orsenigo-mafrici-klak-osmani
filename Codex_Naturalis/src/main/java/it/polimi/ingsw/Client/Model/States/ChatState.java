@@ -131,13 +131,14 @@ public class ChatState extends ClientState{
     }
 
 
-    @Override
+
     /**
      * Handles user input in the chat interface, managing different states such as public and private chat.
      * The method also handles navigation commands like "BACK" and "EXIT".
      *
      * @param input The user input as a string.
      */
+    @Override
     public void handleInput(String input) {
         if (input.equalsIgnoreCase("BACK")) {
             // Handle "BACK" input: decrease inputCounter or reset choice based on current state
