@@ -111,7 +111,7 @@ public class LogInSignUpState extends ClientState {
                 // If the user chose to log in, send a log in packet
                 if (choice == 1) {
                     model.getClientConnector().sendPacket(new CSPLogIn(credentials.get(0), credentials.get(1)));
-                    // If the user chose to sign up, send a sign up packet
+                    // If the user chose to sign up, send a sign-up packet
                 } else {
                     model.getClientConnector().sendPacket(new CSPSignUp(credentials.get(0), credentials.get(1)));
                 }

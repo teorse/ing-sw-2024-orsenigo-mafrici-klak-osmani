@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.Model.States;
 
 import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.View.UserInterface;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.LobbyUserRecord;
 import it.polimi.ingsw.Client.View.TextUI;
 import it.polimi.ingsw.Server.Model.Game.Player.PlayerStates;
@@ -114,7 +115,7 @@ public class LobbyJoined extends ClientState{
             model.setClientState(new ChatState(model, this));
         }
         // If input is to change color
-        else if (TextUI.checkInputBound(input, 1, model.getLobbyRecord().availableUserColors().size())) {
+        else if (UserInterface.isParsableAsInt(input) && TextUI.checkInputBound(input, 1, model.getLobbyRecord().availableUserColors().size())) {
             // Send packet to change color
             model.getClientConnector().sendPacket(new CSPChangeColor(model.getLobbyRecord().availableUserColors().get(Integer.parseInt(input) - 1)));
         }
