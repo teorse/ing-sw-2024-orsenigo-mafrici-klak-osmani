@@ -3,6 +3,7 @@ package it.polimi.ingsw.Server.Model.Game;
 /**
  * 
  */
+//TODO fix the label
 public enum Artifacts {
     ANIMAL(ArtifactCategories.RESOURCE),
     FUNGI(ArtifactCategories.RESOURCE),

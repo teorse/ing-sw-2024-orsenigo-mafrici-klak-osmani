@@ -13,28 +13,50 @@ public class CardPools extends Observable {
         if(INSTANCE == null){
             INSTANCE = new CardPools();
         }
-
         return INSTANCE;
     }
 
+
+
+
+
+    //ATTRIBUTES
     private Map<CardPoolTypes, CardPoolRecord> cardPools;
     private Map<CardPoolTypes, Boolean> cardPoolDrawability;
 
-    public void updateCardPool(CardPoolTypes type, CardPoolRecord cardPool){
-        cardPools.put(type, cardPool);
-        super.updateObservers();
+
+
+
+
+    //GETTERS
+    public Map<CardPoolTypes, CardPoolRecord> getCardPools() {
+        return cardPools;
+    }
+    public Map<CardPoolTypes, Boolean> getCardPoolDrawability() {
+        return cardPoolDrawability;
+    }
+    public CardPoolRecord getCardPoolByType(CardPoolTypes type){
+        return cardPools.get(type);
+    }
+    public boolean getCardPoolDrawability(CardPoolTypes type) {
+        return cardPoolDrawability.get(type);
     }
 
+
+
+
+
+    //SETTERS
     public void setCardPools(Map<CardPoolTypes, CardPoolRecord> cardPools) {
         this.cardPools = cardPools;
+        super.updateObservers();
     }
-
     public void setCardPoolDrawability(Map<CardPoolTypes, Boolean> cardPoolDrawability) {
         this.cardPoolDrawability = cardPoolDrawability;
         super.updateObservers();
     }
-
-    public CardPoolRecord getCardPoolByType(CardPoolTypes type){
-        return cardPools.get(type);
+    public void setSpecificCardPool(CardPoolTypes type, CardPoolRecord cardPool){
+        cardPools.put(type, cardPool);
+        super.updateObservers();
     }
 }

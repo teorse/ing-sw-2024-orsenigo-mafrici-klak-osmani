@@ -12,7 +12,7 @@ public abstract class Observable {
 
 
 
-
+    //CONSTURCTOR
     protected Observable() {
         this.observers = new ArrayList<>();
     }
@@ -21,14 +21,13 @@ public abstract class Observable {
 
 
 
+    //METHODS
     public void subscribe(Observer observer){
         observers.add(observer);
     }
-
     public void unsubscribe(Observer observer){
         observers.remove(observer);
     }
-
     protected void updateObservers(){
         for(Observer observer : observers)
             observer.update();

@@ -149,7 +149,7 @@ public class ChatState extends ClientState{
             nextState();
         } else if (inputCounter == 0) {
             // Handle initial choice input (Public or Private Chat)
-            if (TextUI.getBinaryChoice(input)) {
+            if (TextUI.validBinaryChoice(input)) {
                 inputCounter++;
                 choice = Integer.parseInt(input);
             }
@@ -182,7 +182,6 @@ public class ChatState extends ClientState{
             print();
         }
     }
-
 
     @Override
     public void nextState() {

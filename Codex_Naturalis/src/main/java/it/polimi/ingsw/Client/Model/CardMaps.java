@@ -14,9 +14,10 @@ public class CardMaps extends Observable{
         if(INSTANCE == null){
             INSTANCE = new CardMaps();
         }
-
         return INSTANCE;
     }
+
+
 
 
 
@@ -26,15 +27,33 @@ public class CardMaps extends Observable{
 
 
 
+
+    //GETTERS
+    public Map<String, CardMapRecord> getCardMaps() {
+        return cardMaps;
+    }
+    public CardVisibilityRecord getCardByCoordinate(Coordinates coordinate, String owner){
+        return cardMaps.get(owner).getCardVisibilityRecord(coordinate);
+    }
+
+
+
+
+
+    //SETTERS
     public void setCardMaps(Map<String, CardMapRecord> cardMaps) {
         this.cardMaps = cardMaps;
         super.updateObservers();
     }
-
-    public Map<String, CardMapRecord> getCardMaps() {
-        return cardMaps;
+    public void setSpecificCardMap(String username, CardMapRecord cardMapRecord) {
+        this.cardMaps.put(username, cardMapRecord);
+        super.updateObservers();
     }
 
+
+
+
+    //METHODS
     //todo add attribute maxCoordinate that caches value of max coordinate if not updates are made to the map
     public int maxCoordinate() {
         int mbs = 0;
@@ -70,10 +89,6 @@ public class CardMaps extends Observable{
             return  cardMapRecord.availablePlacements().indexOf(coordinate);
         else
             return -1;
-    }
-
-    public CardVisibilityRecord getCardByCoordinate(Coordinates coordinate, String owner){
-        return cardMaps.get(owner).getCardVisibilityRecord(coordinate);
     }
 }
 

@@ -86,7 +86,7 @@ public class GameStarterChoice extends ClientState {
             model.getClientConnector().sendPacket(new CSPQuitLobby());
             model.setClientState(new LobbySelectionState(model));
         }
-        else if (TextUI.getBinaryChoice(input)) {
+        else if (TextUI.validBinaryChoice(input)) {
             boolean faceUp = (Integer.parseInt(input) == 1);
             model.getClientConnector().sendPacket(new CSPPlayCard(0, 0, faceUp));
         }

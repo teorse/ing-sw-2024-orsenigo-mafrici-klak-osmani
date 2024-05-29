@@ -5,7 +5,7 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.Ca
 import java.util.List;
 import java.util.Map;
 
-public class CardsHeld {
+public class CardsHeld extends Observable{
     //SINGLETON PATTERN
     private static CardsHeld INSTANCE;
     private CardsHeld(){};
@@ -13,18 +13,28 @@ public class CardsHeld {
         if(INSTANCE == null){
             INSTANCE = new CardsHeld();
         }
-
         return INSTANCE;
     }
 
 
+
+
+
+    //ATTRIBUTES
     private List<CardRecord> cardsHeld;
     private Map<CardRecord, Boolean> cardPlayability;
 
-    public int getAmountHeld(){
-        return cardsHeld.size();
-    }
 
+
+
+
+    //GETTERS
+    public List<CardRecord> getCardsHeld() {
+        return cardsHeld;
+    }
+    public Map<CardRecord, Boolean> getCardPlayability() {
+        return cardPlayability;
+    }
     public CardRecord getCard(int index){
         return cardsHeld.get(index);
     }
@@ -32,5 +42,21 @@ public class CardsHeld {
         CardRecord card = cardsHeld.get(cardIndex);
         return cardPlayability.get(card);
     }
+    public int getAmountHeld(){
+        return cardsHeld.size();
+    }
 
+
+
+
+
+    //SETTERS
+    public void setCardPlayability(Map<CardRecord, Boolean> cardPlayability) {
+        this.cardPlayability = cardPlayability;
+        super.updateObservers();
+    }
+    public void setCardsHeld(List<CardRecord> cardsHeld) {
+        this.cardsHeld = cardsHeld;
+        super.updateObservers();
+    }
 }

@@ -79,7 +79,7 @@ public class ConnectionState extends ClientState {
     @Override
     public void handleInput(String input) {
         if (inputCounter == 0) {
-            if (TextUI.getBinaryChoice(input)) {
+            if (TextUI.validBinaryChoice(input)) {
                 choice = Integer.parseInt(input);
                 inputCounter++;
             }

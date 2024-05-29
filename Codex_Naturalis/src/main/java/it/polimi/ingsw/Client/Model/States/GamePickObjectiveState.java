@@ -85,7 +85,7 @@ public class GamePickObjectiveState extends ClientState{
             model.getClientConnector().sendPacket(new CSPQuitLobby());
             model.setClientState(new LobbySelectionState(model));
         }
-        else if (TextUI.getBinaryChoice(input)) {
+        else if (TextUI.validBinaryChoice(input)) {
             int choice = Integer.parseInt(input);
             model.getClientConnector().sendPacket(new CSPPickObjective(choice - 1));
         } else

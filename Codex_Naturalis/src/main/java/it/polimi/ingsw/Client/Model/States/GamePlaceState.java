@@ -137,7 +137,7 @@ public class GamePlaceState extends ClientState{
             print();
         } else if (inputCounter == 3) {
             boolean cardPlayability = model.getPlayerSecretInfoRecord().cardPlayability().get(model.getPlayerSecretInfoRecord().cardsHeld().get(cardIndex));
-            if (TextUI.getBinaryChoice(input)) {
+            if (TextUI.validBinaryChoice(input)) {
                 faceUp = (Integer.parseInt(input) == 1);
                 if (cardPlayability || !faceUp)
                     model.getClientConnector().sendPacket(new CSPPlayCard(cardIndex, coordinateIndex, faceUp));

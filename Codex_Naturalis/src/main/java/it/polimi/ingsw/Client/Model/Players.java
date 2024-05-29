@@ -12,28 +12,38 @@ public class Players extends Observable{
         if(INSTANCE == null){
             INSTANCE = new Players();
         }
-
         return INSTANCE;
     }
 
 
+
+
+
+    //ATTRIBUTES
     private List<PlayerRecord> players;
 
 
-    public void setPlayers(List<PlayerRecord> players) {
-        this.players = players;
-        super.updateObservers();
-    }
 
+
+
+    //GETTERS
     public List<PlayerRecord> getPlayers() {
         return players;
     }
-
     public int getPlayersSize(){
         return players.size();
     }
-
     public String getUsernameByIndex(int index){
         return players.get(index).username();
+    }
+
+
+
+
+
+    //SETTERS
+    public void setPlayers(List<PlayerRecord> players) {
+        this.players = players;
+        super.updateObservers();
     }
 }

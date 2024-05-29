@@ -207,7 +207,7 @@ public class GameWaitState extends ClientState{
                     print();
                 } else if (choice == 3) {
                     // If input is a binary choice
-                    if (TextUI.getBinaryChoice(input)) {
+                    if (TextUI.validBinaryChoice(input)) {
                         // Zoom into card pool based on choice
                         if (Integer.parseInt(input) == 1)
                             textUI.zoomCardPool(CardPoolTypes.RESOURCE);

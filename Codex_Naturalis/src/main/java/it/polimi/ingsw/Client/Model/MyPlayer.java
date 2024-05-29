@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Client.Model;
 
-public class MyPlayer {
+public class MyPlayer extends Observable{
     //SINGLETON PATTERN
     private static MyPlayer INSTANCE;
     private MyPlayer(){}
@@ -8,14 +8,32 @@ public class MyPlayer {
         if(INSTANCE == null){
             INSTANCE = new MyPlayer();
         }
-
         return INSTANCE;
     }
 
 
+
+
+
+    //ATTRIBUTES
     private String username;
 
+
+
+
+
+    //GETTERS
     public String getUsername() {
         return username;
+    }
+
+
+
+
+
+    //SETTERS
+    public void setUsername(String username) {
+        this.username = username;
+        super.updateObservers();
     }
 }

@@ -9,6 +9,7 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.Pl
 import it.polimi.ingsw.Server.Model.Game.Player.Coordinates;
 
 public class CardMapZoom extends InteractiveComponent{
+    //ATTRIBUTES
     private final Players players;
     private final CardMaps cardMaps;
 
@@ -18,14 +19,42 @@ public class CardMapZoom extends InteractiveComponent{
     private char column;
     private CardVisibilityRecord card;
 
+
+
+
+
+    //CONSTRUCTOR
     public CardMapZoom() {
         players = Players.getInstance();
         cardMaps = CardMaps.getInstance();
     }
 
 
+
+
+
+    //METHODS
     @Override
-    public void handleInput(String input) {
+    /**
+     * Handles user input for selecting and viewing details of a card on the game board.
+     * <p>
+     * This method processes user input in a step-by-step manner to allow the selection of a card
+     * from another player's card map and displays the details of the selected card.
+     * The steps are as follows:
+     * 1. Select the player whose card map to view.
+     * 2. Choose the row coordinate for the card on the selected player's card map.
+     * 3. Choose the column coordinate for the card on the selected player's card map.
+     *
+     * @param input the user input to be processed.
+     * @return a boolean indicating whether the input has been successfully processed and the action completed.
+     * <p>
+     * The method performs the following steps:
+     * 1. Validates the player selection input and increments the input counter.
+     * 2. Validates the row coordinate input and increments the input counter.
+     * 3. Validates the column coordinate input, retrieves the card from the specified coordinates,
+     *    and displays the card details.
+     */
+    public boolean handleInput(String input) {
         if (inputCounter == 0) {
             if (TextUI.checkInputBound(input, 1, players.getPlayersSize())) {
                 //Username of the chosen cardMap's owner
@@ -39,6 +68,8 @@ public class CardMapZoom extends InteractiveComponent{
             else{
                 //todo print error message index out of bounds
             }
+
+            return false;
         }
         else if(inputCounter == 1){
             if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0), 'A', 'A' + cardMaps.maxBoardSide() - 1)) {
@@ -50,6 +81,7 @@ public class CardMapZoom extends InteractiveComponent{
                 // Print current state
                 print();
             }
+            return false;
         }
         else if(inputCounter == 2){
             if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0), 'A', 'A' + cardMaps.maxBoardSide() - 1)) {
@@ -64,8 +96,10 @@ public class CardMapZoom extends InteractiveComponent{
 
                 // Reset the input counter
                 inputCounter = 0;
+                return true;
             }
         }
+        return false;
     }
 
     @Override

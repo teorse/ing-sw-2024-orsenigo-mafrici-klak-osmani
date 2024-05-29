@@ -8,151 +8,62 @@ import it.polimi.ingsw.Server.Model.Lobby.LobbyRoles;
 public abstract class UserInterface {
 
     /**
-     * Checks the validity of an IP address.
-     * <p>
-     * This method validates whether the provided IP address is a valid IPv4 address.
-     * An IP address is considered valid if it meets the following criteria:
-     * - It is not null or empty.
-     * - It consists of four parts separated by periods ('.').
-     * - Each part is a numeric value between 0 and 255, inclusive.
-     * <p>
-     * If the provided string does not meet any of these criteria, the method returns false.
-     * Otherwise, it returns true, indicating that the IP address is valid.
+     * Validates an IPv4 address.
+     * This method checks if the provided string is a valid IPv4 address. A valid IPv4 address
+     * consists of four octets, each ranging from 0 to 255, separated by periods (".").
      *
-     * @param ip The IP address string to be validated.
-     * @return True if the IP address is valid according to IPv4 standards, otherwise false.
+     * @param ip the string representation of the IPv4 address to validate
+     * @return {@code true} if the string is a valid IPv4 address, {@code false} otherwise
      */
     public static boolean isValidIPAddress(String ip) {
-        // Split the string into parts separated by "."
         String[] parts = ip.split("\\.");
 
-        // The IP address should have exactly 4 parts
         if (parts.length != 4) {
-            System.out.println("\nThe IP address should have exactly 4 parts.");
             return false;
         }
 
         for (String part : parts) {
             try {
-                int num = Integer.parseInt(part); // Convert the part to an integer
-
-                // Check that the number is between 0 and 255
+                int num = Integer.parseInt(part);
                 if (num < 0 || num > 255) {
-                    System.out.println("\nEach part of the address should be between 0 and 255.");
                     return false;
                 }
             } catch (NumberFormatException e) {
-                System.out.println("\nError in the format of IP address.");
-                return false; // If the part is not a valid number
+                return false;
             }
         }
-        return true; // If all parts are valid and between 0 and 255
+        return true;
     }
 
     /**
-     * Checks the validity of a name.
-     * <p>
-     * This method validates whether the provided name meets the specified criteria:
-     * - It cannot be null or empty.
-     * - It cannot contain spaces.
-     * - It can only contain letters, numbers, and underscores.
-     * - It must be at least 4 characters long and not exceed 14 characters in length.
-     * <p>
-     * If the name does not meet any of these criteria, an appropriate error message
-     * is displayed, and the method returns false. Otherwise, it returns true.
+     * Checks if the provided name is valid based on the following criteria:
+     * <ul>
+     *     <li>The name is not null.</li>
+     *     <li>The name does not contain any spaces.</li>
+     *     <li>The name only contains alphanumeric characters and underscores.</li>
+     *     <li>The name has a length between 4 and 14 characters, inclusive.</li>
+     * </ul>
      *
-     * @param name The name to be validated.
-     * @return True if the name is valid according to the specified criteria, otherwise false.
+     * @param name the name to be validated
+     * @return {@code true} if the name is valid, {@code false} otherwise
      */
     public static boolean isNameValid(String name) {
-
-        if (name == null || name.isEmpty()) {
-            System.out.println("\nInvalid input: name can't be empty.");
-            return false;
-        }
-
-        if (name.contains(" ")) {
-            System.out.println("\nInvalid input: name can't contain spaces.");
-            return false;
-        }
-
-        if (!name.matches("^[a-zA-Z0-9_]+$")) {
-            System.out.println("\nInvalid input: name can contain only letters, numbers and underscore.");
-            return false;
-        }
-
-        if (name.equalsIgnoreCase("back")) {
-            System.out.println("\nInvalid input: name can't be 'back'.");
-            return false;
-        }
-
-        if (name.equalsIgnoreCase("quit")) {
-            System.out.println("\nInvalid input: name can't be 'quit'.");
-            return false;
-        }
-
-        if (name.length() < 4) {
-            System.out.println("\nInvalid input: name must be at least 4 characters long.");
-            return false;
-        }
-
-        if (name.length() > 14) {
-            System.out.println("\nInvalid input: name can't be longer than 15 characters.");
-            return false;
-        }
-
-        return true;
+        return name != null && !name.contains(" ") && name.matches("^[a-zA-Z]+$") && name.length() >= 4 && name.length() <= 14;
     }
 
-
     /**
-     * Checks the validity of a password.
-     * <p>
-     * This method validates whether the provided password meets the specified criteria:
-     * - It cannot be null or empty.
-     * - It cannot contain spaces.
-     * - It must be at least 5 characters long.
-     * - It cannot exceed 20 characters in length.
-     * <p>
-     * If the password does not meet any of these criteria, an appropriate error message
-     * is displayed, and the method returns false. Otherwise, it returns true.
+     * Checks if the provided password is valid based on the following criteria:
+     * <ul>
+     *     <li>The password is not null.</li>
+     *     <li>The password does not contain any spaces.</li>
+     *     <li>The password has a length between 5 and 20 characters, inclusive.</li>
+     * </ul>
      *
-     * @param password The password to be validated.
-     * @return True if the password is valid according to the specified criteria, otherwise false.
+     * @param password the password to be validated
+     * @return {@code true} if the password is valid, {@code false} otherwise
      */
     public static boolean isPasswordValid(String password) {
-
-        if (password == null || password.isEmpty()) {
-            System.out.println("\nInvalid input: password can't be empty.");
-            return false;
-        }
-
-        if (password.contains(" ")) {
-            System.out.println("\nInvalid input: password can't contain spaces.");
-            return false;
-        }
-
-        if (password.equalsIgnoreCase("back")) {
-            System.out.println("\nInvalid input: password can't be 'back'.");
-            return false;
-        }
-
-        if (password.equalsIgnoreCase("quit")) {
-            System.out.println("\nInvalid input: password can't be 'quit'.");
-            return false;
-        }
-
-        if (password.length() < 5) {
-            System.out.println("\nInvalid input: password must be at least 5 characters long.");
-            return false;
-        }
-
-        if (password.length() > 20) {
-            System.out.println("\nInvalid input: password can't be longer than 20 characters.");
-            return false;
-        }
-
-        return true;
+        return password != null && !password.contains(" ") && password.length() >= 5 && password.length() <= 20;
     }
 
     /**
@@ -190,16 +101,10 @@ public abstract class UserInterface {
         try {
             choice = Integer.parseInt(input);
         } catch (NumberFormatException e) {
-            System.out.println("\nInvalid input format: please enter a number between " + lowerBound + " and " + upperBound);
             return false;
         }
 
-        if(choice >= lowerBound && choice <= upperBound)
-            return true;
-        else {
-            System.out.println("\nInvalid input: number must be between " + lowerBound + " and " + upperBound);
-            return false;
-        }
+        return choice >= lowerBound && choice <= upperBound;
     }
 
     /**
@@ -211,17 +116,7 @@ public abstract class UserInterface {
      * @return {@code true} if the character is within the bounds; {@code false} otherwise
      */
     public static boolean isCharWithinBounds(char ch, int lowerBound, int upperBound) {
-
-        boolean withinBounds = (int) ch >= lowerBound && (int) ch <= upperBound;
-        char lowerBoundChar = (char) lowerBound;
-        char upperBoundChar = (char) upperBound;
-
-        if (!withinBounds) {
-            System.out.println("\nError: The character '" + ch + "' is not within the bounds '" +
-                    lowerBoundChar + "' and '" + upperBoundChar + "'.");
-        }
-
-        return withinBounds;
+        return (int) ch >= lowerBound && (int) ch <= upperBound;
     }
 
 
@@ -235,22 +130,16 @@ public abstract class UserInterface {
      *
      * @return The binary choice entered by the user (1 or 2).
      */
-    public static boolean getBinaryChoice(String input) {
+    public static boolean validBinaryChoice(String input) {
         int choice;
         try {
             choice = Integer.parseInt(input);
         } catch (NumberFormatException e) {
-            System.out.println("\nInvalid format input. Please enter 1 or 2!");
             return false;
         }
 
         // Check if the input is either 1 or 2
-        if (choice == 1 || choice == 2) {
-            return true;
-        } else {
-            System.out.println("\nInvalid input. Please enter 1 or 2!");
-            return false;
-        }
+        return choice == 1 || choice == 2;
     }
 
     /**

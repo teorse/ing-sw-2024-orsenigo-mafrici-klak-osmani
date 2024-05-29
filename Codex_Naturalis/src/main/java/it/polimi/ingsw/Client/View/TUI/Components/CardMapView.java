@@ -38,7 +38,25 @@ public class CardMapView extends Component implements Observer {
         showCardMaps(players.getPlayers());
     }
 
-    //Helper methods to print
+    /**
+     * Displays the card or status at the specified coordinates for a given player.
+     * <p>
+     * This method returns a string representing the visual representation of a card or
+     * placement status at the specified coordinates on the card map of the given player.
+     * The display includes the background color based on the card's artifact type or
+     * other indicators for available placements or checkerboard pattern.
+     *
+     * @param username the username of the player whose card map is being displayed.
+     * @param coordinates the coordinates on the card map to be displayed.
+     * @return a string representing the visual representation of the card or status at the specified coordinates.
+     * <p>
+     * The method performs the following steps:
+     * 1. Retrieves the card map record for the specified player.
+     * 2. Checks if a card is placed at the given coordinates and returns the corresponding background color.
+     * 3. If no card is placed, checks if the coordinates are available for placement and returns an indicator.
+     * 4. If neither card nor placement, checks for a checkerboard pattern and returns the appropriate background color.
+     * 5. If none of the above, returns a reset background.
+     */
     private String showCard(String username, Coordinates coordinates) {
         CardMapRecord cardMapRecord = cardMaps.getCardMaps().get(username);
 
@@ -77,6 +95,25 @@ public class CardMapView extends Component implements Observer {
         }
         return null;
     }
+
+    /**
+     * Displays the card maps for a list of players.
+     * <p>
+     * This method constructs and prints the card maps for each player side by side. Each card map
+     * includes a title with the player's username, column headers, and the card placements on the board.
+     *
+     * @param playerRecords a list of PlayerRecord objects representing the players whose card maps will be shown.
+     * <p>
+     * This method performs the following steps:
+     * 1. Calculates the maximum coordinate and board side dimensions based on the card maps.
+     * 2. Initializes a list to hold the rows for each player's card map.
+     * 3. Iterates over each player record to prepare the individual card maps:
+     *    - Adds a title row with the player's username.
+     *    - Adds a row of column headers (A, B, C, ...).
+     *    - Adds rows representing the card placements on the board, including row headers.
+     * 4. Prints the card maps side by side, ensuring alignment across multiple players.
+     * 5. Adds extra space at the end for better visual separation.
+     */
     public void showCardMaps(List<PlayerRecord> playerRecords) {
         int maxCoordinate = cardMaps.maxCoordinate();
         int maxBoardSide = (maxCoordinate * 2) + 3;

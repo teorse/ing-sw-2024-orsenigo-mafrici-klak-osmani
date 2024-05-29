@@ -121,7 +121,7 @@ public class LobbySelectionState extends ClientState {
         }
         // If input counter is 0 (initial state)
         else if (inputCounter == 0) {
-                if (TextUI.getBinaryChoice(input)) {
+                if (TextUI.validBinaryChoice(input)) {
                     // Increment input counter
                     inputCounter++;
                     // Parse choice to integer

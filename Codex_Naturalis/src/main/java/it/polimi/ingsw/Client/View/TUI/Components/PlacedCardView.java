@@ -10,11 +10,9 @@ import java.io.PrintStream;
 
 public class PlacedCardView extends Component{
     private final CardVisibilityRecord card;
-    private final PrintStream out;
 
     public PlacedCardView(CardVisibilityRecord card) {
         this.card = card;
-        out = new PrintStream(System.out, true);
     }
 
 

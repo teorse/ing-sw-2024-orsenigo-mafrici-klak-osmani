@@ -2,15 +2,15 @@ package it.polimi.ingsw.Client.Model;
 
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.ChatMessageRecord;
 
-public class ChatMessagesStack {
-
+public class ChatMessagesStack extends Observable{
+    //ATTRIBUTE
     private final int size;
-    private ChatMessageRecord[] buffer;
+    private final ChatMessageRecord[] buffer;
     private int first; // Points to the first (oldest) element
     private int last;  // Points to the last (newest) element
     private int count; // Number of elements in the buffer
 
-
+    //CONSTRUCTOR
     public ChatMessagesStack(int size) {
         this.size = size;
         buffer = new ChatMessageRecord[size];
@@ -19,37 +19,37 @@ public class ChatMessagesStack {
         count = 0;
     }
 
-    // Method to add a message to the array
+
+
+
+
+    //METHODS
     public void add(ChatMessageRecord message) {
         if (count == size) {
-            // Buffer is full, overwrite the oldest message
             first = (first + 1) % size;
         } else {
-            // Buffer is not full, increment the count
             count++;
         }
-        // Add the new message to the buffer
         last = (last + 1) % size;
         buffer[last] = message;
+
+        super.updateObservers();
     }
 
-    // Get the first element
     public ChatMessageRecord getFirst() {
         if (count == 0) {
-            return null; // Buffer is empty
+            return null;
         }
         return buffer[first];
     }
 
-    // Get the last element
     public ChatMessageRecord getLast() {
         if (count == 0) {
-            return null; // Buffer is empty
+            return null;
         }
         return buffer[last];
     }
 
-    // Get the i-th element
     public ChatMessageRecord get(int i) {
         if (i < 0 || i >= count) {
             throw new IndexOutOfBoundsException("Index out of bounds");

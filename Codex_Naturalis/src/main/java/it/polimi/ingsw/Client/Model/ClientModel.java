@@ -354,6 +354,7 @@ public class ClientModel {
     }
     public void handleInput(String input) {clientState.handleInput(input);}
     public void print() {clientState.print();}
+
     public LobbyUserColors getLobbyUserColors(String username) {
         for (LobbyUserRecord lobbyUserRecord : lobbyUserRecords) {
             if (lobbyUserRecord.username().equals(username)) {

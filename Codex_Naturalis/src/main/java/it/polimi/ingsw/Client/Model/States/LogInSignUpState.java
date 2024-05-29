@@ -90,7 +90,7 @@ public class LogInSignUpState extends ClientState {
             // If the user is at the initial choice stage
         } else if (inputCounter == 0) {
             // Validate the binary choice input
-            if (UserInterface.getBinaryChoice(input)) {
+            if (UserInterface.validBinaryChoice(input)) {
                 choice = Integer.parseInt(input);
                 inputCounter++;
             }

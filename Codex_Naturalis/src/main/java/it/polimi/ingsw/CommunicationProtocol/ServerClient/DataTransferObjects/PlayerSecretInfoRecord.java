@@ -11,7 +11,9 @@ import java.util.Map;
  *
  * <p>This record implements the {@code Serializable} interface to support serialization.
  */
-public record PlayerSecretInfoRecord(List<CardRecord> cardsHeld, Map<CardRecord, Boolean> cardPlayability, ObjectiveRecord secretObjectives)
+
+//TODO remove objectiveRecord
+public record PlayerSecretInfoRecord(List<CardRecord> cardsHeld, Map<CardRecord, Boolean> cardPlayability, ObjectiveRecord objectiveRecord)
         implements Serializable {
 
     /**
@@ -19,7 +21,6 @@ public record PlayerSecretInfoRecord(List<CardRecord> cardsHeld, Map<CardRecord,
      *
      * @param cardsHeld a list containing cards held by the player in the specific order that is also memorized by the server
      * @param cardPlayability map containing the playability value for each card held by the player
-     * @param secretObjectives the secret objectives of the player
      */
     public PlayerSecretInfoRecord {
         // No additional implementation needed as records automatically generate a constructor

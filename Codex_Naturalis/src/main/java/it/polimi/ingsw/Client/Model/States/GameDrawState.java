@@ -135,7 +135,7 @@ public class GameDrawState extends ClientState{
         }
         else if (inputCounter == 0) {
             // Check if the input is a binary choice
-            if (UserInterface.getBinaryChoice(input)) {
+            if (UserInterface.validBinaryChoice(input)) {
                 // Set card pool type based on input
                 if (Integer.parseInt(input) == 1) {
                     cardPoolTypes = CardPoolTypes.RESOURCE;

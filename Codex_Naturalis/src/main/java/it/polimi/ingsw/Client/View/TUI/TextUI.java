@@ -259,7 +259,7 @@ public class TextUI extends UserInterface {
      */
     public void showGameBoard() {
         showSharedObjectives(model.getGameRecord());
-        showObjective(model.getPlayerSecretInfoRecord().secretObjectives());
+        showObjective(model.getPlayerSecretInfoRecord().objectiveRecord());
         showPoints();
         showCardMaps(model.getPlayers());
     }

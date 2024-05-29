@@ -8,6 +8,7 @@ import it.polimi.ingsw.Client.View.TUI.TextUI;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPPlayCard;
 
 public class CardPlacer extends InteractiveComponent {
+    //ATTRIBUTES
     private int inputCounter;
     private final CardMaps cardMaps;
     private final CardsHeld cardsHeld;
@@ -19,6 +20,11 @@ public class CardPlacer extends InteractiveComponent {
     int coordinateIndex;
     boolean faceUp;
 
+
+
+
+
+    //CONSTUCTOR
     public CardPlacer(ClientModel model){
         this.model = model;
         inputCounter = 0;
@@ -26,24 +32,33 @@ public class CardPlacer extends InteractiveComponent {
         cardsHeld = CardsHeld.getInstance();
     }
 
-    @Override
-    public void print(){
-        if(inputCounter == 0){
-            System.out.println("\nChoose a card from your hand to place.");
-        } else if (inputCounter == 1) {
-            System.out.println("\nChoose a ROW to place the card. (Only white squares with an X are allowed)");
-        } else if (inputCounter == 2) {
-            System.out.println("\nChoose a COLUMN to place the card. (Only white squares with an X are allowed)");
-        } else if (inputCounter == 3) {
-            System.out.println("\n" + """
-                    On which side do you want to place the card? Enter your choice:
-                     1 - Front
-                     2 - Back""");
-        }
-    }
 
+
+
+
+    //METHODS
     @Override
-    public void handleInput(String input) {
+    /**
+     * Handles user input for selecting and placing cards on the game board.
+     * <p>
+     * This method processes user input in a multi-step manner to allow the selection
+     * and placement of cards held by the player. It guides the user through the following
+     * steps:
+     * 1. Selecting a card from the player's hand.
+     * 2. Choosing the row coordinate for card placement.
+     * 3. Choosing the column coordinate for card placement.
+     * 4. Confirming the card placement and whether the card should be placed face up or down.
+     *
+     * @param input the user input to be processed.
+     * @return a boolean indicating whether the input has been successfully processed and the action completed.
+     * <p>
+     * The method performs the following steps:
+     * 1. Validates the card selection input and increments the input counter.
+     * 2. Validates the row coordinate input and increments the input counter.
+     * 3. Validates the column coordinate input and increments the input counter, checking for valid placement.
+     * 4. Confirms card playability and placement orientation, sending the action if valid.
+     */
+    public boolean handleInput(String input) {
         int maxBoardSide = (cardMaps.maxCoordinate() * 2) + 3;
 
         if (inputCounter == 0) {
@@ -75,7 +90,7 @@ public class CardPlacer extends InteractiveComponent {
         } else if (inputCounter == 3) {
             boolean cardPlayability = CardsHeld.getInstance().getCardPlayability(cardIndex);
 
-            if (TextUI.getBinaryChoice(input)) {
+            if (TextUI.validBinaryChoice(input)) {
                 faceUp = (Integer.parseInt(input) == 1);
                 if (cardPlayability || !faceUp)
                     sendPacket();
@@ -86,11 +101,28 @@ public class CardPlacer extends InteractiveComponent {
             } else
                 print();
         }
+        return false;
     }
 
     @Override
     public String getKeyword() {
         return "Place";
+    }
+
+    @Override
+    public void print(){
+        if(inputCounter == 0){
+            System.out.println("\nChoose a card from your hand to place.");
+        } else if (inputCounter == 1) {
+            System.out.println("\nChoose a ROW to place the card. (Only white squares with an X are allowed)");
+        } else if (inputCounter == 2) {
+            System.out.println("\nChoose a COLUMN to place the card. (Only white squares with an X are allowed)");
+        } else if (inputCounter == 3) {
+            System.out.println("\n" + """
+                    On which side do you want to place the card? Enter your choice:
+                     1 - Front
+                     2 - Back""");
+        }
     }
 
     private void sendPacket(){
