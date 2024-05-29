@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.Model.States;
 
 import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.View.UserInterface;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.LobbyUserRecord;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 import it.polimi.ingsw.Server.Model.Game.Player.PlayerStates;
@@ -114,12 +115,12 @@ public class LobbyJoined extends ClientState{
             model.setClientState(new ChatState(model, this));
         }
         // If input is to change color
-        else if (TextUI.checkInputBound(input, 1, model.getLobbyRecord().availableUserColors().size())) {
+        else if (UserInterface.isParsableAsInt(input) && TextUI.checkInputBound(input, 1, model.getLobbyRecord().availableUserColors().size())) {
             // Send packet to change color
             model.getClientConnector().sendPacket(new CSPChangeColor(model.getLobbyRecord().availableUserColors().get(Integer.parseInt(input) - 1)));
         }
         // If user is admin
-        else if (TextUI.areYouAdmin(model) && !TextUI.checkInputBound(input, 1, model.getLobbyRecord().availableUserColors().size())) {
+        else if (TextUI.areYouAdmin(model)) {
             if (model.getLobbyUserRecords().size() >= 2) {
                 // If input is to start the game
                 if (input.equalsIgnoreCase("START")) {
@@ -127,18 +128,21 @@ public class LobbyJoined extends ClientState{
                     model.getClientConnector().sendPacket(new CSPStartGame());
                 } else {
                     // Prompt to start the game
-                    System.out.println("Wrong command, to start the game type START!");
+                    System.out.println("\nWrong command, to start the game type START!");
                 }
             } else {
-                System.out.println("Please wait until there are enough players to start the game.");
+                System.out.println("\nPlease wait until there are enough players to start the game.");
             }
         }
             // If user is not admin
-        else if (!TextUI.areYouAdmin(model) && input.equalsIgnoreCase("START")) {
+        else if (input.equalsIgnoreCase("START")) {
                 // Prompt to wait until the game starts
-                System.out.println("Only the admin can start the game, please wait.");
-            }
+                System.out.println("\nOnly the admin can start the game, please wait.");
         }
+        else
+            System.out.println("\nNot valid command!");
+    }
+
 
     /**
      * Transitions the client to the next state based on the current game status and player state.
@@ -166,7 +170,6 @@ public class LobbyJoined extends ClientState{
 
         PlayerStates myPlayerGameState = model.getMyPlayerGameState();
         if (model.isGameStarted()) {
-            if (myPlayerGameState != null) {
                 switch (myPlayerGameState) {
                     case PLACE -> {
                         if (!model.isSetUpFinished())
@@ -177,11 +180,12 @@ public class LobbyJoined extends ClientState{
                     case DRAW -> model.setClientState(new GameDrawState(model));
                     case PICK_OBJECTIVE -> model.setClientState(new GamePickObjectiveState(model));
                     case WAIT -> model.setClientState(new GameWaitState(model));
+                    case null, default -> {
+                        logger.fine("Conditions were not met to switch state, staying in LobbyJoined");
+                        print();
+                    }
                 }
-            } else {
-                logger.fine("Conditions were not met to switch state, staying in LobbyJoined");
-                print();
-            }
-        }
+        } else
+            print();
     }
 }

@@ -111,7 +111,7 @@ public class LogInSignUpState extends ClientState {
                 // If the user chose to log in, send a log in packet
                 if (choice == 1) {
                     model.getClientConnector().sendPacket(new CSPLogIn(credentials.get(0), credentials.get(1)));
-                    // If the user chose to sign up, send a sign up packet
+                    // If the user chose to sign up, send a sign-up packet
                 } else {
                     model.getClientConnector().sendPacket(new CSPSignUp(credentials.get(0), credentials.get(1)));
                 }
@@ -166,7 +166,7 @@ public class LogInSignUpState extends ClientState {
             }
             // If the user chose to sign up
             else if (choice == 2) {
-                // Handle different error cases from the sign up attempt
+                // Handle different error cases from the sign-up attempt
                 switch (model.getErrorDictionarySignUp()) {
                     case ErrorDictionarySignUp.USERNAME_ALREADY_TAKEN -> System.out.println("Username already taken.");
                     case ErrorDictionarySignUp.GENERIC_ERROR -> System.out.println("Something happened in the server, please try again.");

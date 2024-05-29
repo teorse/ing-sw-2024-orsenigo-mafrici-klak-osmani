@@ -111,13 +111,7 @@ public class ChatState extends ClientState{
             System.out.println("If you want to go back at the previous choice, type BACK. If you want to exit the Chat State, type EXIT.");
             System.out.println("\nPRIVATE CHAT");
 
-            // Debug: Check if chosenUser is set correctly
-            System.out.println("Debug: chosenUser = " + chosenUser);
-
-            // Debug: Check if there are private messages for the chosen user
             if (model.getPrivateChatMessages().containsKey(chosenUser)) {
-                System.out.println("Debug: private messages found for user " + chosenUser);
-
                 // Display private chat messages for the chosen user
                 for (int i = 0; i < model.getPrivateChatMessages().get(chosenUser).size(); i++) {
                     System.out.println(displayMessage(model.getPrivateChatMessages().get(chosenUser).get(i)));
@@ -125,7 +119,6 @@ public class ChatState extends ClientState{
             } else {
                 System.out.println("No private messages found for user " + chosenUser);
             }
-
             System.out.println("\nPlease type your private message, to send it press ENTER");
         }
     }
@@ -196,6 +189,7 @@ public class ChatState extends ClientState{
         model.setChatState(false);
         model.setClientState(previousState);
         previousState.nextState();
+
     }
 
     /**
