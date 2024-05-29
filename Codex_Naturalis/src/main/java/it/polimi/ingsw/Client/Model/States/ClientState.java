@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client.Model.States;
 
 import it.polimi.ingsw.Client.Model.ClientModel;
-import it.polimi.ingsw.Client.View.TextUI;
+import it.polimi.ingsw.Client.View.TUI.TextUI;
 
 /**
  * Abstract class representing the state of the client in the game.

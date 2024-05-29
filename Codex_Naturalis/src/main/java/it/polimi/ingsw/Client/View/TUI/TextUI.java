@@ -1,6 +1,7 @@
-package it.polimi.ingsw.Client.View;
+package it.polimi.ingsw.Client.View.TUI;
 
 import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.View.UserInterface;
 import it.polimi.ingsw.Server.Model.Game.Cards.Corner;
 import it.polimi.ingsw.Server.Model.Game.Cards.CornerDirection;
 import it.polimi.ingsw.Server.Model.Game.Cards.CornerOrientation;

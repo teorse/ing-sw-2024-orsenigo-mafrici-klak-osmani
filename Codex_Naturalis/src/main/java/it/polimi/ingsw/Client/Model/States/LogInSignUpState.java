@@ -3,7 +3,7 @@ package it.polimi.ingsw.Client.Model.States;
 import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.ErrorDictionary.ErrorDictionaryLogIn;
 import it.polimi.ingsw.Client.Model.ErrorDictionary.ErrorDictionarySignUp;
-import it.polimi.ingsw.Client.View.TextUI;
+import it.polimi.ingsw.Client.View.TUI.TextUI;
 import it.polimi.ingsw.Client.View.UserInterface;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPLogIn;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPSignUp;

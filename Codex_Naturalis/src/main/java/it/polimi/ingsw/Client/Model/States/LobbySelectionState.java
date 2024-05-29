@@ -4,7 +4,7 @@ import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.ErrorDictionary.ErrorDictionaryJoinLobbyFailed;
 import it.polimi.ingsw.Client.Model.ErrorDictionary.ErrorDictionaryStartLobbyFailed;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.LobbyPreviewRecord;
-import it.polimi.ingsw.Client.View.TextUI;
+import it.polimi.ingsw.Client.View.TUI.TextUI;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPJoinLobby;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPStartLobby;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPStopViewingLobbyPreviews;

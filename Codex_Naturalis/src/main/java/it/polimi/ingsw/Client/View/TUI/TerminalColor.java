@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Client.View;
+package it.polimi.ingsw.Client.View.TUI;
 
 public class TerminalColor {
     // Reset

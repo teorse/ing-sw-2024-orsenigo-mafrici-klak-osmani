@@ -4,7 +4,7 @@ import it.polimi.ingsw.Client.Controller.ClientController;
 import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Network.ClientConnectorRMI;
 import it.polimi.ingsw.Client.Network.ClientConnectorSocket;
-import it.polimi.ingsw.Client.View.TextUI;
+import it.polimi.ingsw.Client.View.TUI.TextUI;
 import it.polimi.ingsw.Client.View.UserInterface;
 import it.polimi.ingsw.Utils.Utilities;
 

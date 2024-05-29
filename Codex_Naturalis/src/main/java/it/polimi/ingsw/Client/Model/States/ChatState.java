@@ -3,8 +3,8 @@ package it.polimi.ingsw.Client.Model.States;
 import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.ChatMessageRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.LobbyUserRecord;
-import it.polimi.ingsw.Client.View.TerminalColor;
-import it.polimi.ingsw.Client.View.TextUI;
+import it.polimi.ingsw.Client.View.TUI.TerminalColor;
+import it.polimi.ingsw.Client.View.TUI.TextUI;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPSendChatMessage;
 import it.polimi.ingsw.Server.Model.Lobby.LobbyUserColors;
 
