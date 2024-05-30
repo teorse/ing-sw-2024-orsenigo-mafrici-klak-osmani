@@ -25,8 +25,8 @@ public class CardPlacer extends InteractiveComponent {
 
 
     //CONSTUCTOR
-    public CardPlacer(ClientModel model){
-        this.model = model;
+    public CardPlacer(){
+        this.model = ClientModel.getInstance();
         inputCounter = 0;
         cardMaps = CardMaps.getInstance();
         cardsHeld = CardsHeld.getInstance();
@@ -37,11 +37,10 @@ public class CardPlacer extends InteractiveComponent {
 
 
     //METHODS
-    @Override
     /**
      * Handles user input for selecting and placing cards on the game board.
      * <p>
-     * This method processes user input in a multi-step manner to allow the selection
+     * This method processes user input in a multistep manner to allow the selection
      * and placement of cards held by the player. It guides the user through the following
      * steps:
      * 1. Selecting a card from the player's hand.
@@ -58,6 +57,7 @@ public class CardPlacer extends InteractiveComponent {
      * 3. Validates the column coordinate input and increments the input counter, checking for valid placement.
      * 4. Confirms card playability and placement orientation, sending the action if valid.
      */
+    @Override
     public boolean handleInput(String input) {
         int maxBoardSide = (cardMaps.maxCoordinate() * 2) + 3;
 

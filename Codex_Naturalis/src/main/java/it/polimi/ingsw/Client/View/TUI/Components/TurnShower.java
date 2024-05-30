@@ -12,7 +12,7 @@ import java.util.List;
 public class TurnShower extends Component {
     private final List<PlayerRecord> playerRecords;
 
-    public TurnShower(ClientModel model) {
+    public TurnShower() {
         this.playerRecords = Players.getInstance().getPlayers();
     }
 

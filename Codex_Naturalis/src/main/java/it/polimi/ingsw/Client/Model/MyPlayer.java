@@ -17,6 +17,7 @@ public class MyPlayer extends Observable{
 
     //ATTRIBUTES
     private String username;
+    private boolean isAdmin;
 
 
 
@@ -26,6 +27,7 @@ public class MyPlayer extends Observable{
     public String getUsername() {
         return username;
     }
+    public boolean isAdmin() { return isAdmin; }
 
 
 
@@ -34,6 +36,10 @@ public class MyPlayer extends Observable{
     //SETTERS
     public void setUsername(String username) {
         this.username = username;
+        super.updateObservers();
+    }
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
         super.updateObservers();
     }
 }
