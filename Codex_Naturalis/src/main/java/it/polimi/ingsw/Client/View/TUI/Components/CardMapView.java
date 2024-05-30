@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.CardMaps;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.Players;
 import it.polimi.ingsw.Client.Model.States.ClientState;
 import it.polimi.ingsw.Client.View.Observer;
@@ -25,11 +26,11 @@ public class CardMapView extends Component implements Observer {
 
 
     //CONSTRUCTOR
-    public CardMapView(CardMaps cardMaps, Players players, ClientState clientState){
-        this.cardMaps = cardMaps;
-        this.clientState = clientState;
+    public CardMapView(){
+        this.cardMaps = CardMaps.getInstance();
+        this.clientState = ClientModel.getInstance().getClientState();
         this.cardMaps.subscribe(this);
-        this.players = players;
+        this.players = Players.getInstance();
         this.players.subscribe(this);
     }
 
