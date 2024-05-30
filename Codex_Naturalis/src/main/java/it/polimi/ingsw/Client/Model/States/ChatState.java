@@ -17,9 +17,9 @@ public class ChatState extends ClientState{
     private final Logger logger;
 
     /**
-     * Constructs a new ClientState with the specified client model.
+     * Constructs a new ViewState with the specified client model.
      * <p>
-     * Initializes the ClientState with the provided client model, initializes the TextUI for interaction,
+     * Initializes the ViewState with the provided client model, initializes the TextUI for interaction,
      * retrieves the player record of the current user, retrieves the lobby user record of the current user,
      * sets the input counter to 0, and initializes the operation success flag to false in the client model.
      *

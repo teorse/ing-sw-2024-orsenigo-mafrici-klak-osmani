@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
+import it.polimi.ingsw.Client.View.TUI.Components.CardsHeldView;
+import it.polimi.ingsw.Client.View.TUI.TextUI;
+
 public class Zoomer extends InteractiveComponent {
     //ATTRIBUTES
     private InteractiveComponent subComponent;

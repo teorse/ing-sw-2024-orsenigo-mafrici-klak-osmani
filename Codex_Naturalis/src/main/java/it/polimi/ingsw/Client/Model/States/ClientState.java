@@ -8,7 +8,7 @@ import it.polimi.ingsw.Client.View.TUI.TextUI;
  * <p>
  * This class serves as a blueprint for different states that the client can be in during the game.
  * It contains methods to print information, handle user input, and transition to the next state.
- * Each concrete subclass of ClientState represents a specific state in the game, such as login, lobby, or gameplay.
+ * Each concrete subclass of ViewState represents a specific state in the game, such as login, lobby, or gameplay.
  * The class also provides a method to determine the next game state based on the current game conditions.
  */
 public abstract class ClientState {
@@ -19,9 +19,9 @@ public abstract class ClientState {
 
     //TODO fix the QUIT command!
     /**
-     * Constructs a new ClientState with the specified client model.
+     * Constructs a new ViewState with the specified client model.
      * <p>
-     * Initializes the ClientState with the provided client model, initializes the TextUI for interaction,
+     * Initializes the ViewState with the provided client model, initializes the TextUI for interaction,
      * retrieves the player record of the current user, retrieves the lobby user record of the current user,
      * sets the input counter to 0, and initializes the operation success flag to false in the client model.
      *

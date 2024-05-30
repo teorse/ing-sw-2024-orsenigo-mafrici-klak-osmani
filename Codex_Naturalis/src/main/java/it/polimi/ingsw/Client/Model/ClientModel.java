@@ -22,6 +22,19 @@ import java.util.*;
  * between different client states, such as connection, game play, and waiting states.
  */
 public class ClientModel {
+    //SINGLETON PATTERN
+    private static ClientModel INSTANCE;
+    //todo change the constructor to be private but careful with compatibilities
+    //private Lobby(){}
+    public static ClientModel getInstance(){
+        if(INSTANCE == null){
+            INSTANCE = new ClientModel();
+        }
+        return INSTANCE;
+    }
+
+
+
     //ATTRIBUTES
 
     //Internal Logic
@@ -82,6 +95,10 @@ public class ClientModel {
 
     //CONSTRUCTOR
     public ClientModel() {
+        //todo remove this once the compatibilities issues are solved with the singleton pattern
+        INSTANCE = this;
+
+
         this.cardMaps = new HashMap<>();
         this.lobbyPreviewRecords = new ArrayList<>();
         this.lobbyUserRecords = new ArrayList<>();
