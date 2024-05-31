@@ -9,6 +9,5 @@ public abstract class Component {
         out = new PrintStream(System.out, true);
     }
 
-
     public abstract void print();
 }

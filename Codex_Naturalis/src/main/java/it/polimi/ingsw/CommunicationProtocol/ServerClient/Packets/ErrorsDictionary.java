@@ -12,7 +12,5 @@ public enum ErrorsDictionary {
     LOBBY_NAME_NOT_FOUND,
     LOBBY_IS_CLOSED,
 
-
     GENERIC_ERROR,
-
 }

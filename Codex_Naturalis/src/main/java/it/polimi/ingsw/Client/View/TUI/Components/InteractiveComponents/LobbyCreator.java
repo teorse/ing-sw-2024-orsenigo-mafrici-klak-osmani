@@ -16,7 +16,11 @@ public class LobbyCreator extends  InteractiveComponent {
 
 
     @Override
-    public boolean handleInput(String input) {
+    public InteractiveComponentReturns handleInput(String input) {
+
+        if(input.equalsIgnoreCase("BACK"))
+            return super.handleInput(input);
+
         if (inputCounter == 0) {
             if (TextUI.isNameValid(input)) {
                 lobbyName = input;

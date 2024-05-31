@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
 import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.View.Observer;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
 /**
@@ -11,14 +13,18 @@ import it.polimi.ingsw.Client.View.TUI.TextUI;
  * Each concrete subclass of ViewState represents a specific state in the game, such as login, lobby, or gameplay.
  * The class also provides a method to determine the next game state based on the current game conditions.
  */
-public abstract class ViewState {
+public abstract class ViewState implements Observer {
+    ClientModel2 model;
+
+    public ViewState(ClientModel2 model){
+        this.model = model;
+        model.subscribe(this);
+    }
+
     //TODO fix the QUIT command!
 
     public abstract void print();
 
     public abstract void handleInput(String input);
-
-    public abstract void nextState();
-
 }
 

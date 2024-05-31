@@ -54,7 +54,12 @@ public class CardMapZoom extends InteractiveComponent{
      * 3. Validates the column coordinate input, retrieves the card from the specified coordinates,
      *    and displays the card details.
      */
-    public boolean handleInput(String input) {
+    @Override
+    public InteractiveComponentReturns handleInput(String input) {
+
+        if(input.equalsIgnoreCase("BACK"))
+            return super.handleInput(input);
+
         if (inputCounter == 0) {
             if (TextUI.checkInputBound(input, 1, players.getPlayersSize())) {
                 //Username of the chosen cardMap's owner
@@ -69,7 +74,7 @@ public class CardMapZoom extends InteractiveComponent{
                 //todo print error message index out of bounds
             }
 
-            return false;
+            return InteractiveComponentReturns.INCOMPLETE;
         }
         else if(inputCounter == 1){
             if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0), 'A', 'A' + cardMaps.maxBoardSide() - 1)) {
@@ -81,7 +86,7 @@ public class CardMapZoom extends InteractiveComponent{
                 // Print current state
                 print();
             }
-            return false;
+            return InteractiveComponentReturns.INCOMPLETE;
         }
         else if(inputCounter == 2){
             if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0), 'A', 'A' + cardMaps.maxBoardSide() - 1)) {
@@ -96,10 +101,10 @@ public class CardMapZoom extends InteractiveComponent{
 
                 // Reset the input counter
                 inputCounter = 0;
-                return true;
+                return InteractiveComponentReturns.COMPLETE;
             }
         }
-        return false;
+        return InteractiveComponentReturns.INCOMPLETE;
     }
 
     @Override

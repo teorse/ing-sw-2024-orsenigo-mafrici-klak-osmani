@@ -58,7 +58,11 @@ public class CardPlacer extends InteractiveComponent {
      * 4. Confirms card playability and placement orientation, sending the action if valid.
      */
     @Override
-    public boolean handleInput(String input) {
+    public InteractiveComponentReturns handleInput(String input) {
+
+        if(input.equalsIgnoreCase("BACK"))
+            return super.handleInput(input);
+
         int maxBoardSide = (cardMaps.maxCoordinate() * 2) + 3;
 
         if (inputCounter == 0) {

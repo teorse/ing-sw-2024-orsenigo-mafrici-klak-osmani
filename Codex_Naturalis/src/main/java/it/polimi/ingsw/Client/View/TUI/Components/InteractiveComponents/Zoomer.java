@@ -10,7 +10,7 @@ public class Zoomer extends InteractiveComponent {
 
     //METHODS
     @Override
-    public boolean handleInput(String input) {
+    public InteractiveComponentReturns handleInput(String input) {
         if(inputCounter == 0){
             if (TextUI.checkInputBound(input, 1, 4)) {
                 // Parse choice

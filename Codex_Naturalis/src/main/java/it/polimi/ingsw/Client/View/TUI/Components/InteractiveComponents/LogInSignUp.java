@@ -17,7 +17,10 @@ public class LogInSignUp extends InteractiveComponent {
     public LogInSignUp() {this.model = ClientModel.getInstance();}
 
     @Override
-    public boolean handleInput(String input) {
+    public InteractiveComponentReturns handleInput(String input) {
+
+        if(input.equalsIgnoreCase("BACK"))
+            return super.handleInput(input);
 
         if (inputCounter == 0) {
             // Validate the binary choice input

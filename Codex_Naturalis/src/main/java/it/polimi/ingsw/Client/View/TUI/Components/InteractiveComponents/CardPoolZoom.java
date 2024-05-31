@@ -5,8 +5,13 @@ import it.polimi.ingsw.Client.View.TUI.TextUI;
 import it.polimi.ingsw.Server.Model.Game.Table.CardPoolTypes;
 
 public class CardPoolZoom extends InteractiveComponent{
+
     //METHODS
-    public boolean handleInput(String input) {
+    public InteractiveComponentReturns handleInput(String input) {
+
+        if(input.equalsIgnoreCase("BACK"))
+            return super.handleInput(input);
+
         if (TextUI.validBinaryChoice(input)) {
             if (Integer.parseInt(input) == 1)
                 new CardPoolView(CardPoolTypes.RESOURCE).print();

@@ -28,11 +28,10 @@ public class CardDrawer extends InteractiveComponent {
 
 
     //CONSTRUCTOR
-    public CardDrawer(CardPoolTypes cardPoolChoice, ClientModel model) {
+    public CardDrawer() {
 
-        this.connection = model.getClientConnector();
+        this.connection = ClientModel.getInstance().getClientConnector();
 
-        this.cardPoolChoice = cardPoolChoice;
         this.cardPools = CardPools.getInstance();
 
         int resourceLB = 1 + ((cardPools.getCardPoolByType(CardPoolTypes.RESOURCE).coveredCardColor() == Artifacts.NULL) ? 1 : 0);

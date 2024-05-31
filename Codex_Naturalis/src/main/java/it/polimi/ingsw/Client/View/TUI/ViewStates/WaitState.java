@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
 import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.MyPlayer;
 import it.polimi.ingsw.Client.Model.States.*;
 import it.polimi.ingsw.Client.View.TUI.Components.*;
 import it.polimi.ingsw.Client.View.TUI.Components.Component;
@@ -14,17 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class WaitState {
+public class WaitState extends ViewState {
     List<Component> passiveComponenets;
     List<Component> postSetupComponents;
     InteractiveComponent mainComponent;
 
-    InteractiveComponent activeComponent;
+    PlayerStates myPlayerGameState;
 
     private final Logger logger;
 
 
-    public WaitState() {
+    public WaitState(ClientModel2 model) {
+        super(model);
         logger = Logger.getLogger(WaitState.class.getName());
 
         passiveComponenets = new ArrayList<>();
@@ -39,8 +42,11 @@ public class WaitState {
         postSetupComponents.add(new TurnShower());
 
         mainComponent = new WaitInteractor();
+
+        myPlayerGameState = MyPlayer.getInstance().getMyPlayerGameState();
     }
 
+    @Override
     public void print() {
         //todo add class game and logic to switch between game title and last round
         TextUI.clearCMD();
@@ -58,6 +64,7 @@ public class WaitState {
         mainComponent.print();
     }
 
+    @Override
     public void handleInput(String input) {
         //todo implement quit handling
         //todo implement chat handling
@@ -65,6 +72,7 @@ public class WaitState {
         mainComponent.handleInput(input);
     }
 
+    @Override
     public void update(){
         //todo add inside components the ability to comunicate to the state when it's time to update
         print();
@@ -72,24 +80,23 @@ public class WaitState {
 
     private void nextState(){
         logger.info("Choosing next state");
-        logger.fine("Current value of myPR State: " + model.getMyPlayerGameState());
+        logger.fine("Current value of myPR State: " + myPlayerGameState);
 
         if (model.isGameOver()) {
-            model.setClientState(new GameOverState(model));
-        } else if (model.getMyPlayerGameState() == PlayerStates.WAIT) {
+            model.setView(new GameOverState(model));
+        } else if (myPlayerGameState == PlayerStates.WAIT) {
             logger.fine("Staying in Wait state");
             print();
-        } else if (model.getMyPlayerGameState() == PlayerStates.DRAW) {
+        } else if (myPlayerGameState == PlayerStates.DRAW) {
             logger.fine("Entering GameDrawState");
-            model.setClientState(new GameDrawState(model));
-        } else if (model.getMyPlayerGameState() == PlayerStates.PICK_OBJECTIVE) {
+            model.setView(new DrawState(model));
+        } else if (myPlayerGameState == PlayerStates.PICK_OBJECTIVE) {
             logger.fine("Entering GamePickObjectiveState");
-            model.setClientState(new GamePickObjectiveState(model));
-        } else if (model.getMyPlayerGameState() == PlayerStates.PLACE) {
+            model.setView(new GamePickObjectiveState(model));
+        } else if (myPlayerGameState == PlayerStates.PLACE) {
             logger.fine("Entering GamePlaceState");
-            model.setClientState(new GamePlaceState(model));
+            model.setView(new PlaceState(model));
         } else
             print();
     }
-
 }

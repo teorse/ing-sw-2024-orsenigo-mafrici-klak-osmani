@@ -18,7 +18,7 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
     private final Chat chat;
     private int choice;
     private String chosenUser;
-    private ClientConnector connection;
+    private final ClientConnector connection;
     private LobbyUsers lobbyUsers;
 
     private List<String> recipients;
@@ -32,11 +32,11 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
 
 
     //CONSTURCTOR
-    public ChatMessageSender(ClientModel model){
+    public ChatMessageSender(){
         chat = Chat.getInstance();
         chat.subscribe(this);
         lobbyUsers = LobbyUsers.getInstance();
-        connection = model.getClientConnector();
+        connection = ClientModel.getInstance().getClientConnector();
         inConversation = false;
 
         recipients = new ArrayList<>();

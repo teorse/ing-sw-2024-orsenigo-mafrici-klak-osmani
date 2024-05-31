@@ -32,11 +32,11 @@ public class ColorPicker extends InteractiveComponent{
     public boolean handleInput(String input) {
         if (TextUI.checkInputBound(input, 1, availableUserColors.size())) {
             model.getClientConnector().sendPacket(new CSPChangeColor(model.getLobbyRecord().availableUserColors().get(Integer.parseInt(input) - 1)));
-            return true;
+            return InteractiveComponentReturns.COMPLETE;
         }
         else {
             System.out.println("Invalid input. Type a number between 1 and " + availableUserColors.size());
-            return false;
+            return InteractiveComponentReturns.INCOMPLETE;
         }
     }
 

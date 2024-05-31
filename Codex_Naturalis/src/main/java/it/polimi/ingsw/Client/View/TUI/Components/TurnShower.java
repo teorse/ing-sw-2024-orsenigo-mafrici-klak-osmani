@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.Model.MyPlayer;
 import it.polimi.ingsw.Client.Model.Observable;
 import it.polimi.ingsw.Client.Model.Players;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
@@ -20,7 +21,10 @@ public class TurnShower extends Component {
     public void print() {
         for (PlayerRecord playerRecord : playerRecords) {
             if (playerRecord.playerState() == PlayerStates.PLACE || playerRecord.playerState() == PlayerStates.DRAW) {
-                System.out.println("\nIt's " + playerRecord.username() + " turn.");
+                if (!playerRecord.username().equals(MyPlayer.getInstance().getUsername()))
+                    System.out.println("\nIt's " + playerRecord.username() + " turn.");
+                else
+                    System.out.println("\nIt's your turn.");
                 break;
             }
         }

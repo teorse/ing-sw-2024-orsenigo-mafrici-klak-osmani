@@ -18,7 +18,11 @@ public class ServerConnectionWizard extends InteractiveComponent {
     private int choice;
 
     @Override
-    public boolean handleInput(String input) {
+    public InteractiveComponentReturns handleInput(String input) {
+
+        if(input.equalsIgnoreCase("BACK"))
+            return super.handleInput(input);
+
         if (inputCounter == 0) {
             if (TextUI.validBinaryChoice(input)) {
                 choice = Integer.parseInt(input);

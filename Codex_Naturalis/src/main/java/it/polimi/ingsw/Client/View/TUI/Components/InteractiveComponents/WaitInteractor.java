@@ -13,7 +13,11 @@ public class WaitInteractor extends InteractiveComponent {
 
 
     @Override
-    public boolean handleInput(String input) {
+    public InteractiveComponentReturns handleInput(String input) {
+
+        if(input.equalsIgnoreCase("BACK"))
+            return super.handleInput(input);
+
         if (model.isSetUpFinished() && !model.isWaitingForReconnections()) {
             zoom.handleInput(input);
         }
