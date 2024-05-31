@@ -83,15 +83,19 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
      * and the method returns false, indicating that the chat operation was not successful.
      */
     @Override
-    public boolean handleInput(String input) {
+    public InteractiveComponentReturns handleInput(String input) {
+
+        if(input.equalsIgnoreCase("BACK"))
+            return super.handleInput(input);
+
         if(inConversation) {
             if (choice == 1) {
                 // Handle public chat message input
                 if (!input.trim().isEmpty())
                     connection.sendPacket(new CSPSendChatMessage(new ChatMessageRecord(input.replaceFirst("^\\s+", ""))));
                 else
-                    System.out.println("You cannot send an empty message!");
-                return false;
+                    emptyMessage = true;
+                return InteractiveComponentReturns.INCOMPLETE;
             }
 
             if (choice == 2) {
@@ -99,8 +103,8 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
                 if (!input.trim().isEmpty())
                     connection.sendPacket(new CSPSendChatMessage(new ChatMessageRecord(input.replaceFirst("^\\s+", ""), chosenUser)));
                 else
-                    System.out.println("You cannot send an empty message!");
-                return false;
+                    emptyMessage = true;
+                return InteractiveComponentReturns.INCOMPLETE;
             }
         }
 
@@ -114,14 +118,14 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
                     conversationInteract = chat.getPublicChat();
                     conversationInteract.subscribe(this);
                     inConversation = true;
-                    return false;
+                    return InteractiveComponentReturns.INCOMPLETE;
                 }
                 inputCounter++;
             } else {
                 // Error handling for invalid initial choice input
-                System.out.println("Error placeholder");
+                invalidBinaryChoice = true;
             }
-            return false;
+            return InteractiveComponentReturns.INCOMPLETE;
         } else if (inputCounter == 1 && choice == 2) {
             // Handle selection of a user for private chat
             if (TextUI.checkInputBound(input, 1, lobbyUsers.size() - 1)) {
@@ -134,14 +138,14 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
                 inConversation = true;
 
                 inputCounter++;
-                return false;
+                return InteractiveComponentReturns.INCOMPLETE;
             } else {
                 // Error handling for invalid private chat recipient selection
-                System.out.println("Placeholder error");
+                invalidInputBoundChoice = true;
             }
-            return false;
+            return InteractiveComponentReturns.INCOMPLETE;
         }
-        return false;
+        return InteractiveComponentReturns.INCOMPLETE;
     }
 
 
@@ -215,6 +219,7 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
              1 - Public Chat
              2 - Private Chat""");
         }
+
 
         else if (inputCounter == 1 && choice == 2) {
             System.out.println("\nSelect a player username to send a private message to by inserting an integer:");

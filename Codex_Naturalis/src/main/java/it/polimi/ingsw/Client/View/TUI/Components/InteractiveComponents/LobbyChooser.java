@@ -1,42 +1,58 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
-import it.polimi.ingsw.Client.Model.ClientModel;
-import it.polimi.ingsw.Client.Model.LobbyPreviews;
-import it.polimi.ingsw.Client.View.TUI.Components.LobbyPreviewView;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
-import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPJoinLobby;
-import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.LobbyPreviewRecord;
 
-public class LobbyChooser extends InteractiveComponent {
+public class LobbyChooser extends InteractiveComponent{
 
-    private final LobbyPreviews lobbyPreviews;
-    private final ClientModel model;
+    private InteractiveComponent subComponent;
 
     public LobbyChooser() {
-        this.lobbyPreviews = LobbyPreviews.getInstance();
-        this.model = ClientModel.getInstance();
+
     }
 
     @Override
-    public boolean handleInput(String input) {
-        if (TextUI.isNameValid(input)) {
-            model.getClientConnector().sendPacket(new CSPJoinLobby(input));
-            return true;
-        } else {
-            System.out.println("Invalid name! Try again!");
-            return false;
+    public InteractiveComponentReturns handleInput(String input) {
+        if (inputCounter == 0) {
+            if(input.equalsIgnoreCase("BACK"))
+                return super.handleInput(input);
+
+            if (TextUI.validBinaryChoice(input)) {
+                if (Integer.parseInt(input) == 1) {
+                    subComponent = new LobbyCreator();
+                }
+                else if (Integer.parseInt(input) == 2)
+                    subComponent = new LobbyJoiner();
+
+                inputCounter++;
+            }
+            return InteractiveComponentReturns.INCOMPLETE;
         }
-    }
+        if(inputCounter == 1){
+            InteractiveComponentReturns result = subComponent.handleInput(input);
 
-    @Override
-    public String getKeyword () {
-        return "";
-    }
+            if(result.equals(InteractiveComponentReturns.QUIT)) {
+                inputCounter--;
+                return InteractiveComponentReturns.INCOMPLETE;
+            }
 
-    @Override
-    public void print () {
-        System.out.println("\nLOBBY PREVIEWS");
-        for (LobbyPreviewRecord lobbyPreviewRecord : lobbyPreviews.getLobbyPreviews())
-            new LobbyPreviewView(lobbyPreviewRecord).print();
+            return result;
         }
+        //todo add logger to check if input counter behaves strangely
+        return InteractiveComponentReturns.INCOMPLETE;
+    }
+
+    @Override
+    public String getKeyword() {
+        //todo
+        return "chooseLobby";
+    }
+
+    @Override
+    public void print() {
+        System.out.println("\n" +
+                """
+                Enter your choice:
+                 1 - Create a lobby
+                 2 - Join a lobby""");
+    }
 }

@@ -16,6 +16,13 @@ public class ServerConnectionWizard extends InteractiveComponent {
 
     private Logger logger;
     private int choice;
+    private boolean connectionTimedOut;
+    private boolean remoteException;
+
+    public ServerConnectionWizard() {
+        connectionTimedOut = false;
+        remoteException = false;
+    }
 
     @Override
     public InteractiveComponentReturns handleInput(String input) {
@@ -28,7 +35,7 @@ public class ServerConnectionWizard extends InteractiveComponent {
                 choice = Integer.parseInt(input);
                 inputCounter++;
             }
-            return false;
+            return InteractiveComponentReturns.INCOMPLETE;
 
         } else if (inputCounter == 1) {
             if (input.isEmpty())
@@ -42,11 +49,10 @@ public class ServerConnectionWizard extends InteractiveComponent {
                     ClientModel model = ClientModel.getInstance();
                     System.out.println("Attempting connection to server");
                     ClientModel.getInstance().setClientConnector(new ClientConnectorRMI(input, new ClientController(model), model));
-                    return true;
+                    return InteractiveComponentReturns.COMPLETE;
                 }
                 catch (ConnectException connectException) {
-                    System.out.println("Connection timed-out!\n" +
-                            "Try with another server ip.");
+                    connectionTimedOut = true;
                     String stackTrace = Utilities.StackTraceToString(connectException);
                     logger.warning("Connection timed out while connecting to RMI server: " + input + "\n" +
                             "Stacktrace:\n" + stackTrace);
@@ -54,27 +60,27 @@ public class ServerConnectionWizard extends InteractiveComponent {
                 catch (RemoteException e) {
                     String stackTrace = Utilities.StackTraceToString(e);
                     logger.warning("RemoteException was thrown while creating ClientConnectorRMI\nStacktrace:\n" + stackTrace);
-                    System.out.println("An error occurred while connecting to the server, please check the logs.");
+                    remoteException = true;
                 }
 
                 inputCounter = 0;
-                return false;
+                return InteractiveComponentReturns.INCOMPLETE;
 
             } else {
                 try {
                     ClientModel model = ClientModel.getInstance();
                     System.out.println("Attempting connection to server");
                     ClientModel.getInstance().setClientConnector(new ClientConnectorSocket(input, new ClientController(model), model));
-                    return true;
+                    return InteractiveComponentReturns.COMPLETE;
                 } catch (SocketTimeoutException socketTimeoutException) {
-                    System.out.println("Server not found!\n");
+                    connectionTimedOut = true;
                 }
 
                 inputCounter = 0;
-                return false;
+                return InteractiveComponentReturns.INCOMPLETE;
             }
         }
-        return false;
+        return InteractiveComponentReturns.INCOMPLETE;
     }
 
 

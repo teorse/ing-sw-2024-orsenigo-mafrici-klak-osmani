@@ -26,17 +26,19 @@ public class LobbyCreator extends  InteractiveComponent {
                 lobbyName = input;
                 inputCounter++;
             } else
+                //TODO system out 1 in Lobby Creator
                 System.out.println("Invalid name. The name must have lenght between 4 and 14 characters, and start with a letter!.");
         }else if (inputCounter == 1) {
             if (TextUI.checkInputBound(input, 2, 4)) {
                 targetNumberUsers = Integer.parseInt(input);
                 model.getClientConnector().sendPacket(new CSPStartLobby(lobbyName, targetNumberUsers));
-                return true;
+                return InteractiveComponentReturns.COMPLETE;
             } else {
+                //TODO system out 2 in Lobby Creator
                 System.out.println("The number of users must be between 2 and 4!");
             }
         }
-        return false;
+        return InteractiveComponentReturns.INCOMPLETE;
     }
 
     @Override

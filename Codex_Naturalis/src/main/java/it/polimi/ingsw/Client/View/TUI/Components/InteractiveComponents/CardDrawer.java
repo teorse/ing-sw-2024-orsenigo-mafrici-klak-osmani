@@ -69,7 +69,11 @@ public class CardDrawer extends InteractiveComponent {
      * In all other cases, the method returns false, indicating that the input did not result in a card draw.
      */
     @Override
-    public boolean handleInput(String input) {
+    public InteractiveComponentReturns handleInput(String input) {
+
+        if(input.equalsIgnoreCase("BACK"))
+            return super.handleInput(input);
+
         if (inputCounter == 0) {
             // Check if the input is a binary choice
             if (UserInterface.validBinaryChoice(input)) {
@@ -82,7 +86,7 @@ public class CardDrawer extends InteractiveComponent {
                 // Increment input counter
                 inputCounter++;
 
-                return false;
+                return InteractiveComponentReturns.INCOMPLETE;
             }
 
             // If input counter is 1 and card pool type is RESOURCE
@@ -94,7 +98,7 @@ public class CardDrawer extends InteractiveComponent {
                 // Send packet to draw the chosen RESOURCE card
                 connection.sendPacket(new CSPDrawCard(cardPoolChoice, cardChoice - 2));
 
-                return true;
+                return InteractiveComponentReturns.COMPLETE;
             }
 
             // If input counter is 1 and card pool type is GOLDEN
@@ -106,10 +110,10 @@ public class CardDrawer extends InteractiveComponent {
                 // Send packet to draw the chosen GOLDEN card
                 connection.sendPacket(new CSPDrawCard(cardPoolChoice, cardChoice - 2));
 
-                return true;
+                return InteractiveComponentReturns.COMPLETE;
             }
         }
-        return false;
+        return InteractiveComponentReturns.INCOMPLETE;
     }
 
     @Override

@@ -84,6 +84,7 @@ public class CardPlacer extends InteractiveComponent {
                 int coordinatesChosen = cardMaps.coordinateIndexByCharIndexes(chosenRow, chosenCol, MyPlayer.getInstance().getUsername());
 
                 if(coordinatesChosen == -1){
+                    //TODO system out 1 in CardPlacer
                     System.out.println("\nThe coordinates you entered are not in the available placements! Try again.");
                     inputCounter = 1;
                 }
@@ -99,13 +100,14 @@ public class CardPlacer extends InteractiveComponent {
                 if (cardPlayability || !faceUp)
                     sendPacket();
                 else {
+                    //TODO system out 2 in CardPlacer
                     System.out.println("\nThis card can't be played face up. Select the other side or change card!");
                     print();
                 }
             } else
                 print();
         }
-        return false;
+        return InteractiveComponentReturns.INCOMPLETE;
     }
 
     @Override

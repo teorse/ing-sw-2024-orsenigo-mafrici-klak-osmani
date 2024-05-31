@@ -19,9 +19,10 @@ public class CardPoolZoom extends InteractiveComponent{
                 new CardPoolView(CardPoolTypes.GOLDEN).print();
         }
         else
+            //TODO system out 1 in CardPoolZoom
             System.out.println("Invalid input. Please enter 1 or 2 to select the pool type!");
 
-        return false;
+        return InteractiveComponentReturns.INCOMPLETE;
     }
 
     @Override

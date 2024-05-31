@@ -1,8 +1,14 @@
 package it.polimi.ingsw.Client.Model;
 
+import it.polimi.ingsw.Server.Model.Game.Player.PlayerStates;
+
 public class MyPlayer extends Observable{
     //SINGLETON PATTERN
     private static MyPlayer INSTANCE;
+    PlayerStates myPlayerGameState;
+
+
+
     private MyPlayer(){}
     public static MyPlayer getInstance(){
         if(INSTANCE == null){
@@ -29,6 +35,10 @@ public class MyPlayer extends Observable{
     }
     public boolean isAdmin() { return isAdmin; }
 
+    public PlayerStates getMyPlayerGameState() {
+        return myPlayerGameState;
+    }
+
 
 
 
@@ -41,5 +51,11 @@ public class MyPlayer extends Observable{
     public void setIsAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
         super.updateObservers();
+    }
+    public void setMyPlayerGameState(PlayerStates myPlayerGameState) {
+        this.myPlayerGameState = myPlayerGameState;
+    }
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }

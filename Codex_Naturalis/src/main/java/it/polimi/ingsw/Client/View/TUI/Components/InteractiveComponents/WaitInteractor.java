@@ -21,7 +21,7 @@ public class WaitInteractor extends InteractiveComponent {
         if (model.isSetUpFinished() && !model.isWaitingForReconnections()) {
             zoom.handleInput(input);
         }
-        return false;
+        return InteractiveComponentReturns.INCOMPLETE;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
 import it.polimi.ingsw.Client.Model.ClientModel;
-import it.polimi.ingsw.Client.View.TUI.TextUI;
 import it.polimi.ingsw.Client.View.UserInterface;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPLogIn;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPSignUp;
@@ -14,7 +13,9 @@ public class LogInSignUp extends InteractiveComponent {
     List<String> credentials;
     ClientModel model;
 
-    public LogInSignUp() {this.model = ClientModel.getInstance();}
+    public LogInSignUp() {
+        this.model = ClientModel.getInstance();
+    }
 
     @Override
     public InteractiveComponentReturns handleInput(String input) {
@@ -49,7 +50,7 @@ public class LogInSignUp extends InteractiveComponent {
                 }
             }
         }
-        return false;
+        return InteractiveComponentReturns.INCOMPLETE;
     }
 
     @Override

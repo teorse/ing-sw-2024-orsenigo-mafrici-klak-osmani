@@ -29,12 +29,17 @@ public class ColorPicker extends InteractiveComponent{
 
     //METHODS
     @Override
-    public boolean handleInput(String input) {
+    public InteractiveComponentReturns handleInput(String input) {
+
+        if(input.equalsIgnoreCase("BACK"))
+            return super.handleInput(input);
+
         if (TextUI.checkInputBound(input, 1, availableUserColors.size())) {
             model.getClientConnector().sendPacket(new CSPChangeColor(model.getLobbyRecord().availableUserColors().get(Integer.parseInt(input) - 1)));
             return InteractiveComponentReturns.COMPLETE;
         }
         else {
+            //TODO system out 1 in ColorPicker
             System.out.println("Invalid input. Type a number between 1 and " + availableUserColors.size());
             return InteractiveComponentReturns.INCOMPLETE;
         }

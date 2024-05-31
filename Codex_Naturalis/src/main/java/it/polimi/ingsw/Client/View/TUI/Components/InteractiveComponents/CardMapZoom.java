@@ -34,7 +34,7 @@ public class CardMapZoom extends InteractiveComponent{
 
 
     //METHODS
-    @Override
+
     /**
      * Handles user input for selecting and viewing details of a card on the game board.
      * <p>

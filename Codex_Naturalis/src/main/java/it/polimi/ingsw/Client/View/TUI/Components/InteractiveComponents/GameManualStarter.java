@@ -12,27 +12,33 @@ public class GameManualStarter extends InteractiveComponent {
     }
 
     @Override
-    public boolean handleInput(String input) {
+    public InteractiveComponentReturns handleInput(String input) {
+
+        if(input.equalsIgnoreCase("BACK"))
+            return super.handleInput(input);
+
         if (MyPlayer.getInstance().isAdmin()) {
             if (LobbyUsers.getInstance().size() >= 2) {
                 // If input is to start the game
                 if (input.equalsIgnoreCase("START")) {
                     // Send packet to start the game
                     ClientModel.getInstance().getClientConnector().sendPacket(new CSPStartGame());
-                    return true;
+                    return InteractiveComponentReturns.COMPLETE;
                 }
                 else {
                     // Prompt to start the game
+                    //TODO system out 1 in GameManualStarter
                     System.out.println("\nWrong command, to start the game type START!");
-                    return false;
+                    return InteractiveComponentReturns.INCOMPLETE;
                 }
             }
             else {
+                //TODO system out 2 in GameManualStarter
                 System.out.println("\nYou can't start a game on your own!");
-                return false;
+                return InteractiveComponentReturns.INCOMPLETE;
             }
         }
-        return true;
+        return InteractiveComponentReturns.COMPLETE;
     }
 
     @Override
