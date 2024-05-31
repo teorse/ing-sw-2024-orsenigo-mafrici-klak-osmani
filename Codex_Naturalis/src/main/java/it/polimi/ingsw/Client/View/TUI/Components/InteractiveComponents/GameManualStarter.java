@@ -7,6 +7,10 @@ import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPStartGame;
 
 public class GameManualStarter extends InteractiveComponent {
 
+    public GameManualStarter() {
+
+    }
+
     @Override
     public boolean handleInput(String input) {
         if (MyPlayer.getInstance().isAdmin()) {

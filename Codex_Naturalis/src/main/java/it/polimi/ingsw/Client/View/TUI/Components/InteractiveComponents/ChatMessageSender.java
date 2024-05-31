@@ -21,12 +21,16 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
     private final ClientConnector connection;
     private LobbyUsers lobbyUsers;
 
-    private List<String> recipients;
+    private final List<String> recipients;
 
     private ChatConversationView conversationView;
     private ChatMessagesStack conversationInteract;
     private boolean inConversation;
 
+    //ERROR PRINTING VARIABLES
+    private boolean emptyMessage = false;
+    private boolean invalidBinaryChoice = false;
+    private boolean invalidInputBoundChoice = false;
 
 
 
@@ -186,6 +190,11 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
             //Print chat contents
             conversationView.print();
 
+            if(emptyMessage) {
+                System.out.println("You cannot send an empty message!");
+                emptyMessage = false;
+            }
+
             //Print page footer
             if (choice == 1) {
                 System.out.println("\nPlease type your public message, to send it press ENTER");
@@ -196,6 +205,11 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
 
         //This print is executed if still has to join any conversation
         if (inputCounter == 0) {
+            if(invalidBinaryChoice) {
+                System.out.println("You provided an invalid input, please select 1 or 2.");
+                invalidBinaryChoice = false;
+            }
+
             System.out.println("\n" + """ 
             Enter your choice:
              1 - Public Chat
@@ -217,6 +231,10 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
                     }
                     System.out.println(i++ + " - Player username: " + usernameColorPrint + username + TerminalColor.RESET);
                 }
+            }
+            if(invalidInputBoundChoice) {
+                System.out.println("You provided and invalid input, please select one of the players on screen");
+                invalidInputBoundChoice = false;
             }
         }
     }

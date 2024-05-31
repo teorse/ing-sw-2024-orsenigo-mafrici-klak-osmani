@@ -12,6 +12,21 @@ public abstract class InteractiveComponent extends Component {
 
     //METHODS
     //TODO fix return of the boolean
-    public abstract boolean handleInput(String input);
+    public InteractiveComponentReturns handleInput(String input){
+
+        if(input.equalsIgnoreCase("BACK")) {
+            if(inputCounter > 0){
+                inputCounter--;
+                return InteractiveComponentReturns.INCOMPLETE;
+            }
+            else if(inputCounter == 0){
+                return InteractiveComponentReturns.QUIT;
+            }
+        }
+        //todo add logger because code should not reach this
+        return InteractiveComponentReturns.INCOMPLETE;
+    }
+
+
     public abstract String getKeyword();
 }

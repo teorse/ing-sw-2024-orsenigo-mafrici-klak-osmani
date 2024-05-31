@@ -8,38 +8,44 @@ public class Zoomer extends InteractiveComponent {
     private InteractiveComponent subComponent;
 
 
+
     //METHODS
     @Override
     public InteractiveComponentReturns handleInput(String input) {
         if(inputCounter == 0){
-            if (TextUI.checkInputBound(input, 1, 4)) {
+            if(input.equalsIgnoreCase("BACK"))
+                return InteractiveComponentReturns.QUIT;
+
+
+            if (TextUI.checkInputBound(input, 1, 3)) {
                 // Parse choice
                 int choice = Integer.parseInt(input);
                 if (choice == 1) {
                     subComponent = new CardMapZoom();
                     inputCounter++;
                 } else if (choice == 2) {
+                    //todo
                     new CardsHeldView().print();
-                    inputCounter = 0;
-                    return true;
+                    inputCounter++;
                 } else if (choice == 3) {
                     subComponent = new CardPoolZoom();
                     inputCounter++;
                 }
-                return false;
             }
-            return false;
+            return InteractiveComponentReturns.INCOMPLETE;
         }
         if(inputCounter == 1) {
             //returns true if the subComponent has finished its interaction cycle
             //returns false if the user has still to complete all interactions in the subComponent
-            boolean subcomponentResult = subComponent.handleInput(input);
-            if(subcomponentResult)
-                inputCounter = 0;
+            InteractiveComponentReturns subcomponentResult = subComponent.handleInput(input);
+            if(subcomponentResult.equals(InteractiveComponentReturns.QUIT))
+                inputCounter--;
 
             return subcomponentResult;
         }
-        return false;
+
+        //todo add logger, program should not reach this code
+        return InteractiveComponentReturns.INCOMPLETE;
     }
 
     @Override

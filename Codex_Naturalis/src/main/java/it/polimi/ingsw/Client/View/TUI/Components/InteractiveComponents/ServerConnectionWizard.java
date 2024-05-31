@@ -35,6 +35,8 @@ public class ServerConnectionWizard extends InteractiveComponent {
                 input = "127.0.0.1";
 
             if (choice == 1) {
+                connectionTimedOut = false;
+                remoteException = false;
                 try {
                     //todo update controller and connector to use model singleton pattern
                     ClientModel model = ClientModel.getInstance();
@@ -91,7 +93,12 @@ public class ServerConnectionWizard extends InteractiveComponent {
                      1 - RMI
                      2 - Socket""");
         } else if (inputCounter == 1) {
-            System.out.println("\nEnter the IP address of the server, leave empty for localhost: ");
+            if(connectionTimedOut)
+                System.out.println("Could not connect to the Server.\nTry with another server ip.");
+            else if (remoteException)
+                System.out.println("An error occurred while connecting to the server, please check the logs.");
+            else
+                System.out.println("\nEnter the IP address of the server, leave empty for localhost: ");
         }
     }
 }
