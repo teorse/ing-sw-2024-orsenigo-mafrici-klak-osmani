@@ -1,7 +1,11 @@
 package it.polimi.ingsw.Client.Model;
 
+import it.polimi.ingsw.Client.Model.States.ConnectionState;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.ErrorsDictionary;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ClientModel2 extends Observable {
     //Internal Logic
@@ -143,6 +147,32 @@ public class ClientModel2 extends Observable {
 
     public void setStartLobbyError(ErrorsDictionary startLobbyError) {
         this.startLobbyError = startLobbyError;
+        super.updateObservers();
+    }
+
+
+
+    //METHODS
+    public void resetConnection() {
+        connected = false;
+        loggedIn = false;
+
+        quitLobby();
+    }
+
+    public void quitLobby() {
+        inLobby = false;
+
+        gameOver();
+    }
+
+    public void gameOver() {
+        gameStartable = false;
+        gameStarted = false;
+        setUpFinished = false;
+        waitingForReconnections = false;
+        gameOver = false;
+
         super.updateObservers();
     }
 }
