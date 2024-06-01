@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
+
 import java.io.PrintStream;
 
 public abstract class Component {
@@ -10,4 +12,6 @@ public abstract class Component {
     }
 
     public abstract void print();
+
+    public abstract void cleanUp();
 }

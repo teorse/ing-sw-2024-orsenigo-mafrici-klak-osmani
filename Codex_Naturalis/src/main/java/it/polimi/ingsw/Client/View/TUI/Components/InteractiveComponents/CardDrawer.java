@@ -9,7 +9,7 @@ import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPDrawCard;
 import it.polimi.ingsw.Server.Model.Game.Artifacts;
 import it.polimi.ingsw.Server.Model.Game.Table.CardPoolTypes;
 
-public class CardDrawer extends InteractiveComponent {
+public class CardDrawer extends InteractiveComponent{
     //ATTRIBUTES
     private CardPoolTypes cardPoolChoice;
     private CardPools cardPools;

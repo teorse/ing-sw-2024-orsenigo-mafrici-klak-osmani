@@ -1,11 +1,8 @@
 package it.polimi.ingsw.Client.Model;
 
-import it.polimi.ingsw.Client.Model.States.ConnectionState;
+import it.polimi.ingsw.Client.Network.ClientConnector;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.ErrorsDictionary;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ClientModel2 extends Observable {
     //Internal Logic

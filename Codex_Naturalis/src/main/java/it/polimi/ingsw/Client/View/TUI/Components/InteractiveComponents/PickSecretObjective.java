@@ -31,4 +31,9 @@ public class PickSecretObjective extends InteractiveComponent {
         System.out.println("\nChoose a secret objective: \n");
         new ObjectiveCandidatesView().print();
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

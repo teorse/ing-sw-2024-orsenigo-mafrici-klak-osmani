@@ -107,4 +107,9 @@ public class ServerConnectionWizard extends InteractiveComponent {
                 System.out.println("\nEnter the IP address of the server, leave empty for localhost: ");
         }
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

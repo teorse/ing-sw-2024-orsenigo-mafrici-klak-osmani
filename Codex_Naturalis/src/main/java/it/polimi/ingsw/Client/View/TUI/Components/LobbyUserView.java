@@ -17,4 +17,9 @@ public class LobbyUserView extends Component {
         System.out.println("Role: " + lobbyUser.role().name());
         System.out.println("Connection Status: " + lobbyUser.connectionStatus());
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }
