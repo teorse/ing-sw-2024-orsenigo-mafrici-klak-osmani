@@ -6,7 +6,9 @@ public class GameStartingStatus extends Component{
 
     Lobby lobby;
 
-    public GameStartingStatus() {this.lobby = Lobby.getInstance();}
+    public GameStartingStatus(ViewState viewState) {
+        super(viewState);
+        this.lobby = Lobby.getInstance();}
 
     @Override
     public void print() {

@@ -11,7 +11,8 @@ import java.io.PrintStream;
 public class CardView extends Component{
     private final CardRecord card;
 
-    public CardView(CardRecord card) {
+    public CardView(ViewState viewState, CardRecord card) {
+        super(viewState);
         this.card = card;
     }
 

@@ -27,11 +27,10 @@ public class CardMapView extends Component implements Observer {
 
     //CONSTRUCTOR
     public CardMapView(ViewState viewState){
+        super(viewState);
         this.cardMaps = CardMaps.getInstance();
         this.clientState = ClientModel.getInstance().getClientState();
-        this.cardMaps.subscribe(this);
         this.players = Players.getInstance();
-        this.players.subscribe(this);
     }
 
     @Override

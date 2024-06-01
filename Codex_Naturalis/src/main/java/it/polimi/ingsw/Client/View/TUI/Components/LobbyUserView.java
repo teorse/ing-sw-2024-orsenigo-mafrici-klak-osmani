@@ -2,12 +2,14 @@ package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.LobbyUsers;
 import it.polimi.ingsw.Client.View.TUI.TerminalColor;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.LobbyUserRecord;
 
 public class LobbyUserView extends Component {
     private final LobbyUserRecord lobbyUser;
 
-    public LobbyUserView(LobbyUserRecord lobbyUser) {
+    public LobbyUserView(ViewState viewState, LobbyUserRecord lobbyUser) {
+        super(viewState);
         this.lobbyUser = lobbyUser;
     }
 

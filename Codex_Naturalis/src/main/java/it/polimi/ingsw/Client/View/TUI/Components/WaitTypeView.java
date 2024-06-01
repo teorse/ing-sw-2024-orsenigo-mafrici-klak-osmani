@@ -7,7 +7,8 @@ public class WaitTypeView extends Component{
 
     private ClientModel model;
 
-    public WaitTypeView() {
+    public WaitTypeView(ViewState viewState) {
+        super(viewState);
         this.model = ClientModel.getInstance();
     }
 

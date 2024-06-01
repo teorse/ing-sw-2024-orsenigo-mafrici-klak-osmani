@@ -11,7 +11,8 @@ import java.util.List;
 public class CardPoolView extends Component{
     private final CardPoolTypes cardPoolType;
 
-    public CardPoolView(CardPoolTypes cardPoolType) {
+    public CardPoolView(ViewState viewState, CardPoolTypes cardPoolType) {
+        super(viewState);
         this.cardPoolType = cardPoolType;
     }
 

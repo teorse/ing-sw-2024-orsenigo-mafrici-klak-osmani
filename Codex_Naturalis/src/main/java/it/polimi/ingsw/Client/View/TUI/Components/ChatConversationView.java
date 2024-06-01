@@ -7,9 +7,9 @@ import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 public class ChatConversationView extends Component implements Observer {
     private final ChatMessagesStack conversation;
 
-    public ChatConversationView(ChatMessagesStack conversation, ViewState viewState) {
+    public ChatConversationView( ViewState viewState, ChatMessagesStack conversation) {
+        super(viewState);
         this.conversation = conversation;
-        conversation.subscribe(this);
     }
 
     @Override

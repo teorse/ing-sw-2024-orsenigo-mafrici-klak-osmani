@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.LobbyUsers;
 import it.polimi.ingsw.Client.View.TUI.TerminalColor;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.ChatMessageRecord;
 import it.polimi.ingsw.Server.Model.Lobby.LobbyUserColors;
 
@@ -9,7 +10,8 @@ public class ChatMessageView extends Component{
     private final ChatMessageRecord message;
     private final LobbyUsers lobbyUsers;
 
-    public ChatMessageView(ChatMessageRecord message){
+    public ChatMessageView(ViewState viewState, ChatMessageRecord message){
+        super(viewState);
         this.message = message;
         this.lobbyUsers = LobbyUsers.getInstance();
     }

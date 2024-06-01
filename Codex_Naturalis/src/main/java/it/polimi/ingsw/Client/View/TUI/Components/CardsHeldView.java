@@ -7,7 +7,8 @@ import java.io.PrintStream;
 public class CardsHeldView extends Component{
     private final CardsHeld cardsHeld;
 
-    public CardsHeldView(){
+    public CardsHeldView(ViewState viewState){
+        super(viewState);
         cardsHeld = CardsHeld.getInstance();
     }
 

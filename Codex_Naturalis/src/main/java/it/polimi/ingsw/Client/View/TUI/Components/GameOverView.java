@@ -4,6 +4,7 @@ import it.polimi.ingsw.Client.Model.GameOver;
 import it.polimi.ingsw.Client.Model.LobbyUsers;
 import it.polimi.ingsw.Client.View.TUI.TerminalColor;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
 
 import java.util.List;
@@ -12,7 +13,8 @@ public class GameOverView extends Component{
     private List<PlayerRecord> winners;
     private LobbyUsers lobbyUsers;
 
-    public GameOverView() {
+    public GameOverView(ViewState viewState) {
+        super(viewState);
         this.winners = GameOver.getInstance().getWinners();
         this.lobbyUsers = LobbyUsers.getInstance();
     }

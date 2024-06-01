@@ -8,7 +8,8 @@ import java.util.List;
 public class ObjectiveCandidatesView extends Component {
     private final List<ObjectiveRecord> objectiveCandidates;
 
-    public ObjectiveCandidatesView() {
+    public ObjectiveCandidatesView(ViewState viewState) {
+        super(viewState);
         this.objectiveCandidates = ObjectiveCandidates.getInstance().getObjectiveCandidates();
     }
 

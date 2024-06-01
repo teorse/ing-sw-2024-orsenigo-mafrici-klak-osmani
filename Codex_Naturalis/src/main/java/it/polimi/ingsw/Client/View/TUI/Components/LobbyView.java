@@ -6,7 +6,8 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.Lo
 public class LobbyView extends Component {
     private final LobbyUsers lobbyUsers;
 
-    public LobbyView() {
+    public LobbyView(ViewState viewState) {
+        super(viewState);
         this.lobbyUsers = LobbyUsers.getInstance();
     }
 
@@ -15,7 +16,7 @@ public class LobbyView extends Component {
         System.out.println("\nList of users in the lobby: ");
 
         for (LobbyUserRecord user : lobbyUsers.getLobbyUserRecords()) {
-            new LobbyUserView(user).print();
+            new LobbyUserView(view, user).print();
         }
     }
 

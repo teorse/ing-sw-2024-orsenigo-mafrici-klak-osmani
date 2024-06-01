@@ -155,9 +155,4 @@ public class CardDrawer extends InteractiveComponent{
             System.out.println("\nEnter a number between " + goldenLB + " and " + goldenUB + " to pick a card: ");
         }
     }
-
-    @Override
-    public void cleanUp() {
-
-    }
 }

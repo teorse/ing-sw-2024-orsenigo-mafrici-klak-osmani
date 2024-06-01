@@ -4,6 +4,7 @@ import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.MyPlayer;
 import it.polimi.ingsw.Client.Model.Observable;
 import it.polimi.ingsw.Client.Model.Players;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
 import it.polimi.ingsw.Server.Model.Game.Player.PlayerStates;
 
@@ -13,7 +14,8 @@ import java.util.List;
 public class TurnShower extends Component {
     private final List<PlayerRecord> playerRecords;
 
-    public TurnShower() {
+    public TurnShower(ViewState viewState) {
+        super(viewState);
         this.playerRecords = Players.getInstance().getPlayers();
     }
 

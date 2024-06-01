@@ -5,7 +5,8 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.Lo
 public class LobbyPreviewView extends Component {
     private final LobbyPreviewRecord lobbyPreviewRecord;
 
-    public LobbyPreviewView(LobbyPreviewRecord lobbyPreviewRecord) {
+    public LobbyPreviewView(ViewState viewState, LobbyPreviewRecord lobbyPreviewRecord) {
+        super(viewState);
         this.lobbyPreviewRecord = lobbyPreviewRecord;
     }
 

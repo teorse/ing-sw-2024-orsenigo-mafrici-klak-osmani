@@ -32,7 +32,7 @@ public class DrawState extends LobbyStates {
         passiveComponenets.add(new CardMapView());
         passiveComponenets.add(new TurnShower());
 
-        secondaryComponent = new ChatMessageSender();
+        secondaryComponent = new ChatMessageSender(this);
 
         mainComponent = new CardDrawer();
 

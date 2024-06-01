@@ -10,8 +10,8 @@ public class ChatNotification extends Component implements Observer {
 
 
     public ChatNotification(ViewState viewState){
+        super(viewState);
         chat = Chat.getInstance();
-        chat.subscribe(this);
     }
 
     @Override

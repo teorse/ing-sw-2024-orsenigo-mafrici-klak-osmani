@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.View.Observer;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
 import it.polimi.ingsw.Server.Model.Game.Artifacts;
 import it.polimi.ingsw.Server.Model.Game.Cards.Corner;
@@ -10,7 +11,8 @@ import it.polimi.ingsw.Server.Model.Game.Cards.CornerType;
 public class CardStarterView extends Component implements Observer {
     private final CardRecord cardStarter;
 
-    public CardStarterView(CardRecord cardStarter) {
+    public CardStarterView(ViewState viewState, CardRecord cardStarter) {
+        super(viewState);
         this.cardStarter = cardStarter;
     }
 

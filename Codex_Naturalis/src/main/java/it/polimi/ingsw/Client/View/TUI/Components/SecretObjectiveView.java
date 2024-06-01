@@ -6,7 +6,8 @@ public class SecretObjectiveView extends Component{
     private final SecretObjective secretObjective;
 
 
-    public SecretObjectiveView(){
+    public SecretObjectiveView(ViewState viewState){
+        super(viewState);
         secretObjective = SecretObjective.getInstance();
     }
 
