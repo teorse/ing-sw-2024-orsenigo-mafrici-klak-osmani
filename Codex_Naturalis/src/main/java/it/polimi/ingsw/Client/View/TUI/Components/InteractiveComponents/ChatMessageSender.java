@@ -7,6 +7,7 @@ import it.polimi.ingsw.Client.View.Observer;
 import it.polimi.ingsw.Client.View.TUI.Components.ChatConversationView;
 import it.polimi.ingsw.Client.View.TUI.TerminalColor;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPSendChatMessage;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.ChatMessageRecord;
 
@@ -20,6 +21,7 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
     private String chosenUser;
     private final ClientConnector connection;
     private LobbyUsers lobbyUsers;
+    private ViewState viewState;
 
     private final List<String> recipients;
 
@@ -36,8 +38,9 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
 
 
     //CONSTURCTOR
-    public ChatMessageSender(){
+    public ChatMessageSender(ViewState viewState){
         chat = Chat.getInstance();
+        this.viewState = viewState;
         chat.subscribe(this);
         lobbyUsers = LobbyUsers.getInstance();
         connection = ClientModel.getInstance().getClientConnector();
@@ -114,7 +117,7 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
                 choice = Integer.parseInt(input);
                 if (choice == 1) {
                     chat.unsubscribe(this);
-                    conversationView = new ChatConversationView(chat.getPublicChat());
+                    conversationView = new ChatConversationView(chat.getPublicChat(), viewState);
                     conversationInteract = chat.getPublicChat();
                     conversationInteract.subscribe(this);
                     inConversation = true;
@@ -132,7 +135,7 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
                 chosenUser = recipients.get(Integer.parseInt(input) - 1);
 
                 chat.unsubscribe(this);
-                conversationView = new ChatConversationView(chat.getPrivateChat(chosenUser));
+                conversationView = new ChatConversationView(chat.getPrivateChat(chosenUser), viewState);
                 conversationInteract = chat.getPrivateChat(chosenUser);
                 conversationInteract.subscribe(this);
                 inConversation = true;
@@ -242,6 +245,11 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
                 invalidInputBoundChoice = false;
             }
         }
+    }
+
+    @Override
+    public void cleanUp() {
+
     }
 
     @Override

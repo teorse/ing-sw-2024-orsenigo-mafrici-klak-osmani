@@ -45,6 +45,11 @@ public class CardStarterChoice extends InteractiveComponent {
                  2 - Back""");
     }
 
+    @Override
+    public void cleanUp() {
+
+    }
+
     private void nextState() {
 
     }

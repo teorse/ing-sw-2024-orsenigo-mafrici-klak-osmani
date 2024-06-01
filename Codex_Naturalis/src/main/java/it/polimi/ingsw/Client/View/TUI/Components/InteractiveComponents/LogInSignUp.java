@@ -71,4 +71,9 @@ public class LogInSignUp extends InteractiveComponent {
             System.out.println("\nEnter password:");
         }
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class WaitState extends ViewState {
+public class WaitState extends LobbyStates {
     List<Component> passiveComponents;
     List<Component> postSetupComponents;
     InteractiveComponent mainComponent;
@@ -77,7 +77,7 @@ public class WaitState extends ViewState {
         print();
     }
 
-    private void nextState(){
+     boolean nextState(){
         logger.info("Choosing next state");
         logger.fine("Current value of myPR State: " + myPlayerGameState);
 

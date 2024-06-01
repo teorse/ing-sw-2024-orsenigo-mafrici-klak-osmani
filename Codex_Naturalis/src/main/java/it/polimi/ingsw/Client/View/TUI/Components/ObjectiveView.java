@@ -14,4 +14,9 @@ public class ObjectiveView extends Component {
         out.println("Description: " + objective.description());
         out.println("Points: " + objective.points());
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

@@ -23,5 +23,10 @@ public class WaitTypeView extends Component{
             System.out.println("\nThe Set Up is not completed. Please wait!");
         }
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }
 

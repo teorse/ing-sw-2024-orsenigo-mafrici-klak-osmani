@@ -128,4 +128,9 @@ public class CardMapZoom extends InteractiveComponent{
             System.out.println("\nChoose a COLUMN to zoom the card.");
         }
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

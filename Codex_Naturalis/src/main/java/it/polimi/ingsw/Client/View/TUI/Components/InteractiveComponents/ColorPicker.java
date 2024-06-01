@@ -63,4 +63,9 @@ public class ColorPicker extends InteractiveComponent{
         else
             System.out.println("No colors available!");
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

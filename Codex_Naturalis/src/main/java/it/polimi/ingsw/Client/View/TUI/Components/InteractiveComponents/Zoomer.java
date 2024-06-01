@@ -69,4 +69,9 @@ public class Zoomer extends InteractiveComponent {
             subComponent.print();
         }
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

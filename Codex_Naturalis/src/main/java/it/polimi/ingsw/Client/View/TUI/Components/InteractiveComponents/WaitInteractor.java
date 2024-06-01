@@ -35,4 +35,9 @@ public class WaitInteractor extends InteractiveComponent {
             zoom.print();
         }
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

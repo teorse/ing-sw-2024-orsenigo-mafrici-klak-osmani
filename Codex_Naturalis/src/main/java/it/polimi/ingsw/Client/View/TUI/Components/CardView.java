@@ -55,4 +55,9 @@ public class CardView extends Component{
             }
         }
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

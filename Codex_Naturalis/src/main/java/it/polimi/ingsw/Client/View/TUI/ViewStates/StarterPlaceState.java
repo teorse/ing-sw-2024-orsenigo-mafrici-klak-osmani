@@ -8,7 +8,7 @@ import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.Interact
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponentReturns;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
-public class StarterPlaceState extends ViewState {
+public class StarterPlaceState extends LobbyStates {
     Component component;
     InteractiveComponent mainComponent;
 

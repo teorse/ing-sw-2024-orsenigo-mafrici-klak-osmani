@@ -49,24 +49,19 @@ public class CardDrawer extends InteractiveComponent{
 
     //MEHTODS
     /**
-     * Handles user input for selecting a card pool and drawing a card from the chosen pool.
+     * Handles user input for drawing cards from specified card pools.
      *
-     * @param input the user's input as a string.
-     * @return true if the input results in a successful card draw, false otherwise.
+     * @param input the user input to be processed
+     * @return an InteractiveComponentReturns enum indicating whether the input processing is complete or incomplete
      * <p>
-     * The method processes the input based on the current state indicated by the inputCounter.
-     * If inputCounter is 0, it checks if the input is a valid binary choice (1 or 2) to select
-     * either the RESOURCE or GOLDEN card pool. It then increments the inputCounter.
-     * <p>
-     * If inputCounter is 1 and the selected card pool is RESOURCE, it checks if the input is within
-     * the valid range for RESOURCE cards. If so, it parses the input, sends a packet to draw the card,
-     * and returns true indicating a successful card draw.
-     * <p>
-     * Similarly, if inputCounter is 1 and the selected card pool is GOLDEN, it checks if the input is within
-     * the valid range for GOLDEN cards. If so, it parses the input, sends a packet to draw the card,
-     * and returns true indicating a successful card draw.
-     *
-     * In all other cases, the method returns false, indicating that the input did not result in a card draw.
+     * The method performs the following:
+     * - If the input is "BACK", it delegates handling to the superclass's handleInput method.
+     * - If the inputCounter is 0, it checks if the input is a valid binary choice to select the card pool type (RESOURCE or GOLDEN).
+     * - If the card pool type is RESOURCE and the inputCounter is 1, it checks if the input is within bounds for RESOURCE cards,
+     *   parses the card choice, and sends a packet to draw the chosen RESOURCE card.
+     * - If the card pool type is GOLDEN and the inputCounter is 1, it checks if the input is within bounds for GOLDEN cards,
+     *   parses the card choice, and sends a packet to draw the chosen GOLDEN card.
+     * - Returns an InteractiveComponentReturns enum value indicating the state of input processing.
      */
     @Override
     public InteractiveComponentReturns handleInput(String input) {
@@ -159,5 +154,10 @@ public class CardDrawer extends InteractiveComponent{
             // Prompt user to enter a number to pick a card from GOLDEN pool
             System.out.println("\nEnter a number between " + goldenLB + " and " + goldenUB + " to pick a card: ");
         }
+    }
+
+    @Override
+    public void cleanUp() {
+
     }
 }

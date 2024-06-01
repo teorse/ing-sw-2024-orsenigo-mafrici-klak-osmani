@@ -1,7 +1,5 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
-import it.polimi.ingsw.Client.Model.CardsHeld;
-import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.View.Observer;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
 import it.polimi.ingsw.Server.Model.Game.Artifacts;
@@ -36,6 +34,11 @@ public class CardStarterView extends Component implements Observer {
         //Prints the back corners of the card
         System.out.println("Back Corners:");
         showCornersDetails(cardStarter,false);
+    }
+
+    @Override
+    public void cleanUp() {
+
     }
 
     private void showCornersDetails(CardRecord cardStarter, boolean faceUp) {

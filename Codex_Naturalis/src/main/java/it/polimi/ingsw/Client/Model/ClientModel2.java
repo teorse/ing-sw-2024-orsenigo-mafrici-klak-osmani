@@ -28,6 +28,13 @@ public class ClientModel2 extends Observable {
 
 
 
+    //CONNECTOR
+    ClientConnector clientConnector;
+
+
+
+
+
     //GETTERS
     public boolean isConnected() {
         return connected;
@@ -39,6 +46,10 @@ public class ClientModel2 extends Observable {
 
     public boolean isInLobby() {
         return inLobby;
+    }
+
+    public ClientConnector getClientConnector() {
+        return clientConnector;
     }
 
     public boolean isGameStartable() {
@@ -97,6 +108,10 @@ public class ClientModel2 extends Observable {
     public void setInLobby(boolean inLobby) {
         this.inLobby = inLobby;
         super.updateObservers();
+    }
+
+    public void setClientConnector(ClientConnector clientConnector) {
+        this.clientConnector = clientConnector;
     }
 
     public void setGameStartable(boolean gameStartable) {

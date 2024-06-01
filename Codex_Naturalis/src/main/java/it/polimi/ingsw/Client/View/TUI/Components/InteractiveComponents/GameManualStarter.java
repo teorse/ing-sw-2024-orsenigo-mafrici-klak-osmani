@@ -55,4 +55,9 @@ public class GameManualStarter extends InteractiveComponent {
             System.out.println("If you don't want to wait anymore there are already enough players to start the game." +
                     "\nType start to start the game.");
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

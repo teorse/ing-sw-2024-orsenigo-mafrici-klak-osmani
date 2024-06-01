@@ -27,4 +27,9 @@ public class CardsHeldView extends Component{
             System.out.println();
         }
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

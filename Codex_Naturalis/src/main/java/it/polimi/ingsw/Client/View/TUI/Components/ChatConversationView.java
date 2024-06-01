@@ -2,11 +2,12 @@ package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.ChatMessagesStack;
 import it.polimi.ingsw.Client.View.Observer;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 
 public class ChatConversationView extends Component implements Observer {
     private final ChatMessagesStack conversation;
 
-    public ChatConversationView(ChatMessagesStack conversation) {
+    public ChatConversationView(ChatMessagesStack conversation, ViewState viewState) {
         this.conversation = conversation;
         conversation.subscribe(this);
     }
@@ -26,5 +27,10 @@ public class ChatConversationView extends Component implements Observer {
             for (int i = 0; i < conversation.size(); i++)
                 new ChatMessageView(conversation.get(i)).print();
         }
+    }
+
+    @Override
+    public void cleanUp() {
+
     }
 }

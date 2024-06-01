@@ -21,4 +21,9 @@ public class ObjectiveCandidatesView extends Component {
             i++;
         }
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

@@ -32,4 +32,9 @@ public class PointTableView extends Component {
         }
         out.println();
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

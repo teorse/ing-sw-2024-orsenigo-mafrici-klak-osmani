@@ -131,6 +131,11 @@ public class CardPlacer extends InteractiveComponent {
         }
     }
 
+    @Override
+    public void cleanUp() {
+
+    }
+
     private void sendPacket(){
         model.getClientConnector().sendPacket(new CSPPlayCard(cardIndex, coordinateIndex, faceUp));
     }

@@ -37,4 +37,9 @@ public class CardPoolZoom extends InteractiveComponent{
                              1 - Resource Pool
                              2 - Golden Pool""");
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

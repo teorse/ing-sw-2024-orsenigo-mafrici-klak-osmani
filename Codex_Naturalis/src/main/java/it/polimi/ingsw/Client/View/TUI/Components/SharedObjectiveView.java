@@ -20,4 +20,9 @@ public class SharedObjectiveView extends Component{
             out.println();
         }
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

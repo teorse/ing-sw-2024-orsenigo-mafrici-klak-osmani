@@ -1,10 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
-import it.polimi.ingsw.Client.Model.LobbyPreviews;
-import it.polimi.ingsw.Client.View.TUI.TextUI;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.LobbyPreviewRecord;
-
-import javax.swing.text.ComponentView;
 
 public class LobbyPreviewView extends Component {
     private final LobbyPreviewRecord lobbyPreviewRecord;
@@ -22,5 +18,10 @@ public class LobbyPreviewView extends Component {
         } else {
             System.out.println("Game not started");
         }
+    }
+
+    @Override
+    public void cleanUp() {
+
     }
 }

@@ -6,12 +6,12 @@ import it.polimi.ingsw.Client.Model.Players;
 import it.polimi.ingsw.Client.Model.States.ClientState;
 import it.polimi.ingsw.Client.View.Observer;
 import it.polimi.ingsw.Client.View.TUI.TerminalColor;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardMapRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
 import it.polimi.ingsw.Server.Model.Game.Artifacts;
 import it.polimi.ingsw.Server.Model.Game.Player.Coordinates;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class CardMapView extends Component implements Observer {
 
 
     //CONSTRUCTOR
-    public CardMapView(){
+    public CardMapView(ViewState viewState){
         this.cardMaps = CardMaps.getInstance();
         this.clientState = ClientModel.getInstance().getClientState();
         this.cardMaps.subscribe(this);
@@ -37,6 +37,11 @@ public class CardMapView extends Component implements Observer {
     @Override
     public void print() {
         showCardMaps(players.getPlayers());
+    }
+
+    @Override
+    public void cleanUp() {
+
     }
 
     /**

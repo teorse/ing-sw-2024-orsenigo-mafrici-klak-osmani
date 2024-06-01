@@ -45,4 +45,9 @@ public class PlacedCardView extends Component{
             out.print(TerminalColor.RESET);
         }
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

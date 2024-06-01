@@ -47,4 +47,9 @@ public class LobbyJoiner extends InteractiveComponent {
         System.out.println("\n" + "Enter the name of the lobby you want to join: ");
         }
 
+    @Override
+    public void cleanUp() {
+
+    }
+
 }

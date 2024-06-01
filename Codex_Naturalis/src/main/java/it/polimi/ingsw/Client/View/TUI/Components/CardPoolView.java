@@ -50,4 +50,9 @@ public class CardPoolView extends Component{
             }
         }
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

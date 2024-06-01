@@ -19,4 +19,9 @@ public class GameStartingStatus extends Component{
             System.out.println("\nWaiting for players to join the lobby.");
         }
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

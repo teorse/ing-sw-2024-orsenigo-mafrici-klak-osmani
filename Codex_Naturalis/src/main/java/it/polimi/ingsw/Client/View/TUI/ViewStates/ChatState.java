@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class ChatState extends ViewState {
+public class ChatState extends LobbyStates{
     List<Component> passiveComponenets;
     InteractiveComponent mainComponent;
 
@@ -40,18 +40,30 @@ public class ChatState extends ViewState {
 
     @Override
     public void handleInput(String input) {
-        //TODO implement exit and back command
+        if(input.equalsIgnoreCase("quitChat")) {
+
+            nextState();
+        }
 
         mainComponent.handleInput(input);
     }
 
     @Override
     public void update() {
-
+        if(!nextState())
+            print();
     }
 
-    private void nextState(){
-        model.setView(previousState);
-        previousState.update();
+    private boolean nextState() {
+        if(!super.nextState())
+
+        if () {
+            model.unsubscribe(this);
+            //Component unsubscri
+            model.setView(previousState);
+            previousState.update();
+            return true;
+        } else
+            return false;
     }
 }

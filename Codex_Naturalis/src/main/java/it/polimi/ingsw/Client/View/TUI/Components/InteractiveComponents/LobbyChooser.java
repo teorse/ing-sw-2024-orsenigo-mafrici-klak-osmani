@@ -55,4 +55,9 @@ public class LobbyChooser extends InteractiveComponent{
                  1 - Create a lobby
                  2 - Join a lobby""");
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

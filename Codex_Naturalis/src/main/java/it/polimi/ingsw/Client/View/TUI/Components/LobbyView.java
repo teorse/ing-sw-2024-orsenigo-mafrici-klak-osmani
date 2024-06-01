@@ -18,4 +18,9 @@ public class LobbyView extends Component {
             new LobbyUserView(user).print();
         }
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

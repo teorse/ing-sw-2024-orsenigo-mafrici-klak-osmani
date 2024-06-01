@@ -54,4 +54,9 @@ public class LobbyCreator extends  InteractiveComponent {
             System.out.println("\nEnter the number of wanted users in the game: ");
         }
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

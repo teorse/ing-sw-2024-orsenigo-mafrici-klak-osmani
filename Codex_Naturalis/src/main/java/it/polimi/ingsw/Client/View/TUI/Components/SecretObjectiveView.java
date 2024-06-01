@@ -16,4 +16,9 @@ public class SecretObjectiveView extends Component{
         new ObjectiveView(secretObjective.getSecretObjective()).print();
         out.println();
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

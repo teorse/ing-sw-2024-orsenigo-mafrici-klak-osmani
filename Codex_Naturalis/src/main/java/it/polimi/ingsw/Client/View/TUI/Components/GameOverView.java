@@ -33,4 +33,9 @@ public class GameOverView extends Component{
         }
         System.out.println("\n" + "Press any key to exit the Final Ranking view.");
     }
+
+    @Override
+    public void cleanUp() {
+
+    }
 }

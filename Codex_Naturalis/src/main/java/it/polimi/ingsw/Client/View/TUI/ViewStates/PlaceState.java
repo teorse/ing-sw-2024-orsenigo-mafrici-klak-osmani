@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class PlaceState extends ViewState {
+public class PlaceState extends LobbyStates {
     List<Component> passiveComponents;
     InteractiveComponent mainComponent;
     InteractiveComponent secondaryComponent;
