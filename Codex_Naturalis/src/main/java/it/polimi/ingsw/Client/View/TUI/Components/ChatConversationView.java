@@ -1,8 +1,11 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.ChatMessagesStack;
+import it.polimi.ingsw.Client.Model.Observable;
 import it.polimi.ingsw.Client.View.Observer;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
+
+import java.util.List;
 
 public class ChatConversationView extends Component implements Observer {
     private final ChatMessagesStack conversation;
@@ -25,12 +28,7 @@ public class ChatConversationView extends Component implements Observer {
         }
         else {
             for (int i = 0; i < conversation.size(); i++)
-                new ChatMessageView(conversation.get(i)).print();
+                new ChatMessageView(view, conversation.get(i)).print();
         }
-    }
-
-    @Override
-    public void cleanUp() {
-
     }
 }

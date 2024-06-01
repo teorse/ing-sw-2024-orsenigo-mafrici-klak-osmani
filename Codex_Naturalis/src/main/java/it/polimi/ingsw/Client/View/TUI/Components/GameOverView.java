@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.GameOver;
 import it.polimi.ingsw.Client.Model.LobbyUsers;
+import it.polimi.ingsw.Client.Model.Observable;
 import it.polimi.ingsw.Client.View.TUI.TerminalColor;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
@@ -34,10 +35,5 @@ public class GameOverView extends Component{
                     "  Points: " + winner.points() + "  ObjectivesCompleted: " + winner.objectivesCompleted() + " RoundsCompleted: " + winner.roundsCompleted());
         }
         System.out.println("\n" + "Press any key to exit the Final Ranking view.");
-    }
-
-    @Override
-    public void cleanUp() {
-
     }
 }

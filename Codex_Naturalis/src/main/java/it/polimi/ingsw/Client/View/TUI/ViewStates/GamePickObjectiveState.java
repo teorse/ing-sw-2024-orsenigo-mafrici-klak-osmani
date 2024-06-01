@@ -24,7 +24,7 @@ public class GamePickObjectiveState extends LobbyStates {
     public GamePickObjectiveState(ClientModel2 model) {
         super(model);
         mainComponent = new PickSecretObjective();
-        component = new ObjectiveCandidatesView();
+        component = new ObjectiveCandidatesView(this);
         myPlayerGameState = MyPlayer.getInstance().getMyPlayerGameState();
     }
 
@@ -49,7 +49,7 @@ public class GamePickObjectiveState extends LobbyStates {
         nextState();
     }
 
-    private void nextState() {
+     boolean nextState() {
         if(model.isGameOver())
             model.setView(new GameOverState(model));
         else if (myPlayerGameState == PlayerStates.WAIT) {

@@ -1,10 +1,13 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.LobbyUsers;
+import it.polimi.ingsw.Client.Model.Observable;
 import it.polimi.ingsw.Client.View.TUI.TerminalColor;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.ChatMessageRecord;
 import it.polimi.ingsw.Server.Model.Lobby.LobbyUserColors;
+
+import java.util.List;
 
 public class ChatMessageView extends Component{
     private final ChatMessageRecord message;
@@ -22,11 +25,6 @@ public class ChatMessageView extends Component{
         // Return the formatted message string
         out.println(message.getTimestamp() + " - " + lobbyUsers.getLobbyUserColors(message.getSender()).getDisplayString() +
                 message.getSender() + TerminalColor.RESET + ": " + message.getMessage());
-    }
-
-    @Override
-    public void cleanUp() {
-
     }
 
     //Chiamata all'interno di un ciclo for

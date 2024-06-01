@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.CardMaps;
 import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.Model.Observable;
 import it.polimi.ingsw.Client.Model.Players;
 import it.polimi.ingsw.Client.Model.States.ClientState;
 import it.polimi.ingsw.Client.View.Observer;
@@ -36,11 +37,6 @@ public class CardMapView extends Component implements Observer {
     @Override
     public void print() {
         showCardMaps(players.getPlayers());
-    }
-
-    @Override
-    public void cleanUp() {
-
     }
 
     /**

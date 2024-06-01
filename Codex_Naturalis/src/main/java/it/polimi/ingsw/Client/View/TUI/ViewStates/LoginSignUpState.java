@@ -55,7 +55,6 @@ public class LoginSignUpState extends ViewState {
             signUpError = model.getSignUpError();
             print();
         }
-
     }
 
     private void nextState(){

@@ -19,7 +19,7 @@ public class StarterPlaceState extends LobbyStates {
 
     public StarterPlaceState(ClientModel2 model) {
         super(model);
-        component = new CardsHeldView();
+        component = new CardsHeldView(this);
         mainComponent = new CardStarterChoice();
 
         attemptToQuitMainComponent = false;
@@ -60,7 +60,7 @@ public class StarterPlaceState extends LobbyStates {
         print();
     }
 
-    private void nextState(){
+    boolean nextState(){
 
     }
 }

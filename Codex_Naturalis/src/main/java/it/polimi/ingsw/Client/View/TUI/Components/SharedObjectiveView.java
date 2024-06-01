@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
+import it.polimi.ingsw.Client.Model.Observable;
 import it.polimi.ingsw.Client.Model.SharedObjectives;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.ObjectiveRecord;
@@ -21,10 +22,5 @@ public class SharedObjectiveView extends Component{
             new ObjectiveView(view, objectiveRecord).print();
             out.println();
         }
-    }
-
-    @Override
-    public void cleanUp() {
-
     }
 }

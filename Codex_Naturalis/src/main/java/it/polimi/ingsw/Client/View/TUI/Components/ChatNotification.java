@@ -1,8 +1,11 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.Chat;
+import it.polimi.ingsw.Client.Model.Observable;
 import it.polimi.ingsw.Client.View.Observer;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
+
+import java.util.List;
 
 public class ChatNotification extends Component implements Observer {
     private final Chat chat;
@@ -25,10 +28,5 @@ public class ChatNotification extends Component implements Observer {
             System.out.println(" (NEW MESSAGE)");
         }
         newMessage = false;
-    }
-
-    @Override
-    public void cleanUp() {
-
     }
 }

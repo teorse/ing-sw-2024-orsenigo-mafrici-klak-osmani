@@ -31,14 +31,14 @@ public class WaitState extends LobbyStates {
 
         passiveComponents = new ArrayList<>();
         passiveComponents.add(new ChatNotification(this));
-        passiveComponents.add(new WaitTypeView());
+        passiveComponents.add(new WaitTypeView(this));
 
         postSetupComponents = new ArrayList<>();
-        postSetupComponents.add(new SharedObjectiveView());
-        postSetupComponents.add(new SecretObjectiveView());
-        postSetupComponents.add(new PointTableView());
+        postSetupComponents.add(new SharedObjectiveView(this));
+        postSetupComponents.add(new SecretObjectiveView(this));
+        postSetupComponents.add(new PointTableView(this));
         postSetupComponents.add(new CardMapView(this));
-        postSetupComponents.add(new TurnShower());
+        postSetupComponents.add(new TurnShower(this));
 
         mainComponent = new WaitInteractor();
 

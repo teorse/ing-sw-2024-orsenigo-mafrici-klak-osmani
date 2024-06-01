@@ -31,9 +31,4 @@ public class TurnShower extends Component {
             }
         }
     }
-
-    @Override
-    public void cleanUp() {
-
-    }
 }

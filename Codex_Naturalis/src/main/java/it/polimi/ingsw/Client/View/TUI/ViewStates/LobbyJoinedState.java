@@ -33,7 +33,7 @@ public class LobbyJoinedState extends ViewState {
     public LobbyJoinedState(ClientModel2 model) {
         super(model);
 
-        lobbyView = new LobbyView();
+        lobbyView = new LobbyView(this);
         mainComponent = new GameManualStarter();
         secondaryComponent = new ColorPicker();
 

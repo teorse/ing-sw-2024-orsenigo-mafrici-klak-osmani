@@ -8,13 +8,19 @@ import it.polimi.ingsw.Client.View.TUI.TextUI;
 import it.polimi.ingsw.Server.Model.Game.Player.PlayerStates;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class DrawState extends LobbyStates {
     List<Component> passiveComponenets;
     InteractiveComponent mainComponent;
     InteractiveComponent secondaryComponent;
+    InteractiveComponent activeComponent;
+    Map<String, InteractiveComponent> keywordToComponentMap;
+    boolean commandNotFund;
+    boolean attemptToExitMainComponent;
 
     PlayerStates myPlayerStates;
 
@@ -25,16 +31,22 @@ public class DrawState extends LobbyStates {
         logger = Logger.getLogger(WaitState.class.getName());
 
         passiveComponenets = new ArrayList<>();
-        passiveComponenets.add(new ChatNotification());
-        passiveComponenets.add(new SharedObjectiveView());
-        passiveComponenets.add(new SecretObjectiveView());
-        passiveComponenets.add(new PointTableView());
-        passiveComponenets.add(new CardMapView());
-        passiveComponenets.add(new TurnShower());
+        passiveComponenets.add(new ChatNotification(this));
+        passiveComponenets.add(new SharedObjectiveView(this));
+        passiveComponenets.add(new SecretObjectiveView(this));
+        passiveComponenets.add(new PointTableView(this));
+        passiveComponenets.add(new CardMapView(this));
+        passiveComponenets.add(new TurnShower(this));
 
         secondaryComponent = new ChatMessageSender(this);
 
         mainComponent = new CardDrawer();
+
+        keywordToComponentMap = new HashMap<>();
+        keywordToComponentMap.put(secondaryComponent.getKeyword(), secondaryComponent);
+
+        commandNotFund = false;
+        attemptToExitMainComponent = false;
 
         myPlayerStates = MyPlayer.getInstance().getMyPlayerGameState();
     }
@@ -54,7 +66,44 @@ public class DrawState extends LobbyStates {
 
     @Override
     public void handleInput(String input) {
-        mainComponent.handleInput(input);
+
+        if(input == null){
+            //todo add logger
+            return;
+        }
+        if(input.isEmpty()){
+            //todo add logger
+            return;
+        }
+        if (input.charAt(0) == '/') {
+            String keyword;
+            //Removes char '/' and cuts the string based on spaces
+            String[] parts = input.substring(1).split(" ");
+            //Picks the first word after '/' character
+            keyword = parts[0];
+
+            if(!keywordToComponentMap.containsKey(keyword)){
+                commandNotFund = true;
+            }
+            else{
+                activeComponent = keywordToComponentMap.get(keyword);
+            }
+        }
+
+        InteractiveComponentReturns result = activeComponent.handleInput(input);
+        if(result == InteractiveComponentReturns.COMPLETE){
+            if(!activeComponent.equals(mainComponent)) {
+                activeComponent = mainComponent;
+            }
+        }
+        else if(result == InteractiveComponentReturns.QUIT) {
+            if (!activeComponent.equals(mainComponent))
+                activeComponent = mainComponent;
+            else
+                attemptToExitMainComponent = true;
+        }
+
+        print();
     }
 
     @Override
@@ -62,7 +111,7 @@ public class DrawState extends LobbyStates {
         nextState();
     }
 
-    private void nextState() {
+     boolean nextState() {
         if(model.isGameOver())
             model.setView(new GameOverState(model));
         else if (myPlayerStates == PlayerStates.WAIT)

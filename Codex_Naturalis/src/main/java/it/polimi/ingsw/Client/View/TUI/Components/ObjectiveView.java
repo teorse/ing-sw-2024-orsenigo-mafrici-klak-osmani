@@ -1,6 +1,10 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
+import it.polimi.ingsw.Client.Model.Observable;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.ObjectiveRecord;
+
+import java.util.List;
 
 public class ObjectiveView extends Component {
 
@@ -14,10 +18,5 @@ public class ObjectiveView extends Component {
     public void print(){
         out.println("Description: " + objective.description());
         out.println("Points: " + objective.points());
-    }
-
-    @Override
-    public void cleanUp() {
-
     }
 }

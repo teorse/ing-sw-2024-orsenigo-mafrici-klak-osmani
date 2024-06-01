@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class Component {
     final PrintStream out;
-    final ViewState view;
+    protected final ViewState view;
 
     public Component(ViewState view){
         out = new PrintStream(System.out, true);

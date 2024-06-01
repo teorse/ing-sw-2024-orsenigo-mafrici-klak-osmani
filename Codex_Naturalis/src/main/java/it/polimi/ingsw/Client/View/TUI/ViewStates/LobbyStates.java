@@ -28,7 +28,7 @@ public abstract class LobbyStates extends ViewState {
         }
     }
 
-     boolean nextState(){
+    boolean nextState() {
 
     }
 }

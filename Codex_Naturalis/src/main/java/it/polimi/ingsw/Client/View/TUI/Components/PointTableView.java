@@ -2,8 +2,10 @@ package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.LobbyUsers;
 import it.polimi.ingsw.Client.Model.MyPlayer;
+import it.polimi.ingsw.Client.Model.Observable;
 import it.polimi.ingsw.Client.Model.Players;
 import it.polimi.ingsw.Client.View.TUI.TerminalColor;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.LobbyUserRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
 import it.polimi.ingsw.Server.Model.Lobby.LobbyUserColors;
@@ -15,7 +17,8 @@ public class PointTableView extends Component {
     private final Players players;
     private final LobbyUsers lobbyUsers;
 
-    public PointTableView() {
+    public PointTableView(ViewState viewState) {
+        super(viewState);
         this.players = Players.getInstance();
         this.lobbyUsers = LobbyUsers.getInstance();
     }
@@ -31,10 +34,5 @@ public class PointTableView extends Component {
             out.println(lobbyUsers.getLobbyUserColors(playerRecord.username()).getDisplayString() + playerRecord.username() + TerminalColor.RESET + ": " + playerRecord.points());
         }
         out.println();
-    }
-
-    @Override
-    public void cleanUp() {
-
     }
 }

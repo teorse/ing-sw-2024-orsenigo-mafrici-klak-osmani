@@ -1,7 +1,11 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.LobbyUsers;
+import it.polimi.ingsw.Client.Model.Observable;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.LobbyUserRecord;
+
+import java.util.List;
 
 public class LobbyView extends Component {
     private final LobbyUsers lobbyUsers;
@@ -18,10 +22,5 @@ public class LobbyView extends Component {
         for (LobbyUserRecord user : lobbyUsers.getLobbyUserRecords()) {
             new LobbyUserView(view, user).print();
         }
-    }
-
-    @Override
-    public void cleanUp() {
-
     }
 }

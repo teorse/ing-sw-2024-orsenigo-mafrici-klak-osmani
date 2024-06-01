@@ -10,7 +10,7 @@ public class GameOverState extends ViewState {
 
     public GameOverState(ClientModel2 model) {
         super(model);
-        passiveComponent = new GameOverView();
+        passiveComponent = new GameOverView(this);
     }
 
     @Override

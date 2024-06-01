@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
 import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.Observable;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.ServerConnectionWizard;
 import it.polimi.ingsw.Client.View.TUI.TextUI;

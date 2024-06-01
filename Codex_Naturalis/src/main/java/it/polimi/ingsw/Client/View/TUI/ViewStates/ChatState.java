@@ -23,9 +23,8 @@ public class ChatState extends LobbyStates{
         logger = Logger.getLogger(WaitState.class.getName());
 
         passiveComponenets = new ArrayList<>();
-        passiveComponenets.add(new WaitTypeView());
 
-        mainComponent = new ChatMessageSender();
+        mainComponent = new ChatMessageSender(this);
 
         this.previousState = previousState;
     }
@@ -40,11 +39,11 @@ public class ChatState extends LobbyStates{
 
     @Override
     public void handleInput(String input) {
+
         if(input.equalsIgnoreCase("quitChat")) {
 
             nextState();
         }
-
         mainComponent.handleInput(input);
     }
 
@@ -54,7 +53,7 @@ public class ChatState extends LobbyStates{
             print();
     }
 
-    private boolean nextState() {
+    boolean nextState() {
         if(!super.nextState())
 
         if () {

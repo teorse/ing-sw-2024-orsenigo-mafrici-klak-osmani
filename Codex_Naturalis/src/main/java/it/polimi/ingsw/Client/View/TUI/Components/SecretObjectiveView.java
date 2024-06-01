@@ -1,6 +1,10 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
+import it.polimi.ingsw.Client.Model.Observable;
 import it.polimi.ingsw.Client.Model.SecretObjective;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
+
+import java.util.List;
 
 public class SecretObjectiveView extends Component{
     private final SecretObjective secretObjective;
@@ -14,12 +18,7 @@ public class SecretObjectiveView extends Component{
     @Override
     public void print() {
         System.out.println("Secret Objective:");
-        new ObjectiveView(secretObjective.getSecretObjective()).print();
+        new ObjectiveView(view, secretObjective.getSecretObjective()).print();
         out.println();
-    }
-
-    @Override
-    public void cleanUp() {
-
     }
 }
