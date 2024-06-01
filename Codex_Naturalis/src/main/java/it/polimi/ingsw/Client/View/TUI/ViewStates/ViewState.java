@@ -4,6 +4,8 @@ import it.polimi.ingsw.Client.Model.ClientModel2;
 import it.polimi.ingsw.Client.Model.Observable;
 import it.polimi.ingsw.Client.View.Observer;
 
+import java.util.Map;
+
 /**
  * Abstract class representing the state of the client in the game.
  * <p>
@@ -13,6 +15,7 @@ import it.polimi.ingsw.Client.View.Observer;
  * The class also provides a method to determine the next game state based on the current game conditions.
  */
 public abstract class ViewState implements Observer {
+    Map<Observable, Integer> observableMap;
     ClientModel2 model;
 
     public ViewState(ClientModel2 model){
@@ -26,6 +29,40 @@ public abstract class ViewState implements Observer {
 
     public abstract void handleInput(String input);
 
-    public abstract void assObserved(Observable observed);
+    public void addObserved(Observable observed){
+        if(!observableMap.containsKey(observed)) {
+            observableMap.put(observed, 1);
+            observed.subscribe(this);
+        }
+        else{
+            int oldCounter = observableMap.get(observed);
+            oldCounter++;
+            observableMap.put(observed, oldCounter);
+        }
+    }
+
+    public void removeObserved(Observable observed){
+        if(observableMap.containsKey(observed)){
+            if(observableMap.get(observed) == 1) {
+                observableMap.remove(observed);
+                observed.unsubscribe(this);
+            }
+            else{
+                int oldCounter = observableMap.get(observed);
+                oldCounter--;
+                observableMap.put(observed, oldCounter);
+            }
+        }
+    }
+
+    public void sleepOnObservables(){
+        for(Observable observed : observableMap.keySet())
+            observed.unsubscribe(this);
+    }
+
+    public void wakeUpOnObservables(){
+        for(Observable observed : observableMap.keySet())
+            observed.subscribe(this);
+    }
 }
 
