@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class WaitState extends ViewState {
-    List<Component> passiveComponenets;
+    List<Component> passiveComponents;
     List<Component> postSetupComponents;
     InteractiveComponent mainComponent;
 
@@ -29,9 +29,9 @@ public class WaitState extends ViewState {
         super(model);
         logger = Logger.getLogger(WaitState.class.getName());
 
-        passiveComponenets = new ArrayList<>();
-        passiveComponenets.add(new ChatNotification());
-        passiveComponenets.add(new WaitTypeView());
+        passiveComponents = new ArrayList<>();
+        passiveComponents.add(new ChatNotification());
+        passiveComponents.add(new WaitTypeView());
 
         postSetupComponents = new ArrayList<>();
         postSetupComponents.add(new SharedObjectiveView());
@@ -57,7 +57,7 @@ public class WaitState extends ViewState {
                 component.print();
             }
         }
-        for (Component component : passiveComponenets) {
+        for (Component component : passiveComponents) {
             component.print();
         }
         mainComponent.print();
