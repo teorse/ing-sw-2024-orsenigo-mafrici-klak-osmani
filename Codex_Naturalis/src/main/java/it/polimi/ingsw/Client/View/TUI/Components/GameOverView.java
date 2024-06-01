@@ -31,6 +31,6 @@ public class GameOverView extends Component{
             System.out.println(lobbyUsers.getLobbyUserColors(winner.username()).getDisplayString() + winner.username() + TerminalColor.RESET +
                     "  Points: " + winner.points() + "  ObjectivesCompleted: " + winner.objectivesCompleted() + " RoundsCompleted: " + winner.roundsCompleted());
         }
-        System.out.println("\n" + "To exit the Final Rankings view type EXIT.");
+        System.out.println("\n" + "Press any key to exit the Final Ranking view.");
     }
 }

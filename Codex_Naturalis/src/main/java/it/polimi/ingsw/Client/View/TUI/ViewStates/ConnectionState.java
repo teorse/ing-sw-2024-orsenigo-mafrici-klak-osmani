@@ -30,14 +30,16 @@ public class ConnectionState extends ViewState {
     @Override
     public void update() {
         //todo add logic to check if the correct boolean have updated and if so go to next State
-        if (model.isConnected()) {
-            model.unsubscribe(this);
-            nextState();
-        } else
+        if(!nextState())
             print();
     }
 
-    private void nextState(){
-        model.setView(new LoginSignUpState(model));
+    private boolean nextState(){
+        if (model.isConnected()) {
+            model.unsubscribe(this);
+            model.setView(new LoginSignUpState(model));
+            return true;
+        } else
+            return false;
     }
 }

@@ -30,14 +30,14 @@ public class WaitState extends ViewState {
         logger = Logger.getLogger(WaitState.class.getName());
 
         passiveComponents = new ArrayList<>();
-        passiveComponents.add(new ChatNotification());
+        passiveComponents.add(new ChatNotification(this));
         passiveComponents.add(new WaitTypeView());
 
         postSetupComponents = new ArrayList<>();
         postSetupComponents.add(new SharedObjectiveView());
         postSetupComponents.add(new SecretObjectiveView());
         postSetupComponents.add(new PointTableView());
-        postSetupComponents.add(new CardMapView());
+        postSetupComponents.add(new CardMapView(this));
         postSetupComponents.add(new TurnShower());
 
         mainComponent = new WaitInteractor();

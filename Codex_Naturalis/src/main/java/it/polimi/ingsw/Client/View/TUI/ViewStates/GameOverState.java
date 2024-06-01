@@ -15,17 +15,16 @@ public class GameOverState extends ViewState {
 
     @Override
     public void print() {
-
         passiveComponent.print();
     }
 
     @Override
     public void handleInput(String input) {
-
+       update();
     }
 
     @Override
     public void update() {
-
+        model.setView(new LobbyJoinedState(model));
     }
 }

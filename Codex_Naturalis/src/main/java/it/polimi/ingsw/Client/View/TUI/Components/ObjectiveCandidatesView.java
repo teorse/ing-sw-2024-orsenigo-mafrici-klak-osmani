@@ -6,7 +6,7 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.Ob
 import java.util.List;
 
 public class ObjectiveCandidatesView extends Component {
-    private List<ObjectiveRecord> objectiveCandidates;
+    private final List<ObjectiveRecord> objectiveCandidates;
 
     public ObjectiveCandidatesView() {
         this.objectiveCandidates = ObjectiveCandidates.getInstance().getObjectiveCandidates();

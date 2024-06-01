@@ -11,7 +11,6 @@ public abstract class InteractiveComponent extends Component {
 
 
     //METHODS
-    //TODO fix return of the boolean
     public InteractiveComponentReturns handleInput(String input){
 
         if(input.equalsIgnoreCase("BACK")) {
