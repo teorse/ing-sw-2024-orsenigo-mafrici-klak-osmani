@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
 import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.Observable;
 import it.polimi.ingsw.Client.View.Observer;
 
 /**
@@ -24,5 +25,7 @@ public abstract class ViewState implements Observer {
     public abstract void print();
 
     public abstract void handleInput(String input);
+
+    public abstract void assObserved(Observable observed);
 }
 

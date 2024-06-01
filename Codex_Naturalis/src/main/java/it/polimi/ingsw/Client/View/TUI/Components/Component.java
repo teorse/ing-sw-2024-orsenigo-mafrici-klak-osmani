@@ -14,8 +14,4 @@ public abstract class Component {
     }
 
     public abstract void print();
-
-    public abstract void cleanUp();
-
-    public abstract List<Observable> getObservables();
 }
