@@ -1,11 +1,6 @@
 package it.polimi.ingsw.Client.View;
 
-import it.polimi.ingsw.Client.Model.ClientModel;
-import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.LobbyUserRecord;
-import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
-import it.polimi.ingsw.Server.Model.Lobby.LobbyRoles;
-
-public abstract class UserInterface {
+public abstract class InputValidator {
 
     /**
      * Validates an IPv4 address.
@@ -140,60 +135,5 @@ public abstract class UserInterface {
 
         // Check if the input is either 1 or 2
         return choice == 1 || choice == 2;
-    }
-
-    /**
-     * Retrieves the PlayerRecord corresponding to the current user from the ClientModel.
-     *
-     * <p>This method iterates over the player records stored in the ClientModel and compares each player's username with
-     * the username of the current user. When a match is found, it returns the corresponding PlayerRecord.
-     *
-     * @param model The ClientModel containing player records and user information.
-     * @return The PlayerRecord corresponding to the current user, or null if not found.
-     */
-    public static PlayerRecord usernameToPlayerRecord(ClientModel model, String username) {
-        PlayerRecord PR = null;
-        for (PlayerRecord playerRecord : model.getPlayers()) {
-            if(playerRecord.username().equals(username)) {
-                PR = playerRecord;
-            }
-        }
-        return PR;
-    }
-
-    /**
-     * Retrieves the LobbyUserRecord corresponding to the current user from the ClientModel.
-     *
-     * <p>This method iterates over the lobby user records stored in the ClientModel and compares each user's username with
-     * the username of the current user. When a match is found, it returns the corresponding LobbyUserRecord.
-     *
-     * @param model The ClientModel containing lobby user records and user information.
-     * @return The LobbyUserRecord corresponding to the current user, or null if not found.
-     */
-    public static LobbyUserRecord usernameToLobbyUserRecord(ClientModel model, String username) {
-        LobbyUserRecord LUR = null;
-        for (LobbyUserRecord lobbyUserRecord : model.getLobbyUserRecords()) {
-            if (lobbyUserRecord.username().equals(username))
-                LUR = lobbyUserRecord;
-        }
-        return LUR;
-    }
-
-    /**
-     * Checks if the current user is an administrator in the lobby.
-     *
-     * <p>This method iterates over the lobby user records stored in the ClientModel and compares each user's username with
-     * the username of the current user. If a match is found and the user's role is ADMIN, it returns true indicating that
-     * the current user is an administrator. Otherwise, it returns false.
-     *
-     * @param model The ClientModel containing lobby user records and user information.
-     * @return {@code true} if the current user is an administrator, {@code false} otherwise.
-     */
-    public static boolean areYouAdmin(ClientModel model) {
-        for (LobbyUserRecord user : model.getLobbyUserRecords()) {
-            if (user.username().equals(model.getMyUsername()) && user.role() == LobbyRoles.ADMIN)
-                return true;
-        }
-        return false;
     }
 }

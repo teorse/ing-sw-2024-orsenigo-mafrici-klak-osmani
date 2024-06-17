@@ -8,7 +8,7 @@ import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.Interact
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponentReturns;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
-public class StarterPlaceState extends LobbyStates {
+public class StarterPlaceState extends GameState {
     Component component;
     InteractiveComponent mainComponent;
 
@@ -20,7 +20,7 @@ public class StarterPlaceState extends LobbyStates {
     public StarterPlaceState(ClientModel2 model) {
         super(model);
         component = new CardsHeldView();
-        mainComponent = new CardStarterChoice();
+        mainComponent = new CardStarterChoice(this);
 
         attemptToQuitMainComponent = false;
 
@@ -43,8 +43,10 @@ public class StarterPlaceState extends LobbyStates {
     }
 
     @Override
-    public void handleInput(String input) {
-        //todo add chat accessibility before waitingForServerResponse
+    public boolean handleInput(String input) {
+        if(super.handleInput(input))
+            return true;
+
         if(!waitingForServerResponse) {
             InteractiveComponentReturns result = mainComponent.handleInput(input);
             if (result.equals(InteractiveComponentReturns.QUIT))
@@ -53,14 +55,13 @@ public class StarterPlaceState extends LobbyStates {
                 waitingForServerResponse = true;
             }
         }
+
+        return true;
     }
 
     @Override
     public void update() {
-        print();
-    }
-
-    private void nextState(){
-
+        if(!nextState())
+            print();
     }
 }

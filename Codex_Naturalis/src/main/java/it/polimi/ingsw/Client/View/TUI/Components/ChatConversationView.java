@@ -4,17 +4,15 @@ import it.polimi.ingsw.Client.Model.ChatMessagesStack;
 import it.polimi.ingsw.Client.View.Observer;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 
-public class ChatConversationView extends Component implements Observer {
+public class ChatConversationView extends LiveComponent{
     private final ChatMessagesStack conversation;
+    private final ViewState view;
 
-    public ChatConversationView(ChatMessagesStack conversation, ViewState viewState) {
+    public ChatConversationView(ChatMessagesStack conversation, ViewState view) {
+        super(view);
+        this.view = view;
         this.conversation = conversation;
-        conversation.subscribe(this);
-    }
-
-    @Override
-    public void update() {
-        //todo add call to print for the whole state
+        view.addObserved(conversation);
     }
 
     @Override
@@ -30,7 +28,7 @@ public class ChatConversationView extends Component implements Observer {
     }
 
     @Override
-    public void cleanUp() {
-
+    public void cleanObserved() {
+        view.removeObserved(conversation);
     }
 }

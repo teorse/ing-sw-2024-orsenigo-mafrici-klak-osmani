@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client.Network;
 
 import it.polimi.ingsw.Client.Controller.ClientController;
-import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.Model.ClientModel2;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.ClientServerPacket;
 import it.polimi.ingsw.CommunicationProtocol.NetworkConstants;
 import it.polimi.ingsw.CommunicationProtocol.RMI.ClientRemoteInterfaces.ClientRemoteInterface;
@@ -36,7 +36,7 @@ public class ClientConnectorRMI implements ClientConnector, ClientRemoteInterfac
     private final ClientRemoteInterface thisRemote;
     private final ServerClientMessageExecutor controller;
     private final Logger logger;
-    private final ClientModel model;
+    private final ClientModel2 model;
 
 
 
@@ -52,7 +52,7 @@ public class ClientConnectorRMI implements ClientConnector, ClientRemoteInterfac
      * @param serverIp    The IP address of the server to connect to.
      * @param controller  The client controller associated with this client connector.
      */
-    public ClientConnectorRMI(String serverIp, ClientController controller, ClientModel model) throws RemoteException {
+    public ClientConnectorRMI(String serverIp, ClientController controller, ClientModel2 model) throws RemoteException {
         logger = Logger.getLogger(ClientConnectorRMI.class.getName());
         logger.info("Initializing Client Connector RMI");
 

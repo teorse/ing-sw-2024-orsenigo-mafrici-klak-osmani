@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Server.Model.Game.Table;
 
+import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardPoolRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.ObjectiveRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.TableRecord;
@@ -135,41 +136,15 @@ public class Table {
 
     //DATA TRANSFER OBJECT
     public TableRecord toRecord(){
-        Artifacts topDeckResource;
-        Artifacts topDeckGolden;
-        List<CardRecord> visibleCardRecordResource;
-        List<CardRecord> visibleCardRecordGolden;
-        List<ObjectiveRecord> sharedObjectives;
-
-
-        //Handle the resource deck
-        CardPool cardPoolResource = cardPools.get(CardPoolTypes.RESOURCE);
-        visibleCardRecordResource = cardPoolResource.toRecord();
-
-        if(cardPoolResource.getAmountLeftInDeck() == 0)
-            topDeckResource = Artifacts.NULL;
-        else
-            topDeckResource = visibleCardRecordResource.removeFirst().cardColor();
-
-
-
-        //Handle the golden deck
-        CardPool cardPoolGolden = cardPools.get(CardPoolTypes.GOLDEN);
-        visibleCardRecordGolden = cardPoolGolden.toRecord();
-
-        if(cardPoolGolden.getAmountLeftInDeck() == 0)
-            topDeckGolden = Artifacts.NULL;
-        else
-            topDeckGolden = visibleCardRecordGolden.removeFirst().cardColor();
-
-
-
-        //Handle objectives
-        sharedObjectives = new ArrayList<>();
+        List<ObjectiveRecord> sharedObjectives = new ArrayList<>();
         for(Objective objective : this.sharedObjectives)
             sharedObjectives.add(objective.toRecord());
 
+        Map<CardPoolTypes, CardPoolRecord> cardPools = new HashMap<>();
+        for(Map.Entry<CardPoolTypes, CardPool> entry : this.cardPools.entrySet()){
+            cardPools.put(entry.getKey(), entry.getValue().toRecord());
+        }
 
-        return new TableRecord(topDeckResource, topDeckGolden, visibleCardRecordResource, visibleCardRecordGolden, sharedObjectives);
+        return new TableRecord(cardPools, sharedObjectives);
     }
 }

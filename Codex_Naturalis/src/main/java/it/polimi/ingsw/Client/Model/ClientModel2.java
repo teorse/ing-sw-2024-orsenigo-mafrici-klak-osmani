@@ -2,34 +2,39 @@ package it.polimi.ingsw.Client.Model;
 
 import it.polimi.ingsw.Client.Network.ClientConnector;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
+import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.*;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.ErrorsDictionary;
 
+import java.util.List;
+import java.util.Map;
+
 public class ClientModel2 extends Observable {
+    //SINGLETON PATTERN
+    private static ClientModel2 INSTANCE;
+    public static ClientModel2 getInstance(){
+        if(INSTANCE == null){
+            INSTANCE = new ClientModel2();
+        }
+        return INSTANCE;
+    }
+    
     //Internal Logic
     boolean connected;
     boolean loggedIn;
     boolean inLobby;
     boolean gameStartable;
     boolean gameStarted;
-    boolean setUpFinished;
-    boolean waitingForReconnections;
     boolean gameOver;
     ViewState view;
 
+    //CONNECTOR
+    ClientConnector clientConnector;
 
     //Error Managing
-    //TODO when get an error delete it
     ErrorsDictionary logInError;
     ErrorsDictionary signUpError;
     ErrorsDictionary joinLobbyError;
     ErrorsDictionary startLobbyError;
-
-
-
-
-
-    //CONNECTOR
-    ClientConnector clientConnector;
 
 
 
@@ -60,37 +65,39 @@ public class ClientModel2 extends Observable {
         return gameStarted;
     }
 
-    public boolean isSetUpFinished() {
-        return setUpFinished;
-    }
-
-    public boolean isWaitingForReconnections() {
-        return waitingForReconnections;
-    }
-
     public boolean isGameOver() {
         return gameOver;
     }
 
     public ErrorsDictionary getLogInError() {
-        return logInError;
+        ErrorsDictionary error = logInError;
+        logInError = null;
+        return error;
     }
 
     public ErrorsDictionary getSignUpError() {
-        return signUpError;
+        ErrorsDictionary error = signUpError;
+        signUpError = null;
+        return error;
     }
 
     public ErrorsDictionary getJoinLobbyError() {
-        return joinLobbyError;
+        ErrorsDictionary error = joinLobbyError;
+        joinLobbyError = null;
+        return error;
     }
 
     public ErrorsDictionary getStartLobbyError() {
-        return startLobbyError;
+        ErrorsDictionary error = startLobbyError;
+        startLobbyError = null;
+        return error;
     }
 
     public ViewState getView() {
         return view;
     }
+
+
 
 
 
@@ -100,13 +107,36 @@ public class ClientModel2 extends Observable {
         super.updateObservers();
     }
 
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
+    public void setLogInSuccess() {
+        this.loggedIn = true;
         super.updateObservers();
     }
 
-    public void setInLobby(boolean inLobby) {
-        this.inLobby = inLobby;
+    public void setLogInFailed(ErrorsDictionary logInError) {
+        this.loggedIn = false;
+        this.logInError = logInError;
+        super.updateObservers();
+    }
+
+    public void setSignUpSuccess(){
+        this.loggedIn = true;
+        super.updateObservers();
+    }
+
+    public void setSignUpFailed(ErrorsDictionary signUpError) {
+        this.loggedIn = false;
+        this.signUpError = signUpError;
+        super.updateObservers();
+    }
+
+    public void setJoinLobbySuccess() {
+        this.inLobby = true;
+        super.updateObservers();
+    }
+
+    public void setJoinLobbyFailed(ErrorsDictionary error) {
+        this.inLobby = false;
+        this.joinLobbyError = error;
         super.updateObservers();
     }
 
@@ -119,13 +149,19 @@ public class ClientModel2 extends Observable {
         super.updateObservers();
     }
 
-    public void setGameStarted(boolean gameStarted) {
-        this.gameStarted = gameStarted;
-        super.updateObservers();
-    }
+    public void setGameStarted(List<PlayerRecord> players, Map<String, CardMapRecord> cardMaps, PlayerSecretInfoRecord secret, TableRecord table, GameRecord game) {
 
-    public void setSetUpFinished(boolean setUpFinished) {
-        this.setUpFinished = setUpFinished;
+        Players.getInstance().setPlayers(players);
+        CardMaps.getInstance().setCardMaps(cardMaps);
+        CardsHeld.getInstance().setCardsHeld(secret.cardsHeld(), secret.cardPlayability());
+        SecretObjective.getInstance().setSecretObjective(secret.objectiveRecord());
+        SharedObjectives.getInstance().setSharedObjectives(table.sharedObjectives());
+        CardPools.getInstance().setCardPools(table.cardPools());
+        Game.getInstance().updateGame(game);
+
+
+        gameStartable = false;
+        gameStarted = true;
         super.updateObservers();
     }
 
@@ -137,30 +173,12 @@ public class ClientModel2 extends Observable {
         this.view = view;
     }
 
-    public void setWaitingForReconnections(boolean waitingForReconnections) {
-        this.waitingForReconnections = waitingForReconnections;
-        super.updateObservers();
-    }
-
-    public void setLogInError(ErrorsDictionary logInError) {
-        this.logInError = logInError;
-        super.updateObservers();
-    }
-
-    public void setSignUpError(ErrorsDictionary signUpError) {
-        this.signUpError = signUpError;
-        super.updateObservers();
-    }
-
-    public void setJoinLobbyError(ErrorsDictionary joinLobbyError) {
-        this.joinLobbyError = joinLobbyError;
-        super.updateObservers();
-    }
-
     public void setStartLobbyError(ErrorsDictionary startLobbyError) {
         this.startLobbyError = startLobbyError;
         super.updateObservers();
     }
+
+
 
 
 
@@ -175,14 +193,12 @@ public class ClientModel2 extends Observable {
     public void quitLobby() {
         inLobby = false;
 
-        gameOver();
+        resetGame();
     }
 
-    public void gameOver() {
+    public void resetGame() {
         gameStartable = false;
         gameStarted = false;
-        setUpFinished = false;
-        waitingForReconnections = false;
         gameOver = false;
 
         super.updateObservers();

@@ -1,8 +1,7 @@
 package it.polimi.ingsw.Client.Network;
 
 import it.polimi.ingsw.Client.Controller.ClientController;
-import it.polimi.ingsw.Client.Model.ClientModel;
-import it.polimi.ingsw.Client.Model.States.ConnectionState;
+import it.polimi.ingsw.Client.Model.ClientModel2;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.ClientServerPacket;
 import it.polimi.ingsw.CommunicationProtocol.NetworkConstants;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.ServerClientPacket;
@@ -28,7 +27,7 @@ public class ClientConnectorSocket implements ClientConnector, Runnable {
     private ObjectOutputStream oos;
     private final ClientController controller;
     private final Logger logger;
-    private final ClientModel model;
+    private final ClientModel2 model;
 
 
 
@@ -41,10 +40,10 @@ public class ClientConnectorSocket implements ClientConnector, Runnable {
      * @param serverIp    The IP address of the server to connect to.
      * @param controller  The ClientController to interact with this client's local model.
      */
-    public ClientConnectorSocket(String serverIp, ClientController controller, ClientModel model) throws SocketTimeoutException {
+    public ClientConnectorSocket(String serverIp, ClientController controller, ClientModel2 model) throws SocketTimeoutException {
         this.controller = controller;
         this.model = model;
-        logger = Logger.getLogger(ConnectionState.class.getName());
+        logger = Logger.getLogger(ClientConnectorSocket.class.getName());
 
         try {
             int serverPort = NetworkConstants.ServerSocketListenerPort;

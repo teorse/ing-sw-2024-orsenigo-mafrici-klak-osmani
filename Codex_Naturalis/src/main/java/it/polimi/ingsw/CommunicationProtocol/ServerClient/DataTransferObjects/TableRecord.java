@@ -1,9 +1,10 @@
 package it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects;
 
-import it.polimi.ingsw.Server.Model.Game.Artifacts;
+import it.polimi.ingsw.Server.Model.Game.Table.CardPoolTypes;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a record containing information about the table in a game.
@@ -12,20 +13,6 @@ import java.util.List;
  *
  * <p>This record implements the {@code Serializable} interface to support serialization.
  */
-public record TableRecord(Artifacts topDeckResource, Artifacts topDeckGolden,
-                          List<CardRecord> visibleCardRecordResource, List<CardRecord> visibleCardRecordGolden,
+public record TableRecord(Map<CardPoolTypes, CardPoolRecord> cardPools,
                           List<ObjectiveRecord> sharedObjectives) implements Serializable {
-
-    /**
-     * Constructs a new {@code TableRecord} with the specified parameters.
-     *
-     * @param topDeckResource the top deck resource
-     * @param topDeckGolden the top deck golden card
-     * @param visibleCardRecordResource the list of visible card records for the resource deck
-     * @param visibleCardRecordGolden the list of visible card records for the golden deck
-     * @param sharedObjectives the list of shared objectives
-     */
-    public TableRecord {
-        // No additional implementation needed as records automatically generate a constructor
-    }
 }

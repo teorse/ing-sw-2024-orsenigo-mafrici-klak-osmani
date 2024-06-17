@@ -50,13 +50,10 @@ public class CardsHeld extends Observable{
 
 
 
-    //SETTERS
-    public void setCardPlayability(Map<CardRecord, Boolean> cardPlayability) {
-        this.cardPlayability = cardPlayability;
-        super.updateObservers();
-    }
-    public void setCardsHeld(List<CardRecord> cardsHeld) {
+    //SETTER
+    public void setCardsHeld(List<CardRecord> cardsHeld, Map<CardRecord, Boolean> cardPlayability) {
         this.cardsHeld = cardsHeld;
+        this.cardPlayability = cardPlayability;
         super.updateObservers();
     }
 }

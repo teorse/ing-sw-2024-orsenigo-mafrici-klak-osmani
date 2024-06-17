@@ -4,31 +4,25 @@ import it.polimi.ingsw.Client.Model.Chat;
 import it.polimi.ingsw.Client.View.Observer;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 
-public class ChatNotification extends Component implements Observer {
+public class ChatNotification extends LiveComponent {
     private final Chat chat;
-    private boolean newMessage;
 
 
-    public ChatNotification(ViewState viewState){
+    public ChatNotification(ViewState view){
+        super(view);
         chat = Chat.getInstance();
-        chat.subscribe(this);
-    }
-
-    @Override
-    public void update() {
-      newMessage = true;
+        view.addObserved(chat);
     }
 
     @Override
     public void print() {
-        if(newMessage){
+        if(Chat.getInstance().isNewMessages()){
             System.out.println(" (NEW MESSAGE)");
         }
-        newMessage = false;
     }
 
     @Override
-    public void cleanUp() {
-
+    public void cleanObserved() {
+        view.removeObserved(chat);
     }
 }

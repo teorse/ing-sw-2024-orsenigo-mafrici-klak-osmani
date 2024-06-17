@@ -1,13 +1,16 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
 import it.polimi.ingsw.Client.View.TUI.Components.Component;
+import it.polimi.ingsw.Client.View.TUI.Components.LiveComponent;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 
-public abstract class InteractiveComponent extends Component {
+public abstract class InteractiveComponent extends LiveComponent {
     //ATTRIBUTES
     int inputCounter = 0;
 
-
-
+    public InteractiveComponent(ViewState view) {
+        super(view);
+    }
 
 
     //METHODS

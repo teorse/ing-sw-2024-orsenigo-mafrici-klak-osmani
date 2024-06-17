@@ -1,39 +1,47 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
 import it.polimi.ingsw.Client.View.TUI.Components.CardsHeldView;
-import it.polimi.ingsw.Client.View.TUI.TextUI;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
+import it.polimi.ingsw.Client.View.InputValidator;
 
+//todo further review zoomer class
 public class Zoomer extends InteractiveComponent {
     //ATTRIBUTES
+    private final ViewState view;
+    private int choice;
     private InteractiveComponent subComponent;
+    private boolean invalidInput;
 
-
-
+    public Zoomer(ViewState view) {
+        super(view);
+        this.view = view;
+        invalidInput = false;
+    }
 
 
     //METHODS
     @Override
     public InteractiveComponentReturns handleInput(String input) {
+        if(input.equalsIgnoreCase("BACK"))
+            return super.handleInput(input);
+
         if(inputCounter == 0){
-            if(input.equalsIgnoreCase("BACK"))
-                return InteractiveComponentReturns.QUIT;
-
-
-            if (TextUI.checkInputBound(input, 1, 3)) {
+            if (InputValidator.checkInputBound(input, 1, 3)) {
                 // Parse choice
-                int choice = Integer.parseInt(input);
+                choice = Integer.parseInt(input);
                 if (choice == 1) {
-                    subComponent = new CardMapZoom();
+                    subComponent = new CardMapZoom(view);
                     inputCounter++;
                 } else if (choice == 2) {
-                    //todo
-                    new CardsHeldView().print();
                     inputCounter++;
                 } else if (choice == 3) {
-                    subComponent = new CardPoolZoom();
+                    subComponent = new CardPoolZoom(view);
                     inputCounter++;
                 }
             }
+            else
+                invalidInput = true;
+
             return InteractiveComponentReturns.INCOMPLETE;
         }
         if(inputCounter == 1) {
@@ -66,12 +74,21 @@ public class Zoomer extends InteractiveComponent {
         }
 
         else if(inputCounter == 1) {
-            subComponent.print();
+            if(choice == 2){
+                new CardsHeldView().print();
+            }
+            else
+                subComponent.print();
+        }
+
+        if(invalidInput){
+            invalidInput = false;
+            System.out.println("The number provided is not a valid input.\nPlease type a number between 1 and 3.");
         }
     }
 
     @Override
-    public void cleanUp() {
-
+    public void cleanObserved() {
+        subComponent.cleanObserved();
     }
 }

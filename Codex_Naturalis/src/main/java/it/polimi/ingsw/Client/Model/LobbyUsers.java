@@ -4,7 +4,9 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.Lo
 import it.polimi.ingsw.Server.Model.Lobby.LobbyUserColors;
 import it.polimi.ingsw.Server.Model.Lobby.LobbyUserConnectionStates;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LobbyUsers extends Observable{
     //SINGLETON PATTERN
@@ -43,6 +45,13 @@ public class LobbyUsers extends Observable{
             }
         }
         return null;
+    }
+    public Map<String, LobbyUserColors> getLobbyUserColorsMap(){
+        Map<String, LobbyUserColors> map = new HashMap<>();
+        for(LobbyUserRecord lobbyUser : lobbyUserRecords){
+            map.put(lobbyUser.username(), lobbyUser.color());
+        }
+        return map;
     }
     public LobbyUserConnectionStates getLobbyUsersConnectionState(String username) {
         for (LobbyUserRecord lobbyUserRecord : lobbyUserRecords) {

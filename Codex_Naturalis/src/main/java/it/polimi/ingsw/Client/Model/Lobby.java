@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.Model;
 
+import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.LobbyRecord;
 import it.polimi.ingsw.Server.Model.Lobby.LobbyUserColors;
 
 import java.util.List;
@@ -52,6 +53,13 @@ public class Lobby extends Observable {
 
 
     //SETTERS
+    public void setLobby(LobbyRecord lobby){
+        setLobbyName(lobby.lobbyName());
+        setTargetNumberUsers(lobby.targetNumberUsers());
+        setAvailableUserColors(lobby.availableUserColors());
+        setGameStartable(lobby.gameStartable());
+        super.updateObservers();
+    }
     public void setLobbyName(String lobbyName) {
         this.lobbyName = lobbyName;
         super.updateObservers();
@@ -66,10 +74,6 @@ public class Lobby extends Observable {
     }
     public void setGameStartable(boolean gameStartable) {
         this.gameStartable = gameStartable;
-        super.updateObservers();
-    }
-    public void setLobbyUsers(LobbyUsers lobbyUsers) {
-        this.lobbyUsers = lobbyUsers;
         super.updateObservers();
     }
 }

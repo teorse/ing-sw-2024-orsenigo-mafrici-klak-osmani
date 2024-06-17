@@ -1,28 +1,26 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.LobbyUsers;
-import it.polimi.ingsw.Client.Model.MyPlayer;
 import it.polimi.ingsw.Client.Model.Players;
 import it.polimi.ingsw.Client.View.TUI.TerminalColor;
-import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.LobbyUserRecord;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
-import it.polimi.ingsw.Server.Model.Lobby.LobbyUserColors;
 import it.polimi.ingsw.Server.Model.Lobby.LobbyUserConnectionStates;
 
-import java.util.List;
+public class ScoreBoardView extends LiveComponent {
 
-public class PointTableView extends Component {
-    private final Players players;
-    private final LobbyUsers lobbyUsers;
-
-    public PointTableView() {
-        this.players = Players.getInstance();
-        this.lobbyUsers = LobbyUsers.getInstance();
+    public ScoreBoardView(ViewState view) {
+        super(view);
+        view.addObserved(Players.getInstance());
+        view.addObserved(LobbyUsers.getInstance());
     }
 
     @Override
     public void print() {
-        out.println("POINTS TABLE");
+        Players players = Players.getInstance();
+        LobbyUsers lobbyUsers = LobbyUsers.getInstance();
+
+        out.println("SCORE-BOARD");
         for (PlayerRecord playerRecord : players.getPlayers()) {
             if (lobbyUsers.getLobbyUsersConnectionState(playerRecord.username()) == LobbyUserConnectionStates.ONLINE)
                 out.print(TerminalColor.GREEN + "*" + TerminalColor.RESET);
@@ -34,7 +32,8 @@ public class PointTableView extends Component {
     }
 
     @Override
-    public void cleanUp() {
-
+    public void cleanObserved() {
+        view.removeObserved(Players.getInstance());
+        view.removeObserved(LobbyUsers.getInstance());
     }
 }

@@ -1,10 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.CardMaps;
-import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.Players;
-import it.polimi.ingsw.Client.Model.States.ClientState;
-import it.polimi.ingsw.Client.View.Observer;
 import it.polimi.ingsw.Client.View.TUI.TerminalColor;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardMapRecord;
@@ -15,33 +12,24 @@ import it.polimi.ingsw.Server.Model.Game.Player.Coordinates;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CardMapView extends Component implements Observer {
-    //ATTRIBUTES
-    private final CardMaps cardMaps;
-    private final Players players;
-
-    private final ClientState clientState;
-
-
-
+public class CardMapView extends LiveComponent {
 
     //CONSTRUCTOR
-    public CardMapView(ViewState viewState){
-        this.cardMaps = CardMaps.getInstance();
-        this.clientState = ClientModel.getInstance().getClientState();
-        this.cardMaps.subscribe(this);
-        this.players = Players.getInstance();
-        this.players.subscribe(this);
+    public CardMapView(ViewState view){
+        super(view);
+        view.addObserved(CardMaps.getInstance());
+        view.addObserved(Players.getInstance());
     }
 
     @Override
     public void print() {
-        showCardMaps(players.getPlayers());
+        showCardMaps(Players.getInstance().getPlayers());
     }
 
     @Override
-    public void cleanUp() {
-
+    public void cleanObserved() {
+        view.removeObserved(CardMaps.getInstance());
+        view.removeObserved(Players.getInstance());
     }
 
     /**
@@ -64,7 +52,7 @@ public class CardMapView extends Component implements Observer {
      * 5. If none of the above, returns a reset background.
      */
     private String showCard(String username, Coordinates coordinates) {
-        CardMapRecord cardMapRecord = cardMaps.getCardMaps().get(username);
+        CardMapRecord cardMapRecord = CardMaps.getInstance().getCardMaps().get(username);
 
         //Check if there is a card placed at the specified coordinates
         if (cardMapRecord.cardsPlaced().containsKey(coordinates)) {
@@ -121,7 +109,7 @@ public class CardMapView extends Component implements Observer {
      * 5. Adds extra space at the end for better visual separation.
      */
     public void showCardMaps(List<PlayerRecord> playerRecords) {
-        int maxCoordinate = cardMaps.maxCoordinate();
+        int maxCoordinate = CardMaps.getInstance().maxCoordinate();
         int maxBoardSide = (maxCoordinate * 2) + 3;
 
         // List to hold rows for each player's map
@@ -172,11 +160,5 @@ public class CardMapView extends Component implements Observer {
         }
 
         out.println(); // Extra space at the end
-    }
-
-
-    @Override
-    public void update() {
-        clientState.print();
     }
 }

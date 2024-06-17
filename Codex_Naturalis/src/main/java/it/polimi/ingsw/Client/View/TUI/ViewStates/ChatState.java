@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
+import it.polimi.ingsw.Client.Model.Chat;
 import it.polimi.ingsw.Client.Model.ClientModel2;
 import it.polimi.ingsw.Client.View.TUI.Components.*;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.ChatMessageSender;
@@ -10,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class ChatState extends LobbyStates{
-    List<Component> passiveComponenets;
+public class ChatState extends ViewState{
+    List<Component> passiveComponents;
     InteractiveComponent mainComponent;
 
     ViewState previousState;
@@ -22,12 +23,15 @@ public class ChatState extends LobbyStates{
         super(model);
         logger = Logger.getLogger(WaitState.class.getName());
 
-        passiveComponenets = new ArrayList<>();
-        passiveComponenets.add(new WaitTypeView());
-
-        mainComponent = new ChatMessageSender();
+        Chat.getInstance().resetNewMessages();
 
         this.previousState = previousState;
+        previousState.sleepOnObservables();
+
+        passiveComponents = new ArrayList<>();
+        passiveComponents.add(new WaitTypeView(this));
+
+        mainComponent = new ChatMessageSender(this);
     }
 
     @Override
@@ -39,31 +43,26 @@ public class ChatState extends LobbyStates{
     }
 
     @Override
-    public void handleInput(String input) {
+    public boolean handleInput(String input) {
         if(input.equalsIgnoreCase("quitChat")) {
-
             nextState();
         }
-
-        mainComponent.handleInput(input);
+        else
+            mainComponent.handleInput(input);
+        return true;
     }
 
     @Override
     public void update() {
-        if(!nextState())
-            print();
+        print();
     }
 
-    private boolean nextState() {
-        if(!super.nextState())
+    private void nextState() {
+        model.unsubscribe(this);
+        sleepOnObservables();
 
-        if () {
-            model.unsubscribe(this);
-            //Component unsubscri
-            model.setView(previousState);
-            previousState.update();
-            return true;
-        } else
-            return false;
+        model.setView(previousState);
+        previousState.wakeUpOnObservables();
+        previousState.print();
     }
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
 import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.Game;
 import it.polimi.ingsw.Client.Model.MyPlayer;
 import it.polimi.ingsw.Client.View.TUI.Components.*;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.*;
@@ -11,12 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class DrawState extends LobbyStates {
-    List<Component> passiveComponenets;
-    InteractiveComponent mainComponent;
-    InteractiveComponent secondaryComponent;
-
-    PlayerStates myPlayerStates;
+public class DrawState extends GameState {
+    List<Component> passiveComponents;
 
     private final Logger logger;
 
@@ -24,50 +21,37 @@ public class DrawState extends LobbyStates {
         super(model);
         logger = Logger.getLogger(WaitState.class.getName());
 
-        passiveComponenets = new ArrayList<>();
-        passiveComponenets.add(new ChatNotification());
-        passiveComponenets.add(new SharedObjectiveView());
-        passiveComponenets.add(new SecretObjectiveView());
-        passiveComponenets.add(new PointTableView());
-        passiveComponenets.add(new CardMapView());
-        passiveComponenets.add(new TurnShower());
+        passiveComponents = new ArrayList<>();
+        passiveComponents.add(new ChatNotification(this));
+        passiveComponents.add(new SharedObjectiveView(this));
+        passiveComponents.add(new SecretObjectiveView(this));
+        passiveComponents.add(new ScoreBoardView(this));
+        passiveComponents.add(new CardMapView(this));
+        passiveComponents.add(new TurnShower(this));
 
-        secondaryComponent = new ChatMessageSender();
-
-        mainComponent = new CardDrawer();
-
-        myPlayerStates = MyPlayer.getInstance().getMyPlayerGameState();
+        mainComponent = new CardDrawer(this);
+        if(Game.getInstance().isSetupFinished())
+            addSecondaryComponent(new Zoomer(this));
     }
 
     @Override
     public void print() {
-        //todo add class game and logic to switch between game title and last round
         TextUI.clearCMD();
-        TextUI.displayGameTitle();
-        //todo add display of all available commands
+        if(!Game.getInstance().isLastRoundFlag())
+            TextUI.displayGameTitle();
+        else
+            TextUI.displayLastRound();
 
-        for (Component component : passiveComponenets) {
+        for (Component component : passiveComponents) {
             component.print();
         }
-        mainComponent.print();
-    }
 
-    @Override
-    public void handleInput(String input) {
-        mainComponent.handleInput(input);
+        super.print();
     }
 
     @Override
     public void update() {
-        nextState();
-    }
-
-    private void nextState() {
-        if(model.isGameOver())
-            model.setView(new GameOverState(model));
-        else if (myPlayerStates == PlayerStates.WAIT)
-            model.setView(new WaitState(model));
-        else
+        if(!nextState())
             print();
     }
 }

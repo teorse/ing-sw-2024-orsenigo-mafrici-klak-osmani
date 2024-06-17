@@ -13,14 +13,4 @@ import java.io.Serializable;
  */
 public record GameRecord(int roundsCompleted, boolean lastRoundFlag, boolean setupFinished, boolean waitingForReconnections)
         implements Serializable {
-
-    /**
-     * Constructs a new {@code GameRecord} with the specified parameters.
-     *
-     * @param roundsCompleted the number of rounds completed in the game
-     * @param lastRoundFlag indicates if it's the last round of the game
-     */
-    public GameRecord {
-        // No additional implementation needed as records automatically generate a constructor
-    }
 }

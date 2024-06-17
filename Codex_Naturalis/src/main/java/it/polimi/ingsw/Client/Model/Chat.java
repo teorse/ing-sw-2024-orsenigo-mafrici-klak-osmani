@@ -16,6 +16,8 @@ public class Chat extends Observable{
         return INSTANCE;
     }
 
+    private boolean newMessages;
+
 
 
 
@@ -36,6 +38,9 @@ public class Chat extends Observable{
     public ChatMessagesStack getPrivateChat(String recipient){
         return privateChatMessages.get(recipient);
     }
+    public boolean isNewMessages() {
+        return newMessages;
+    }
 
 
 
@@ -50,9 +55,12 @@ public class Chat extends Observable{
         this.privateChatMessages = privateChatMessages;
         super.updateObservers();
     }
-    public void setSecificPrivateChatMessages(String username, ChatMessagesStack privateChatMessages) {
+    public void setSpecificPrivateChatMessages(String username, ChatMessagesStack privateChatMessages) {
         this.privateChatMessages.put(username, privateChatMessages);
         super.updateObservers();
+    }
+    public void resetNewMessages(){
+        newMessages = false;
     }
 
 
@@ -61,6 +69,7 @@ public class Chat extends Observable{
 
     //METHODS
     public void receiveChatMessage(ChatMessageRecord chatMessage){
+        newMessages = true;
         if(chatMessage.isMessagePrivate()){
             String sender = chatMessage.getSender();
             if (sender.equals(MyPlayer.getInstance().getUsername()))

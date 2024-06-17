@@ -1,10 +1,22 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
+import it.polimi.ingsw.Client.Model.CardPools;
 import it.polimi.ingsw.Client.View.TUI.Components.CardPoolView;
-import it.polimi.ingsw.Client.View.TUI.TextUI;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
+import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.Server.Model.Game.Table.CardPoolTypes;
 
 public class CardPoolZoom extends InteractiveComponent{
+    private CardPoolTypes choice;
+    boolean invalidInput;
+
+
+    public CardPoolZoom(ViewState view) {
+        super(view);
+        invalidInput = false;
+
+        view.addObserved(CardPools.getInstance());
+    }
 
     //METHODS
     public InteractiveComponentReturns handleInput(String input) {
@@ -12,15 +24,15 @@ public class CardPoolZoom extends InteractiveComponent{
         if(input.equalsIgnoreCase("BACK"))
             return super.handleInput(input);
 
-        if (TextUI.validBinaryChoice(input)) {
+        if (InputValidator.validBinaryChoice(input)) {
             if (Integer.parseInt(input) == 1)
-                new CardPoolView(CardPoolTypes.RESOURCE).print();
+                choice = CardPoolTypes.RESOURCE;
             else
-                new CardPoolView(CardPoolTypes.GOLDEN).print();
+                choice = CardPoolTypes.GOLDEN;
+            inputCounter++;
         }
         else
-            //TODO system out 1 in CardPoolZoom
-            System.out.println("Invalid input. Please enter 1 or 2 to select the pool type!");
+            invalidInput = true;
 
         return InteractiveComponentReturns.INCOMPLETE;
     }
@@ -31,15 +43,27 @@ public class CardPoolZoom extends InteractiveComponent{
     }
 
     @Override
-    public void print() {
-        System.out.println("\n" + """
-                            Select the pool type to zoom:
-                             1 - Resource Pool
-                             2 - Golden Pool""");
+    public void cleanObserved() {
+        view.removeObserved(CardPools.getInstance());
     }
 
     @Override
-    public void cleanUp() {
+    public void print() {
+        if(inputCounter == 0) {
 
+            if(invalidInput)
+                System.out.println("Invalid input. Please enter 1 or 2 to select the pool type!");
+
+            System.out.println("\n" + """
+                    Select the pool type to zoom:
+                     1 - Resource Pool
+                     2 - Golden Pool""");
+        }
+        else if(inputCounter == 1){
+            if(choice == CardPoolTypes.RESOURCE)
+                new CardPoolView(CardPoolTypes.RESOURCE).print();
+            else
+                new CardPoolView(CardPoolTypes.GOLDEN).print();
+        }
     }
 }

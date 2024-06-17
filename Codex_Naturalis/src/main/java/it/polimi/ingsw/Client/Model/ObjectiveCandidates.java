@@ -40,7 +40,7 @@ public class ObjectiveCandidates extends Observable {
 
 
     //SETTERS
-    public void setObjectiveRecord(List<ObjectiveRecord> objectiveCandidates) {
+    public void setCandidates(List<ObjectiveRecord> objectiveCandidates) {
         this.objectiveCandidates = objectiveCandidates;
     }
 }

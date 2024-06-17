@@ -1,35 +1,45 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
-import it.polimi.ingsw.Client.Model.CardMaps;
-import it.polimi.ingsw.Client.Model.CardsHeld;
-import it.polimi.ingsw.Client.Model.ClientModel;
-import it.polimi.ingsw.Client.Model.MyPlayer;
-import it.polimi.ingsw.Client.View.TUI.TextUI;
+import it.polimi.ingsw.Client.Model.*;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
+import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPPlayCard;
 
+//todo review the code
 public class CardPlacer extends InteractiveComponent {
     //ATTRIBUTES
     private int inputCounter;
     private final CardMaps cardMaps;
     private final CardsHeld cardsHeld;
-    private final ClientModel model;
+    private final ClientModel2 model;
 
-    int cardIndex;
-    char chosenRow;
-    char chosenCol;
-    int coordinateIndex;
-    boolean faceUp;
+    private int cardIndex;
+    private char chosenRow;
+    private char chosenCol;
+    private int coordinateIndex;
+    private boolean faceUp;
+
+    private boolean invalidCardIndex;
+    private boolean invalidRow;
+    private boolean invalidColumn;
+    private boolean wrongCoordinate;
+    private boolean invalidCardSide;
+    private boolean invalidBinaryChoice;
 
 
 
 
 
-    //CONSTUCTOR
-    public CardPlacer(){
-        this.model = ClientModel.getInstance();
+    //CONSTRUCTOR
+    public CardPlacer(ViewState view){
+        super(view);
+        this.model = ClientModel2.getInstance();
         inputCounter = 0;
         cardMaps = CardMaps.getInstance();
         cardsHeld = CardsHeld.getInstance();
+
+        view.addObserved(cardsHeld);
+        view.addObserved(cardMaps);
     }
 
 
@@ -66,46 +76,56 @@ public class CardPlacer extends InteractiveComponent {
         int maxBoardSide = (cardMaps.maxCoordinate() * 2) + 3;
 
         if (inputCounter == 0) {
-            if (TextUI.checkInputBound(input,1, cardsHeld.getAmountHeld())) {
+            if (InputValidator.checkInputBound(input,1, cardsHeld.getAmountHeld())) {
                 cardIndex = Integer.parseInt(input) - 1;
                 inputCounter++;
             }
-            print();
+            else
+                invalidCardIndex = true;
+            return InteractiveComponentReturns.INCOMPLETE;
+
         } else if (inputCounter == 1) {
-            if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide - 1)) {
+            if (input.length() == 1 && InputValidator.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide - 1)) {
                 chosenRow = input.charAt(0);
                 inputCounter++;
             }
-            print();
+            else
+                invalidRow = true;
+            return InteractiveComponentReturns.INCOMPLETE;
+
         } else if (inputCounter == 2) {
-            if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide - 1)) {
+            if (input.length() == 1 && InputValidator.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide - 1)) {
                 chosenCol = input.charAt(0);
                 inputCounter++;
                 int coordinatesChosen = cardMaps.coordinateIndexByCharIndexes(chosenRow, chosenCol, MyPlayer.getInstance().getUsername());
 
                 if(coordinatesChosen == -1){
-                    //TODO system out 1 in CardPlacer
-                    System.out.println("\nThe coordinates you entered are not in the available placements! Try again.");
+                    wrongCoordinate = true;
                     inputCounter = 1;
                 }
                 else
                     coordinateIndex = coordinatesChosen;
             }
-            print();
+            else
+                invalidColumn = true;
+            return InteractiveComponentReturns.INCOMPLETE;
+
         } else if (inputCounter == 3) {
             boolean cardPlayability = CardsHeld.getInstance().getCardPlayability(cardIndex);
 
-            if (TextUI.validBinaryChoice(input)) {
+            if (InputValidator.validBinaryChoice(input)) {
                 faceUp = (Integer.parseInt(input) == 1);
-                if (cardPlayability || !faceUp)
+                if (cardPlayability || !faceUp) {
                     sendPacket();
+                    return InteractiveComponentReturns.COMPLETE;
+                }
                 else {
-                    //TODO system out 2 in CardPlacer
-                    System.out.println("\nThis card can't be played face up. Select the other side or change card!");
-                    print();
+                    invalidCardSide = true;
                 }
             } else
-                print();
+                invalidBinaryChoice = true;
+            return InteractiveComponentReturns.INCOMPLETE;
+
         }
         return InteractiveComponentReturns.INCOMPLETE;
     }
@@ -113,6 +133,12 @@ public class CardPlacer extends InteractiveComponent {
     @Override
     public String getKeyword() {
         return "Place";
+    }
+
+    @Override
+    public void cleanObserved() {
+        view.removeObserved(cardsHeld);
+        view.removeObserved(cardMaps);
     }
 
     @Override
@@ -129,11 +155,31 @@ public class CardPlacer extends InteractiveComponent {
                      1 - Front
                      2 - Back""");
         }
-    }
 
-    @Override
-    public void cleanUp() {
-
+        if(invalidCardSide){
+            invalidCardSide = false;
+            System.out.println("\nThis card can't be played face up. Select the other side or change card!");
+        }
+        else if (invalidBinaryChoice) {
+            invalidBinaryChoice = false;
+            System.out.println("The number provided is not a valid input.\nPlease type a number between 1 and 2.");
+        }
+        else if (wrongCoordinate) {
+            wrongCoordinate = false;
+            System.out.println("\nThe coordinates you entered are not in the available placements! Try again.");
+        }
+        else if (invalidColumn) {
+            invalidColumn = false;
+            System.out.println("The colum provided is not a valid column.\nPlease type a valid column");
+        }
+        else if (invalidRow) {
+            invalidRow = false;
+            System.out.println("The row provided is not a valid row.\nPlease type a valid row");
+        }
+        else if (invalidCardIndex){
+            invalidCardIndex = false;
+            System.out.println("The card index provided is not a valid index.\nPlease type a valid index");
+        }
     }
 
     private void sendPacket(){

@@ -19,9 +19,4 @@ public class LobbyPreviewView extends Component {
             System.out.println("Game not started");
         }
     }
-
-    @Override
-    public void cleanUp() {
-
-    }
 }

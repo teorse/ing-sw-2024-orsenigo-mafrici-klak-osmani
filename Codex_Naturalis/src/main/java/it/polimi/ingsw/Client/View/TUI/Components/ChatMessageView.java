@@ -21,13 +21,4 @@ public class ChatMessageView extends Component{
         out.println(message.getTimestamp() + " - " + lobbyUsers.getLobbyUserColors(message.getSender()).getDisplayString() +
                 message.getSender() + TerminalColor.RESET + ": " + message.getMessage());
     }
-
-    @Override
-    public void cleanUp() {
-
-    }
-
-    //Chiamata all'interno di un ciclo for
-    //System.out.println(displayMessage(model.getPublicChatMessages().get(i))) Messaggio pubblico
-    //System.out.println(displayMessage(model.getPrivateChatMessages().get(chosenUser).get(i))) Messaggio privato
 }

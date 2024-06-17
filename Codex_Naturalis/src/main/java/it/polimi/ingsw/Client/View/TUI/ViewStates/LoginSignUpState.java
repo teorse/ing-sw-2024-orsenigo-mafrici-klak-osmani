@@ -15,7 +15,7 @@ public class LoginSignUpState extends ViewState {
 
     public LoginSignUpState(ClientModel2 model) {
         super(model);
-        mainComponent = new LogInSignUp();
+        mainComponent = new LogInSignUp(this);
     }
 
     @Override
@@ -23,42 +23,60 @@ public class LoginSignUpState extends ViewState {
         TextUI.clearCMD();
         TextUI.displayGameTitle();
 
-        mainComponent.print();
-
-        switch (logInError) {
-            case GENERIC_ERROR -> System.out.println("Generic error. Try again!");
-            case YOU_ARE_ALREADY_LOGGED_IN -> System.out.println("You are already logged in. Try again!");
-            case WRONG_PASSWORD -> System.out.println("Wrong password. Try again!");
-            case USERNAME_NOT_FOUND -> System.out.println("Username not found. Try again!");
-            case ACCOUNT_ALREADY_LOGGED_IN_BY_SOMEONE_ELSE -> System.out.println("Account already logged in. Try again!");
+        //reset the log-in/sign-up procedure if an error occurs
+        if(logInError != null || signUpError != null){
+            mainComponent.cleanObserved();
+            mainComponent = new LogInSignUp(this);
         }
 
-        switch (signUpError) {
-            case GENERIC_ERROR -> System.out.println("Generic error. Try again!");
-            case USERNAME_ALREADY_TAKEN -> System.out.println("Username already taken. Try again!");
+        mainComponent.print();
+
+        if(logInError != null) {
+            System.out.println("The following error occurred while logging in:");
+            switch (logInError) {
+                case GENERIC_ERROR -> System.out.println("Generic error.");
+                case YOU_ARE_ALREADY_LOGGED_IN -> System.out.println("You are already logged in!");
+                case WRONG_PASSWORD -> System.out.println("Wrong password.");
+                case USERNAME_NOT_FOUND -> System.out.println("Username not found.");
+                case ACCOUNT_ALREADY_LOGGED_IN_BY_SOMEONE_ELSE ->
+                        System.out.println("Account already logged in!");
+            }
+            logInError = null;
+        }
+
+        if(signUpError != null) {
+            System.out.println("The following error occurred while signing up:");
+            switch (signUpError) {
+                case GENERIC_ERROR -> System.out.println("Generic error.");
+                case USERNAME_ALREADY_TAKEN -> System.out.println("Username already taken.");
+            }
+            signUpError = null;
         }
     }
 
     @Override
-    public void handleInput(String input) {
+    public boolean handleInput(String input) {
         mainComponent.handleInput(input);
+
+        return true;
     }
 
     @Override
     public void update() {
-        if(model.isLoggedIn()) {
-            model.unsubscribe(this);
-            nextState();
-        }
-        else {
+        if(!nextState()){
             logInError = model.getLogInError();
             signUpError = model.getSignUpError();
             print();
         }
-
     }
 
-    private void nextState(){
-        model.setView(new LobbyJoinedState(model));
+    private boolean nextState(){
+        if(model.isLoggedIn()){
+            model.unsubscribe(this);
+            sleepOnObservables();
+            model.setView(new LobbyJoinedState(model));
+            return true;
+        }
+        return false;
     }
 }

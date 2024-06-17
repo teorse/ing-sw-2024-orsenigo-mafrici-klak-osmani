@@ -1,21 +1,20 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
-import it.polimi.ingsw.Client.Model.ClientModel;
-import it.polimi.ingsw.Client.View.TUI.Components.ObjectiveCandidatesView;
-import it.polimi.ingsw.Client.View.TUI.TextUI;
+import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
+import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPPickObjective;
 
 public class PickSecretObjective extends InteractiveComponent {
-    private ClientModel model;
 
-    public PickSecretObjective() {
-        this.model = ClientModel.getInstance();
+    public PickSecretObjective(ViewState view) {
+        super(view);
     }
 
     @Override
     public InteractiveComponentReturns handleInput(String input) {
-        if (TextUI.validBinaryChoice(input)) {
-            model.getClientConnector().sendPacket(new CSPPickObjective(Integer.parseInt(input) - 1));
+        if (InputValidator.validBinaryChoice(input)) {
+            ClientModel2.getInstance().getClientConnector().sendPacket(new CSPPickObjective(Integer.parseInt(input) - 1));
             return InteractiveComponentReturns.COMPLETE;
         }
         return InteractiveComponentReturns.INCOMPLETE;
@@ -23,17 +22,16 @@ public class PickSecretObjective extends InteractiveComponent {
 
     @Override
     public String getKeyword() {
-        return "";
+        return "pickSecretObjective";
     }
 
     @Override
     public void print() {
         System.out.println("\nChoose a secret objective: \n");
-        new ObjectiveCandidatesView().print();
     }
 
     @Override
-    public void cleanUp() {
+    public void cleanObserved() {
 
     }
 }

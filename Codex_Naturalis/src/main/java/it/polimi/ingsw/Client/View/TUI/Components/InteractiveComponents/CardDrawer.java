@@ -1,53 +1,70 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
 import it.polimi.ingsw.Client.Model.CardPools;
-import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.Model.ClientModel2;
 import it.polimi.ingsw.Client.Network.ClientConnector;
 import it.polimi.ingsw.Client.View.TUI.Components.CardPoolView;
-import it.polimi.ingsw.Client.View.UserInterface;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
+import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPDrawCard;
 import it.polimi.ingsw.Server.Model.Game.Artifacts;
 import it.polimi.ingsw.Server.Model.Game.Table.CardPoolTypes;
 
+import java.util.Map;
+
+//todo review code
 public class CardDrawer extends InteractiveComponent{
     //ATTRIBUTES
     private CardPoolTypes cardPoolChoice;
     private CardPools cardPools;
-    int cardChoice;
-    ClientConnector connection;
+    private int cardChoice;
+    private ClientConnector connection;
 
-    int resourceLB;
-    int resourceUB;
-    int goldenLB;
-    int goldenUB;
+    private int resourceLB;
+    private int resourceUB;
+    private int goldenLB;
+    private int goldenUB;
     private boolean isResourceOver;
     private boolean isGoldenOver;
+
+    private boolean invalidBinaryChoice;
+    private boolean invalidCardIndex;
 
 
 
 
 
     //CONSTRUCTOR
-    public CardDrawer() {
+    public CardDrawer(ViewState view) {
+        super(view);
 
-        this.connection = ClientModel.getInstance().getClientConnector();
-
+        this.connection = ClientModel2.getInstance().getClientConnector();
         this.cardPools = CardPools.getInstance();
+        view.addObserved(cardPools);
 
-        int resourceLB = 1 + ((cardPools.getCardPoolByType(CardPoolTypes.RESOURCE).coveredCardColor() == Artifacts.NULL) ? 1 : 0);
-        int resourceUB = 1 + cardPools.getCardPoolByType(CardPoolTypes.RESOURCE).visibleCards().size();
-        int goldenLB = 1 + ((cardPools.getCardPoolByType(CardPoolTypes.GOLDEN).coveredCardColor() == Artifacts.NULL) ? 1 : 0);
-        int goldenUB = 1 + cardPools.getCardPoolByType(CardPoolTypes.GOLDEN).visibleCards().size();
+        resourceLB = 1 + ((cardPools.getCardPoolByType(CardPoolTypes.RESOURCE).coveredCardColor() == Artifacts.NULL) ? 1 : 0);
+        resourceUB = 1 + cardPools.getCardPoolByType(CardPoolTypes.RESOURCE).visibleCards().size();
+        goldenLB = 1 + ((cardPools.getCardPoolByType(CardPoolTypes.GOLDEN).coveredCardColor() == Artifacts.NULL) ? 1 : 0);
+        goldenUB = 1 + cardPools.getCardPoolByType(CardPoolTypes.GOLDEN).visibleCards().size();
 
         isResourceOver = resourceLB > resourceUB;
         isGoldenOver = goldenLB > goldenUB;
+
+        Map<CardPoolTypes, Boolean> cardDrawability = CardPools.getInstance().getCardPoolDrawability();
+        if(!cardDrawability.get(CardPoolTypes.GOLDEN))
+            isGoldenOver = true;
+        if(!cardDrawability.get(CardPoolTypes.RESOURCE))
+            isResourceOver = true;
+
+        invalidBinaryChoice = false;
+        invalidCardIndex = false;
     }
 
 
 
 
 
-    //MEHTODS
+    //METHODS
     /**
      * Handles user input for drawing cards from specified card pools.
      *
@@ -55,7 +72,7 @@ public class CardDrawer extends InteractiveComponent{
      * @return an InteractiveComponentReturns enum indicating whether the input processing is complete or incomplete
      * <p>
      * The method performs the following:
-     * - If the input is "BACK", it delegates handling to the superclass's handleInput method.
+     * - If the input is "BACK", it delegates handling to the superclasses handleInput method.
      * - If the inputCounter is 0, it checks if the input is a valid binary choice to select the card pool type (RESOURCE or GOLDEN).
      * - If the card pool type is RESOURCE and the inputCounter is 1, it checks if the input is within bounds for RESOURCE cards,
      *   parses the card choice, and sends a packet to draw the chosen RESOURCE card.
@@ -71,7 +88,7 @@ public class CardDrawer extends InteractiveComponent{
 
         if (inputCounter == 0) {
             // Check if the input is a binary choice
-            if (UserInterface.validBinaryChoice(input)) {
+            if (InputValidator.validBinaryChoice(input)) {
                 // Set card pool type based on input
                 if (Integer.parseInt(input) == 1) {
                     cardPoolChoice = CardPoolTypes.RESOURCE;
@@ -83,11 +100,13 @@ public class CardDrawer extends InteractiveComponent{
 
                 return InteractiveComponentReturns.INCOMPLETE;
             }
+            else
+                invalidBinaryChoice = true;
 
             // If input counter is 1 and card pool type is RESOURCE
         } else if (inputCounter == 1 && cardPoolChoice == CardPoolTypes.RESOURCE) {
             // Check if the input is within the bounds for RESOURCE cards
-            if (UserInterface.checkInputBound(input, resourceLB, resourceUB)) {
+            if (InputValidator.checkInputBound(input, resourceLB, resourceUB)) {
                 // Parse the card choice
                 cardChoice = Integer.parseInt(input);
                 // Send packet to draw the chosen RESOURCE card
@@ -95,11 +114,13 @@ public class CardDrawer extends InteractiveComponent{
 
                 return InteractiveComponentReturns.COMPLETE;
             }
+            else
+                invalidCardIndex = true;
 
             // If input counter is 1 and card pool type is GOLDEN
         } else if (inputCounter == 1 && cardPoolChoice == CardPoolTypes.GOLDEN) {
             // Check if the input is within the bounds for GOLDEN cards
-            if (UserInterface.checkInputBound(input, goldenLB, goldenUB)) {
+            if (InputValidator.checkInputBound(input, goldenLB, goldenUB)) {
                 // Parse the card choice
                 cardChoice = Integer.parseInt(input);
                 // Send packet to draw the chosen GOLDEN card
@@ -107,13 +128,20 @@ public class CardDrawer extends InteractiveComponent{
 
                 return InteractiveComponentReturns.COMPLETE;
             }
+            else
+                invalidCardIndex = true;
         }
         return InteractiveComponentReturns.INCOMPLETE;
     }
 
     @Override
     public String getKeyword() {
-        return "DRAW";
+        return "draw";
+    }
+
+    @Override
+    public void cleanObserved() {
+        view.removeObserved(cardPools);
     }
 
     /**
@@ -154,10 +182,14 @@ public class CardDrawer extends InteractiveComponent{
             // Prompt user to enter a number to pick a card from GOLDEN pool
             System.out.println("\nEnter a number between " + goldenLB + " and " + goldenUB + " to pick a card: ");
         }
-    }
 
-    @Override
-    public void cleanUp() {
-
+        if(invalidBinaryChoice){
+            invalidBinaryChoice = false;
+            System.out.println("The number provided is not a valid input.\nPlease type 1 or 2.");
+        }
+        else if (invalidCardIndex) {
+            invalidCardIndex = false;
+            System.out.println("The card index provided is not a valid input.\nPlease try again.");
+        }
     }
 }

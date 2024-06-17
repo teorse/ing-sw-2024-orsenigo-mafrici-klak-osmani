@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Server.Model.Game.Table;
 
+import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardPoolRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
 import it.polimi.ingsw.Server.Model.Game.Cards.Card;
 
@@ -74,16 +75,12 @@ public class CardPool {
 
 
     //MODEL CLIENT CONVERSION
-    protected List<CardRecord> toRecord(){
-        List<CardRecord> cardRecords = new ArrayList<>();
+    public CardPoolRecord toRecord(){
+        List<CardRecord> visibleCards = new ArrayList<>();
+        for (Card visibleCard : this.visibleCards) {
+            visibleCards.add(visibleCard.toRecord());
+        }
 
-        CardRecord deckView = deck.toRecord();
-        if(deckView != null)
-            cardRecords.add(deckView);
-
-        for(Card card : visibleCards)
-            cardRecords.add(card.toRecord());
-
-        return cardRecords;
+        return new CardPoolRecord(deck.toRecord().cardColor(), visibleCards);
     }
 }

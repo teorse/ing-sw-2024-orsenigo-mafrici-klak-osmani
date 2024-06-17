@@ -1,20 +1,24 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
-import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.Model.ClientModel2;
 import it.polimi.ingsw.Client.Model.LobbyPreviews;
 import it.polimi.ingsw.Client.View.TUI.Components.LobbyPreviewView;
-import it.polimi.ingsw.Client.View.TUI.TextUI;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
+import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPJoinLobby;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.LobbyPreviewRecord;
 
 public class LobbyJoiner extends InteractiveComponent {
 
     private final LobbyPreviews lobbyPreviews;
-    private final ClientModel model;
+    private final ClientModel2 model;
 
-    public LobbyJoiner() {
+    public LobbyJoiner(ViewState view) {
+        super(view);
         this.lobbyPreviews = LobbyPreviews.getInstance();
-        this.model = ClientModel.getInstance();
+        this.model = ClientModel2.getInstance();
+
+        view.addObserved(this.lobbyPreviews);
     }
 
     @Override
@@ -23,7 +27,7 @@ public class LobbyJoiner extends InteractiveComponent {
         if(input.equalsIgnoreCase("BACK"))
             return super.handleInput(input);
 
-        if (TextUI.isNameValid(input)) {
+        if (InputValidator.isNameValid(input)) {
             model.getClientConnector().sendPacket(new CSPJoinLobby(input));
             return InteractiveComponentReturns.COMPLETE;
         } else {
@@ -35,7 +39,7 @@ public class LobbyJoiner extends InteractiveComponent {
 
     @Override
     public String getKeyword () {
-        return "";
+        return "JoinLobby";
     }
 
     @Override
@@ -45,11 +49,11 @@ public class LobbyJoiner extends InteractiveComponent {
             new LobbyPreviewView(lobbyPreviewRecord).print();
 
         System.out.println("\n" + "Enter the name of the lobby you want to join: ");
-        }
-
-    @Override
-    public void cleanUp() {
-
     }
 
+
+    @Override
+    public void cleanObserved() {
+        view.removeObserved(lobbyPreviews);
+    }
 }

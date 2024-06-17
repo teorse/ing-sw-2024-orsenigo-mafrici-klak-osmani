@@ -1,10 +1,6 @@
 package it.polimi.ingsw.Client.Controller;
 
-import it.polimi.ingsw.Client.Model.ClientModel;
-import it.polimi.ingsw.Client.Model.ErrorDictionary.ErrorDictionaryJoinLobbyFailed;
-import it.polimi.ingsw.Client.Model.ErrorDictionary.ErrorDictionaryLogIn;
-import it.polimi.ingsw.Client.Model.ErrorDictionary.ErrorDictionarySignUp;
-import it.polimi.ingsw.Client.Model.ErrorDictionary.ErrorDictionaryStartLobbyFailed;
+import it.polimi.ingsw.Client.Model.*;
 import it.polimi.ingsw.Server.Model.Game.Table.CardPoolTypes;
 import it.polimi.ingsw.Server.Model.Game.Player.PlayerStates;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.*;
@@ -24,18 +20,18 @@ import java.util.logging.Logger;
  * and data based on server messages and user inputs.
  */
 public class ClientController  implements ServerClientMessageExecutor {
-    private final ClientModel model;
+    private final ClientModel2 model;
     private final Logger logger;
 
 
-    public ClientController(ClientModel clientModel) {
-        this.model = clientModel;
+    public ClientController(ClientModel2 model) {
+        this.model = model;
 
         logger = Logger.getLogger(ClientController.class.getName());
     }
 
     public void handleInput(String input) {
-        model.handleInput(input);
+        model.getView().handleInput(input);
     }
 
     /**
@@ -52,7 +48,6 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.fine("Received serverNotification: " + serverNotification);
 
         model.setConnected(true);
-        model.nextState();
     }
 
     /**
@@ -70,17 +65,7 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.info("loginFailed method called.");
         logger.fine("Received errorCause: " + errorCause);
 
-        model.setLoggedIn(false);
-        switch (errorCause) {
-            case WRONG_PASSWORD -> model.setErrorDictionaryLogIn(ErrorDictionaryLogIn.WRONG_PASSWORD);
-
-            case USERNAME_NOT_FOUND -> model.setErrorDictionaryLogIn(ErrorDictionaryLogIn.USERNAME_NOT_FOUND);
-
-            case YOU_ARE_ALREADY_LOGGED_IN -> model.setErrorDictionaryLogIn(ErrorDictionaryLogIn.YOU_ARE_ALREADY_LOGGED_IN);
-
-            case ACCOUNT_ALREADY_LOGGED_IN_BY_SOMEONE_ELSE -> model.setErrorDictionaryLogIn(ErrorDictionaryLogIn.ACCOUNT_ALREADY_LOGGED_IN_BY_SOMEONE_ELSE);
-        }
-        model.nextState();
+        model.setLogInFailed(errorCause);
     }
 
     /**
@@ -98,9 +83,8 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.info("loginSuccess method called.");
         logger.fine("Received username: " + username);
 
-        model.setLoggedIn(true);
-        model.setMyUsername(username);
-        model.nextState();
+        model.setLogInSuccess();
+        MyPlayer.getInstance().setUsername(username);
     }
 
     /**
@@ -118,12 +102,7 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.info("signUpFailed method called.");
         logger.fine("Received errorCause: " + errorCause);
 
-        model.setLoggedIn(false);
-        switch (errorCause) {
-            case USERNAME_ALREADY_TAKEN -> model.setErrorDictionarySignUp(ErrorDictionarySignUp.USERNAME_ALREADY_TAKEN);
-            case GENERIC_ERROR -> model.setErrorDictionarySignUp(ErrorDictionarySignUp.GENERIC_ERROR);
-        }
-        model.nextState();
+        model.setSignUpFailed(errorCause);
     }
 
     /**
@@ -140,9 +119,8 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.info("signUpSuccess method called.");
         logger.fine("Received username: " + username);
 
-        model.setLoggedIn(true);
-        model.setMyUsername(username);
-        model.nextState();
+        model.setSignUpSuccess();
+        MyPlayer.getInstance().setUsername(username);
     }
 
     /**
@@ -162,10 +140,8 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.fine("Received lobbyRecord: " + lobbyRecord);
         logger.fine("Received lobbyUsers: " + lobbyUsers);
 
-        model.setInLobby(true);
-        model.setLobbyRecord(lobbyRecord);
-        model.setLobbyUserRecords(lobbyUsers);
-        model.nextState();
+        model.setJoinLobbySuccess();
+        Lobby.getInstance().setLobby(lobbyRecord);
     }
 
     /**
@@ -183,13 +159,7 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.info("joinLobbyFailed method called.");
         logger.fine("Received errorCause: " + errorCause);
 
-        model.setInLobby(false);
-        switch (errorCause) {
-            case LOBBY_IS_CLOSED -> model.setErrorDictionaryJoinLobbyFailed(ErrorDictionaryJoinLobbyFailed.LOBBY_IS_CLOSED);
-            case GENERIC_ERROR -> model.setErrorDictionaryJoinLobbyFailed(ErrorDictionaryJoinLobbyFailed.GENERIC_ERROR);
-            case LOBBY_NAME_NOT_FOUND -> model.setErrorDictionaryJoinLobbyFailed(ErrorDictionaryJoinLobbyFailed.LOBBY_NAME_NOT_FOUND);
-        }
-        model.nextState();
+        model.setJoinLobbyFailed(errorCause);
     }
 
     /**
@@ -209,10 +179,8 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.fine("Received lobbyRecord: " + lobbyRecord);
         logger.fine("Received lobbyUsers: " + lobbyUsers);
 
-        model.setInLobby(true);
-        model.setLobbyRecord(lobbyRecord);
-        model.setLobbyUserRecords(lobbyUsers);
-        model.nextState();
+        model.setJoinLobbySuccess();
+        Lobby.getInstance().setLobby(lobbyRecord);
     }
 
     /**
@@ -230,13 +198,7 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.info("startLobbyFailed method called.");
         logger.fine("Received errorCause: " + errorCause);
 
-        model.setInLobby(false);
-        switch (errorCause) {
-            case GENERIC_ERROR -> model.setErrorDictionaryStartLobbyFailed(ErrorDictionaryStartLobbyFailed.GENERIC_ERROR);
-            case INVALID_LOBBY_SIZE -> model.setErrorDictionaryStartLobbyFailed(ErrorDictionaryStartLobbyFailed.INVALID_LOBBY_SIZE);
-            case LOBBY_NAME_ALREADY_TAKEN -> model.setErrorDictionaryStartLobbyFailed(ErrorDictionaryStartLobbyFailed.LOBBY_NAME_ALREADY_TAKEN);
-        }
-        model.nextState();
+        model.setJoinLobbyFailed(errorCause);
     }
 
     /**
@@ -254,7 +216,7 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.info("updateLobbyPreviews method called.");
         logger.fine("Received lobbyPreviewRecords: " + lobbyPreviewRecords);
 
-        model.setLobbyPreviewRecords(lobbyPreviewRecords);
+        LobbyPreviews.getInstance().setLobbyPreviews(lobbyPreviewRecords);
     }
 
     /**
@@ -272,7 +234,7 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.info("updateLobbyUsers method called.");
         logger.fine("Received lobbyUsers: " + lobbyUsers);
 
-        model.setLobbyUserRecords(lobbyUsers);
+        LobbyUsers.getInstance().setLobbyUserRecords(lobbyUsers);
     }
 
     @Override
@@ -280,11 +242,12 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.info("updateLobby method called.");
         logger.fine("Received lobby: " + lobby);
 
-        model.setLobbyRecord(lobby);
+        Lobby.getInstance().setLobby(lobby);
     }
 
     @Override
     public void changeColorFailed() {
+        //todo add error communication
         logger.info("changeColorFailed method called");
     }
 
@@ -293,7 +256,7 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.info("receiveMessage method called.");
         logger.fine("Received newState: " + chatMessage);
 
-        model.receiveChatMessage(chatMessage);
+        Chat.getInstance().receiveChatMessage(chatMessage);
     }
 
     /**
@@ -317,14 +280,7 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.fine("Received table: " + table);
         logger.fine("Received game: " + game);
 
-        model.setGameStarted(true);
-        model.setCardMaps(cardMaps);
-        model.setPlayers(players);
-        model.setPlayerSecretInfoRecord(secret);
-        model.setTableRecord(table);
-        model.setGameRecord(game);
-
-        model.nextState();
+        model.setGameStarted(players, cardMaps, secret, table, game);
     }
 
     /**
@@ -341,8 +297,8 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.info("updatePlayers method called.");
         logger.fine("Received players: " + players);
 
-        model.setPlayers(players);
-        model.setCardMaps(cardMaps);
+        Players.getInstance().setPlayers(players);
+        CardMaps.getInstance().setCardMaps(cardMaps);
     }
 
     /**
@@ -360,7 +316,7 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.info("updateSpecificPlayer method called.");
         logger.fine("Received player: " + player);
 
-        model.setSpecificPlayer(player);
+        Players.getInstance().setSpecificPlayer(player);
     }
 
     /**
@@ -380,7 +336,7 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.fine("Received ownerUsername: " + ownerUsername);
         logger.fine("Received cardMap: " + cardMap);
 
-        model.setSpecificCardMap(ownerUsername, cardMap);
+        CardMaps.getInstance().setSpecificCardMap(ownerUsername, cardMap);
     }
 
     /**
@@ -396,7 +352,8 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.info("updateSecret method called.");
         logger.fine("Received secret: " + secret);
 
-        model.setPlayerSecretInfoRecord(secret);
+        CardsHeld.getInstance().setCardsHeld(secret.cardsHeld(), secret.cardPlayability());
+        SecretObjective.getInstance().setSecretObjective(secret.objectiveRecord());
     }
 
     /**
@@ -412,7 +369,8 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.info("updateTable method called.");
         logger.fine("Received table: " + table);
 
-        model.setTableRecord(table);
+        SharedObjectives.getInstance().setSharedObjectives(table.sharedObjectives());
+        CardPools.getInstance().setCardPools(table.cardPools());
     }
 
     /**
@@ -428,7 +386,7 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.info("updateGame method called.");
         logger.fine("Received game: " + game);
 
-        model.setGameRecord(game);
+        Game.getInstance().updateGame(game);
     }
 
     /**
@@ -444,12 +402,12 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.info("updateSecretObjectiveCandidates method called.");
         logger.fine("Received candidates: " + candidates);
 
-        model.setObjectiveCandidates(candidates);
+        ObjectiveCandidates.getInstance().setCandidates(candidates);
     }
 
     @Override
     public void updateCardPoolDrawability(Map<CardPoolTypes, Boolean> cardPoolDrawability) {
-        model.setCardPoolDrawability(cardPoolDrawability);
+        CardPools.getInstance().setCardPoolDrawability(cardPoolDrawability);
     }
 
     /**
@@ -466,8 +424,7 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.info("updateClientGameState method called.");
         logger.fine("Received newState: " + newState);
 
-        model.setMyPlayerGameState(newState);
-        model.nextState();
+        MyPlayer.getInstance().setMyPlayerGameState(newState);
     }
 
     /**
@@ -484,13 +441,7 @@ public class ClientController  implements ServerClientMessageExecutor {
         logger.info("gameOver method called.");
         logger.fine("Received players: " + players);
 
-        model.setGameStarted(false);
-        model.setSetUpFinished(false);
         model.setGameOver(true);
-
-        model.setWinners(players);
-        model.setMyPlayerGameState(null);
-
-        model.nextState();
+        GameOver.getInstance().setWinners(players);
     }
 }

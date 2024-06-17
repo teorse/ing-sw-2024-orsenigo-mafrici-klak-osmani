@@ -1,13 +1,16 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
-import it.polimi.ingsw.Client.View.TUI.TextUI;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
+import it.polimi.ingsw.Client.View.InputValidator;
 
 public class LobbyChooser extends InteractiveComponent{
 
+    private final ViewState view;
     private InteractiveComponent subComponent;
 
-    public LobbyChooser() {
-
+    public LobbyChooser(ViewState view) {
+        super(view);
+        this.view = view;
     }
 
     @Override
@@ -16,12 +19,12 @@ public class LobbyChooser extends InteractiveComponent{
             if(input.equalsIgnoreCase("BACK"))
                 return super.handleInput(input);
 
-            if (TextUI.validBinaryChoice(input)) {
+            if (InputValidator.validBinaryChoice(input)) {
                 if (Integer.parseInt(input) == 1) {
-                    subComponent = new LobbyCreator();
+                    subComponent = new LobbyCreator(view);
                 }
                 else if (Integer.parseInt(input) == 2)
-                    subComponent = new LobbyJoiner();
+                    subComponent = new LobbyJoiner(view);
 
                 inputCounter++;
             }
@@ -34,10 +37,12 @@ public class LobbyChooser extends InteractiveComponent{
                 inputCounter--;
                 return InteractiveComponentReturns.INCOMPLETE;
             }
+            else if (result.equals(InteractiveComponentReturns.COMPLETE)) {
+                subComponent.cleanObserved();
+            }
 
             return result;
         }
-        //todo add logger to check if input counter behaves strangely
         return InteractiveComponentReturns.INCOMPLETE;
     }
 
@@ -57,7 +62,5 @@ public class LobbyChooser extends InteractiveComponent{
     }
 
     @Override
-    public void cleanUp() {
-
-    }
+    public void cleanObserved() {}
 }

@@ -3,7 +3,8 @@ package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 import it.polimi.ingsw.Client.Model.CardMaps;
 import it.polimi.ingsw.Client.Model.Players;
 import it.polimi.ingsw.Client.View.TUI.Components.PlacedCardView;
-import it.polimi.ingsw.Client.View.TUI.TextUI;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
+import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardVisibilityRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
 import it.polimi.ingsw.Server.Model.Game.Player.Coordinates;
@@ -24,9 +25,13 @@ public class CardMapZoom extends InteractiveComponent{
 
 
     //CONSTRUCTOR
-    public CardMapZoom() {
+    public CardMapZoom(ViewState view) {
+        super(view);
         players = Players.getInstance();
         cardMaps = CardMaps.getInstance();
+
+        view.addObserved(players);
+        view.addObserved(cardMaps);
     }
 
 
@@ -61,7 +66,7 @@ public class CardMapZoom extends InteractiveComponent{
             return super.handleInput(input);
 
         if (inputCounter == 0) {
-            if (TextUI.checkInputBound(input, 1, players.getPlayersSize())) {
+            if (InputValidator.checkInputBound(input, 1, players.getPlayersSize())) {
                 //Username of the chosen cardMap's owner
                 chosenCardMapsOwner = players.getUsernameByIndex(Integer.parseInt(input) - 1);
                 // Increment input counter
@@ -77,7 +82,7 @@ public class CardMapZoom extends InteractiveComponent{
             return InteractiveComponentReturns.INCOMPLETE;
         }
         else if(inputCounter == 1){
-            if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0), 'A', 'A' + cardMaps.maxBoardSide() - 1)) {
+            if (input.length() == 1 && InputValidator.isCharWithinBounds(input.toUpperCase().charAt(0), 'A', 'A' + cardMaps.maxBoardSide() - 1)) {
                 // Choose row
                 row = input.charAt(0);
                 // Increment input counter
@@ -89,7 +94,7 @@ public class CardMapZoom extends InteractiveComponent{
             return InteractiveComponentReturns.INCOMPLETE;
         }
         else if(inputCounter == 2){
-            if (input.length() == 1 && TextUI.isCharWithinBounds(input.toUpperCase().charAt(0), 'A', 'A' + cardMaps.maxBoardSide() - 1)) {
+            if (input.length() == 1 && InputValidator.isCharWithinBounds(input.toUpperCase().charAt(0), 'A', 'A' + cardMaps.maxBoardSide() - 1)) {
                 // Choose row
                 column = input.charAt(0);
 
@@ -113,6 +118,12 @@ public class CardMapZoom extends InteractiveComponent{
     }
 
     @Override
+    public void cleanObserved() {
+        view.removeObserved(players);
+        view.removeObserved(cardMaps);
+    }
+
+    @Override
     public void print() {
         if(inputCounter == 0){
             System.out.println("\nSelect a player username to zoom its CardMap by inserting an integer");
@@ -127,10 +138,5 @@ public class CardMapZoom extends InteractiveComponent{
         else if(inputCounter == 2){
             System.out.println("\nChoose a COLUMN to zoom the card.");
         }
-    }
-
-    @Override
-    public void cleanUp() {
-
     }
 }

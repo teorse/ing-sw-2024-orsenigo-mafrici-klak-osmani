@@ -1,14 +1,20 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
-import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.Model.ClientModel2;
 import it.polimi.ingsw.Client.Model.LobbyUsers;
 import it.polimi.ingsw.Client.Model.MyPlayer;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPStartGame;
 
 public class GameManualStarter extends InteractiveComponent {
+    private boolean wrongCommand;
+    private boolean notEnoughPlayers;
 
-    public GameManualStarter() {
-
+    public GameManualStarter(ViewState view) {
+        super(view);
+        view.addObserved(LobbyUsers.getInstance());
+        wrongCommand = false;
+        notEnoughPlayers = false;
     }
 
     @Override
@@ -22,19 +28,17 @@ public class GameManualStarter extends InteractiveComponent {
                 // If input is to start the game
                 if (input.equalsIgnoreCase("START")) {
                     // Send packet to start the game
-                    ClientModel.getInstance().getClientConnector().sendPacket(new CSPStartGame());
+                    ClientModel2.getInstance().getClientConnector().sendPacket(new CSPStartGame());
                     return InteractiveComponentReturns.COMPLETE;
                 }
                 else {
                     // Prompt to start the game
-                    //TODO system out 1 in GameManualStarter
-                    System.out.println("\nWrong command, to start the game type START!");
+                    wrongCommand = true;
                     return InteractiveComponentReturns.INCOMPLETE;
                 }
             }
             else {
-                //TODO system out 2 in GameManualStarter
-                System.out.println("\nYou can't start a game on your own!");
+                notEnoughPlayers = true;
                 return InteractiveComponentReturns.INCOMPLETE;
             }
         }
@@ -48,16 +52,29 @@ public class GameManualStarter extends InteractiveComponent {
 
     @Override
     public void print() {
-        if(!MyPlayer.getInstance().isAdmin())
-            return;
+        if(!MyPlayer.getInstance().isAdmin()) {
+            if(LobbyUsers.getInstance().size() >= 2)
+                System.out.println("Target number of players reached!\nThe game will start soon.");
+        }
+        else {
+            if (LobbyUsers.getInstance().size() >= 2)
+                System.out.println("If you don't want to wait anymore there are already enough players to start the game." +
+                        "\nType start to start the game.");
+        }
 
-        if(LobbyUsers.getInstance().size() >= 2)
-            System.out.println("If you don't want to wait anymore there are already enough players to start the game." +
-                    "\nType start to start the game.");
+        if(wrongCommand){
+            wrongCommand = false;
+            System.out.println("\nWrong command, to start the game type START!");
+        }
+
+        else if (notEnoughPlayers){
+            notEnoughPlayers = false;
+            System.out.println("\nYou can't start a game on your own!");
+        }
     }
 
     @Override
-    public void cleanUp() {
-
+    public void cleanObserved() {
+        view.removeObserved(LobbyUsers.getInstance());
     }
 }

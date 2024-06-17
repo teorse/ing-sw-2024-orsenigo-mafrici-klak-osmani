@@ -2,15 +2,18 @@ package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
 import it.polimi.ingsw.Client.Model.ClientModel2;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
+import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponentReturns;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.ServerConnectionWizard;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
 public class ConnectionState extends ViewState {
     InteractiveComponent mainComponent;
+    boolean attemptedToQuitMainComponent;
 
     public ConnectionState(ClientModel2 model){
         super(model);
-        mainComponent = new ServerConnectionWizard();
+        attemptedToQuitMainComponent = false;
+        mainComponent = new ServerConnectionWizard(this);
         print();
     }
 
@@ -19,17 +22,25 @@ public class ConnectionState extends ViewState {
     public void print() {
         TextUI.clearCMD();
         TextUI.displayGameTitle();
+        if(attemptedToQuitMainComponent){
+            attemptedToQuitMainComponent = false;
+            System.out.println("You can't go further back than this, please follow the instructions on screen.");
+        }
         mainComponent.print();
     }
 
     @Override
-    public void handleInput(String input) {
-        mainComponent.handleInput(input);
+    public boolean handleInput(String input) {
+        InteractiveComponentReturns returnValue = mainComponent.handleInput(input);
+        if(returnValue.equals(InteractiveComponentReturns.QUIT))
+            attemptedToQuitMainComponent = true;
+        print();
+
+        return true;
     }
 
     @Override
     public void update() {
-        //todo add logic to check if the correct boolean have updated and if so go to next State
         if(!nextState())
             print();
     }

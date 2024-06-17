@@ -3,14 +3,15 @@ package it.polimi.ingsw.Client.View.TUI.ViewStates;
 import it.polimi.ingsw.Client.Model.ClientModel2;
 import it.polimi.ingsw.Client.View.TUI.Components.Component;
 import it.polimi.ingsw.Client.View.TUI.Components.GameOverView;
+import it.polimi.ingsw.Client.View.TUI.Components.LiveComponent;
 
 public class GameOverState extends ViewState {
 
-    Component passiveComponent;
+    LiveComponent passiveComponent;
 
     public GameOverState(ClientModel2 model) {
         super(model);
-        passiveComponent = new GameOverView();
+        passiveComponent = new GameOverView(this);
     }
 
     @Override
@@ -19,12 +20,16 @@ public class GameOverState extends ViewState {
     }
 
     @Override
-    public void handleInput(String input) {
+    public boolean handleInput(String input) {
        update();
+       return true;
     }
 
     @Override
     public void update() {
+        model.unsubscribe(this);
+        passiveComponent.cleanObserved();
+        sleepOnObservables();
         model.setView(new LobbyJoinedState(model));
     }
 }

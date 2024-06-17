@@ -1,19 +1,21 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.SharedObjectives;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.ObjectiveRecord;
 
 import java.util.List;
 
-public class SharedObjectiveView extends Component{
-    private final List<ObjectiveRecord> sharedObjectives;
-
-    public SharedObjectiveView() {
-        this.sharedObjectives = SharedObjectives.getInstance().getSharedObjectives();
+public class SharedObjectiveView extends LiveComponent{
+    public SharedObjectiveView(ViewState view) {
+        super(view);
+        view.addObserved(SharedObjectives.getInstance());
     }
 
     @Override
     public void print() {
+        List<ObjectiveRecord> sharedObjectives = SharedObjectives.getInstance().getSharedObjectives();
+
         System.out.println("Shared Objectives:\n");
         for (ObjectiveRecord objectiveRecord : sharedObjectives) {
             new ObjectiveView(objectiveRecord).print();
@@ -22,7 +24,7 @@ public class SharedObjectiveView extends Component{
     }
 
     @Override
-    public void cleanUp() {
-
+    public void cleanObserved() {
+        view.removeObserved(SharedObjectives.getInstance());
     }
 }

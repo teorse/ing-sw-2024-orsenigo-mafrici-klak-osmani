@@ -23,11 +23,9 @@ public abstract class ViewState implements Observer {
         model.subscribe(this);
     }
 
-    //TODO fix the QUIT command!
-
     public abstract void print();
 
-    public abstract void handleInput(String input);
+    public abstract boolean handleInput(String input);
 
     public void addObserved(Observable observed){
         if(!observableMap.containsKey(observed)) {

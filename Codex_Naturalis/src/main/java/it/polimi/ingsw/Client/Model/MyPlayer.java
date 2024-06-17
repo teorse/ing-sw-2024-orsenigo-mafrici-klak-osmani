@@ -5,11 +5,11 @@ import it.polimi.ingsw.Server.Model.Game.Player.PlayerStates;
 public class MyPlayer extends Observable{
     //SINGLETON PATTERN
     private static MyPlayer INSTANCE;
-    PlayerStates myPlayerGameState;
-
-
-
-    private MyPlayer(){}
+    private MyPlayer(){
+        username = null;
+        isAdmin = false;
+        newState = false;
+    }
     public static MyPlayer getInstance(){
         if(INSTANCE == null){
             INSTANCE = new MyPlayer();
@@ -25,6 +25,10 @@ public class MyPlayer extends Observable{
     private String username;
     private boolean isAdmin;
 
+    private final Object PlayerGameStateLock = new Object();
+    private PlayerStates myPlayerGameState;
+    private boolean newState;
+
 
 
 
@@ -34,9 +38,14 @@ public class MyPlayer extends Observable{
         return username;
     }
     public boolean isAdmin() { return isAdmin; }
-
+    public boolean isNewState(){
+        return newState;
+    }
     public PlayerStates getMyPlayerGameState() {
-        return myPlayerGameState;
+        synchronized (PlayerGameStateLock) {
+            newState = false;
+            return myPlayerGameState;
+        }
     }
 
 
@@ -53,7 +62,10 @@ public class MyPlayer extends Observable{
         super.updateObservers();
     }
     public void setMyPlayerGameState(PlayerStates myPlayerGameState) {
-        this.myPlayerGameState = myPlayerGameState;
+        synchronized (PlayerGameStateLock) {
+            this.myPlayerGameState = myPlayerGameState;
+            newState = true;
+        }
     }
     public void setAdmin(boolean admin) {
         isAdmin = admin;

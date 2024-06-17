@@ -46,4 +46,18 @@ public class Players extends Observable{
         this.players = players;
         super.updateObservers();
     }
+    public void setSpecificPlayer(PlayerRecord player){
+        PlayerRecord currentPlayer;
+
+        for (int i = 0; i < players.size(); i++) {
+            currentPlayer = players.get(i);
+
+            if (currentPlayer.username().equals(player.username())) {
+                players.set(i, player);
+                break;
+            }
+        }
+
+        super.updateObservers();
+    }
 }

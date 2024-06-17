@@ -10,7 +10,7 @@ public class LobbySelectionState extends ViewState {
 
     public LobbySelectionState(ClientModel2 model) {
         super(model);
-        mainComponent = new LobbyChooser();
+        mainComponent = new LobbyChooser(this);
     }
 
     @Override
@@ -19,15 +19,24 @@ public class LobbySelectionState extends ViewState {
     }
 
     @Override
-    public void handleInput(String input) {
+    public boolean handleInput(String input) {
         mainComponent.handleInput(input);
+        return true;
     }
 
     @Override
     public void update() {
-        if(model.isInLobby())
-            model.setView(new LobbyJoinedState(model));
-        else
+        if(!nextState())
             print();
+    }
+
+    private boolean nextState(){
+        if(model.isInLobby()) {
+            model.unsubscribe(this);
+            model.setView(new LobbyJoinedState(model));
+            return true;
+        }
+        else
+            return false;
     }
 }

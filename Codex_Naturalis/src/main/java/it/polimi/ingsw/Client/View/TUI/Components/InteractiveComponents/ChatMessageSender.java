@@ -3,25 +3,23 @@ package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
 import it.polimi.ingsw.Client.Model.*;
 import it.polimi.ingsw.Client.Network.ClientConnector;
-import it.polimi.ingsw.Client.View.Observer;
 import it.polimi.ingsw.Client.View.TUI.Components.ChatConversationView;
 import it.polimi.ingsw.Client.View.TUI.TerminalColor;
-import it.polimi.ingsw.Client.View.TUI.TextUI;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
+import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPSendChatMessage;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.ChatMessageRecord;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatMessageSender extends InteractiveComponent implements Observer {
+public class ChatMessageSender extends InteractiveComponent{
     //ATTRIBUTES
     private final Chat chat;
     private int choice;
     private String chosenUser;
     private final ClientConnector connection;
     private LobbyUsers lobbyUsers;
-    private ViewState viewState;
 
     private final List<String> recipients;
 
@@ -37,13 +35,14 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
 
 
 
-    //CONSTURCTOR
+    //CONSTRUCTOR
     public ChatMessageSender(ViewState viewState){
+        super(viewState);
         chat = Chat.getInstance();
-        this.viewState = viewState;
-        chat.subscribe(this);
+        view.addObserved(chat);
+
         lobbyUsers = LobbyUsers.getInstance();
-        connection = ClientModel.getInstance().getClientConnector();
+        connection = ClientModel2.getInstance().getClientConnector();
         inConversation = false;
 
         recipients = new ArrayList<>();
@@ -113,13 +112,13 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
 
         if (inputCounter == 0) {
             // Handle initial choice input (Public or Private Chat)
-            if (TextUI.validBinaryChoice(input)) {
+            if (InputValidator.validBinaryChoice(input)) {
                 choice = Integer.parseInt(input);
                 if (choice == 1) {
-                    chat.unsubscribe(this);
-                    conversationView = new ChatConversationView(chat.getPublicChat(), viewState);
+                    view.removeObserved(chat);
+                    conversationView = new ChatConversationView(chat.getPublicChat(), view);
                     conversationInteract = chat.getPublicChat();
-                    conversationInteract.subscribe(this);
+                    view.addObserved(conversationInteract);
                     inConversation = true;
                     return InteractiveComponentReturns.INCOMPLETE;
                 }
@@ -131,13 +130,13 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
             return InteractiveComponentReturns.INCOMPLETE;
         } else if (inputCounter == 1 && choice == 2) {
             // Handle selection of a user for private chat
-            if (TextUI.checkInputBound(input, 1, lobbyUsers.size() - 1)) {
+            if (InputValidator.checkInputBound(input, 1, lobbyUsers.size() - 1)) {
                 chosenUser = recipients.get(Integer.parseInt(input) - 1);
 
-                chat.unsubscribe(this);
-                conversationView = new ChatConversationView(chat.getPrivateChat(chosenUser), viewState);
+                view.removeObserved(chat);
+                conversationView = new ChatConversationView(chat.getPrivateChat(chosenUser), view);
                 conversationInteract = chat.getPrivateChat(chosenUser);
-                conversationInteract.subscribe(this);
+                view.addObserved(conversationInteract);
                 inConversation = true;
 
                 inputCounter++;
@@ -159,6 +158,11 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
     @Override
     public String getKeyword() {
         return "";
+    }
+
+    @Override
+    public void cleanObserved() {
+        view.removeObserved(chat);
     }
 
     /**
@@ -186,7 +190,7 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
      */
     @Override
     public void print() {
-        //This print is executed if inside a converation
+        //This print is executed if inside a conversation
         if(inConversation){
             //Print page header
             if (choice == 1) {
@@ -245,15 +249,5 @@ public class ChatMessageSender extends InteractiveComponent implements Observer 
                 invalidInputBoundChoice = false;
             }
         }
-    }
-
-    @Override
-    public void cleanUp() {
-
-    }
-
-    @Override
-    public void update() {
-        //todo call print from state
     }
 }
