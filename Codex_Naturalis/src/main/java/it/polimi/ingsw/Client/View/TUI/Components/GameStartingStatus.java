@@ -1,12 +1,15 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.Lobby;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 
 public class GameStartingStatus extends Component{
 
     Lobby lobby;
 
-    public GameStartingStatus() {this.lobby = Lobby.getInstance();}
+    public GameStartingStatus(ViewState viewState) {
+        super(viewState);
+        this.lobby = Lobby.getInstance();}
 
     @Override
     public void print() {
@@ -18,10 +21,5 @@ public class GameStartingStatus extends Component{
         else {
             System.out.println("\nWaiting for players to join the lobby.");
         }
-    }
-
-    @Override
-    public void cleanUp() {
-
     }
 }

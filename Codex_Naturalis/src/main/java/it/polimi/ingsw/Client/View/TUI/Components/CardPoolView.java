@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.CardPools;
+import it.polimi.ingsw.Client.Model.Observable;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardPoolRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
 import it.polimi.ingsw.Server.Model.Game.Artifacts;
@@ -11,7 +13,8 @@ import java.util.List;
 public class CardPoolView extends Component{
     private final CardPoolTypes cardPoolType;
 
-    public CardPoolView(CardPoolTypes cardPoolType) {
+    public CardPoolView(ViewState viewState, CardPoolTypes cardPoolType) {
+        super(viewState);
         this.cardPoolType = cardPoolType;
     }
 
@@ -33,7 +36,7 @@ public class CardPoolView extends Component{
                 for (int i = 0; i < visibleCards.size(); i++) {
                     CardRecord card = visibleCards.get(i);
                     out.print((i + 2) + " - ");
-                    new CardView(card).print();
+                    new CardView(view, card).print();
                 }
             }
             case GOLDEN -> {
@@ -45,14 +48,9 @@ public class CardPoolView extends Component{
                 for (int i = 0; i < visibleCards.size(); i++) {
                     CardRecord card = visibleCards.get(i);
                     out.print((i + 2) + " - ");
-                    new CardView(card).print();
+                    new CardView(view, card).print();
                 }
             }
         }
-    }
-
-    @Override
-    public void cleanUp() {
-
     }
 }
