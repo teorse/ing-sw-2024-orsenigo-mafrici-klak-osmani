@@ -20,6 +20,7 @@ public class ClientModel extends Observable {
     }
     private ClientModel(){
         view = new ConnectionState(this);
+        view.print();
     }
     
     //Internal Logic

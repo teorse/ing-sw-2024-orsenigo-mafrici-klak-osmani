@@ -31,6 +31,8 @@ public class GameOverState extends ViewState {
         model.unsubscribe(this);
         passiveComponent.cleanObserved();
         sleepOnObservables();
+
         model.setView(new LobbyJoinedState(model));
+        model.getView().print();
     }
 }

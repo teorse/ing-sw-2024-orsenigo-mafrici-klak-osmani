@@ -36,6 +36,8 @@ public class LobbySelectionState extends ViewState {
         if(model.isInLobby()) {
             model.unsubscribe(this);
             model.setView(new LobbyJoinedState(model));
+
+            model.getView().print();
             return true;
         }
         else

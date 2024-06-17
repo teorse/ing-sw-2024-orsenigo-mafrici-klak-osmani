@@ -15,7 +15,6 @@ public class LoginSignUpState extends ViewState {
     public LoginSignUpState(ClientModel model) {
         super(model);
         mainComponent = new LogInSignUp(this);
-        print();
     }
 
     @Override
@@ -75,6 +74,8 @@ public class LoginSignUpState extends ViewState {
             model.unsubscribe(this);
             sleepOnObservables();
             model.setView(new LobbyJoinedState(model));
+
+            model.getView().print();
             return true;
         }
         return false;

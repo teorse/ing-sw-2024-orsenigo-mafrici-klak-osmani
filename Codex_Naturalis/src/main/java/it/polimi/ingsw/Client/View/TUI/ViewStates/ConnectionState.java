@@ -21,8 +21,6 @@ public class ConnectionState extends ViewState {
         attemptedToQuitMainComponent = false;
 
         mainComponent = new ServerConnectionWizard(this);
-        logger.fine("Attempting to print");
-        print();
     }
 
 
@@ -59,6 +57,7 @@ public class ConnectionState extends ViewState {
         if (model.isConnected()) {
             model.unsubscribe(this);
             model.setView(new LoginSignUpState(model));
+            model.getView().print();
             return true;
         } else
             return false;

@@ -26,11 +26,16 @@ public abstract class GameState extends LobbyStates{
                 case PICK_OBJECTIVE -> model.setView(new GamePickObjectiveState(model));
                 case WAIT -> model.setView(new WaitState(model));
             }
+
+            model.getView().print();
             return true;
+
         } else if (ClientModel.getInstance().isGameOver()) {
             model.unsubscribe(this);
             sleepOnObservables();
             model.setView(new GameOverState(model));
+
+            model.getView().print();
             return true;
         } else
             return false;

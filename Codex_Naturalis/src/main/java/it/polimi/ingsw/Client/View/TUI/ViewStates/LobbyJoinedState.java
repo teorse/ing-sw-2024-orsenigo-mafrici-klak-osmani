@@ -21,8 +21,6 @@ public class LobbyJoinedState extends LobbyStates {
         gameStartingStatus = new GameStartingStatus(this);
         mainComponent = new GameManualStarter(this);
         addSecondaryComponent(new ColorPicker(this));
-
-        print();
     }
 
     @Override
@@ -58,6 +56,7 @@ public class LobbyJoinedState extends LobbyStates {
                 case PICK_OBJECTIVE -> model.setView(new GamePickObjectiveState(model));
                 case WAIT -> model.setView(new WaitState(model));
             }
+            model.getView().print();
             return true;
         }
         return false;
