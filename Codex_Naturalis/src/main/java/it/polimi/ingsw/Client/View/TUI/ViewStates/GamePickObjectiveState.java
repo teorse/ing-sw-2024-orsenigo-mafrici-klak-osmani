@@ -17,6 +17,8 @@ public class GamePickObjectiveState extends GameState {
         super(model);
         mainComponent = new PickSecretObjective(this);
         component = new ObjectiveCandidatesView(this);
+
+        print();
     }
 
     @Override

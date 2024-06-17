@@ -32,6 +32,8 @@ public class ChatState extends ViewState{
         passiveComponents.add(new WaitTypeView(this));
 
         mainComponent = new ChatMessageSender(this);
+
+        print();
     }
 
     @Override

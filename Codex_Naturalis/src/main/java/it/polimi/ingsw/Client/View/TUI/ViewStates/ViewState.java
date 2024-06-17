@@ -21,6 +21,8 @@ public abstract class ViewState implements Observer {
     public ViewState(ClientModel model){
         this.model = model;
         model.subscribe(this);
+
+        print();
     }
 
     public abstract void print();

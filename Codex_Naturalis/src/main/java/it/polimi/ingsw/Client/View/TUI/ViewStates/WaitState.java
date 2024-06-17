@@ -37,6 +37,8 @@ public class WaitState extends GameState {
             mainComponent = new Zoomer(this);
         else
             mainComponent = null;
+
+        print();
     }
 
     @Override

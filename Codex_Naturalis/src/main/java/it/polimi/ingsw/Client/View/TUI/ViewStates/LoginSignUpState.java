@@ -15,6 +15,7 @@ public class LoginSignUpState extends ViewState {
     public LoginSignUpState(ClientModel model) {
         super(model);
         mainComponent = new LogInSignUp(this);
+        print();
     }
 
     @Override

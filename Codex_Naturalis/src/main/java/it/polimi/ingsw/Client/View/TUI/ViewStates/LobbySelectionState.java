@@ -11,6 +11,8 @@ public class LobbySelectionState extends ViewState {
     public LobbySelectionState(ClientModel model) {
         super(model);
         mainComponent = new LobbyChooser(this);
+
+        print();
     }
 
     @Override

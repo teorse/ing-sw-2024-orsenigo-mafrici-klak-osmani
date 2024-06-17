@@ -30,6 +30,8 @@ public class PlaceState extends GameState {
         mainComponent = new CardPlacer(this);
         if(Game.getInstance().isSetupFinished())
             addSecondaryComponent(new Zoomer(this));
+
+        print();
     }
 
     @Override

@@ -21,6 +21,8 @@ public class LobbyJoinedState extends LobbyStates {
         gameStartingStatus = new GameStartingStatus(this);
         mainComponent = new GameManualStarter(this);
         addSecondaryComponent(new ColorPicker(this));
+
+        print();
     }
 
     @Override

@@ -30,6 +30,8 @@ public class DrawState extends GameState {
         mainComponent = new CardDrawer(this);
         if(Game.getInstance().isSetupFinished())
             addSecondaryComponent(new Zoomer(this));
+
+        print();
     }
 
     @Override
