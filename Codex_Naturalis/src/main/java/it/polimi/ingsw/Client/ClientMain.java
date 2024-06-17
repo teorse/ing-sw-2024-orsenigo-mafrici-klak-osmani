@@ -38,7 +38,7 @@ public class ClientMain {
         logger.info("Client started");
 
 
-        ClientModel2 model = new ClientModel2();
+        ClientModel2 model = ClientModel2.getInstance();
         ClientController controller = new ClientController(model);
         UserInputListener inputListener = new UserInputListener(controller);
 

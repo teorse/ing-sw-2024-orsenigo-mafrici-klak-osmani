@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.Model;
 
 import it.polimi.ingsw.Client.Network.ClientConnector;
+import it.polimi.ingsw.Client.View.TUI.ViewStates.ConnectionState;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.*;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.ErrorsDictionary;
@@ -16,6 +17,9 @@ public class ClientModel2 extends Observable {
             INSTANCE = new ClientModel2();
         }
         return INSTANCE;
+    }
+    private ClientModel2(){
+        view = new ConnectionState(this);
     }
     
     //Internal Logic
