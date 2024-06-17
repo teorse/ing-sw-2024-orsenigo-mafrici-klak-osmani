@@ -11,8 +11,7 @@ import java.util.List;
 public class LobbyUserView extends Component {
     private final LobbyUserRecord lobbyUser;
 
-    public LobbyUserView(ViewState viewState, LobbyUserRecord lobbyUser) {
-        super(viewState);
+    public LobbyUserView(LobbyUserRecord lobbyUser) {
         this.lobbyUser = lobbyUser;
     }
 

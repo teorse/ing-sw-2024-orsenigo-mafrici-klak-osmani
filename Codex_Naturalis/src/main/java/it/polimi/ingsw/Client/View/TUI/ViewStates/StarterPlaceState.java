@@ -19,7 +19,7 @@ public class StarterPlaceState extends GameState {
 
     public StarterPlaceState(ClientModel2 model) {
         super(model);
-        component = new CardsHeldView();
+        component = new CardsHeldView(this);
         mainComponent = new CardStarterChoice(this);
 
         attemptToQuitMainComponent = false;

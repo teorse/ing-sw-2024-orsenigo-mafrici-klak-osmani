@@ -12,7 +12,7 @@ public class SecretObjectiveView extends LiveComponent{
 
     @Override
     public void print() {
-        SecretObjective secretObjective = SecretObjective.getInstance();;
+        SecretObjective secretObjective = SecretObjective.getInstance();
         System.out.println("Secret Objective:");
         new ObjectiveView(secretObjective.getSecretObjective()).print();
         out.println();

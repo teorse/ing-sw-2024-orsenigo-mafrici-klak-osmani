@@ -1,21 +1,15 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
-import it.polimi.ingsw.Client.Model.Observable;
 import it.polimi.ingsw.Client.View.TUI.TerminalColor;
-import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardVisibilityRecord;
 import it.polimi.ingsw.Server.Model.Game.Cards.Corner;
 import it.polimi.ingsw.Server.Model.Game.Cards.CornerDirection;
 import it.polimi.ingsw.Server.Model.Game.Cards.CornerType;
 
-import java.io.PrintStream;
-import java.util.List;
-
 public class PlacedCardView extends Component{
     private final CardVisibilityRecord card;
 
-    public PlacedCardView(ViewState viewState, CardVisibilityRecord card) {
-        super(viewState);
+    public PlacedCardView(CardVisibilityRecord card) {
         this.card = card;
     }
 

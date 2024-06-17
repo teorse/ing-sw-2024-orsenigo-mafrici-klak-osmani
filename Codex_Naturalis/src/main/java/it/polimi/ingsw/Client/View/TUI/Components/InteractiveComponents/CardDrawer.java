@@ -152,8 +152,8 @@ public class CardDrawer extends InteractiveComponent{
     public void print() {
         if (inputCounter == 0) {
             // Print the available cards in both RESOURCE and GOLDEN pools
-            new CardPoolView(CardPoolTypes.RESOURCE).print();
-            new CardPoolView(CardPoolTypes.GOLDEN).print();
+            new CardPoolView(view, CardPoolTypes.RESOURCE).print();
+            new CardPoolView(view, CardPoolTypes.GOLDEN).print();
 
             // Prompt user to choose from which pool they want to draw a card
             if (!isResourceOver && !isGoldenOver) {

@@ -5,6 +5,7 @@ import it.polimi.ingsw.Client.Model.Game;
 import it.polimi.ingsw.Client.Model.MyPlayer;
 import it.polimi.ingsw.Client.Model.Observable;
 import it.polimi.ingsw.Client.View.TUI.Components.Component;
+import it.polimi.ingsw.Client.View.TUI.Components.GameStartingStatus;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.ColorPicker;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.GameManualStarter;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
@@ -17,15 +18,13 @@ import java.util.Map;
 
 public class LobbyJoinedState extends LobbyStates {
     Component lobbyView;
-    InteractiveComponent mainComponent;
-
-    boolean attemptToExitMainComponent;
-    boolean commandNotFund;
+    Component gameStartingStatus;
 
     public LobbyJoinedState(ClientModel2 model) {
         super(model);
 
         lobbyView = new LobbyView(this);
+        gameStartingStatus = new GameStartingStatus(this);
         mainComponent = new GameManualStarter(this);
         addSecondaryComponent(new ColorPicker(this));
     }
@@ -37,6 +36,7 @@ public class LobbyJoinedState extends LobbyStates {
         lobbyView.print();
 
         super.print();
+        gameStartingStatus.print();
     }
 
     @Override

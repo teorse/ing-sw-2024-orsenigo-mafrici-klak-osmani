@@ -75,7 +75,7 @@ public class Zoomer extends InteractiveComponent {
 
         else if(inputCounter == 1) {
             if(choice == 2){
-                new CardsHeldView().print();
+                new CardsHeldView(view).print();
             }
             else
                 subComponent.print();

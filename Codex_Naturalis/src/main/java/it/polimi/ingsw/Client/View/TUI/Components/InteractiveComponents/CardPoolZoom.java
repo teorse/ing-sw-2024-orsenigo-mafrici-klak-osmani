@@ -61,9 +61,9 @@ public class CardPoolZoom extends InteractiveComponent{
         }
         else if(inputCounter == 1){
             if(choice == CardPoolTypes.RESOURCE)
-                new CardPoolView(CardPoolTypes.RESOURCE).print();
+                new CardPoolView(view, CardPoolTypes.RESOURCE).print();
             else
-                new CardPoolView(CardPoolTypes.GOLDEN).print();
+                new CardPoolView(view, CardPoolTypes.GOLDEN).print();
         }
     }
 }

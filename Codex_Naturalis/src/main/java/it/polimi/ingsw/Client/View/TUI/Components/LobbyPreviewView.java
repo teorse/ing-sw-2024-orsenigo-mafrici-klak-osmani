@@ -9,8 +9,7 @@ import java.util.List;
 public class LobbyPreviewView extends Component {
     private final LobbyPreviewRecord lobbyPreviewRecord;
 
-    public LobbyPreviewView(ViewState viewState, LobbyPreviewRecord lobbyPreviewRecord) {
-        super(viewState);
+    public LobbyPreviewView(LobbyPreviewRecord lobbyPreviewRecord) {
         this.lobbyPreviewRecord = lobbyPreviewRecord;
     }
 

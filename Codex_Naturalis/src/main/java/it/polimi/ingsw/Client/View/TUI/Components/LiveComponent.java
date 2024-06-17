@@ -6,6 +6,7 @@ public abstract class LiveComponent extends Component{
     protected final ViewState view;
 
     public LiveComponent(ViewState view){
+        //todo remove duplicate attribute view from subclasses
         super();
         this.view = view;
     }

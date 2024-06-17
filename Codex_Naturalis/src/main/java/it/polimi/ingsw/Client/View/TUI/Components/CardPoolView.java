@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.CardPools;
-import it.polimi.ingsw.Client.Model.Observable;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardPoolRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
@@ -10,12 +9,16 @@ import it.polimi.ingsw.Server.Model.Game.Table.CardPoolTypes;
 
 import java.util.List;
 
-public class CardPoolView extends Component{
+public class CardPoolView extends LiveComponent{
     private final CardPoolTypes cardPoolType;
+    private final ViewState view;
 
-    public CardPoolView(ViewState viewState, CardPoolTypes cardPoolType) {
-        super(viewState);
+    public CardPoolView(ViewState view, CardPoolTypes cardPoolType) {
+        super(view);
+        this.view = view;
         this.cardPoolType = cardPoolType;
+
+        view.addObserved(CardPools.getInstance());
     }
 
 
@@ -36,7 +39,7 @@ public class CardPoolView extends Component{
                 for (int i = 0; i < visibleCards.size(); i++) {
                     CardRecord card = visibleCards.get(i);
                     out.print((i + 2) + " - ");
-                    new CardView(view, card).print();
+                    new CardView(card).print();
                 }
             }
             case GOLDEN -> {
@@ -48,9 +51,14 @@ public class CardPoolView extends Component{
                 for (int i = 0; i < visibleCards.size(); i++) {
                     CardRecord card = visibleCards.get(i);
                     out.print((i + 2) + " - ");
-                    new CardView(view, card).print();
+                    new CardView(card).print();
                 }
             }
         }
+    }
+
+    @Override
+    public void cleanObserved() {
+        view.removeObserved(CardPools.getInstance());
     }
 }

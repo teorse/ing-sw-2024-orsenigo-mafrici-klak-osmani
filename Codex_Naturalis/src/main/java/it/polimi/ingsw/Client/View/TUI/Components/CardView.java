@@ -1,21 +1,15 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
-import it.polimi.ingsw.Client.Model.Observable;
-import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
 import it.polimi.ingsw.Server.Model.Game.Artifacts;
 import it.polimi.ingsw.Server.Model.Game.Cards.Corner;
 import it.polimi.ingsw.Server.Model.Game.Cards.CornerOrientation;
 import it.polimi.ingsw.Server.Model.Game.Cards.CornerType;
 
-import java.io.PrintStream;
-import java.util.List;
-
 public class CardView extends Component{
     private final CardRecord card;
 
-    public CardView(ViewState viewState, CardRecord card) {
-        super(viewState);
+    public CardView(CardRecord card) {
         this.card = card;
     }
 
