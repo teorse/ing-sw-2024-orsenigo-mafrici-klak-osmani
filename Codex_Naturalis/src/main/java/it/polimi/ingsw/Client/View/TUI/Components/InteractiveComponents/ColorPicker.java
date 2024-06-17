@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
-import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.Lobby;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.Client.View.InputValidator;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ColorPicker extends InteractiveComponent{
     //ATTRIBUTES
-    private final ClientModel2 model;
+    private final ClientModel model;
     private final List<LobbyUserColors> availableUserColors;
 
     private boolean invalidChoice;
@@ -23,7 +23,7 @@ public class ColorPicker extends InteractiveComponent{
     //CONSTRUCTOR
     public ColorPicker(ViewState view){
         super(view);
-        this.model = ClientModel2.getInstance();
+        this.model = ClientModel.getInstance();
         this.availableUserColors = Lobby.getInstance().getAvailableUserColors();
         view.addObserved(Lobby.getInstance());
 

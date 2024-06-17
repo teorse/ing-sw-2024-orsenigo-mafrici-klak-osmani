@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
-import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.LobbyPreviews;
 import it.polimi.ingsw.Client.View.TUI.Components.LobbyPreviewView;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
@@ -11,12 +11,12 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.Lo
 public class LobbyJoiner extends InteractiveComponent {
 
     private final LobbyPreviews lobbyPreviews;
-    private final ClientModel2 model;
+    private final ClientModel model;
 
     public LobbyJoiner(ViewState view) {
         super(view);
         this.lobbyPreviews = LobbyPreviews.getInstance();
-        this.model = ClientModel2.getInstance();
+        this.model = ClientModel.getInstance();
 
         view.addObserved(this.lobbyPreviews);
     }

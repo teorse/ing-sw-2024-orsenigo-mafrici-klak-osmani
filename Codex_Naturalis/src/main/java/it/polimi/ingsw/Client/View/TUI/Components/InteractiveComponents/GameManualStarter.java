@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
-import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.LobbyUsers;
 import it.polimi.ingsw.Client.Model.MyPlayer;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
@@ -28,7 +28,7 @@ public class GameManualStarter extends InteractiveComponent {
                 // If input is to start the game
                 if (input.equalsIgnoreCase("START")) {
                     // Send packet to start the game
-                    ClientModel2.getInstance().getClientConnector().sendPacket(new CSPStartGame());
+                    ClientModel.getInstance().getClientConnector().sendPacket(new CSPStartGame());
                     return InteractiveComponentReturns.COMPLETE;
                 }
                 else {

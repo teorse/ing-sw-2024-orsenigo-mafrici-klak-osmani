@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
 import it.polimi.ingsw.Client.Controller.ClientController;
-import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Network.ClientConnectorRMI;
 import it.polimi.ingsw.Client.Network.ClientConnectorSocket;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
@@ -54,7 +54,7 @@ public class ServerConnectionWizard extends InteractiveComponent {
                 connectionTimedOut = false;
                 remoteException = false;
                 try {
-                    ClientModel2 model = ClientModel2.getInstance();
+                    ClientModel model = ClientModel.getInstance();
                     System.out.println("Attempting connection to server");
                     model.setClientConnector(new ClientConnectorRMI(input, new ClientController(model), model));
                     return InteractiveComponentReturns.COMPLETE;
@@ -73,9 +73,9 @@ public class ServerConnectionWizard extends InteractiveComponent {
 
             } else {
                 try {
-                    ClientModel2 model = ClientModel2.getInstance();
+                    ClientModel model = ClientModel.getInstance();
                     System.out.println("Attempting connection to server");
-                    ClientModel2.getInstance().setClientConnector(new ClientConnectorSocket(input, new ClientController(model), model));
+                    ClientModel.getInstance().setClientConnector(new ClientConnectorSocket(input, new ClientController(model), model));
                     return InteractiveComponentReturns.COMPLETE;
                 } catch (SocketTimeoutException socketTimeoutException) {
                     connectionTimedOut = true;

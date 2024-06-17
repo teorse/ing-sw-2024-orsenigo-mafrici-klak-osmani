@@ -1,8 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
-import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponentReturns;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.LogInSignUp;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.ErrorsDictionary;
@@ -13,7 +12,7 @@ public class LoginSignUpState extends ViewState {
     ErrorsDictionary logInError = null;
     ErrorsDictionary signUpError = null;
 
-    public LoginSignUpState(ClientModel2 model) {
+    public LoginSignUpState(ClientModel model) {
         super(model);
         mainComponent = new LogInSignUp(this);
     }

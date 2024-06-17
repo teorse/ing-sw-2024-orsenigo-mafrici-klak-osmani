@@ -1,17 +1,17 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.Game;
 import it.polimi.ingsw.Client.Model.MyPlayer;
 
 public abstract class GameState extends LobbyStates{
 
-    public GameState(ClientModel2 model) {
+    public GameState(ClientModel model) {
         super(model);
     }
 
     boolean nextState(){
-        if(MyPlayer.getInstance().isNewState() && !ClientModel2.getInstance().isGameOver()){
+        if(MyPlayer.getInstance().isNewState() && !ClientModel.getInstance().isGameOver()){
             model.unsubscribe(this);
             sleepOnObservables();
             
@@ -27,7 +27,7 @@ public abstract class GameState extends LobbyStates{
                 case WAIT -> model.setView(new WaitState(model));
             }
             return true;
-        } else if (ClientModel2.getInstance().isGameOver()) {
+        } else if (ClientModel.getInstance().isGameOver()) {
             model.unsubscribe(this);
             sleepOnObservables();
             model.setView(new GameOverState(model));

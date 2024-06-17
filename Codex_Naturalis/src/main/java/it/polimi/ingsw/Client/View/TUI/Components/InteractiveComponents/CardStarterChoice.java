@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
 import it.polimi.ingsw.Client.Model.CardsHeld;
-import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.View.TUI.Components.CardStarterView;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.Client.View.InputValidator;
@@ -9,13 +9,13 @@ import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPPlayCard;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
 
 public class CardStarterChoice extends InteractiveComponent {
-    private final ClientModel2 model;
+    private final ClientModel model;
     private final CardRecord cardStarter;
     private boolean invalidBinaryChoice;
 
     public CardStarterChoice(ViewState view) {
         super(view);
-        this.model = ClientModel2.getInstance();
+        this.model = ClientModel.getInstance();
         //todo check if there is no scenario where .getFirst() will cause null pointer.
         this.cardStarter = CardsHeld.getInstance().getCardsHeld().getFirst();
         invalidBinaryChoice = false;

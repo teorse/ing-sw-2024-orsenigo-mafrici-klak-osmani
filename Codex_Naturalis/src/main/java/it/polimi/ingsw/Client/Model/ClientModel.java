@@ -9,16 +9,16 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.ErrorsDictiona
 import java.util.List;
 import java.util.Map;
 
-public class ClientModel2 extends Observable {
+public class ClientModel extends Observable {
     //SINGLETON PATTERN
-    private static ClientModel2 INSTANCE;
-    public static ClientModel2 getInstance(){
+    private static ClientModel INSTANCE;
+    public static ClientModel getInstance(){
         if(INSTANCE == null){
-            INSTANCE = new ClientModel2();
+            INSTANCE = new ClientModel();
         }
         return INSTANCE;
     }
-    private ClientModel2(){
+    private ClientModel(){
         view = new ConnectionState(this);
     }
     

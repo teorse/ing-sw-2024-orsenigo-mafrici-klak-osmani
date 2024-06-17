@@ -1,26 +1,20 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.Game;
 import it.polimi.ingsw.Client.Model.MyPlayer;
-import it.polimi.ingsw.Client.Model.Observable;
 import it.polimi.ingsw.Client.View.TUI.Components.Component;
 import it.polimi.ingsw.Client.View.TUI.Components.GameStartingStatus;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.ColorPicker;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.GameManualStarter;
-import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
-import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponentReturns;
 import it.polimi.ingsw.Client.View.TUI.Components.LobbyView;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class LobbyJoinedState extends LobbyStates {
     Component lobbyView;
     Component gameStartingStatus;
 
-    public LobbyJoinedState(ClientModel2 model) {
+    public LobbyJoinedState(ClientModel model) {
         super(model);
 
         lobbyView = new LobbyView(this);

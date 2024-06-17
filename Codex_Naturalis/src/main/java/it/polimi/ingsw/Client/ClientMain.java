@@ -2,7 +2,7 @@ package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Client.Controller.ClientController;
 import it.polimi.ingsw.Client.Controller.UserInputListener;
-import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.ClientModel;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,7 +38,7 @@ public class ClientMain {
         logger.info("Client started");
 
 
-        ClientModel2 model = ClientModel2.getInstance();
+        ClientModel model = ClientModel.getInstance();
         ClientController controller = new ClientController(model);
         UserInputListener inputListener = new UserInputListener(controller);
 

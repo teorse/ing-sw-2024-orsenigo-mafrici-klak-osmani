@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.Game;
 import it.polimi.ingsw.Client.View.TUI.Components.Component;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.PickSecretObjective;
@@ -13,7 +13,7 @@ public class GamePickObjectiveState extends GameState {
 
 
 
-    public GamePickObjectiveState(ClientModel2 model) {
+    public GamePickObjectiveState(ClientModel model) {
         super(model);
         mainComponent = new PickSecretObjective(this);
         component = new ObjectiveCandidatesView(this);

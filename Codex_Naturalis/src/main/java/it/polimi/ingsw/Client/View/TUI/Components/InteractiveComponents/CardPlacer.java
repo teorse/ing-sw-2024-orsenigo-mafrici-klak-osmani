@@ -11,7 +11,7 @@ public class CardPlacer extends InteractiveComponent {
     private int inputCounter;
     private final CardMaps cardMaps;
     private final CardsHeld cardsHeld;
-    private final ClientModel2 model;
+    private final ClientModel model;
 
     private int cardIndex;
     private char chosenRow;
@@ -33,7 +33,7 @@ public class CardPlacer extends InteractiveComponent {
     //CONSTRUCTOR
     public CardPlacer(ViewState view){
         super(view);
-        this.model = ClientModel2.getInstance();
+        this.model = ClientModel.getInstance();
         inputCounter = 0;
         cardMaps = CardMaps.getInstance();
         cardsHeld = CardsHeld.getInstance();

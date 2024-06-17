@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.Model.ClientModel2;
-import it.polimi.ingsw.Client.View.TUI.Components.Component;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.View.TUI.Components.GameOverView;
 import it.polimi.ingsw.Client.View.TUI.Components.LiveComponent;
 
@@ -9,7 +8,7 @@ public class GameOverState extends ViewState {
 
     LiveComponent passiveComponent;
 
-    public GameOverState(ClientModel2 model) {
+    public GameOverState(ClientModel model) {
         super(model);
         passiveComponent = new GameOverView(this);
     }

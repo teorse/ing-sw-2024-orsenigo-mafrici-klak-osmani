@@ -42,7 +42,7 @@ public class ChatMessageSender extends InteractiveComponent{
         view.addObserved(chat);
 
         lobbyUsers = LobbyUsers.getInstance();
-        connection = ClientModel2.getInstance().getClientConnector();
+        connection = ClientModel.getInstance().getClientConnector();
         inConversation = false;
 
         recipients = new ArrayList<>();

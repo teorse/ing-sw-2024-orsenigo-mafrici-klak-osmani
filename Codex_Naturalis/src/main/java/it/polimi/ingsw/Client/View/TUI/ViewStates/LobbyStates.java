@@ -1,13 +1,12 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.Model.ClientModel2;
-import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPQuitLobby;
 
 //Abstract class that all classes AFTER joining a lobby have to implement
 //To allow for the "quit" and "chat" functionality.
 public abstract class LobbyStates extends ComplexState {
-    public LobbyStates(ClientModel2 model) {
+    public LobbyStates(ClientModel model) {
         super(model);
     }
 

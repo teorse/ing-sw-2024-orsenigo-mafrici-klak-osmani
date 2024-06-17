@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.Observable;
 import it.polimi.ingsw.Client.View.Observer;
 
@@ -16,9 +16,9 @@ import java.util.Map;
  */
 public abstract class ViewState implements Observer {
     Map<Observable, Integer> observableMap;
-    ClientModel2 model;
+    ClientModel model;
 
-    public ViewState(ClientModel2 model){
+    public ViewState(ClientModel model){
         this.model = model;
         model.subscribe(this);
     }

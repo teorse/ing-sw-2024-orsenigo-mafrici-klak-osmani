@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.Model.ClientModel2;
-import it.polimi.ingsw.Client.Model.Observable;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponentReturns;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.ServerConnectionWizard;
@@ -11,7 +10,7 @@ public class ConnectionState extends ViewState {
     InteractiveComponent mainComponent;
     boolean attemptedToQuitMainComponent;
 
-    public ConnectionState(ClientModel2 model){
+    public ConnectionState(ClientModel model){
         super(model);
         attemptedToQuitMainComponent = false;
         mainComponent = new ServerConnectionWizard(this);

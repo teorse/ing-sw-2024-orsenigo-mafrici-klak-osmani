@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
 import it.polimi.ingsw.Client.Model.CardPools;
-import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Network.ClientConnector;
 import it.polimi.ingsw.Client.View.TUI.Components.CardPoolView;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
@@ -38,7 +38,7 @@ public class CardDrawer extends InteractiveComponent{
     public CardDrawer(ViewState view) {
         super(view);
 
-        this.connection = ClientModel2.getInstance().getClientConnector();
+        this.connection = ClientModel.getInstance().getClientConnector();
         this.cardPools = CardPools.getInstance();
         view.addObserved(cardPools);
 

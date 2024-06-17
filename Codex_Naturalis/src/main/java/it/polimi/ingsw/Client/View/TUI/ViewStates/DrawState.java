@@ -1,12 +1,10 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.Game;
-import it.polimi.ingsw.Client.Model.MyPlayer;
 import it.polimi.ingsw.Client.View.TUI.Components.*;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.*;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
-import it.polimi.ingsw.Server.Model.Game.Player.PlayerStates;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +15,7 @@ public class DrawState extends GameState {
 
     private final Logger logger;
 
-    public DrawState(ClientModel2 model) {
+    public DrawState(ClientModel model) {
         super(model);
         logger = Logger.getLogger(WaitState.class.getName());
 

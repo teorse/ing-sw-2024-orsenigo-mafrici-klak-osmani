@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
-import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPLogIn;
@@ -13,7 +13,7 @@ public class LogInSignUp extends InteractiveComponent {
 
     private int choice;
     private final List<String> credentials;
-    private final ClientModel2 model;
+    private final ClientModel model;
 
     private boolean invalidBinaryChoice;
     private boolean invalidUsername;
@@ -24,7 +24,7 @@ public class LogInSignUp extends InteractiveComponent {
 
     public LogInSignUp(ViewState view) {
         super(view);
-        this.model = ClientModel2.getInstance();
+        this.model = ClientModel.getInstance();
         credentials = new ArrayList<>();
 
         invalidBinaryChoice = false;

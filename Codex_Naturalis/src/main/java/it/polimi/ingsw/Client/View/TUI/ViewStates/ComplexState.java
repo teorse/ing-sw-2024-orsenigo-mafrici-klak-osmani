@@ -1,11 +1,10 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponentReturns;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public abstract class ComplexState extends ViewState {
@@ -15,7 +14,7 @@ public abstract class ComplexState extends ViewState {
     boolean commandNotFund;
     boolean attemptToExitMainComponent;
 
-    public ComplexState(ClientModel2 model) {
+    public ComplexState(ClientModel model) {
         super(model);
         keywordToComponentMap = new HashMap<>();
         activeComponent = mainComponent;

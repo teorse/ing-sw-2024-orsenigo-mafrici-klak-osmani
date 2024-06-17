@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.Game;
 import it.polimi.ingsw.Client.View.TUI.Components.*;
 import it.polimi.ingsw.Client.View.TUI.Components.Component;
@@ -18,7 +18,7 @@ public class WaitState extends GameState {
     private final Logger logger;
 
 
-    public WaitState(ClientModel2 model) {
+    public WaitState(ClientModel model) {
         super(model);
         logger = Logger.getLogger(WaitState.class.getName());
 

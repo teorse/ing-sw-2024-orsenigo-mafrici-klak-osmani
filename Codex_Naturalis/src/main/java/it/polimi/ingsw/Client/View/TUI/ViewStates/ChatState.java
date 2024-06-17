@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
 import it.polimi.ingsw.Client.Model.Chat;
-import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.View.TUI.Components.*;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.ChatMessageSender;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
@@ -19,7 +19,7 @@ public class ChatState extends ViewState{
 
     private final Logger logger;
 
-    public ChatState(ClientModel2 model, ViewState previousState) {
+    public ChatState(ClientModel model, ViewState previousState) {
         super(model);
         logger = Logger.getLogger(WaitState.class.getName());
 

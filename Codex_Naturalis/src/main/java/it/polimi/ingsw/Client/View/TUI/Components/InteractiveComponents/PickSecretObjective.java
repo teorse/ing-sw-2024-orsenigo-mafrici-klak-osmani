@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
-import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPPickObjective;
@@ -14,7 +14,7 @@ public class PickSecretObjective extends InteractiveComponent {
     @Override
     public InteractiveComponentReturns handleInput(String input) {
         if (InputValidator.validBinaryChoice(input)) {
-            ClientModel2.getInstance().getClientConnector().sendPacket(new CSPPickObjective(Integer.parseInt(input) - 1));
+            ClientModel.getInstance().getClientConnector().sendPacket(new CSPPickObjective(Integer.parseInt(input) - 1));
             return InteractiveComponentReturns.COMPLETE;
         }
         return InteractiveComponentReturns.INCOMPLETE;

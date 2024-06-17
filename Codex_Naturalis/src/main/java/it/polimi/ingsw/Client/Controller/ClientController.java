@@ -20,11 +20,11 @@ import java.util.logging.Logger;
  * and data based on server messages and user inputs.
  */
 public class ClientController  implements ServerClientMessageExecutor {
-    private final ClientModel2 model;
+    private final ClientModel model;
     private final Logger logger;
 
 
-    public ClientController(ClientModel2 model) {
+    public ClientController(ClientModel model) {
         this.model = model;
 
         logger = Logger.getLogger(ClientController.class.getName());

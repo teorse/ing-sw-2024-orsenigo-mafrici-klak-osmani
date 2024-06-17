@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
-import it.polimi.ingsw.Client.Model.ClientModel2;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPStartLobby;
@@ -8,7 +8,7 @@ import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPStartLobby;
 public class LobbyCreator extends  InteractiveComponent {
     private int targetNumberUsers;
     private String lobbyName;
-    private final ClientModel2 model;
+    private final ClientModel model;
 
     private boolean invalidLobbyName;
     private boolean invalidPlayerNumber;
@@ -16,7 +16,7 @@ public class LobbyCreator extends  InteractiveComponent {
 
     public LobbyCreator(ViewState view) {
         super(view);
-        this.model = ClientModel2.getInstance();
+        this.model = ClientModel.getInstance();
     }
 
 
