@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public class ServerConnectionWizard extends InteractiveComponent {
 
-    private Logger logger;
+    private final Logger logger;
     private int choice;
     private boolean malformedIp;
     private boolean connectionTimedOut;
@@ -24,9 +24,13 @@ public class ServerConnectionWizard extends InteractiveComponent {
 
     public ServerConnectionWizard(ViewState view) {
         super(view);
+        logger = Logger.getLogger(ServerConnectionWizard.class.getName());
+        logger.info("Initializing Server Connection wizard");
         malformedIp = false;
         connectionTimedOut = false;
         remoteException = false;
+
+        logger.info("Server Connection wizard initialized");
     }
 
     @Override
@@ -97,13 +101,16 @@ public class ServerConnectionWizard extends InteractiveComponent {
 
     @Override
     public void print() {
+        logger.info("Printing ServerConnectionWizard");
+
         if (inputCounter == 0) {
-            TextUI.clearCMD();
+            logger.fine("printing input counter = 0");
             System.out.println("""
                     Enter your choice:
                      1 - RMI
                      2 - Socket""");
         } else if (inputCounter == 1) {
+            logger.fine("printing input counter = 1");
             if(connectionTimedOut) {
                 connectionTimedOut = false;
                 System.out.println("Could not connect to the Server.\nTry with another server ip.");

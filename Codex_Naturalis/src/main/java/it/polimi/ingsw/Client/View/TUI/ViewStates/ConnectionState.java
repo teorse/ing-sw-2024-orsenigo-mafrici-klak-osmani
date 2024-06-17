@@ -6,26 +6,36 @@ import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.Interact
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.ServerConnectionWizard;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
+import java.util.logging.Logger;
+
 public class ConnectionState extends ViewState {
-    InteractiveComponent mainComponent;
-    boolean attemptedToQuitMainComponent;
+    private final InteractiveComponent mainComponent;
+    private boolean attemptedToQuitMainComponent;
+    private final Logger logger;
 
     public ConnectionState(ClientModel model){
         super(model);
+        logger = Logger.getLogger(ConnectionState.class.getName());
+        logger.info("Initializing Connection State view State");
+
         attemptedToQuitMainComponent = false;
+
         mainComponent = new ServerConnectionWizard(this);
+        logger.fine("Attempting to print");
         print();
     }
 
 
     @Override
     public void print() {
+        logger.info("Printing viewState");
         TextUI.clearCMD();
         TextUI.displayGameTitle();
         if(attemptedToQuitMainComponent){
             attemptedToQuitMainComponent = false;
             System.out.println("You can't go further back than this, please follow the instructions on screen.");
         }
+        logger.fine("Attempting to print main component.");
         mainComponent.print();
     }
 
