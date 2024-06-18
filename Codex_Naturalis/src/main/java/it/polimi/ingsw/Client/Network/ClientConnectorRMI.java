@@ -12,6 +12,7 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.ServerClientMessageExe
 import it.polimi.ingsw.Utils.Utilities;
 
 import java.rmi.ConnectException;
+import java.rmi.ConnectIOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
