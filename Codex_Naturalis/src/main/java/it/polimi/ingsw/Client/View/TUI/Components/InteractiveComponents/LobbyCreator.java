@@ -51,6 +51,7 @@ public class LobbyCreator extends  InteractiveComponent {
         return "CreateLobby";
     }
 
+    //TODO move the update of the boolean in the handle input
     @Override
     public void print() {
         if (inputCounter == 0)

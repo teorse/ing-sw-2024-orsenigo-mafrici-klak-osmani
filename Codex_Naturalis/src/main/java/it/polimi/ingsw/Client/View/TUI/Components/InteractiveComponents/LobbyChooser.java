@@ -8,6 +8,8 @@ public class LobbyChooser extends InteractiveComponent{
     private final ViewState view;
     private InteractiveComponent subComponent;
 
+    private boolean wrongBinaryChoice;
+
     public LobbyChooser(ViewState view) {
         super(view);
         this.view = view;
@@ -27,7 +29,9 @@ public class LobbyChooser extends InteractiveComponent{
                     subComponent = new LobbyJoiner(view);
 
                 inputCounter++;
-            }
+            } else
+                wrongBinaryChoice = true;
+
             return InteractiveComponentReturns.INCOMPLETE;
         }
         if(inputCounter == 1){
