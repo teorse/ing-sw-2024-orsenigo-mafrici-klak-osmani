@@ -1,8 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
 import it.polimi.ingsw.Client.Model.ClientModel;
-import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
-import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponentReturns;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.ServerConnectionWizard;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
@@ -26,14 +24,9 @@ public class ConnectionState extends InteractiveState {
         TextUI.clearCMD();
         TextUI.displayGameTitle();
 
-        if(!mainComponentCompleted) {
-            super.print();
+        super.print();
 
-            logger.fine("Attempting to print main component.");
-            mainComponent.print();
-        }
-        else
-            System.out.println("Waiting for serverResponse");
+        mainComponent.print();
     }
 
     @Override

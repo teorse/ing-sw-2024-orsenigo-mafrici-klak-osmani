@@ -7,12 +7,10 @@ import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.Interact
 public abstract class InteractiveState extends ViewState {
     InteractiveComponent mainComponent;
     boolean attemptToExitMainComponent;
-    boolean mainComponentCompleted;
 
     public InteractiveState(ClientModel model) {
         super(model);
         attemptToExitMainComponent = false;
-        mainComponentCompleted = false;
     }
 
     @Override
@@ -25,16 +23,12 @@ public abstract class InteractiveState extends ViewState {
 
     @Override
     public boolean handleInput(String input) {
-        if(!mainComponentCompleted) {
             InteractiveComponentReturns returnValue = mainComponent.handleInput(input);
             if (returnValue.equals(InteractiveComponentReturns.QUIT))
                 attemptToExitMainComponent = true;
-            else if (returnValue.equals(InteractiveComponentReturns.COMPLETE)) {
-                mainComponentCompleted = true;
-            }
+
             if (model.getView().equals(this))
                 print();
-        }
 
         return true;
     }
