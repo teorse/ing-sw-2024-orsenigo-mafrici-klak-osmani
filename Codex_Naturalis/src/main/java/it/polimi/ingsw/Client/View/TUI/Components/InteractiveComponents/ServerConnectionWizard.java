@@ -109,7 +109,7 @@ public class ServerConnectionWizard extends InteractiveComponent {
 
         if (inputCounter == 0) {
             logger.fine("printing input counter = 0");
-            System.out.println("""
+            System.out.println("\n" +  """
                     Enter your choice:
                      1 - RMI
                      2 - Socket""");
