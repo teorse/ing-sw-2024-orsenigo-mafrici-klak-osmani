@@ -96,13 +96,16 @@ public class LogInSignUp extends InteractiveComponent {
         }
 
         if(invalidBinaryChoice){
-            System.out.println("The number you provided is not a valid input.\nPlease type 1 or 2");
+            invalidBinaryChoice = false;
+            System.out.println("\nThe number you provided is not a valid input.Please type 1 or 2\n");
         }
         else if (invalidUsername) {
-            System.out.println("The userName you provided is not a valid username, please try again");
+            invalidUsername = false;
+            System.out.println("\nThe userName you provided is not a valid username, please try again\n");
         }
         else if (invalidPassword) {
-            System.out.println("The password you provided is not a valid password, please try again");
+            invalidPassword = false;
+            System.out.println("\nThe password you provided is not a valid password, please try again\n");
         }
     }
 
