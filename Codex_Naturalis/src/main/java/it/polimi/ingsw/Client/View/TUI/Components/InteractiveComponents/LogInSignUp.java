@@ -5,6 +5,7 @@ import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPLogIn;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPSignUp;
+import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.ErrorsDictionary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,9 @@ public class LogInSignUp extends InteractiveComponent {
     private boolean invalidBinaryChoice;
     private boolean invalidUsername;
     private boolean invalidPassword;
+
+    ErrorsDictionary logInError = null;
+    ErrorsDictionary signUpError = null;
 
 
 
@@ -34,6 +38,11 @@ public class LogInSignUp extends InteractiveComponent {
 
     @Override
     public InteractiveComponentReturns handleInput(String input) {
+        invalidBinaryChoice = false;
+        invalidUsername = false;
+        invalidPassword = false;
+        signUpError = null;
+        logInError = null;
 
         if(input.equalsIgnoreCase("BACK"))
             return super.handleInput(input);
@@ -51,7 +60,11 @@ public class LogInSignUp extends InteractiveComponent {
         } else if (inputCounter == 1) {
             // Validate the username input
             if (InputValidator.isNameValid(input)) {
-                credentials.add(input);
+
+                //You can't simply use the .add(input) method as this only adds to the tail of the list
+                //if the user decides to go back and change the previous input, they would have been unable to do so.
+                //By specifiying the index instead only the actual credentials are stored
+                credentials.addFirst(input);
                 inputCounter++;
             }
             else
@@ -61,7 +74,13 @@ public class LogInSignUp extends InteractiveComponent {
         } else if (inputCounter == 2) {
             // Validate the password input
             if (InputValidator.isPasswordValid(input)) {
-                credentials.add(input);
+
+                //You can't simply use the .add(input) method as this only adds to the tail of the list
+                //if the user decides to go back and change the previous input, they would have been unable to do so.
+                //By specifiying the index instead only the actual credentials are stored
+                credentials.add(1, input);
+
+
                 // If the user chose to log in, send a log in packet
                 if (choice == 1) {
                     model.getClientConnector().sendPacket(new CSPLogIn(credentials.get(0), credentials.get(1)));
@@ -69,6 +88,7 @@ public class LogInSignUp extends InteractiveComponent {
                 } else {
                     model.getClientConnector().sendPacket(new CSPSignUp(credentials.get(0), credentials.get(1)));
                 }
+                inputCounter++;
                 return InteractiveComponentReturns.COMPLETE;
             }
             else
@@ -84,6 +104,36 @@ public class LogInSignUp extends InteractiveComponent {
 
     @Override
     public void print() {
+        if(logInError == null)
+            logInError = model.getLogInError();
+        if(signUpError == null)
+            signUpError = model.getSignUpError();
+
+        if(logInError != null || signUpError != null){
+            inputCounter = 0;
+            credentials.clear();
+        }
+
+        if (logInError != null) {
+            System.out.println("\nThe following error occurred while logging in:");
+            switch (logInError) {
+                case GENERIC_ERROR -> System.out.println("Generic error.");
+                case YOU_ARE_ALREADY_LOGGED_IN -> System.out.println("You are already logged in!");
+                case WRONG_PASSWORD -> System.out.println("Wrong password.");
+                case USERNAME_NOT_FOUND -> System.out.println("Username not found.");
+                case ACCOUNT_ALREADY_LOGGED_IN_BY_SOMEONE_ELSE -> System.out.println("Account already logged in!");
+            }
+        }
+
+        if (signUpError != null) {
+            System.out.println("\nThe following error occurred while signing up:");
+            switch (signUpError) {
+                case GENERIC_ERROR -> System.out.println("Generic error.");
+                case USERNAME_ALREADY_TAKEN -> System.out.println("Username already taken.");
+            }
+        }
+
+
         if (inputCounter == 0) {
             System.out.println("\n" + """ 
                     Enter your choice:
@@ -92,19 +142,18 @@ public class LogInSignUp extends InteractiveComponent {
         } else if (inputCounter == 1) {
             System.out.println("\nEnter username:");
         } else if (inputCounter == 2) {
+            System.out.println("\nEnter username:");
+            System.out.println(credentials.getFirst());
             System.out.println("\nEnter password:");
         }
 
         if(invalidBinaryChoice){
-            invalidBinaryChoice = false;
             System.out.println("\nThe number you provided is not a valid input.Please type 1 or 2\n");
         }
         else if (invalidUsername) {
-            invalidUsername = false;
             System.out.println("\nThe userName you provided is not a valid username, please try again\n");
         }
         else if (invalidPassword) {
-            invalidPassword = false;
             System.out.println("\nThe password you provided is not a valid password, please try again\n");
         }
     }
