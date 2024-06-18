@@ -8,6 +8,7 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.ErrorsDictiona
 
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class ClientModel extends Observable {
     //SINGLETON PATTERN
@@ -18,11 +19,19 @@ public class ClientModel extends Observable {
         }
         return INSTANCE;
     }
+
+    private final Logger logger;
     private ClientModel(){
+        logger = Logger.getLogger(ClientModel.class.getName());
+        logger.info("Initializing ClientModel");
+
+        logger.fine("Assigning view object");
         view = new ConnectionState(this);
+
+        logger.fine("Printing view object");
         view.print();
     }
-    
+
     //Internal Logic
     boolean connected;
     boolean loggedIn;
