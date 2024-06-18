@@ -7,9 +7,8 @@ import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.Interact
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class ComplexState extends ViewState {
+public abstract class ComplexState extends InteractiveState{
     Map<String, InteractiveComponent> keywordToComponentMap;
-    InteractiveComponent mainComponent;
     InteractiveComponent activeComponent;
     boolean commandNotFund;
     boolean attemptToExitMainComponent;
@@ -19,7 +18,6 @@ public abstract class ComplexState extends ViewState {
         keywordToComponentMap = new HashMap<>();
         activeComponent = mainComponent;
         commandNotFund = false;
-        attemptToExitMainComponent = false;
     }
     void addSecondaryComponent(InteractiveComponent component){
         keywordToComponentMap.put(component.getKeyword(), component);
@@ -46,6 +44,10 @@ public abstract class ComplexState extends ViewState {
             return true;
         }
 
+        if(activeComponent.equals(mainComponent)){
+            return super.handleInput(input);
+        }
+
         InteractiveComponentReturns result = activeComponent.handleInput(input);
         if(result.equals(InteractiveComponentReturns.COMPLETE)){
             if(!activeComponent.equals(mainComponent)) {
@@ -57,8 +59,7 @@ public abstract class ComplexState extends ViewState {
             if (!activeComponent.equals(mainComponent)) {
                 activeComponent.cleanObserved();
                 activeComponent = mainComponent;
-            } else
-                attemptToExitMainComponent = true;
+            }
         }
         print();
         return true;
