@@ -4,6 +4,7 @@ import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.Observable;
 import it.polimi.ingsw.Client.View.Observer;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -21,6 +22,7 @@ public abstract class ViewState implements Observer {
     public ViewState(ClientModel model){
         this.model = model;
         model.subscribe(this);
+        observableMap = new HashMap<>();
     }
 
     public abstract void print();
