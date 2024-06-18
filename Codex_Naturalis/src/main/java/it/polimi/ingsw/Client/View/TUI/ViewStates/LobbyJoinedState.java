@@ -10,21 +10,38 @@ import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.GameManu
 import it.polimi.ingsw.Client.View.TUI.Components.LobbyView;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
+import java.util.logging.Logger;
+
 public class LobbyJoinedState extends LobbyStates {
     Component lobbyView;
     Component gameStartingStatus;
 
+    private final Logger logger;
+
     public LobbyJoinedState(ClientModel model) {
         super(model);
+        logger = Logger.getLogger(LobbyJoinedState.class.getName());
+        logger.info("Initializing LobbyJoinedState");
 
         lobbyView = new LobbyView(this);
         gameStartingStatus = new GameStartingStatus(this);
+
+        logger.fine("assigning main component");
         mainComponent = new GameManualStarter(this);
+        logger.fine("main component assigned");
+
+        if(mainComponent.equals(activeComponent))
+            logger.fine("Main component and active component are equal after assignement");
+        else
+            logger.fine("Main component and active component are NOT equal after assignement");
+
         addSecondaryComponent(new ColorPicker(this));
     }
 
     @Override
     public void print() {
+        logger.info("Called print method");
+
         TextUI.clearCMD();
         TextUI.displayGameTitle();
         lobbyView.print();

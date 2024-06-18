@@ -19,8 +19,10 @@ public class LobbyView extends LiveComponent {
     public void print() {
         System.out.println("\nList of users in the lobby: ");
 
-        for (LobbyUserRecord user : lobbyUsers.getLobbyUserRecords()) {
-            new LobbyUserView(user).print();
+        if(lobbyUsers.getLobbyUserRecords() != null) {
+            for (LobbyUserRecord user : lobbyUsers.getLobbyUserRecords()) {
+                new LobbyUserView(user).print();
+            }
         }
     }
 

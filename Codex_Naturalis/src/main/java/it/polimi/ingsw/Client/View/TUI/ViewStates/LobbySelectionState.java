@@ -3,27 +3,23 @@ package it.polimi.ingsw.Client.View.TUI.ViewStates;
 import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.LobbyChooser;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
+import it.polimi.ingsw.Client.View.TUI.TextUI;
 
-public class LobbySelectionState extends ViewState {
-    InteractiveComponent mainComponent;
-
+public class LobbySelectionState extends InteractiveState {
 
     public LobbySelectionState(ClientModel model) {
         super(model);
         mainComponent = new LobbyChooser(this);
-
-        print();
     }
 
     @Override
     public void print() {
-        mainComponent.print();
-    }
+        TextUI.clearCMD();
+        TextUI.displayGameTitle();
 
-    @Override
-    public boolean handleInput(String input) {
-        mainComponent.handleInput(input);
-        return true;
+        super.print();
+
+        mainComponent.print();
     }
 
     @Override

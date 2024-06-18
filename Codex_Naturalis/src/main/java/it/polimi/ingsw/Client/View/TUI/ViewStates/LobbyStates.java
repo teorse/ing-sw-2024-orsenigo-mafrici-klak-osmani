@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
 import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPQuitLobby;
 
 //Abstract class that all classes AFTER joining a lobby have to implement

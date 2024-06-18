@@ -63,6 +63,7 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, ClientHandlerR
             serverRegistryTemp = LocateRegistry.getRegistry(NetworkConstants.RMIServerRegistryPort);
 
 
+            //todo remove binidng to registry
             boolean bound = false;
             while (!bound) {
                 //generate the id for the new client handler

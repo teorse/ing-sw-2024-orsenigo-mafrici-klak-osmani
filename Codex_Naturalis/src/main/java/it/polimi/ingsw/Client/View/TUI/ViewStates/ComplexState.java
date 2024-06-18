@@ -6,6 +6,7 @@ import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.Interact
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public abstract class ComplexState extends InteractiveState{
     Map<String, InteractiveComponent> keywordToComponentMap;
@@ -13,8 +14,13 @@ public abstract class ComplexState extends InteractiveState{
     boolean commandNotFund;
     boolean attemptToExitMainComponent;
 
+    private final Logger logger;
+
     public ComplexState(ClientModel model) {
         super(model);
+        logger = Logger.getLogger(ComplexState.class.getName());
+        logger.info("Initializing ComplexState abstract class");
+
         keywordToComponentMap = new HashMap<>();
         activeComponent = mainComponent;
         commandNotFund = false;
@@ -67,6 +73,13 @@ public abstract class ComplexState extends InteractiveState{
 
     @Override
     public void print(){
+        logger.info("Printing active component in abstract class ComplexState");
+
+        if(activeComponent == null)
+            logger.fine("active component is null");
+        else
+            logger.fine("active component is not null");
+
         activeComponent.print();
 
         if(attemptToExitMainComponent) {

@@ -39,6 +39,7 @@ public class LobbyChooser extends InteractiveComponent{
 
             if(result.equals(InteractiveComponentReturns.QUIT)) {
                 inputCounter--;
+                subComponent.cleanObserved();
                 return InteractiveComponentReturns.INCOMPLETE;
             }
             else if (result.equals(InteractiveComponentReturns.COMPLETE)) {
