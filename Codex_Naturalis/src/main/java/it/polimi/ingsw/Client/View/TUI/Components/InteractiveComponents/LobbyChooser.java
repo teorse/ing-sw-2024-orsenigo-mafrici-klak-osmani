@@ -59,11 +59,21 @@ public class LobbyChooser extends InteractiveComponent{
 
     @Override
     public void print() {
-        System.out.println("\n" +
-                """
-                Enter your choice:
-                 1 - Create a lobby
-                 2 - Join a lobby""");
+        if (wrongBinaryChoice) {
+            System.out.println("\nWrong binary choice. Please type 1 or 2.");
+        }
+
+        if(inputCounter == 0) {
+            System.out.println("\n" +
+                    """
+                            Enter your choice:
+                             1 - Create a lobby
+                             2 - Join a lobby""");
+        }
+
+        else if(inputCounter == 1){
+            subComponent.print();
+        }
     }
 
     @Override
