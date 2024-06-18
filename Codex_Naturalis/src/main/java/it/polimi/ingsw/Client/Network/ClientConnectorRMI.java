@@ -95,10 +95,11 @@ public class ClientConnectorRMI implements ClientConnector, ClientRemoteInterfac
             return serverListenerStub.getNewClientHandler(thisRemote);
 
         }
-        catch(ConnectException e){
+        catch(ConnectException | ConnectIOException e){
             //Thrown when the server does not respond, possibly wrong ip address.
             throw new ConnectException(e.getMessage());
         }
+
         catch (RemoteException | NotBoundException e) {
             //todo add better exception handling
             throw new RuntimeException(e);
