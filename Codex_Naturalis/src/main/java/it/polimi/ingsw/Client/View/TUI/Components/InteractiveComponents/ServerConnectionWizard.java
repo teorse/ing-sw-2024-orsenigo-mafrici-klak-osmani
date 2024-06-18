@@ -79,14 +79,13 @@ public class ServerConnectionWizard extends InteractiveComponent {
                 try {
                     ClientModel model = ClientModel.getInstance();
                     System.out.println("Attempting connection to server");
-                    ClientModel.getInstance().setClientConnector(new ClientConnectorSocket(input, new ClientController(model), model));
+                    model.setClientConnector(new ClientConnectorSocket(input, new ClientController(model), model));
                     return InteractiveComponentReturns.COMPLETE;
                 } catch (SocketTimeoutException socketTimeoutException) {
                     connectionTimedOut = true;
                 }
 
             }
-            inputCounter = 0;
             return InteractiveComponentReturns.INCOMPLETE;
         }
         return InteractiveComponentReturns.INCOMPLETE;
@@ -103,6 +102,11 @@ public class ServerConnectionWizard extends InteractiveComponent {
     public void print() {
         logger.info("Printing ServerConnectionWizard");
 
+        if(connectionTimedOut) {
+            connectionTimedOut = false;
+            System.out.println("Could not connect to the Server.\nTry with another server ip.");
+        }
+
         if (inputCounter == 0) {
             logger.fine("printing input counter = 0");
             System.out.println("""
@@ -111,11 +115,8 @@ public class ServerConnectionWizard extends InteractiveComponent {
                      2 - Socket""");
         } else if (inputCounter == 1) {
             logger.fine("printing input counter = 1");
-            if(connectionTimedOut) {
-                connectionTimedOut = false;
-                System.out.println("Could not connect to the Server.\nTry with another server ip.");
-            }
-            else if (remoteException) {
+
+            if (remoteException) {
                 remoteException = false;
                 System.out.println("An error occurred while connecting to the server, please check the logs.");
             }
