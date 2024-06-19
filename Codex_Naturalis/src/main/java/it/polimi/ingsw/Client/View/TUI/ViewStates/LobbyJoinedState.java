@@ -22,7 +22,7 @@ public class LobbyJoinedState extends LobbyStates {
         logger.info("Initializing LobbyJoinedState");
 
         lobbyView = new LobbyView(this);
-        gameStartingStatus = new GameStartingStatus(this);
+        gameStartingStatus = new GameStartingStatus();
     }
 
     @Override

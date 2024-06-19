@@ -2,11 +2,10 @@ package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.Lobby;
 import it.polimi.ingsw.Client.Model.RefreshManager;
-import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 
 public class GameStartingStatus extends LiveComponent{
 
-    public GameStartingStatus(ViewState viewState) {
+    public GameStartingStatus() {
         super();
         refreshObserved();
     }
