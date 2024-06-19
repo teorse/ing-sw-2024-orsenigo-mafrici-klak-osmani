@@ -142,6 +142,7 @@ public class ClientController  implements ServerClientMessageExecutor {
 
         model.setJoinLobbySuccess();
         Lobby.getInstance().setLobby(lobbyRecord);
+        LobbyUsers.getInstance().setLobbyUserRecords(lobbyUsers);
     }
 
     /**

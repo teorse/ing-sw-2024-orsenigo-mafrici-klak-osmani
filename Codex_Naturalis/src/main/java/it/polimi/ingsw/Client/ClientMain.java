@@ -3,6 +3,7 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Client.Controller.ClientController;
 import it.polimi.ingsw.Client.Controller.UserInputListener;
 import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +40,7 @@ public class ClientMain {
 
 
         ClientModel model = ClientModel.getInstance();
+        RefreshManager.getInstance();
         ClientController controller = new ClientController(model);
         UserInputListener inputListener = new UserInputListener(controller);
 

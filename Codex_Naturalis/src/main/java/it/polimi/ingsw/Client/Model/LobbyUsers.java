@@ -37,7 +37,12 @@ public class LobbyUsers extends Observable{
     public String getLobbyUserNameByIndex(int index){
         return lobbyUserRecords.get(index).username();
     }
-    public int size() {return lobbyUserRecords.size();}
+    public int size() {
+        if(lobbyUserRecords != null)
+            return lobbyUserRecords.size();
+        else
+            return 0;
+    }
     public LobbyUserColors getLobbyUserColors(String username) {
         for (LobbyUserRecord lobbyUserRecord : lobbyUserRecords) {
             if (lobbyUserRecord.username().equals(username)) {
