@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
 import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.ServerConnectionWizard;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
@@ -13,8 +14,6 @@ public class ConnectionState extends InteractiveState {
         super(new ServerConnectionWizard());
         logger = Logger.getLogger(ConnectionState.class.getName());
         logger.info("Initializing Connection State view State");
-
-        mainComponent = new ServerConnectionWizard(this);
     }
 
 

@@ -31,8 +31,8 @@ public class CardPlacer extends InteractiveComponent {
 
 
     //CONSTRUCTOR
-    public CardPlacer(ViewState view){
-        super(view);
+    public CardPlacer(){
+        super();
         this.model = ClientModel.getInstance();
         inputCounter = 0;
         cardMaps = CardMaps.getInstance();

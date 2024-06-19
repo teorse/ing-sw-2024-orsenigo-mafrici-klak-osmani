@@ -18,7 +18,7 @@ public class LoginSignUpState extends InteractiveState {
 
             super.print();
 
-            mainComponent.print();
+            getMainComponent().print();
     }
 
     @Override
@@ -27,7 +27,12 @@ public class LoginSignUpState extends InteractiveState {
             print();
     }
 
-    private boolean nextState(){
+    boolean nextState(){
+        ClientModel model = ClientModel.getInstance();
+
+        if(super.nextState())
+            return true;
+
         if(model.isLoggedIn()){
             RefreshManager.getInstance().resetObservables();
             model.setView(new LobbySelectionState());

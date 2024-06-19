@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
 import it.polimi.ingsw.Client.Model.Chat;
 import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.Components.*;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.ChatMessageSender;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
@@ -37,7 +38,7 @@ public class ChatState extends InteractiveState{
         TextUI.clearCMD();
         TextUI.displayChatState();
 
-        mainComponent.print();
+        getMainComponent().print();
     }
 
     @Override

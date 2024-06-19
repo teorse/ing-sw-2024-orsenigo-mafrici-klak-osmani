@@ -38,10 +38,12 @@ public class ChatMessageSender extends InteractiveComponent{
 
 
     //CONSTRUCTOR
-    public ChatMessageSender(ViewState viewState){
-        super(viewState);
+    public ChatMessageSender(){
+        super();
         chat = Chat.getInstance();
-        view.addObserved(chat);
+        observables = new ArrayList<>();
+        observables.add(chat);
+        RefreshManager.getInstance().addObserved(this, chat);
 
         lobbyUsers = LobbyUsers.getInstance();
         connection = ClientModel.getInstance().getClientConnector();
@@ -141,10 +143,15 @@ public class ChatMessageSender extends InteractiveComponent{
             if (InputValidator.checkInputBound(input, 1, lobbyUsers.size() - 1)) {
                 chosenUser = recipients.get(Integer.parseInt(input) - 1);
 
-                view.removeObserved(chat);
-                conversationView = new ChatConversationView(chat.getPrivateChat(chosenUser), view);
+                observables.remove(chat);
+                RefreshManager.getInstance().removeObserved(this, chat);
+
+                conversationView = new ChatConversationView(chat.getPrivateChat(chosenUser));
                 conversationInteract = chat.getPrivateChat(chosenUser);
-                view.addObserved(conversationInteract);
+
+                observables.add(conversationInteract);
+                RefreshManager.getInstance().addObserved(this, conversationInteract);
+
                 inConversation = true;
 
                 inputCounter++;
@@ -170,7 +177,16 @@ public class ChatMessageSender extends InteractiveComponent{
 
     @Override
     public void cleanObserved() {
-        view.removeObserved(chat);
+        for(Observable observable : observables){
+            RefreshManager.getInstance().removeObserved(this, observable);
+        }
+    }
+
+    @Override
+    public void refreshObserved() {
+        for(Observable observable : observables){
+            RefreshManager.getInstance().addObserved(this, observable);
+        }
     }
 
     /**

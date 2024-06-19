@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
 import it.polimi.ingsw.Client.Model.CardMaps;
 import it.polimi.ingsw.Client.Model.Players;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.Components.PlacedCardView;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.Client.View.InputValidator;
@@ -118,8 +119,14 @@ public class CardMapZoom extends InteractiveComponent{
 
     @Override
     public void cleanObserved() {
-        view.removeObserved(players);
-        view.removeObserved(cardMaps);
+        RefreshManager.getInstance().removeObserved(this, players);
+        RefreshManager.getInstance().removeObserved(this, cardMaps);
+    }
+
+    @Override
+    public void refreshObserved() {
+        RefreshManager.getInstance().addObserved(this, players);
+        RefreshManager.getInstance().addObserved(this, cardMaps);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
 import it.polimi.ingsw.Client.View.TUI.Components.CardsHeldView;
-import it.polimi.ingsw.Client.View.TUI.Components.Component;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.CardStarterChoice;
 import it.polimi.ingsw.Client.View.TUI.Components.LiveComponent;
 import it.polimi.ingsw.Client.View.TUI.TextUI;

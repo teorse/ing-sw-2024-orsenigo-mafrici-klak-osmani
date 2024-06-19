@@ -33,8 +33,8 @@ public class ScoreBoardView extends LiveComponent {
 
     @Override
     public void cleanObserved() {
-        view.removeObserved(Players.getInstance());
-        view.removeObserved(LobbyUsers.getInstance());
+        RefreshManager.getInstance().removeObserved(this, Players.getInstance());
+        RefreshManager.getInstance().removeObserved(this, LobbyUsers.getInstance());
     }
 
     @Override

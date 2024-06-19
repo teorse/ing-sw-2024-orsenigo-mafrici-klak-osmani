@@ -1,8 +1,10 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
 import it.polimi.ingsw.Client.Model.ClientModel;
-import it.polimi.ingsw.Client.Model.Game;
-import it.polimi.ingsw.Client.Model.MyPlayer;
+import it.polimi.ingsw.Client.Model.RefreshManager;
+import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
+
+import java.util.List;
 
 public abstract class GameState extends LobbyStates{
     private final ClientModel model;

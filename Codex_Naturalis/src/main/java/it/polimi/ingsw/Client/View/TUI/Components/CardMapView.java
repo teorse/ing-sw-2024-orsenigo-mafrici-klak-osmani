@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.CardMaps;
 import it.polimi.ingsw.Client.Model.Players;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.TerminalColor;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardMapRecord;
@@ -15,10 +16,9 @@ import java.util.List;
 public class CardMapView extends LiveComponent {
 
     //CONSTRUCTOR
-    public CardMapView(ViewState view){
-        super(view);
-        view.addObserved(CardMaps.getInstance());
-        view.addObserved(Players.getInstance());
+    public CardMapView(){
+        super();
+        refreshObserved();
     }
 
     @Override
@@ -28,8 +28,14 @@ public class CardMapView extends LiveComponent {
 
     @Override
     public void cleanObserved() {
-        view.removeObserved(CardMaps.getInstance());
-        view.removeObserved(Players.getInstance());
+        RefreshManager.getInstance().removeObserved(this, CardMaps.getInstance());
+        RefreshManager.getInstance().removeObserved(this, Players.getInstance());
+    }
+
+    @Override
+    public void refreshObserved() {
+        RefreshManager.getInstance().addObserved(this, CardMaps.getInstance());
+        RefreshManager.getInstance().addObserved(this, Players.getInstance());
     }
 
     /**

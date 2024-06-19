@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.ObjectiveCandidates;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.ObjectiveRecord;
 
@@ -25,7 +26,8 @@ public class ObjectiveCandidatesView extends LiveComponent {
     }
 
     @Override
-    public void cleanObserved() {
-        view.removeObserved(ObjectiveCandidates.getInstance());
-    }
+    public void cleanObserved() {RefreshManager.getInstance().removeObserved(this, ObjectiveCandidates.getInstance());}
+
+    @Override
+    public void refreshObserved() {RefreshManager.getInstance().addObserved(this, ObjectiveCandidates.getInstance());}
 }

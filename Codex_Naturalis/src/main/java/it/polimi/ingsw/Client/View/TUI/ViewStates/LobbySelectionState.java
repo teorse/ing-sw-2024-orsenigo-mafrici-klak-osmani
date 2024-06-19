@@ -3,7 +3,6 @@ package it.polimi.ingsw.Client.View.TUI.ViewStates;
 import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.LobbyChooser;
-import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
 public class LobbySelectionState extends InteractiveState {

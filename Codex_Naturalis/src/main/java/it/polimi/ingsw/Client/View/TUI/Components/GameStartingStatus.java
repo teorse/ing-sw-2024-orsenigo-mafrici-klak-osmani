@@ -1,13 +1,14 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.Lobby;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 
 public class GameStartingStatus extends LiveComponent{
 
     public GameStartingStatus(ViewState viewState) {
-        super(viewState);
-        view.addObserved(Lobby.getInstance());
+        super();
+        refreshObserved();
     }
 
     @Override
@@ -24,6 +25,9 @@ public class GameStartingStatus extends LiveComponent{
 
     @Override
     public void cleanObserved() {
-        view.removeObserved(Lobby.getInstance());
+        RefreshManager.getInstance().removeObserved(this, Lobby.getInstance());
     }
+
+    @Override
+    public void refreshObserved() {RefreshManager.getInstance().addObserved(this, Lobby.getInstance());}
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
 import it.polimi.ingsw.Client.Model.CardPools;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.Components.CardPoolView;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.Client.View.InputValidator;
@@ -15,7 +16,7 @@ public class CardPoolZoom extends InteractiveComponent{
         super();
         invalidInput = false;
 
-        view.addObserved(CardPools.getInstance());
+        refreshObserved();
     }
 
     //METHODS
@@ -66,9 +67,9 @@ public class CardPoolZoom extends InteractiveComponent{
         }
         else if(inputCounter == 1){
             if(choice == CardPoolTypes.RESOURCE)
-                new CardPoolView(view, CardPoolTypes.RESOURCE).print();
+                new CardPoolView(CardPoolTypes.RESOURCE).print();
             else
-                new CardPoolView(view, CardPoolTypes.GOLDEN).print();
+                new CardPoolView(CardPoolTypes.GOLDEN).print();
         }
     }
 }

@@ -23,17 +23,6 @@ public class LobbyJoinedState extends LobbyStates {
 
         lobbyView = new LobbyView(this);
         gameStartingStatus = new GameStartingStatus(this);
-
-        logger.fine("assigning main component");
-        mainComponent = new GameManualStarter(this);
-        logger.fine("main component assigned");
-
-        if(mainComponent.equals(activeComponent))
-            logger.fine("Main component and active component are equal after assignement");
-        else
-            logger.fine("Main component and active component are NOT equal after assignement");
-
-        addSecondaryComponent(new ColorPicker(this));
     }
 
     @Override

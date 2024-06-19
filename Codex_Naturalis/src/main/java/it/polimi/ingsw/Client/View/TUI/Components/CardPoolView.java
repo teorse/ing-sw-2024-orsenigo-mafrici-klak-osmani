@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.CardPools;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardPoolRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
@@ -10,15 +11,13 @@ import it.polimi.ingsw.Server.Model.Game.Table.CardPoolTypes;
 import java.util.List;
 
 public class CardPoolView extends LiveComponent{
+
     private final CardPoolTypes cardPoolType;
-    private final ViewState view;
 
-    public CardPoolView(ViewState view, CardPoolTypes cardPoolType) {
-        super(view);
-        this.view = view;
+    public CardPoolView(CardPoolTypes cardPoolType) {
+        super();
         this.cardPoolType = cardPoolType;
-
-        view.addObserved(CardPools.getInstance());
+        refreshObserved();
     }
 
 
@@ -58,7 +57,8 @@ public class CardPoolView extends LiveComponent{
     }
 
     @Override
-    public void cleanObserved() {
-        view.removeObserved(CardPools.getInstance());
-    }
+    public void cleanObserved() {RefreshManager.getInstance().removeObserved(this, CardPools.getInstance());}
+
+    @Override
+    public void refreshObserved() {RefreshManager.getInstance().addObserved(this, CardPools.getInstance());}
 }

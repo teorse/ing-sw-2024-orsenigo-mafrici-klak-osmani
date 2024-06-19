@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.LobbyUsers;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.LobbyUserRecord;
 
@@ -10,7 +11,7 @@ public class LobbyView extends LiveComponent {
     public LobbyView(ViewState view) {
         super();
         this.lobbyUsers = LobbyUsers.getInstance();
-        view.addObserved(lobbyUsers);
+        refreshObserved();
     }
 
     @Override
@@ -28,4 +29,7 @@ public class LobbyView extends LiveComponent {
     public void cleanObserved() {
         RefreshManager.getInstance().removeObserved(this, lobbyUsers);
     }
+
+    @Override
+    public void refreshObserved() {RefreshManager.getInstance().addObserved(this, lobbyUsers);}
 }

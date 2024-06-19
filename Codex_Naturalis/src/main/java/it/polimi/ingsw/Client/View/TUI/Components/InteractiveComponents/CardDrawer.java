@@ -2,6 +2,8 @@ package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
 import it.polimi.ingsw.Client.Model.CardPools;
 import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.Model.Game;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.Network.ClientConnector;
 import it.polimi.ingsw.Client.View.TUI.Components.CardPoolView;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
@@ -141,7 +143,7 @@ public class CardDrawer extends InteractiveComponent{
 
     @Override
     public void cleanObserved() {
-        view.removeObserved(cardPools);
+        RefreshManager.getInstance().removeObserved(this, cardPools);
     }
 
     @Override
@@ -157,8 +159,8 @@ public class CardDrawer extends InteractiveComponent{
     public void print() {
         if (inputCounter == 0) {
             // Print the available cards in both RESOURCE and GOLDEN pools
-            new CardPoolView(view, CardPoolTypes.RESOURCE).print();
-            new CardPoolView(view, CardPoolTypes.GOLDEN).print();
+            new CardPoolView(CardPoolTypes.RESOURCE).print();
+            new CardPoolView(CardPoolTypes.GOLDEN).print();
 
             // Prompt user to choose from which pool they want to draw a card
             if (!isResourceOver && !isGoldenOver) {

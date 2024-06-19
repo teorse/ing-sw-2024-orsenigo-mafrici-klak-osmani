@@ -21,8 +21,8 @@ public class WaitState extends GameState {
         logger = Logger.getLogger(WaitState.class.getName());
 
         passiveComponents = new ArrayList<>();
-        passiveComponents.add(new ChatNotification(this));
-        passiveComponents.add(new WaitTypeView(this));
+        passiveComponents.add(new ChatNotification());
+        passiveComponents.add(new WaitTypeView());
 
         postSetupComponents = new ArrayList<>();
         postSetupComponents.add(new SharedObjectiveView());

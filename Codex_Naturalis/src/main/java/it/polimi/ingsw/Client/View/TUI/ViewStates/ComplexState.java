@@ -80,7 +80,7 @@ public abstract class ComplexState extends InteractiveState{
         else if(result == InteractiveComponentReturns.QUIT) {
             if (!activeComponent.equals(getMainComponent())) {
                 activeComponent.cleanObserved();
-                activeComponent = mainComponent;
+                activeComponent = getMainComponent();
             }
         }
         print();

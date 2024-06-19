@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class DrawState extends GameState {
-    List<Component> passiveComponents;
+    List<LiveComponent> passiveComponents;
 
     private final Logger logger;
 
