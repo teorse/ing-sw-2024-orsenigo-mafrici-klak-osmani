@@ -50,6 +50,13 @@ public class PlaceState extends GameState {
     }
 
     @Override
+    public void refreshObservables() {
+        for(LiveComponent component : passiveComponents){
+            component.refreshObserved();
+        }
+    }
+
+    @Override
     public void update() {
         if(!nextState())
             print();

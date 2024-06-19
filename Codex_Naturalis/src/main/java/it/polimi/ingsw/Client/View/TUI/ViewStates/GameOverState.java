@@ -6,13 +6,13 @@ import it.polimi.ingsw.Client.View.TUI.Components.LiveComponent;
 
 public class GameOverState extends ViewState {
 
-    LiveComponent passiveComponent;
+    private final LiveComponent gameOverView;
+    private boolean exitGameOver;
 
-    public GameOverState(ClientModel model) {
-        super(model);
-        passiveComponent = new GameOverView(this);
-
-        print();
+    public GameOverState() {
+        super();
+        gameOverView = new GameOverView();
+        exitGameOver = false;
     }
 
     @Override
@@ -24,6 +24,11 @@ public class GameOverState extends ViewState {
     public boolean handleInput(String input) {
        update();
        return true;
+    }
+
+    @Override
+    public void refreshObservables() {
+        gameOverView.refreshObserved();
     }
 
     @Override

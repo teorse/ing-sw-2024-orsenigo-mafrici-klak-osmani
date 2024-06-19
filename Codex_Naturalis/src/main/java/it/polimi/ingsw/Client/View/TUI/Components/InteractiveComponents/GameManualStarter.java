@@ -3,6 +3,7 @@ package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.LobbyUsers;
 import it.polimi.ingsw.Client.Model.MyPlayer;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPStartGame;
 
@@ -10,9 +11,9 @@ public class GameManualStarter extends InteractiveComponent {
     private boolean wrongCommand;
     private boolean notEnoughPlayers;
 
-    public GameManualStarter(ViewState view) {
-        super(view);
-        view.addObserved(LobbyUsers.getInstance());
+    public GameManualStarter() {
+        super();
+        refreshObserved();
         wrongCommand = false;
         notEnoughPlayers = false;
     }
@@ -75,6 +76,11 @@ public class GameManualStarter extends InteractiveComponent {
 
     @Override
     public void cleanObserved() {
-        view.removeObserved(LobbyUsers.getInstance());
+        RefreshManager.getInstance().addObserved(this, LobbyUsers.getInstance());
+    }
+
+    @Override
+    public void refreshObserved() {
+        RefreshManager.getInstance().addObserved(this, LobbyUsers.getInstance());
     }
 }

@@ -25,13 +25,12 @@ public class CardMapZoom extends InteractiveComponent{
 
 
     //CONSTRUCTOR
-    public CardMapZoom(ViewState view) {
-        super(view);
+    public CardMapZoom() {
+        super();
         players = Players.getInstance();
         cardMaps = CardMaps.getInstance();
 
-        view.addObserved(players);
-        view.addObserved(cardMaps);
+        refreshObserved();
     }
 
 

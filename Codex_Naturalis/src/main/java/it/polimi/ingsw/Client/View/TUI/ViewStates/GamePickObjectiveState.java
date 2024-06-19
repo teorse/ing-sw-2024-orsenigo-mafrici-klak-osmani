@@ -2,23 +2,17 @@ package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
 import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.Game;
-import it.polimi.ingsw.Client.View.TUI.Components.Component;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.PickSecretObjective;
 import it.polimi.ingsw.Client.View.TUI.Components.ObjectiveCandidatesView;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
 public class GamePickObjectiveState extends GameState {
-    Component component;
+    private final LiveComponent objectiveCandidates;
 
 
-
-
-    public GamePickObjectiveState(ClientModel model) {
-        super(model);
-        mainComponent = new PickSecretObjective(this);
-        component = new ObjectiveCandidatesView(this);
-
-        print();
+    public GamePickObjectiveState() {
+        super(new PickSecretObjective());
+        objectiveCandidates = new ObjectiveCandidatesView();
     }
 
     @Override
@@ -30,6 +24,11 @@ public class GamePickObjectiveState extends GameState {
             TextUI.displayLastRound();
 
         super.print();
+    }
+
+    @Override
+    public void refreshObservables() {
+        objectiveCandidates.refreshObserved();
     }
 
     @Override

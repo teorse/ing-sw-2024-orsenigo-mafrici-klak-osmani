@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.Game;
 import it.polimi.ingsw.Client.View.TUI.Components.*;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.*;
@@ -20,18 +19,12 @@ public class DrawState extends GameState {
         logger = Logger.getLogger(WaitState.class.getName());
 
         passiveComponents = new ArrayList<>();
-        passiveComponents.add(new ChatNotification(this));
-        passiveComponents.add(new SharedObjectiveView(this));
-        passiveComponents.add(new SecretObjectiveView(this));
-        passiveComponents.add(new ScoreBoardView(this));
-        passiveComponents.add(new CardMapView(this));
-        passiveComponents.add(new TurnShower(this));
-
-        mainComponent = new CardDrawer(this);
-        if(Game.getInstance().isSetupFinished())
-            addSecondaryComponent(new Zoomer(this));
-
-        print();
+        passiveComponents.add(new ChatNotification());
+        passiveComponents.add(new SharedObjectiveView());
+        passiveComponents.add(new SecretObjectiveView());
+        passiveComponents.add(new ScoreBoardView());
+        passiveComponents.add(new CardMapView());
+        passiveComponents.add(new TurnShower());
     }
 
     @Override
@@ -47,6 +40,13 @@ public class DrawState extends GameState {
         }
 
         super.print();
+    }
+
+    @Override
+    public void refreshObservables() {
+        for(LiveComponent component : passiveComponents){
+            component.refreshObserved();
+        }
     }
 
     @Override

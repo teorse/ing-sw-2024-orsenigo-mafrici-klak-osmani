@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.CardsHeld;
 import it.polimi.ingsw.Client.Model.Observable;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 
 import java.io.PrintStream;
@@ -9,9 +10,9 @@ import java.util.List;
 
 public class CardsHeldView extends LiveComponent{
 
-    public CardsHeldView(ViewState viewState){
-        super(viewState);
-        view.addObserved(CardsHeld.getInstance());
+    public CardsHeldView(){
+        super();
+        refreshObserved();
     }
 
     @Override
@@ -34,6 +35,11 @@ public class CardsHeldView extends LiveComponent{
 
     @Override
     public void cleanObserved() {
-        view.removeObserved(CardsHeld.getInstance());
+        RefreshManager.getInstance().removeObserved(this, CardsHeld.getInstance());
+    }
+
+    @Override
+    public void refreshObserved() {
+        RefreshManager.getInstance().addObserved(this, CardsHeld.getInstance());
     }
 }

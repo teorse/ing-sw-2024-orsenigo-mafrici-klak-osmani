@@ -8,9 +8,9 @@ import java.util.List;
 
 public class ObjectiveCandidatesView extends LiveComponent {
 
-    public ObjectiveCandidatesView(ViewState view) {
-        super(view);
-        view.addObserved(ObjectiveCandidates.getInstance());
+    public ObjectiveCandidatesView() {
+        super();
+        refreshObserved();
     }
 
     @Override

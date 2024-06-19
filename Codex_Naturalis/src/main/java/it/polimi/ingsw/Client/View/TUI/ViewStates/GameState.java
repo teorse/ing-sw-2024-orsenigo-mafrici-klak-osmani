@@ -5,9 +5,15 @@ import it.polimi.ingsw.Client.Model.Game;
 import it.polimi.ingsw.Client.Model.MyPlayer;
 
 public abstract class GameState extends LobbyStates{
+    private final ClientModel model;
 
     public GameState(ClientModel model) {
         super(model);
+    }
+
+    public GameState(InteractiveComponent mainComponent) {
+        super(mainComponent);
+        model = ClientModel.getInstance();
     }
 
     boolean nextState(){

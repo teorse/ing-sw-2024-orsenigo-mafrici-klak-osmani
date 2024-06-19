@@ -22,13 +22,15 @@ public class ServerConnectionWizard extends InteractiveComponent {
     private boolean connectionTimedOut;
     private boolean remoteException;
 
-    public ServerConnectionWizard(ViewState view) {
-        super(view);
+    public ServerConnectionWizard() {
+        super();
         logger = Logger.getLogger(ServerConnectionWizard.class.getName());
         logger.info("Initializing Server Connection wizard");
         malformedIp = false;
         connectionTimedOut = false;
         remoteException = false;
+
+        refreshObserved();
 
         logger.info("Server Connection wizard initialized");
     }
@@ -140,4 +142,9 @@ public class ServerConnectionWizard extends InteractiveComponent {
     //Method is empty because this component does not observe anything.
     @Override
     public void cleanObserved() {}
+
+    @Override
+    public void refreshObserved() {
+
+    }
 }

@@ -7,14 +7,15 @@ import it.polimi.ingsw.Client.View.InputValidator;
 //todo further review zoomer class
 public class Zoomer extends InteractiveComponent {
     //ATTRIBUTES
-    private final ViewState view;
     private int choice;
     private InteractiveComponent subComponent;
     private boolean invalidInput;
 
-    public Zoomer(ViewState view) {
-        super(view);
-        this.view = view;
+    public Zoomer() {
+        super();
+
+        refreshObserved();
+
         invalidInput = false;
     }
 
@@ -30,12 +31,12 @@ public class Zoomer extends InteractiveComponent {
                 // Parse choice
                 choice = Integer.parseInt(input);
                 if (choice == 1) {
-                    subComponent = new CardMapZoom(view);
+                    subComponent = new CardMapZoom();
                     inputCounter++;
                 } else if (choice == 2) {
                     inputCounter++;
                 } else if (choice == 3) {
-                    subComponent = new CardPoolZoom(view);
+                    subComponent = new CardPoolZoom();
                     inputCounter++;
                 }
             }
@@ -75,7 +76,7 @@ public class Zoomer extends InteractiveComponent {
 
         else if(inputCounter == 1) {
             if(choice == 2){
-                new CardsHeldView(view).print();
+                new CardsHeldView().print();
             }
             else
                 subComponent.print();
@@ -90,5 +91,10 @@ public class Zoomer extends InteractiveComponent {
     @Override
     public void cleanObserved() {
         subComponent.cleanObserved();
+    }
+
+    @Override
+    public void refreshObserved() {
+        subComponent.refreshObserved();
     }
 }

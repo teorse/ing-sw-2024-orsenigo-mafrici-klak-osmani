@@ -19,6 +19,8 @@ public class CardStarterChoice extends InteractiveComponent {
         //todo check if there is no scenario where .getFirst() will cause null pointer.
         this.cardStarter = CardsHeld.getInstance().getCardsHeld().getFirst();
         invalidBinaryChoice = false;
+
+        refreshObserved();
     }
 
     @Override
@@ -42,6 +44,7 @@ public class CardStarterChoice extends InteractiveComponent {
     public String getKeyword() {
         return "PlaceStarter";
     }
+
 
     @Override
     public void print() {

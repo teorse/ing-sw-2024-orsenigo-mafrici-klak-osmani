@@ -1,9 +1,5 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.Model.ClientModel;
-import it.polimi.ingsw.Client.Model.Game;
-import it.polimi.ingsw.Client.Model.MyPlayer;
-import it.polimi.ingsw.Client.View.TUI.Components.Component;
 import it.polimi.ingsw.Client.View.TUI.Components.GameStartingStatus;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.ColorPicker;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.GameManualStarter;
@@ -51,31 +47,15 @@ public class LobbyJoinedState extends LobbyStates {
     }
 
     @Override
+    public void refreshObservables() {
+        super.refreshObservables();
+        lobbyView.refreshObserved();
+        gameStartingStatus.refreshObserved();
+    }
+
+    @Override
     public void update() {
         if (!nextState())
             print();
-    }
-
-    private boolean nextState(){
-        if (model.isGameStarted()) {
-            model.unsubscribe(this);
-
-            sleepOnObservables();
-
-            switch (MyPlayer.getInstance().getMyPlayerGameState()) {
-                case PLACE -> {
-                    if (!Game.getInstance().isSetupFinished())
-                        model.setView(new StarterPlaceState(model));
-                    else
-                        model.setView(new PlaceState(model));
-                }
-                case DRAW -> model.setView(new DrawState(model));
-                case PICK_OBJECTIVE -> model.setView(new GamePickObjectiveState(model));
-                case WAIT -> model.setView(new WaitState(model));
-            }
-            model.getView().print();
-            return true;
-        }
-        return false;
     }
 }

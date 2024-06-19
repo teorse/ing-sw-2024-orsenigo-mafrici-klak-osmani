@@ -9,22 +9,12 @@ import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.Interact
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
 public class StarterPlaceState extends GameState {
-    Component component;
-    InteractiveComponent mainComponent;
-
-    boolean attemptToQuitMainComponent;
-    boolean waitingForServerResponse;
+    private final LiveComponent cardsHeld;
 
 
-
-    public StarterPlaceState(ClientModel model) {
-        super(model);
-        component = new CardsHeldView(this);
-        mainComponent = new CardStarterChoice(this);
-
-        attemptToQuitMainComponent = false;
-
-        print();
+    public StarterPlaceState() {
+        super(new CardStarterChoice());
+        cardsHeld = new CardsHeldView();
     }
 
     @Override
@@ -32,31 +22,14 @@ public class StarterPlaceState extends GameState {
         TextUI.clearCMD();
         TextUI.displayGameTitle();
 
-        component.print();
-        if(!waitingForServerResponse) {
-            if (attemptToQuitMainComponent)
-                System.out.println("You can't exit the main component");
-            mainComponent.print();
-        }
-        else
-            System.out.println("Waiting for server response");
+        cardsHeld.print();
+        getActiveComponent().print();
+        super.print();
     }
 
     @Override
-    public boolean handleInput(String input) {
-        if(super.handleInput(input))
-            return true;
-
-        if(!waitingForServerResponse) {
-            InteractiveComponentReturns result = mainComponent.handleInput(input);
-            if (result.equals(InteractiveComponentReturns.QUIT))
-                attemptToQuitMainComponent = true;
-            else if (result.equals(InteractiveComponentReturns.COMPLETE)) {
-                waitingForServerResponse = true;
-            }
-        }
-
-        return true;
+    public void refreshObservables() {
+        cardsHeld.refreshObserved();
     }
 
     @Override

@@ -17,9 +17,8 @@ public class WaitState extends GameState {
 
     private final Logger logger;
 
-
-    public WaitState(ClientModel model) {
-        super(model);
+    public WaitState() {
+        super(new Zoomer());
         logger = Logger.getLogger(WaitState.class.getName());
 
         passiveComponents = new ArrayList<>();
@@ -27,23 +26,15 @@ public class WaitState extends GameState {
         passiveComponents.add(new WaitTypeView(this));
 
         postSetupComponents = new ArrayList<>();
-        postSetupComponents.add(new SharedObjectiveView(this));
-        postSetupComponents.add(new SecretObjectiveView(this));
-        postSetupComponents.add(new ScoreBoardView(this));
-        postSetupComponents.add(new CardMapView(this));
-        postSetupComponents.add(new TurnShower(this));
-
-        if(Game.getInstance().isSetupFinished())
-            mainComponent = new Zoomer(this);
-        else
-            mainComponent = null;
-
-        print();
+        postSetupComponents.add(new SharedObjectiveView());
+        postSetupComponents.add(new SecretObjectiveView());
+        postSetupComponents.add(new ScoreBoardView());
+        postSetupComponents.add(new CardMapView());
+        postSetupComponents.add(new TurnShower());
     }
 
     @Override
     public void print() {
-        //todo add class game and logic to switch between game title and last round
         TextUI.clearCMD();
         if(!Game.getInstance().isLastRoundFlag())
             TextUI.displayGameTitle();
@@ -58,15 +49,19 @@ public class WaitState extends GameState {
         for (Component component : passiveComponents) {
             component.print();
         }
-        if(mainComponent != null)
-            super.print();
+
+        getActiveComponent().print();
+        super.print();
     }
 
     @Override
-    public boolean handleInput(String input) {
-        if(mainComponent != null)
-            super.handleInput(input);
-        return true;
+    public void refreshObservables() {
+        for(LiveComponent component : passiveComponents){
+            component.refreshObserved();
+        }
+        for(LiveComponent component : postSetupComponents){
+            component.refreshObserved();
+        }
     }
 
     @Override

@@ -6,11 +6,9 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.Lo
 
 public class LobbyView extends LiveComponent {
     private final LobbyUsers lobbyUsers;
-    private final ViewState view;
 
     public LobbyView(ViewState view) {
-        super(view);
-        this.view = view;
+        super();
         this.lobbyUsers = LobbyUsers.getInstance();
         view.addObserved(lobbyUsers);
     }
@@ -28,6 +26,6 @@ public class LobbyView extends LiveComponent {
 
     @Override
     public void cleanObserved() {
-        view.removeObserved(lobbyUsers);
+        RefreshManager.getInstance().removeObserved(this, lobbyUsers);
     }
 }

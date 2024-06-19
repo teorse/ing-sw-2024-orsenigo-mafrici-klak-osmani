@@ -29,11 +29,7 @@ public class ChatState extends ViewState{
         previousState.sleepOnObservables();
 
         passiveComponents = new ArrayList<>();
-        passiveComponents.add(new WaitTypeView(this));
-
-        mainComponent = new ChatMessageSender(this);
-
-        print();
+        passiveComponents.add(new WaitTypeView());
     }
 
     @Override
@@ -50,8 +46,13 @@ public class ChatState extends ViewState{
             nextState();
         }
         else
-            mainComponent.handleInput(input);
+            getMainComponent().handleInput(input);
         return true;
+    }
+
+    @Override
+    public void refreshObservables() {
+
     }
 
     @Override

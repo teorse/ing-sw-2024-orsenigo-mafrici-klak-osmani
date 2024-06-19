@@ -5,14 +5,13 @@ import it.polimi.ingsw.Client.View.InputValidator;
 
 public class LobbyChooser extends InteractiveComponent{
 
-    private final ViewState view;
     private InteractiveComponent subComponent;
 
     private boolean wrongBinaryChoice;
 
-    public LobbyChooser(ViewState view) {
-        super(view);
-        this.view = view;
+    public LobbyChooser() {
+        super();
+        refreshObserved();
     }
 
     @Override
@@ -23,10 +22,10 @@ public class LobbyChooser extends InteractiveComponent{
 
             if (InputValidator.validBinaryChoice(input)) {
                 if (Integer.parseInt(input) == 1) {
-                    subComponent = new LobbyCreator(view);
+                    subComponent = new LobbyCreator();
                 }
                 else if (Integer.parseInt(input) == 2)
-                    subComponent = new LobbyJoiner(view);
+                    subComponent = new LobbyJoiner();
 
                 inputCounter++;
             } else
@@ -78,4 +77,7 @@ public class LobbyChooser extends InteractiveComponent{
 
     @Override
     public void cleanObserved() {}
+
+    @Override
+    public void refreshObserved() {}
 }

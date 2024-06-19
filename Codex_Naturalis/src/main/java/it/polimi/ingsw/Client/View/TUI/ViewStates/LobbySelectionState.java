@@ -1,15 +1,15 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
 import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.LobbyChooser;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
 public class LobbySelectionState extends InteractiveState {
 
-    public LobbySelectionState(ClientModel model) {
-        super(model);
-        mainComponent = new LobbyChooser(this);
+    public LobbySelectionState() {
+        super(new LobbyChooser());
     }
 
     @Override
@@ -19,7 +19,7 @@ public class LobbySelectionState extends InteractiveState {
 
         super.print();
 
-        mainComponent.print();
+        getMainComponent().print();
     }
 
     @Override
@@ -28,10 +28,16 @@ public class LobbySelectionState extends InteractiveState {
             print();
     }
 
-    private boolean nextState(){
+    boolean nextState(){
+        ClientModel model = ClientModel.getInstance();
+
+        if(super.nextState())
+            return true;
+
         if(model.isInLobby()) {
-            model.unsubscribe(this);
-            model.setView(new LobbyJoinedState(model));
+            getMainComponent().cleanObserved();
+            RefreshManager.getInstance().resetObservables();
+            model.setView(new LobbyJoinedState());
 
             model.getView().print();
             return true;

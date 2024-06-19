@@ -11,8 +11,8 @@ public class CardPoolZoom extends InteractiveComponent{
     boolean invalidInput;
 
 
-    public CardPoolZoom(ViewState view) {
-        super(view);
+    public CardPoolZoom() {
+        super();
         invalidInput = false;
 
         view.addObserved(CardPools.getInstance());
@@ -44,7 +44,12 @@ public class CardPoolZoom extends InteractiveComponent{
 
     @Override
     public void cleanObserved() {
-        view.removeObserved(CardPools.getInstance());
+        RefreshManager.getInstance().removeObserved(this, CardPools.getInstance());
+    }
+
+    @Override
+    public void refreshObserved() {
+        RefreshManager.getInstance().addObserved(this, CardPools.getInstance());
     }
 
     @Override

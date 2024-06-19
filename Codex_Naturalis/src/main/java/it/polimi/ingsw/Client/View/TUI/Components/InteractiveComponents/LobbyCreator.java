@@ -17,10 +17,11 @@ public class LobbyCreator extends  InteractiveComponent {
     private ErrorsDictionary nameAlreadyTaken;
 
 
-    public LobbyCreator(ViewState view) {
-        super(view);
+    public LobbyCreator() {
+        super();
         this.model = ClientModel.getInstance();
         nameAlreadyTaken = null;
+        refreshObserved();
     }
 
 
@@ -92,6 +93,11 @@ public class LobbyCreator extends  InteractiveComponent {
 
     @Override
     public void cleanObserved() {
+
+    }
+
+    @Override
+    public void refreshObserved() {
 
     }
 }

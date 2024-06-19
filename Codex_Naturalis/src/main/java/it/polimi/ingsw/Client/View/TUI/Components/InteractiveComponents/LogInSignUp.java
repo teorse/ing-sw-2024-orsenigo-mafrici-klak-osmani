@@ -26,10 +26,12 @@ public class LogInSignUp extends InteractiveComponent {
 
 
 
-    public LogInSignUp(ViewState view) {
-        super(view);
+    public LogInSignUp() {
+        super();
         this.model = ClientModel.getInstance();
         credentials = new ArrayList<>();
+
+        refreshObserved();
 
         invalidBinaryChoice = false;
         invalidUsername = false;
@@ -160,6 +162,11 @@ public class LogInSignUp extends InteractiveComponent {
 
     @Override
     public void cleanObserved() {
+
+    }
+
+    @Override
+    public void refreshObserved() {
 
     }
 }

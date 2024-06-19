@@ -7,8 +7,8 @@ import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPPickObjecti
 
 public class PickSecretObjective extends InteractiveComponent {
 
-    public PickSecretObjective(ViewState view) {
-        super(view);
+    public PickSecretObjective() {
+        super();
     }
 
     @Override
@@ -32,6 +32,11 @@ public class PickSecretObjective extends InteractiveComponent {
 
     @Override
     public void cleanObserved() {
+
+    }
+
+    @Override
+    public void refreshObserved() {
 
     }
 }

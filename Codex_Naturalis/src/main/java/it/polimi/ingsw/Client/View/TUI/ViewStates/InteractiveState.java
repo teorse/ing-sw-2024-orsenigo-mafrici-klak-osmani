@@ -8,8 +8,9 @@ public abstract class InteractiveState extends ViewState {
     InteractiveComponent mainComponent;
     boolean attemptToExitMainComponent;
 
-    public InteractiveState(ClientModel model) {
-        super(model);
+    public InteractiveState(InteractiveComponent mainComponent) {
+        logger = Logger.getLogger(InteractiveState.class.getName());
+        this.mainComponent = mainComponent;
         attemptToExitMainComponent = false;
     }
 

@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
 import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.Lobby;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPChangeColor;
@@ -21,11 +22,12 @@ public class ColorPicker extends InteractiveComponent{
 
 
     //CONSTRUCTOR
-    public ColorPicker(ViewState view){
-        super(view);
+    public ColorPicker(){
+        super();
         this.model = ClientModel.getInstance();
         this.availableUserColors = Lobby.getInstance().getAvailableUserColors();
-        view.addObserved(Lobby.getInstance());
+
+        refreshObserved();
 
         invalidChoice = false;
     }
@@ -78,6 +80,11 @@ public class ColorPicker extends InteractiveComponent{
 
     @Override
     public void cleanObserved() {
-        view.removeObserved(Lobby.getInstance());
+        RefreshManager.getInstance().removeObserved(this, Lobby.getInstance());
+    }
+
+    @Override
+    public void refreshObserved() {
+        RefreshManager.getInstance().addObserved(this, Lobby.getInstance());
     }
 }

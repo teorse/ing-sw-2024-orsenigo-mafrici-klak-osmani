@@ -12,4 +12,6 @@ public abstract class LiveComponent extends Component{
     }
 
     public abstract void cleanObserved();
+
+    public abstract void refreshObserved();
 }

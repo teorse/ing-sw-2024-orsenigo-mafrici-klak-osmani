@@ -37,8 +37,8 @@ public class ConnectionState extends InteractiveState {
 
     private boolean nextState(){
         if (model.isConnected()) {
-            model.unsubscribe(this);
-            model.setView(new LoginSignUpState(model));
+            RefreshManager.getInstance().resetObservables();
+            model.setView(new LoginSignUpState());
             model.getView().print();
             return true;
         } else

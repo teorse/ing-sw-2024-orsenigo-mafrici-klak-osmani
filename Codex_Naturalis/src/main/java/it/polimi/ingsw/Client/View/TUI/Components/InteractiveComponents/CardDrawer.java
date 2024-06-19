@@ -35,8 +35,8 @@ public class CardDrawer extends InteractiveComponent{
 
 
     //CONSTRUCTOR
-    public CardDrawer(ViewState view) {
-        super(view);
+    public CardDrawer() {
+        super();
 
         this.connection = ClientModel.getInstance().getClientConnector();
         this.cardPools = CardPools.getInstance();

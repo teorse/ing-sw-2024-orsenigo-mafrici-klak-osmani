@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
 import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.LobbyPreviews;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.Components.LobbyPreviewView;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.Client.View.InputValidator;
@@ -15,12 +16,12 @@ public class LobbyJoiner extends InteractiveComponent {
     private final LobbyPreviews lobbyPreviews;
     private final ClientModel model;
 
-    public LobbyJoiner(ViewState view) {
-        super(view);
+    public LobbyJoiner() {
+        super();
         this.lobbyPreviews = LobbyPreviews.getInstance();
         this.model = ClientModel.getInstance();
 
-        view.addObserved(this.lobbyPreviews);
+        refreshObserved();
     }
 
     @Override
@@ -65,6 +66,11 @@ public class LobbyJoiner extends InteractiveComponent {
 
     @Override
     public void cleanObserved() {
-        view.removeObserved(lobbyPreviews);
+        RefreshManager.getInstance().removeObserved(this, lobbyPreviews);
+    }
+
+    @Override
+    public void refreshObserved() {
+        RefreshManager.getInstance().addObserved(this, lobbyPreviews);
     }
 }

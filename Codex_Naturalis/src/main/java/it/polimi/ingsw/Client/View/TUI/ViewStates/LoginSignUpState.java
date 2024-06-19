@@ -8,9 +8,8 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.ErrorsDictiona
 
 public class LoginSignUpState extends InteractiveState {
 
-    public LoginSignUpState(ClientModel model) {
-        super(model);
-        mainComponent = new LogInSignUp(this);
+    public LoginSignUpState() {
+        super(new LogInSignUp());
     }
 
     @Override

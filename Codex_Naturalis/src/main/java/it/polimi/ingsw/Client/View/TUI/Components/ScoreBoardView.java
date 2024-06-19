@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.LobbyUsers;
 import it.polimi.ingsw.Client.Model.Players;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.TerminalColor;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
@@ -9,10 +10,9 @@ import it.polimi.ingsw.Server.Model.Lobby.LobbyUserConnectionStates;
 
 public class ScoreBoardView extends LiveComponent {
 
-    public ScoreBoardView(ViewState view) {
-        super(view);
-        view.addObserved(Players.getInstance());
-        view.addObserved(LobbyUsers.getInstance());
+    public ScoreBoardView() {
+        super();
+        refreshObserved();
     }
 
     @Override
@@ -35,5 +35,11 @@ public class ScoreBoardView extends LiveComponent {
     public void cleanObserved() {
         view.removeObserved(Players.getInstance());
         view.removeObserved(LobbyUsers.getInstance());
+    }
+
+    @Override
+    public void refreshObserved() {
+        RefreshManager.getInstance().addObserved(this, Players.getInstance());
+        RefreshManager.getInstance().addObserved(this, LobbyUsers.getInstance());
     }
 }

@@ -183,6 +183,7 @@ public class ClientModel extends Observable {
         this.gameOver = gameOver;
     }
 
+    //TODO add the Reset of the observer here
     public void setView(ViewState view) {
         this.view = view;
     }

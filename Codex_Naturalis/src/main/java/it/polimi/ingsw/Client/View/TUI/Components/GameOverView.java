@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.GameOver;
 import it.polimi.ingsw.Client.Model.LobbyUsers;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.TerminalColor;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
@@ -41,6 +42,11 @@ public class GameOverView extends LiveComponent{
 
     @Override
     public void cleanObserved() {
-        view.removeObserved(GameOver.getInstance());
+        RefreshManager.getInstance().removeObserved(this, GameOver.getInstance());
+    }
+
+    @Override
+    public void refreshObserved() {
+        RefreshManager.getInstance().addObserved(this, GameOver.getInstance());
     }
 }
