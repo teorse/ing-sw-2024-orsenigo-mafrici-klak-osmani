@@ -15,54 +15,14 @@ import java.util.Map;
  * Each concrete subclass of ViewState represents a specific state in the game, such as login, lobby, or gameplay.
  * The class also provides a method to determine the next game state based on the current game conditions.
  */
-public abstract class ViewState implements Observer {
-    Map<Observable, Integer> observableMap;
-    ClientModel model;
-
-    public ViewState(ClientModel model){
-        this.model = model;
-        model.subscribe(this);
-        observableMap = new HashMap<>();
-    }
+public abstract class ViewState {
 
     public abstract void print();
 
     public abstract boolean handleInput(String input);
 
-    public void addObserved(Observable observed){
-        if(!observableMap.containsKey(observed)) {
-            observableMap.put(observed, 1);
-            observed.subscribe(this);
-        }
-        else{
-            int oldCounter = observableMap.get(observed);
-            oldCounter++;
-            observableMap.put(observed, oldCounter);
-        }
-    }
+    public abstract void refreshObservables();
 
-    public void removeObserved(Observable observed){
-        if(observableMap.containsKey(observed)){
-            if(observableMap.get(observed) == 1) {
-                observableMap.remove(observed);
-                observed.unsubscribe(this);
-            }
-            else{
-                int oldCounter = observableMap.get(observed);
-                oldCounter--;
-                observableMap.put(observed, oldCounter);
-            }
-        }
-    }
-
-    public void sleepOnObservables(){
-        for(Observable observed : observableMap.keySet())
-            observed.unsubscribe(this);
-    }
-
-    public void wakeUpOnObservables(){
-        for(Observable observed : observableMap.keySet())
-            observed.subscribe(this);
-    }
+    public abstract void update();
 }
 

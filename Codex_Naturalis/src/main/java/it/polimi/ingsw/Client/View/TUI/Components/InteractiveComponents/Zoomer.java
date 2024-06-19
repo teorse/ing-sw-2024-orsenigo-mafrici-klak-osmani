@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
+import it.polimi.ingsw.Client.Model.Game;
 import it.polimi.ingsw.Client.View.TUI.Components.CardsHeldView;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.Client.View.InputValidator;
@@ -23,6 +24,9 @@ public class Zoomer extends InteractiveComponent {
     //METHODS
     @Override
     public InteractiveComponentReturns handleInput(String input) {
+        if(!Game.getInstance().isSetupFinished())
+            return InteractiveComponentReturns.COMPLETE;
+
         if(input.equalsIgnoreCase("BACK"))
             return super.handleInput(input);
 
@@ -66,6 +70,10 @@ public class Zoomer extends InteractiveComponent {
 
     @Override
     public void print() {
+
+        if(!Game.getInstance().isSetupFinished())
+            return;
+
         if(inputCounter == 0) {
             System.out.println("\n" + """
                     Enter what do you want to zoom:

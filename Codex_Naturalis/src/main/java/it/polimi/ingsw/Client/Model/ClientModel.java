@@ -26,7 +26,7 @@ public class ClientModel extends Observable {
         logger.info("Initializing ClientModel");
 
         logger.fine("Assigning view object");
-        view = new ConnectionState(this);
+        view = new ConnectionState();
 
         logger.fine("Printing view object");
         view.print();

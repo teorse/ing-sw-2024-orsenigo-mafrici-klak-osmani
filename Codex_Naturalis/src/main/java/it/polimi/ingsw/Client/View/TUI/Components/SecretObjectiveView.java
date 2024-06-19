@@ -1,13 +1,14 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.Model.SecretObjective;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 
 public class SecretObjectiveView extends LiveComponent{
 
-    public SecretObjectiveView(ViewState view){
-        super(view);
-        view.addObserved(SecretObjective.getInstance());
+    public SecretObjectiveView(){
+        super();
+        refreshObserved();
     }
 
     @Override
@@ -20,6 +21,11 @@ public class SecretObjectiveView extends LiveComponent{
 
     @Override
     public void cleanObserved() {
-        view.removeObserved(SecretObjective.getInstance());
+        RefreshManager.getInstance().removeObserved(this, SecretObjective.getInstance());
+    }
+
+    @Override
+    public void refreshObserved() {
+        RefreshManager.getInstance().addObserved(this, SecretObjective.getInstance());
     }
 }

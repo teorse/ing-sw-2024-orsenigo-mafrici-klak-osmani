@@ -1,11 +1,9 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.View.TUI.Components.CardsHeldView;
 import it.polimi.ingsw.Client.View.TUI.Components.Component;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.CardStarterChoice;
-import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
-import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponentReturns;
+import it.polimi.ingsw.Client.View.TUI.Components.LiveComponent;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
 public class StarterPlaceState extends GameState {

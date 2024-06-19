@@ -27,6 +27,8 @@ public class ChatMessageSender extends InteractiveComponent{
     private ChatMessagesStack conversationInteract;
     private boolean inConversation;
 
+    private final List<Observable> observables;
+
     //ERROR PRINTING VARIABLES
     private boolean emptyMessage = false;
     private boolean invalidBinaryChoice = false;
@@ -115,10 +117,16 @@ public class ChatMessageSender extends InteractiveComponent{
             if (InputValidator.validBinaryChoice(input)) {
                 choice = Integer.parseInt(input);
                 if (choice == 1) {
-                    view.removeObserved(chat);
-                    conversationView = new ChatConversationView(chat.getPublicChat(), view);
+
+                    observables.remove(chat);
+                    RefreshManager.getInstance().removeObserved(this, chat);
+
+                    conversationView = new ChatConversationView(chat.getPublicChat());
                     conversationInteract = chat.getPublicChat();
-                    view.addObserved(conversationInteract);
+
+                    observables.add(conversationInteract);
+                    RefreshManager.getInstance().addObserved(this, conversationInteract);
+
                     inConversation = true;
                     return InteractiveComponentReturns.INCOMPLETE;
                 }

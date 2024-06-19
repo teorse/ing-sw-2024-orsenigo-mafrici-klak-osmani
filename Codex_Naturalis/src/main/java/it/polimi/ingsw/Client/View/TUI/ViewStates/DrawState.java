@@ -14,8 +14,8 @@ public class DrawState extends GameState {
 
     private final Logger logger;
 
-    public DrawState(ClientModel model) {
-        super(model);
+    public DrawState() {
+        super(new CardPlacer(), new ArrayList<>(){{add(new Zoomer());}});
         logger = Logger.getLogger(WaitState.class.getName());
 
         passiveComponents = new ArrayList<>();
@@ -39,6 +39,7 @@ public class DrawState extends GameState {
             component.print();
         }
 
+        getActiveComponent().print();
         super.print();
     }
 

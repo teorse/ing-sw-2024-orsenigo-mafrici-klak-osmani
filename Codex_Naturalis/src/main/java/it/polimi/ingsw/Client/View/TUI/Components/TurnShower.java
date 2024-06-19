@@ -1,7 +1,9 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
+import it.polimi.ingsw.Client.Model.Game;
 import it.polimi.ingsw.Client.Model.MyPlayer;
 import it.polimi.ingsw.Client.Model.Players;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
 import it.polimi.ingsw.Server.Model.Game.Player.PlayerStates;
@@ -11,9 +13,9 @@ import java.util.List;
 
 public class TurnShower extends LiveComponent {
 
-    public TurnShower(ViewState view) {
-        super(view);
-        view.addObserved(Players.getInstance());
+    public TurnShower() {
+        super();
+        refreshObserved();
     }
 
     @Override
@@ -32,6 +34,11 @@ public class TurnShower extends LiveComponent {
 
     @Override
     public void cleanObserved() {
-        view.removeObserved(Players.getInstance());
+        RefreshManager.getInstance().removeObserved(this, Players.getInstance());
+    }
+
+    @Override
+    public void refreshObserved() {
+        RefreshManager.getInstance().addObserved(this, Players.getInstance());
     }
 }

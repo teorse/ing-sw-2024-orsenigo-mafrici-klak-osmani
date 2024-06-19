@@ -3,19 +3,21 @@ package it.polimi.ingsw.Client.View.TUI.ViewStates;
 import it.polimi.ingsw.Client.View.TUI.Components.GameStartingStatus;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.ColorPicker;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.GameManualStarter;
+import it.polimi.ingsw.Client.View.TUI.Components.LiveComponent;
 import it.polimi.ingsw.Client.View.TUI.Components.LobbyView;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class LobbyJoinedState extends LobbyStates {
-    Component lobbyView;
-    Component gameStartingStatus;
+    LiveComponent lobbyView;
+    LiveComponent gameStartingStatus;
 
     private final Logger logger;
 
-    public LobbyJoinedState(ClientModel model) {
-        super(model);
+    public LobbyJoinedState() {
+        super(new GameManualStarter(), new ArrayList<>() {{add(new ColorPicker());}});
         logger = Logger.getLogger(LobbyJoinedState.class.getName());
         logger.info("Initializing LobbyJoinedState");
 
@@ -41,7 +43,7 @@ public class LobbyJoinedState extends LobbyStates {
         TextUI.clearCMD();
         TextUI.displayGameTitle();
         lobbyView.print();
-
+        getActiveComponent().print();
         super.print();
         gameStartingStatus.print();
     }

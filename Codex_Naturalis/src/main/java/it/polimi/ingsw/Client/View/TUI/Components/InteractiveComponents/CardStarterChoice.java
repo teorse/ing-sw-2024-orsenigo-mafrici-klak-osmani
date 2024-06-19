@@ -2,8 +2,8 @@ package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
 import it.polimi.ingsw.Client.Model.CardsHeld;
 import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.Components.CardStarterView;
-import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPPlayCard;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
@@ -13,8 +13,8 @@ public class CardStarterChoice extends InteractiveComponent {
     private final CardRecord cardStarter;
     private boolean invalidBinaryChoice;
 
-    public CardStarterChoice(ViewState view) {
-        super(view);
+    public CardStarterChoice() {
+        super();
         this.model = ClientModel.getInstance();
         //todo check if there is no scenario where .getFirst() will cause null pointer.
         this.cardStarter = CardsHeld.getInstance().getCardsHeld().getFirst();
@@ -62,5 +62,12 @@ public class CardStarterChoice extends InteractiveComponent {
     }
 
     @Override
-    public void cleanObserved() {}
+    public void cleanObserved() {
+        RefreshManager.getInstance().addObserved(this, CardsHeld.getInstance());
+    }
+
+    @Override
+    public void refreshObserved() {
+        RefreshManager.getInstance().addObserved(this, CardsHeld.getInstance());
+    }
 }

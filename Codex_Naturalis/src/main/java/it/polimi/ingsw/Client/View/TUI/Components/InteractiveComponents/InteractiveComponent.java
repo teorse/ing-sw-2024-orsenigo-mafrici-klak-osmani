@@ -8,8 +8,8 @@ public abstract class InteractiveComponent extends LiveComponent {
     //ATTRIBUTES
     int inputCounter = 0;
 
-    public InteractiveComponent(ViewState view) {
-        super(view);
+    public InteractiveComponent() {
+        super();
     }
 
 

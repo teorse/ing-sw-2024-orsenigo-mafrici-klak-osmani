@@ -38,8 +38,7 @@ public class CardPlacer extends InteractiveComponent {
         cardMaps = CardMaps.getInstance();
         cardsHeld = CardsHeld.getInstance();
 
-        view.addObserved(cardsHeld);
-        view.addObserved(cardMaps);
+        refreshObserved();
     }
 
 
@@ -137,8 +136,14 @@ public class CardPlacer extends InteractiveComponent {
 
     @Override
     public void cleanObserved() {
-        view.removeObserved(cardsHeld);
-        view.removeObserved(cardMaps);
+        RefreshManager.getInstance().removeObserved(this, cardsHeld);
+        RefreshManager.getInstance().removeObserved(this, cardMaps);
+    }
+
+    @Override
+    public void refreshObserved() {
+        RefreshManager.getInstance().addObserved(this, cardsHeld);
+        RefreshManager.getInstance().addObserved(this, cardMaps);
     }
 
     @Override

@@ -17,11 +17,11 @@ public class GameOverState extends ViewState {
 
     @Override
     public void print() {
-        passiveComponent.print();
+        gameOverView.print();
     }
 
     @Override
-    public boolean handleInput(String input) {
+    public boolean handleInput(String input) {exitGameOver = true;
        update();
        return true;
     }
@@ -33,11 +33,14 @@ public class GameOverState extends ViewState {
 
     @Override
     public void update() {
-        model.unsubscribe(this);
-        passiveComponent.cleanObserved();
-        sleepOnObservables();
+        if(exitGameOver) {
+            gameOverView.cleanObserved();
+            RefreshManager.getInstance().resetObservables();
 
-        model.setView(new LobbyJoinedState(model));
-        model.getView().print();
+            ClientModel.getInstance().setView(new LobbyJoinedState());
+            ClientModel.getInstance().getView().print();
+        }
+        else
+            print();
     }
 }

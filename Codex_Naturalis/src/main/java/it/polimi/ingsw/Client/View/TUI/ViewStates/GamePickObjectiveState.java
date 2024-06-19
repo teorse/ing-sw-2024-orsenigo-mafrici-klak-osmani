@@ -1,8 +1,8 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.Game;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.PickSecretObjective;
+import it.polimi.ingsw.Client.View.TUI.Components.LiveComponent;
 import it.polimi.ingsw.Client.View.TUI.Components.ObjectiveCandidatesView;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
@@ -23,6 +23,7 @@ public class GamePickObjectiveState extends GameState {
         else
             TextUI.displayLastRound();
 
+        getActiveComponent().print();
         super.print();
     }
 
@@ -33,6 +34,7 @@ public class GamePickObjectiveState extends GameState {
 
     @Override
     public void update() {
-        nextState();
+        if(nextState())
+            print();
     }
 }

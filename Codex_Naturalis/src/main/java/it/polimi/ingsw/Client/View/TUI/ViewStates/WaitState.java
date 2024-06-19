@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.Game;
 import it.polimi.ingsw.Client.View.TUI.Components.*;
 import it.polimi.ingsw.Client.View.TUI.Components.Component;
@@ -12,8 +11,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class WaitState extends GameState {
-    List<Component> passiveComponents;
-    List<Component> postSetupComponents;
+    List<LiveComponent> passiveComponents;
+    List<LiveComponent> postSetupComponents;
 
     private final Logger logger;
 

@@ -5,19 +5,34 @@ import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.Interact
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponentReturns;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
 public abstract class ComplexState extends InteractiveState{
-    Map<String, InteractiveComponent> keywordToComponentMap;
-    InteractiveComponent activeComponent;
+    private final Map<String, InteractiveComponent> keywordToComponentMap;
+    private InteractiveComponent activeComponent;
     boolean commandNotFund;
     boolean attemptToExitMainComponent;
 
     private final Logger logger;
 
-    public ComplexState(ClientModel model) {
-        super(model);
+    public ComplexState(InteractiveComponent mainComponent, List<InteractiveComponent> secondaryComponents) {
+        super(mainComponent);
+        logger = Logger.getLogger(ComplexState.class.getName());
+        logger.info("Initializing ComplexState abstract class");
+
+        keywordToComponentMap = new HashMap<>();
+        activeComponent = mainComponent;
+        commandNotFund = false;
+
+        for(InteractiveComponent secondaryComponent : secondaryComponents) {
+            keywordToComponentMap.put(secondaryComponent.getKeyword(), secondaryComponent);
+        }
+    }
+
+    public ComplexState(InteractiveComponent mainComponent) {
+        super(mainComponent);
         logger = Logger.getLogger(ComplexState.class.getName());
         logger.info("Initializing ComplexState abstract class");
 
@@ -25,8 +40,9 @@ public abstract class ComplexState extends InteractiveState{
         activeComponent = mainComponent;
         commandNotFund = false;
     }
-    void addSecondaryComponent(InteractiveComponent component){
-        keywordToComponentMap.put(component.getKeyword(), component);
+
+    public InteractiveComponent getActiveComponent() {
+        return activeComponent;
     }
 
     @Override
@@ -50,15 +66,15 @@ public abstract class ComplexState extends InteractiveState{
             return true;
         }
 
-        if(activeComponent.equals(mainComponent)){
+        if(activeComponent.equals(getMainComponent())){
             return super.handleInput(input);
         }
 
         InteractiveComponentReturns result = activeComponent.handleInput(input);
         if(result.equals(InteractiveComponentReturns.COMPLETE)){
-            if(!activeComponent.equals(mainComponent)) {
+            if(!activeComponent.equals(getMainComponent())) {
                 activeComponent.cleanObserved();
-                activeComponent = mainComponent;
+                activeComponent = getMainComponent();
             }
         }
         else if(result == InteractiveComponentReturns.QUIT) {
@@ -69,6 +85,14 @@ public abstract class ComplexState extends InteractiveState{
         }
         print();
         return true;
+    }
+
+    @Override
+    public void refreshObservables(){
+        super.refreshObservables();
+
+        for(InteractiveComponent component : keywordToComponentMap.values())
+            component.refreshObserved();
     }
 
     @Override

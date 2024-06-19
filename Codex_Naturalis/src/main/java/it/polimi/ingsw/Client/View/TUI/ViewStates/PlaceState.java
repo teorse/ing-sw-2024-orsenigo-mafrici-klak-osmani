@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.Game;
 import it.polimi.ingsw.Client.View.TUI.Components.*;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.*;
@@ -11,12 +10,12 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class PlaceState extends GameState {
-    List<Component> passiveComponents;
+    List<LiveComponent> passiveComponents;
 
     private final Logger logger;
 
-    public PlaceState(ClientModel model) {
-        super(model);
+    public PlaceState() {
+        super(new CardPlacer(), new ArrayList<>(){{add(new Zoomer());}});
         logger = Logger.getLogger(PlaceState.class.getName());
 
         passiveComponents = new ArrayList<>();
@@ -46,6 +45,7 @@ public class PlaceState extends GameState {
             component.print();
         }
 
+        getActiveComponent().print();
         super.print();
     }
 

@@ -12,12 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 public class GameOverView extends LiveComponent{
-    ViewState view;
 
-    public GameOverView(ViewState view) {
-        super(view);
-        this.view = view;
-        view.addObserved(GameOver.getInstance());
+    public GameOverView() {
+        super();
+        refreshObserved();
     }
 
     @Override

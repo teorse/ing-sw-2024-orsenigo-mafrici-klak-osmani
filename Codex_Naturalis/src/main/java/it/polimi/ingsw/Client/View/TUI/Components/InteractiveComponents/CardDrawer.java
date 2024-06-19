@@ -40,7 +40,7 @@ public class CardDrawer extends InteractiveComponent{
 
         this.connection = ClientModel.getInstance().getClientConnector();
         this.cardPools = CardPools.getInstance();
-        view.addObserved(cardPools);
+        refreshObserved();
 
         resourceLB = 1 + ((cardPools.getCardPoolByType(CardPoolTypes.RESOURCE).coveredCardColor() == Artifacts.NULL) ? 1 : 0);
         resourceUB = 1 + cardPools.getCardPoolByType(CardPoolTypes.RESOURCE).visibleCards().size();
@@ -142,6 +142,11 @@ public class CardDrawer extends InteractiveComponent{
     @Override
     public void cleanObserved() {
         view.removeObserved(cardPools);
+    }
+
+    @Override
+    public void refreshObserved() {
+        RefreshManager.getInstance().addObserved(this, cardPools);
     }
 
     /**

@@ -4,29 +4,29 @@ import it.polimi.ingsw.Client.Model.Chat;
 import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.View.TUI.Components.*;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.ChatMessageSender;
-import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class ChatState extends ViewState{
-    List<Component> passiveComponents;
-    InteractiveComponent mainComponent;
+public class ChatState extends InteractiveState{
+    private final List<Component> passiveComponents;
 
     ViewState previousState;
 
     private final Logger logger;
+    private boolean quitChat;
 
-    public ChatState(ClientModel model, ViewState previousState) {
-        super(model);
-        logger = Logger.getLogger(WaitState.class.getName());
+    public ChatState(ViewState previousState) {
+        super(new ChatMessageSender());
+        logger = Logger.getLogger(ChatState.class.getName());
+        quitChat = false;
 
         Chat.getInstance().resetNewMessages();
 
         this.previousState = previousState;
-        previousState.sleepOnObservables();
+        RefreshManager.getInstance().resetObservables();
 
         passiveComponents = new ArrayList<>();
         passiveComponents.add(new WaitTypeView());
@@ -43,6 +43,7 @@ public class ChatState extends ViewState{
     @Override
     public boolean handleInput(String input) {
         if(input.equalsIgnoreCase("quitChat")) {
+            quitChat = true;
             nextState();
         }
         else
@@ -57,15 +58,23 @@ public class ChatState extends ViewState{
 
     @Override
     public void update() {
-        print();
+        if(!nextState())
+            print();
     }
 
-    private void nextState() {
-        model.unsubscribe(this);
-        sleepOnObservables();
+    boolean nextState() {
+        if(super.nextState())
+            return true;
 
-        model.setView(previousState);
-        previousState.wakeUpOnObservables();
-        previousState.print();
+        if(quitChat) {
+            RefreshManager.getInstance().resetObservables();
+            ClientModel.getInstance().setView(previousState);
+            previousState.refreshObservables();
+            previousState.print();
+
+            return true;
+        }
+
+        return false;
     }
 }
