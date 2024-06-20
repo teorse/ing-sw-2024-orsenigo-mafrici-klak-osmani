@@ -62,6 +62,11 @@ public class LobbyChooser extends InteractiveComponent{
     }
 
     @Override
+    public String getDescription() {
+        return "";
+    }
+
+    @Override
     public void print() {
         if (wrongBinaryChoice) {
             System.out.println("\nWrong binary choice. Please type 1 or 2.");

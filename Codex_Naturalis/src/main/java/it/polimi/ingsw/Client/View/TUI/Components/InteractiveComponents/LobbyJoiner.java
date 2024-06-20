@@ -55,6 +55,11 @@ public class LobbyJoiner extends InteractiveComponent {
     }
 
     @Override
+    public String getDescription() {
+        return "";
+    }
+
+    @Override
     public void print () {
         System.out.println("\nLOBBY PREVIEWS");
 

@@ -61,6 +61,11 @@ public class ColorPicker extends InteractiveComponent{
     }
 
     @Override
+    public String getDescription() {
+        return "/color -> to change your user color";
+    }
+
+    @Override
     public void print() {
         availableUserColors = Lobby.getInstance().getAvailableUserColors();
 

@@ -26,6 +26,11 @@ public class PickSecretObjective extends InteractiveComponent {
     }
 
     @Override
+    public String getDescription() {
+        return "";
+    }
+
+    @Override
     public void print() {
         System.out.println("\nChoose a secret objective: \n");
     }

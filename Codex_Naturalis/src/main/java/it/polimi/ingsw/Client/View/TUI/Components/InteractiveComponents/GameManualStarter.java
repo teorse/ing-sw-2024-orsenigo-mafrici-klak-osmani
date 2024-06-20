@@ -52,7 +52,12 @@ public class GameManualStarter extends InteractiveComponent {
 
     @Override
     public String getKeyword() {
-        return "gameStarter";
+        return "gamestarter";
+    }
+
+    @Override
+    public String getDescription() {
+        return "";
     }
 
     @Override

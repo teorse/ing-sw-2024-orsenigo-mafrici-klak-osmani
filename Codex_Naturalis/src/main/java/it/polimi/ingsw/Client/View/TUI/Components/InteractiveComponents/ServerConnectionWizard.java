@@ -105,6 +105,11 @@ public class ServerConnectionWizard extends InteractiveComponent {
     }
 
     @Override
+    public String getDescription() {
+        return "";
+    }
+
+    @Override
     public void print() {
         logger.info("Printing ServerConnectionWizard");
 

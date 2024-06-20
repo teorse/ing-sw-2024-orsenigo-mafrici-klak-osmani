@@ -180,6 +180,11 @@ public class ChatMessageSender extends InteractiveComponent{
     }
 
     @Override
+    public String getDescription() {
+        return "/exit -> to exit the chat state";
+    }
+
+    @Override
     public void cleanObserved() {
         for(Observable observable : observables){
             RefreshManager.getInstance().removeObserved(this, observable);

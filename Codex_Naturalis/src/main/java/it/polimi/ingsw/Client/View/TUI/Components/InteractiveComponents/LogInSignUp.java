@@ -109,6 +109,11 @@ public class LogInSignUp extends InteractiveComponent {
     }
 
     @Override
+    public String getDescription() {
+        return "";
+    }
+
+    @Override
     public void print() {
         if(logInError == null)
             logInError = model.getLogInError();

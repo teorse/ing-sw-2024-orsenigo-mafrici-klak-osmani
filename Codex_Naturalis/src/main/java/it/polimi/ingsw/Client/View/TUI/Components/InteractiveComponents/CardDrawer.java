@@ -146,6 +146,11 @@ public class CardDrawer extends InteractiveComponent{
     }
 
     @Override
+    public String getDescription() {
+        return "";
+    }
+
+    @Override
     public void cleanObserved() {
         RefreshManager.getInstance().removeObserved(this, cardPools);
     }

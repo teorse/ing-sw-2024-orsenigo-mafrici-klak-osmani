@@ -63,6 +63,11 @@ public class LobbyCreator extends  InteractiveComponent {
         return "CreateLobby";
     }
 
+    @Override
+    public String getDescription() {
+        return "";
+    }
+
     //TODO move the update of the boolean in the handle input
     @Override
     public void print() {

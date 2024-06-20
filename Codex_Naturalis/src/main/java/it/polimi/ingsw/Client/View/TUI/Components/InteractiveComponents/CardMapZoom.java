@@ -122,6 +122,11 @@ public class CardMapZoom extends InteractiveComponent{
     }
 
     @Override
+    public String getDescription() {
+        return "";
+    }
+
+    @Override
     public void cleanObserved() {
         RefreshManager.getInstance().removeObserved(this, players);
         RefreshManager.getInstance().removeObserved(this, cardMaps);

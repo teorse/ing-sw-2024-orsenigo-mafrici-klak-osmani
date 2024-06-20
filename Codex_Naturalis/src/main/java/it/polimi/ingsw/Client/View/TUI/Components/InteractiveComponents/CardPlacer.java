@@ -135,7 +135,12 @@ public class CardPlacer extends InteractiveComponent {
 
     @Override
     public String getKeyword() {
-        return "Place";
+        return "place";
+    }
+
+    @Override
+    public String getDescription() {
+        return "";
     }
 
     @Override

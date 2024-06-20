@@ -73,6 +73,11 @@ public class Zoomer extends InteractiveComponent {
     }
 
     @Override
+    public String getDescription() {
+        return "/zoom -> to zoom a card map, cards held or card pool";
+    }
+
+    @Override
     public void print() {
 
         if(!Game.getInstance().isSetupFinished())

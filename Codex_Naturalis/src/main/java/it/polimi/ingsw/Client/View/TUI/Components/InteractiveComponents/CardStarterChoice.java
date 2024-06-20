@@ -46,7 +46,12 @@ public class CardStarterChoice extends InteractiveComponent {
 
     @Override
     public String getKeyword() {
-        return "PlaceStarter";
+        return "placestarter";
+    }
+
+    @Override
+    public String getDescription() {
+        return "";
     }
 
 

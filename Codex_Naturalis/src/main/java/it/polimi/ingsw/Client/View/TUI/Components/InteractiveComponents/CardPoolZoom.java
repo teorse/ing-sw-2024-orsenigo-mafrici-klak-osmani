@@ -48,6 +48,11 @@ public class CardPoolZoom extends InteractiveComponent{
     }
 
     @Override
+    public String getDescription() {
+        return "";
+    }
+
+    @Override
     public void cleanObserved() {
         RefreshManager.getInstance().removeObserved(this, CardPools.getInstance());
     }
