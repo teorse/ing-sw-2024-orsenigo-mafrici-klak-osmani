@@ -21,7 +21,7 @@ public class LobbyJoinedState extends LobbyStates {
         logger = Logger.getLogger(LobbyJoinedState.class.getName());
         logger.info("Initializing LobbyJoinedState");
 
-        lobbyView = new LobbyView(this);
+        lobbyView = new LobbyView();
         gameStartingStatus = new GameStartingStatus();
     }
 

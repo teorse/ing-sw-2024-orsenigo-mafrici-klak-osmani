@@ -2,20 +2,27 @@ package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.LobbyUsers;
 import it.polimi.ingsw.Client.Model.RefreshManager;
-import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.LobbyUserRecord;
+
+import java.util.logging.Logger;
 
 public class LobbyView extends LiveComponent {
     private final LobbyUsers lobbyUsers;
+    private final Logger logger;
 
-    public LobbyView(ViewState view) {
+    public LobbyView() {
         super();
+        logger = Logger.getLogger(LobbyView.class.getName());
+        logger.info("Initializing LobbyView component.");
+
         this.lobbyUsers = LobbyUsers.getInstance();
         refreshObserved();
     }
 
     @Override
     public void print() {
+        logger.info("Printing LobbyView component.");
+
         System.out.println("\nList of users in the lobby: ");
 
         if(lobbyUsers.getLobbyUserRecords() != null) {

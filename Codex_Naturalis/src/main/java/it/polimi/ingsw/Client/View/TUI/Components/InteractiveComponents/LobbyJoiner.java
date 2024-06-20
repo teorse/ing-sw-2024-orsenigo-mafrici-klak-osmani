@@ -7,6 +7,8 @@ import it.polimi.ingsw.Client.View.TUI.Components.LobbyPreviewView;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPJoinLobby;
+import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPStopViewingLobbyPreviews;
+import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPViewLobbyPreviews;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.LobbyPreviewRecord;
 
 import java.util.List;
@@ -59,18 +61,23 @@ public class LobbyJoiner extends InteractiveComponent {
             System.out.println("\n" + "Enter the name of the lobby you want to join: ");
         }
         else
-            System.out.println("There are no lobbies to join at the moment.\nPlease go back and create a lobby or wait " +
-                    "for someone else to create one.");
+            System.out.println("""
+
+                    There are no lobbies to join at the moment.
+                    Please go back and create a lobby or wait \
+                    for someone else to create one.""");
     }
 
 
     @Override
     public void cleanObserved() {
+        ClientModel.getInstance().getClientConnector().sendPacket(new CSPStopViewingLobbyPreviews());
         RefreshManager.getInstance().removeObserved(this, lobbyPreviews);
     }
 
     @Override
     public void refreshObserved() {
+        ClientModel.getInstance().getClientConnector().sendPacket(new CSPViewLobbyPreviews());
         RefreshManager.getInstance().addObserved(this, lobbyPreviews);
     }
 }
