@@ -26,8 +26,12 @@ public class CardStarterChoice extends InteractiveComponent {
     @Override
     public InteractiveComponentReturns handleInput(String input) {
 
-        if(input.equalsIgnoreCase("BACK"))
-            return super.handleInput(input);
+        InteractiveComponentReturns superReturn = super.handleInput(input);
+        if(superReturn == InteractiveComponentReturns.QUIT)
+            return superReturn;
+        else if (superReturn == InteractiveComponentReturns.COMPLETE) {
+            return InteractiveComponentReturns.INCOMPLETE;
+        }
 
         if (InputValidator.validBinaryChoice(input)) {
             boolean faceUp = (Integer.parseInt(input) == 1);

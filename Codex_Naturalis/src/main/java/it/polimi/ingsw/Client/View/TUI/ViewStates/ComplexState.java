@@ -106,13 +106,10 @@ public abstract class ComplexState extends InteractiveState{
 
         activeComponent.print();
 
-        if(attemptToExitMainComponent) {
-            attemptToExitMainComponent = false;
-            System.out.println("You can't exit from the main component.");
-        }
-        else if (commandNotFund) {
-            commandNotFund = false;
-            System.out.println("Command not found");
+        super.print();
+
+        if (commandNotFund) {
+            System.out.println("\nCommand not found");
         }
     }
 }
