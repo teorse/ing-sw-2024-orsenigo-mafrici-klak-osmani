@@ -57,8 +57,7 @@ public class LobbyChooser extends InteractiveComponent{
 
     @Override
     public String getKeyword() {
-        //todo
-        return "chooseLobby";
+        return "chooselobby";
     }
 
     @Override

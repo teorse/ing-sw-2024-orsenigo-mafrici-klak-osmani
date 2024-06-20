@@ -105,7 +105,7 @@ public class LogInSignUp extends InteractiveComponent {
 
     @Override
     public String getKeyword() {
-        return "";
+        return "loginsignup";
     }
 
     @Override

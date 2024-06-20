@@ -23,6 +23,8 @@ public class GamePickObjectiveState extends GameState {
         else
             TextUI.displayLastRound();
 
+        System.out.println("\nTo display the available commands type /help or /h");
+
         getActiveComponent().print();
         super.print();
     }

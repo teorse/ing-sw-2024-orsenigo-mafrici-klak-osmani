@@ -118,7 +118,7 @@ public class CardMapZoom extends InteractiveComponent{
 
     @Override
     public String getKeyword() {
-        return "CardMap";
+        return "cardmapzoom";
     }
 
     @Override

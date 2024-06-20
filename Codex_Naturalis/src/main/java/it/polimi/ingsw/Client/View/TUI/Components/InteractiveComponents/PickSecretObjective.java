@@ -22,7 +22,7 @@ public class PickSecretObjective extends InteractiveComponent {
 
     @Override
     public String getKeyword() {
-        return "pickSecretObjective";
+        return "picksecretobjective";
     }
 
     @Override

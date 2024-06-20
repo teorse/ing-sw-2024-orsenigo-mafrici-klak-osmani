@@ -7,6 +7,7 @@ import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.Interact
 import java.util.List;
 
 public abstract class GameState extends LobbyStates{
+    //TODO same attribute as the father class
     private final ClientModel model;
 
     public GameState(InteractiveComponent mainComponent, List<InteractiveComponent> secondaryComponents) {

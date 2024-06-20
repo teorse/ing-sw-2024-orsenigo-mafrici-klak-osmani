@@ -176,7 +176,7 @@ public class ChatMessageSender extends InteractiveComponent{
 
     @Override
     public String getKeyword() {
-        return "";
+        return "chat";
     }
 
     @Override

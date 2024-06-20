@@ -71,7 +71,7 @@ public class ColorPicker extends InteractiveComponent{
 
         if(invalidChoice){
             invalidChoice = false;
-            System.out.println("Invalid input. Type a number between 1 and " + availableUserColors.size());
+            System.out.println("\nInvalid input. Type a number between 1 and " + availableUserColors.size());
         }
 
         if (availableUserColors != null && !availableUserColors.isEmpty()) {

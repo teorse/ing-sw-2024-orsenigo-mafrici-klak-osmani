@@ -23,6 +23,9 @@ public class ConnectionState extends InteractiveState {
         TextUI.clearCMD();
         TextUI.displayGameTitle();
 
+        if (getMainComponent().getInputCounter() > 0)
+            System.out.println("\nIf you want to go back at the previous choice type: /back");
+
         super.print();
 
         getMainComponent().print();

@@ -60,7 +60,7 @@ public class LobbyCreator extends  InteractiveComponent {
 
     @Override
     public String getKeyword() {
-        return "CreateLobby";
+        return "createlobby";
     }
 
     @Override
@@ -81,7 +81,7 @@ public class LobbyCreator extends  InteractiveComponent {
         if (inputCounter == 0)
             System.out.println("\nEnter lobby name: ");
         else if (inputCounter == 1) {
-            System.out.println("Lobby name: "+lobbyName);
+            System.out.println("\nLobby name: "+lobbyName);
             System.out.println("\nEnter the number of wanted users in the game: ");
         }
         else if (inputCounter == 2) {

@@ -13,12 +13,15 @@ public class LoginSignUpState extends InteractiveState {
 
     @Override
     public void print() {
-            TextUI.clearCMD();
-            TextUI.displayGameTitle();
+        TextUI.clearCMD();
+        TextUI.displayGameTitle();
 
-            super.print();
+        if (getMainComponent().getInputCounter() > 0)
+            System.out.println("\nIf you want to go back at the previous choice type: /back");
 
-            getMainComponent().print();
+        super.print();
+
+        getMainComponent().print();
     }
 
     @Override

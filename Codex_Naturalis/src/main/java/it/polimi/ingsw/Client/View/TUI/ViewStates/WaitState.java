@@ -40,6 +40,8 @@ public class WaitState extends GameState {
         else
             TextUI.displayLastRound();
 
+        System.out.println("\nTo display the available commands type /help or /h");
+
         if (Game.getInstance().isSetupFinished()){
             for (Component component : postSetupComponents) {
                 component.print();

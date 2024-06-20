@@ -44,7 +44,7 @@ public class CardPoolZoom extends InteractiveComponent{
 
     @Override
     public String getKeyword() {
-        return "CardPool";
+        return "cardpoolzoom";
     }
 
     @Override

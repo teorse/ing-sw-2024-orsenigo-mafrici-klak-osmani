@@ -4,6 +4,7 @@ import it.polimi.ingsw.Client.Model.GameOver;
 import it.polimi.ingsw.Client.Model.LobbyUsers;
 import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.TerminalColor;
+import it.polimi.ingsw.Client.View.TUI.TextUI;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
 import it.polimi.ingsw.Server.Model.Lobby.LobbyUserColors;
@@ -20,6 +21,8 @@ public class GameOverView extends LiveComponent{
 
     @Override
     public void print() {
+        TextUI.displayGameOver();
+
         List<PlayerRecord> winners = GameOver.getInstance().getWinners();
         Map<String, LobbyUserColors> colorsMap = LobbyUsers.getInstance().getLobbyUserColorsMap();
 

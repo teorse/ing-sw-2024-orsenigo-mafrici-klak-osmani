@@ -28,11 +28,11 @@ public abstract class LobbyStates extends ComplexState {
 
     @Override
     public boolean handleInput(String input) {
-        if (input.equalsIgnoreCase("CHAT")) {
+        if (input.equalsIgnoreCase("/CHAT")) {
             model.setView(new ChatState(this));
             return true;
         }
-        else if(input.equalsIgnoreCase("QUITLOBBY")) {
+        else if(input.equalsIgnoreCase("/QUITLOBBY")) {
             model.quitLobby();
             model.getClientConnector().sendPacket(new CSPQuitLobby());
             model.setView(new LobbySelectionState());

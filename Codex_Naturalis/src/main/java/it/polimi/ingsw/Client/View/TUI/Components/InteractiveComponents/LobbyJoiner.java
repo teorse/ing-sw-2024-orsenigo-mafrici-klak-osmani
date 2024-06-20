@@ -51,7 +51,7 @@ public class LobbyJoiner extends InteractiveComponent {
 
     @Override
     public String getKeyword () {
-        return "JoinLobby";
+        return "joinlobby";
     }
 
     @Override

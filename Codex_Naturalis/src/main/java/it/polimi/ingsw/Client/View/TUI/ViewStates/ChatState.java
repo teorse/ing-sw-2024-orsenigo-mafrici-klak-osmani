@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class ChatState extends InteractiveState{
+public class ChatState extends InteractiveState {
+    //TODO fix the extends to provide the avaiable commands
     private final List<Component> passiveComponents;
 
     ViewState previousState;
@@ -37,6 +38,8 @@ public class ChatState extends InteractiveState{
     public void print() {
         TextUI.clearCMD();
         TextUI.displayChatState();
+
+        System.out.println("\nTo display the available commands type /help or /h");
 
         getMainComponent().print();
     }
