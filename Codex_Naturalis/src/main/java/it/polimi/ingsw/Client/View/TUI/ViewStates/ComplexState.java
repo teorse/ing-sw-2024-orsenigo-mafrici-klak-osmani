@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponentReturns;
 
@@ -12,8 +11,8 @@ import java.util.logging.Logger;
 public abstract class ComplexState extends InteractiveState{
     private final Map<String, InteractiveComponent> keywordToComponentMap;
     private InteractiveComponent activeComponent;
+    boolean printHelp;
     boolean commandNotFund;
-    boolean attemptToExitMainComponent;
 
     private final Logger logger;
 
@@ -24,6 +23,7 @@ public abstract class ComplexState extends InteractiveState{
 
         keywordToComponentMap = new HashMap<>();
         activeComponent = mainComponent;
+        printHelp = false;
         commandNotFund = false;
 
         for(InteractiveComponent secondaryComponent : secondaryComponents) {
@@ -47,17 +47,26 @@ public abstract class ComplexState extends InteractiveState{
 
     @Override
     public boolean handleInput(String input) {
+        attemptToExitMainComponent = false;
+        commandNotFund = false;
+        printHelp = false;
+
+        String keyword = null;
         if (input.charAt(0) == '/') {
-            if(keywordToComponentMap.isEmpty())
+            if (keywordToComponentMap.isEmpty())
                 return false;
 
-            String keyword;
             //Removes char '/' and cuts the string based on spaces
             String[] parts = input.substring(1).split(" ");
             //Picks the first word after '/' character
             keyword = parts[0];
+        }
 
-            if (!keywordToComponentMap.containsKey(keyword)) {
+        if(keyword != null && !keyword.equalsIgnoreCase("back")) {
+            if(keyword.equalsIgnoreCase("h") || keyword.equalsIgnoreCase("help")) {
+                printHelp = true;
+            }
+            else if (!keywordToComponentMap.containsKey(keyword)) {
                 commandNotFund = true;
             } else {
                 activeComponent = keywordToComponentMap.get(keyword);
@@ -110,6 +119,9 @@ public abstract class ComplexState extends InteractiveState{
 
         if (commandNotFund) {
             System.out.println("\nCommand not found");
+        }
+        else if (printHelp) {
+
         }
     }
 }

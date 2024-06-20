@@ -74,5 +74,6 @@ public class LobbyUsers extends Observable{
     //SETTERS
     public void setLobbyUserRecords(List<LobbyUserRecord> lobbyUserRecords) {
         this.lobbyUserRecords = lobbyUserRecords;
+        super.updateObservers();
     }
 }

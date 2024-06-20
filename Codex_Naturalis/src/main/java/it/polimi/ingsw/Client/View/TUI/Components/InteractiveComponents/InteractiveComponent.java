@@ -19,7 +19,7 @@ public abstract class InteractiveComponent extends LiveComponent {
         if(input.equalsIgnoreCase("BACK")) {
             if(inputCounter > 0){
                 inputCounter--;
-                return InteractiveComponentReturns.INCOMPLETE;
+                return InteractiveComponentReturns.COMPLETE;
             }
             else if(inputCounter == 0){
                 return InteractiveComponentReturns.QUIT;

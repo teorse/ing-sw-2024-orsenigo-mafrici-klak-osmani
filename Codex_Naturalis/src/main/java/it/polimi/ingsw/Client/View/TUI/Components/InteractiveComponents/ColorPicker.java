@@ -3,7 +3,6 @@ package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.Lobby;
 import it.polimi.ingsw.Client.Model.RefreshManager;
-import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPChangeColor;
 import it.polimi.ingsw.Server.Model.Lobby.LobbyUserColors;
@@ -13,7 +12,7 @@ import java.util.List;
 public class ColorPicker extends InteractiveComponent{
     //ATTRIBUTES
     private final ClientModel model;
-    private final List<LobbyUserColors> availableUserColors;
+    private List<LobbyUserColors> availableUserColors;
 
     private boolean invalidChoice;
 
@@ -25,7 +24,6 @@ public class ColorPicker extends InteractiveComponent{
     public ColorPicker(){
         super();
         this.model = ClientModel.getInstance();
-        this.availableUserColors = Lobby.getInstance().getAvailableUserColors();
 
         refreshObserved();
 
@@ -60,13 +58,14 @@ public class ColorPicker extends InteractiveComponent{
 
     @Override
     public void print() {
+        availableUserColors = Lobby.getInstance().getAvailableUserColors();
 
         if(invalidChoice){
             invalidChoice = false;
             System.out.println("Invalid input. Type a number between 1 and " + availableUserColors.size());
         }
 
-        if (!availableUserColors.isEmpty()) {
+        if (availableUserColors != null && !availableUserColors.isEmpty()) {
             System.out.println("\nAvailable colors: ");
             int i = 1;
             for (LobbyUserColors color : availableUserColors) {

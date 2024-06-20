@@ -38,5 +38,7 @@ public class LobbyView extends LiveComponent {
     }
 
     @Override
-    public void refreshObserved() {RefreshManager.getInstance().addObserved(this, lobbyUsers);}
+    public void refreshObserved() {
+        RefreshManager.getInstance().addObserved(this, lobbyUsers);
+    }
 }
