@@ -29,4 +29,10 @@ public abstract class InteractiveComponent extends LiveComponent {
 
 
     public abstract String getKeyword();
+
+    public abstract String getDescription();
+
+    public int getInputCounter() {
+        return inputCounter;
+    }
 }
