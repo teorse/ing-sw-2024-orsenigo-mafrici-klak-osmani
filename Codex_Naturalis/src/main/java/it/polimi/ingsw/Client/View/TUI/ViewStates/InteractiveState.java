@@ -26,7 +26,7 @@ public abstract class InteractiveState extends ViewState {
     public void print() {
         if(attemptToExitMainComponent) {
             attemptToExitMainComponent = false;
-            System.out.println("You can't go further back than this, please follow the instructions on screen.");
+            System.out.println("\nYou can't go further back than this, please follow the instructions on screen.");
         }
     }
 

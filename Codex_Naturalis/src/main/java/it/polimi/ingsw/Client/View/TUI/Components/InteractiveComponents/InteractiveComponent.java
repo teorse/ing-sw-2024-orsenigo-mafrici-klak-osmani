@@ -16,7 +16,7 @@ public abstract class InteractiveComponent extends LiveComponent {
     //METHODS
     public InteractiveComponentReturns handleInput(String input){
 
-        if(input.equalsIgnoreCase("BACK")) {
+        if(input.equalsIgnoreCase("/BACK")) {
             if(inputCounter > 0){
                 inputCounter--;
                 return InteractiveComponentReturns.COMPLETE;

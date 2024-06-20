@@ -30,8 +30,12 @@ public class LobbyCreator extends  InteractiveComponent {
         invalidLobbyName = false;
         invalidPlayerNumber = false;
 
-        if(input.equalsIgnoreCase("BACK"))
-            return super.handleInput(input);
+        InteractiveComponentReturns superReturn = super.handleInput(input);
+        if(superReturn == InteractiveComponentReturns.QUIT)
+            return superReturn;
+        else if (superReturn == InteractiveComponentReturns.COMPLETE) {
+            return InteractiveComponentReturns.INCOMPLETE;
+        }
 
         if (inputCounter == 0) {
             if (InputValidator.isNameValid(input)) {

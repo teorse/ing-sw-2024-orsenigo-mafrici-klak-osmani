@@ -21,8 +21,12 @@ public class GameManualStarter extends InteractiveComponent {
     @Override
     public InteractiveComponentReturns handleInput(String input) {
 
-        if(input.equalsIgnoreCase("BACK"))
-            return super.handleInput(input);
+        InteractiveComponentReturns superReturn = super.handleInput(input);
+        if(superReturn == InteractiveComponentReturns.QUIT)
+            return superReturn;
+        else if (superReturn == InteractiveComponentReturns.COMPLETE) {
+            return InteractiveComponentReturns.INCOMPLETE;
+        }
 
         if (MyPlayer.getInstance().isAdmin()) {
             if (LobbyUsers.getInstance().size() >= 2) {
@@ -55,7 +59,7 @@ public class GameManualStarter extends InteractiveComponent {
     public void print() {
         if(!MyPlayer.getInstance().isAdmin()) {
             if(LobbyUsers.getInstance().size() >= 2)
-                System.out.println("Target number of players reached!\nThe game will start soon.");
+                System.out.println("\nTarget number of players reached!\nThe game will start soon.");
         }
         else {
             if (LobbyUsers.getInstance().size() >= 2)

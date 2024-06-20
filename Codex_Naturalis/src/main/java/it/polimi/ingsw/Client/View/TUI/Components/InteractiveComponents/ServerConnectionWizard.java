@@ -110,7 +110,7 @@ public class ServerConnectionWizard extends InteractiveComponent {
 
         if(connectionTimedOut) {
             connectionTimedOut = false;
-            System.out.println("Could not connect to the Server.\nTry with another server ip.");
+            System.out.println("\nCould not connect to the Server.\nTry with another server ip.");
         }
 
         if (inputCounter == 0) {
@@ -124,11 +124,12 @@ public class ServerConnectionWizard extends InteractiveComponent {
 
             if (remoteException) {
                 remoteException = false;
-                System.out.println("An error occurred while connecting to the server, please check the logs.");
+                System.out.println("\nAn error occurred while connecting to the server, please check the logs.");
             }
             else if (malformedIp) {
                 malformedIp = false;
-                System.out.println("The provided IP is not correctly formatted, please type it again.");
+                System.out.println("\nThe provided IP is not correctly formatted, please type it again.");
+                System.out.println("Enter the IP address of the server, leave empty for localhost: ");
             }
             else
                 System.out.println("\nEnter the IP address of the server, leave empty for localhost: ");
