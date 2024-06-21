@@ -27,7 +27,7 @@ public class LogInSignUp extends InteractiveComponent {
 
 
     public LogInSignUp() {
-        super();
+        super(2);
         this.model = ClientModel.getInstance();
         credentials = new ArrayList<>();
 
@@ -53,11 +53,12 @@ public class LogInSignUp extends InteractiveComponent {
             return InteractiveComponentReturns.INCOMPLETE;
         }
 
+        int inputCounter = getInputCounter();
         if (inputCounter == 0) {
             // Validate the binary choice input
             if (InputValidator.validBinaryChoice(input)) {
                 choice = Integer.parseInt(input);
-                inputCounter++;
+                incrementInputCounter();
             }
             else
                 invalidBinaryChoice = true;
@@ -71,7 +72,7 @@ public class LogInSignUp extends InteractiveComponent {
                 //if the user decides to go back and change the previous input, they would have been unable to do so.
                 //By specifiying the index instead only the actual credentials are stored
                 credentials.addFirst(input);
-                inputCounter++;
+                incrementInputCounter();
             }
             else
                 invalidUsername = true;
@@ -94,7 +95,7 @@ public class LogInSignUp extends InteractiveComponent {
                 } else {
                     model.getClientConnector().sendPacket(new CSPSignUp(credentials.get(0), credentials.get(1)));
                 }
-                inputCounter++;
+                incrementInputCounter();
                 return InteractiveComponentReturns.COMPLETE;
             }
             else
@@ -121,7 +122,7 @@ public class LogInSignUp extends InteractiveComponent {
             signUpError = model.getSignUpError();
 
         if(logInError != null || signUpError != null){
-            inputCounter = 0;
+            resetInputCounter();
             credentials.clear();
         }
 
@@ -144,7 +145,7 @@ public class LogInSignUp extends InteractiveComponent {
             }
         }
 
-
+        int inputCounter = getInputCounter();
         if (inputCounter == 0) {
             System.out.println("\n" + """ 
                     Enter your choice:

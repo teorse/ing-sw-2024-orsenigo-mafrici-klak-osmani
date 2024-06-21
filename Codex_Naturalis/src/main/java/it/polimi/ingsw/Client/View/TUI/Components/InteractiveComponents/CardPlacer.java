@@ -8,7 +8,6 @@ import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPPlayCard;
 //todo review the code
 public class CardPlacer extends InteractiveComponent {
     //ATTRIBUTES
-    private int inputCounter;
     private final CardMaps cardMaps;
     private final CardsHeld cardsHeld;
     private final ClientModel model;
@@ -32,9 +31,8 @@ public class CardPlacer extends InteractiveComponent {
 
     //CONSTRUCTOR
     public CardPlacer(){
-        super();
+        super(3);
         this.model = ClientModel.getInstance();
-        inputCounter = 0;
         cardMaps = CardMaps.getInstance();
         cardsHeld = CardsHeld.getInstance();
 
@@ -78,10 +76,11 @@ public class CardPlacer extends InteractiveComponent {
 
         int maxBoardSide = (cardMaps.maxCoordinate() * 2) + 3;
 
+        int inputCounter = getInputCounter();
         if (inputCounter == 0) {
             if (InputValidator.checkInputBound(input,1, cardsHeld.getAmountHeld())) {
                 cardIndex = Integer.parseInt(input) - 1;
-                inputCounter++;
+                incrementInputCounter();
             }
             else
                 invalidCardIndex = true;
@@ -90,7 +89,7 @@ public class CardPlacer extends InteractiveComponent {
         } else if (inputCounter == 1) {
             if (input.length() == 1 && InputValidator.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide - 1)) {
                 chosenRow = input.charAt(0);
-                inputCounter++;
+                incrementInputCounter();
             }
             else
                 invalidRow = true;
@@ -99,12 +98,12 @@ public class CardPlacer extends InteractiveComponent {
         } else if (inputCounter == 2) {
             if (input.length() == 1 && InputValidator.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide - 1)) {
                 chosenCol = input.charAt(0);
-                inputCounter++;
+                incrementInputCounter();
                 int coordinatesChosen = cardMaps.coordinateIndexByCharIndexes(chosenRow, chosenCol, MyPlayer.getInstance().getUsername());
 
                 if(coordinatesChosen == -1){
                     wrongCoordinate = true;
-                    inputCounter = 1;
+                    decrementInputCounter();
                 }
                 else
                     coordinateIndex = coordinatesChosen;
@@ -157,6 +156,8 @@ public class CardPlacer extends InteractiveComponent {
 
     @Override
     public void print(){
+        int inputCounter = getInputCounter();
+
         if(inputCounter == 0){
             System.out.println("\nChoose a card from your hand to place.");
         } else if (inputCounter == 1) {

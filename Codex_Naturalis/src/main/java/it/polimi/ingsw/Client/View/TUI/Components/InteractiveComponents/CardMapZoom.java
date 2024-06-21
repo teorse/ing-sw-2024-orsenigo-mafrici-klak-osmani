@@ -15,7 +15,6 @@ public class CardMapZoom extends InteractiveComponent{
     private final Players players;
     private final CardMaps cardMaps;
 
-    private int inputCounter;
     private String chosenCardMapsOwner;
     private char row;
     private char column;
@@ -27,7 +26,7 @@ public class CardMapZoom extends InteractiveComponent{
 
     //CONSTRUCTOR
     public CardMapZoom() {
-        super();
+        super(2);
         players = Players.getInstance();
         cardMaps = CardMaps.getInstance();
 
@@ -61,6 +60,7 @@ public class CardMapZoom extends InteractiveComponent{
      */
     @Override
     public InteractiveComponentReturns handleInput(String input) {
+        int inputCounter = getInputCounter();
 
         InteractiveComponentReturns superReturn = super.handleInput(input);
         if(superReturn == InteractiveComponentReturns.QUIT)
@@ -74,7 +74,7 @@ public class CardMapZoom extends InteractiveComponent{
                 //Username of the chosen cardMap's owner
                 chosenCardMapsOwner = players.getUsernameByIndex(Integer.parseInt(input) - 1);
                 // Increment input counter
-                inputCounter++;
+                incrementInputCounter();
 
                 // Print current state
                 print();
@@ -90,7 +90,7 @@ public class CardMapZoom extends InteractiveComponent{
                 // Choose row
                 row = input.charAt(0);
                 // Increment input counter
-                inputCounter++;
+                incrementInputCounter();
 
                 // Print current state
                 print();
@@ -109,7 +109,7 @@ public class CardMapZoom extends InteractiveComponent{
                 new PlacedCardView(card).print();
 
                 // Reset the input counter
-                inputCounter = 0;
+                resetInputCounter();
                 return InteractiveComponentReturns.COMPLETE;
             }
         }
@@ -140,6 +140,8 @@ public class CardMapZoom extends InteractiveComponent{
 
     @Override
     public void print() {
+        int inputCounter = getInputCounter();
+
         if(inputCounter == 0){
             System.out.println("\nSelect a player username to zoom its CardMap by inserting an integer");
             int i = 1;

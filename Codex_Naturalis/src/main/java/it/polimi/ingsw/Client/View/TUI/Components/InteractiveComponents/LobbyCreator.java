@@ -18,7 +18,7 @@ public class LobbyCreator extends  InteractiveComponent {
 
 
     public LobbyCreator() {
-        super();
+        super(1);
         this.model = ClientModel.getInstance();
         nameAlreadyTaken = null;
         refreshObserved();
@@ -37,10 +37,11 @@ public class LobbyCreator extends  InteractiveComponent {
             return InteractiveComponentReturns.INCOMPLETE;
         }
 
+        int inputCounter = getInputCounter();
         if (inputCounter == 0) {
             if (InputValidator.isNameValid(input)) {
                 lobbyName = input;
-                inputCounter++;
+                incrementInputCounter();
             } else
                 invalidLobbyName = true;
 
@@ -49,7 +50,7 @@ public class LobbyCreator extends  InteractiveComponent {
             if (InputValidator.checkInputBound(input, 2, 4)) {
                 targetNumberUsers = Integer.parseInt(input);
                 model.getClientConnector().sendPacket(new CSPStartLobby(lobbyName, targetNumberUsers));
-                inputCounter++;
+                incrementInputCounter();
                 return InteractiveComponentReturns.COMPLETE;
             } else {
                 invalidPlayerNumber = true;
@@ -74,6 +75,7 @@ public class LobbyCreator extends  InteractiveComponent {
         if(nameAlreadyTaken == null)
             nameAlreadyTaken = model.getJoinLobbyError();
 
+        int inputCounter = getInputCounter();
         if(nameAlreadyTaken != null)
             inputCounter = 0;
 

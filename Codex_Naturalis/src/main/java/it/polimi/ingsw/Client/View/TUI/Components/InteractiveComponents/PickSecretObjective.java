@@ -8,7 +8,7 @@ import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPPickObjecti
 public class PickSecretObjective extends InteractiveComponent {
 
     public PickSecretObjective() {
-        super();
+        super(0);
     }
 
     @Override

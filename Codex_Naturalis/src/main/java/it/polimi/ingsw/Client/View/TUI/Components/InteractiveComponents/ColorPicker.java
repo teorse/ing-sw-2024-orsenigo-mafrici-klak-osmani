@@ -22,7 +22,7 @@ public class ColorPicker extends InteractiveComponent{
 
     //CONSTRUCTOR
     public ColorPicker(){
-        super();
+        super(0);
         this.model = ClientModel.getInstance();
 
         refreshObserved();

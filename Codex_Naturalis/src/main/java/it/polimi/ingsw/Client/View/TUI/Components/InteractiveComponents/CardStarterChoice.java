@@ -14,7 +14,7 @@ public class CardStarterChoice extends InteractiveComponent {
     private boolean invalidBinaryChoice;
 
     public CardStarterChoice() {
-        super();
+        super(0);
         this.model = ClientModel.getInstance();
         //todo check if there is no scenario where .getFirst() will cause null pointer.
         this.cardStarter = CardsHeld.getInstance().getCardsHeld().getFirst();

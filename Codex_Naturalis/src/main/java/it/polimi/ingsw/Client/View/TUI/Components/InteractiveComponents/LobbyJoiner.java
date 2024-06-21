@@ -19,7 +19,7 @@ public class LobbyJoiner extends InteractiveComponent {
     private final ClientModel model;
 
     public LobbyJoiner() {
-        super();
+        super(0);
         this.lobbyPreviews = LobbyPreviews.getInstance();
         this.model = ClientModel.getInstance();
 

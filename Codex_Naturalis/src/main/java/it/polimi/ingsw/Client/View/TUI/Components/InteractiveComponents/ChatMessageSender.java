@@ -39,7 +39,7 @@ public class ChatMessageSender extends InteractiveComponent{
 
     //CONSTRUCTOR
     public ChatMessageSender(){
-        super();
+        super(1);
         chat = Chat.getInstance();
         observables = new ArrayList<>();
         observables.add(chat);
@@ -118,6 +118,7 @@ public class ChatMessageSender extends InteractiveComponent{
             }
         }
 
+        int inputCounter = getInputCounter();
         if (inputCounter == 0) {
             // Handle initial choice input (Public or Private Chat)
             if (InputValidator.validBinaryChoice(input)) {
@@ -136,7 +137,7 @@ public class ChatMessageSender extends InteractiveComponent{
                     inConversation = true;
                     return InteractiveComponentReturns.INCOMPLETE;
                 }
-                inputCounter++;
+                incrementInputCounter();
             } else {
                 // Error handling for invalid initial choice input
                 invalidBinaryChoice = true;
@@ -158,7 +159,7 @@ public class ChatMessageSender extends InteractiveComponent{
 
                 inConversation = true;
 
-                inputCounter++;
+                incrementInputCounter();
                 return InteractiveComponentReturns.INCOMPLETE;
             } else {
                 // Error handling for invalid private chat recipient selection
@@ -248,6 +249,7 @@ public class ChatMessageSender extends InteractiveComponent{
         }
 
         //This print is executed if still has to join any conversation
+        int inputCounter = getInputCounter();
         if (inputCounter == 0) {
             if(invalidBinaryChoice) {
                 System.out.println("You provided an invalid input, please select 1 or 2.");

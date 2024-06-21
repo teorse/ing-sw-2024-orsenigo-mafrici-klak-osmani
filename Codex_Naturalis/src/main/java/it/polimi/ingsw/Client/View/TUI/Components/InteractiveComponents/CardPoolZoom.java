@@ -13,7 +13,7 @@ public class CardPoolZoom extends InteractiveComponent{
 
 
     public CardPoolZoom() {
-        super();
+        super(1);
         invalidInput = false;
 
         refreshObserved();
@@ -23,21 +23,23 @@ public class CardPoolZoom extends InteractiveComponent{
     public InteractiveComponentReturns handleInput(String input) {
 
         InteractiveComponentReturns superReturn = super.handleInput(input);
-        if(superReturn == InteractiveComponentReturns.QUIT)
-            return superReturn;
-        else if (superReturn == InteractiveComponentReturns.COMPLETE) {
-            return InteractiveComponentReturns.INCOMPLETE;
-        }
 
-        if (InputValidator.validBinaryChoice(input)) {
-            if (Integer.parseInt(input) == 1)
-                choice = CardPoolTypes.RESOURCE;
-            else
-                choice = CardPoolTypes.GOLDEN;
-            inputCounter++;
+        if(getInputCounter() == 0) {
+            if (superReturn == InteractiveComponentReturns.QUIT)
+                return superReturn;
+            else if (superReturn == InteractiveComponentReturns.COMPLETE) {
+                return InteractiveComponentReturns.INCOMPLETE;
+            }
+
+            if (InputValidator.validBinaryChoice(input)) {
+                if (Integer.parseInt(input) == 1)
+                    choice = CardPoolTypes.RESOURCE;
+                else
+                    choice = CardPoolTypes.GOLDEN;
+                incrementInputCounter();
+            } else
+                invalidInput = true;
         }
-        else
-            invalidInput = true;
 
         return InteractiveComponentReturns.INCOMPLETE;
     }
@@ -64,6 +66,8 @@ public class CardPoolZoom extends InteractiveComponent{
 
     @Override
     public void print() {
+        int inputCounter = getInputCounter();
+
         if(inputCounter == 0) {
 
             if(invalidInput)

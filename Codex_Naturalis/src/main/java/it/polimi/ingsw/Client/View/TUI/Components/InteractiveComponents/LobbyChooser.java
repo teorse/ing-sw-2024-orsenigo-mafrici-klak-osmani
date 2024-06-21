@@ -10,12 +10,13 @@ public class LobbyChooser extends InteractiveComponent{
     private boolean wrongBinaryChoice;
 
     public LobbyChooser() {
-        super();
+        super(1);
         refreshObserved();
     }
 
     @Override
     public InteractiveComponentReturns handleInput(String input) {
+        int inputCounter = getInputCounter();
         if (inputCounter == 0) {
 
             InteractiveComponentReturns superReturn = super.handleInput(input);
@@ -32,7 +33,7 @@ public class LobbyChooser extends InteractiveComponent{
                 else if (Integer.parseInt(input) == 2)
                     subComponent = new LobbyJoiner();
 
-                inputCounter++;
+                incrementInputCounter();
             } else
                 wrongBinaryChoice = true;
 
@@ -42,7 +43,7 @@ public class LobbyChooser extends InteractiveComponent{
             InteractiveComponentReturns result = subComponent.handleInput(input);
 
             if(result.equals(InteractiveComponentReturns.QUIT)) {
-                inputCounter--;
+                decrementInputCounter();
                 subComponent.cleanObserved();
                 return InteractiveComponentReturns.INCOMPLETE;
             }
@@ -71,6 +72,7 @@ public class LobbyChooser extends InteractiveComponent{
             System.out.println("\nWrong binary choice. Please type 1 or 2.");
         }
 
+        int inputCounter = getInputCounter();
         if(inputCounter == 0) {
             System.out.println("\n" +
                     """

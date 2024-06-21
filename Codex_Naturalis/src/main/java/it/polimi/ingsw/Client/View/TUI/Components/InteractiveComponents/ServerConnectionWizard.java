@@ -21,7 +21,7 @@ public class ServerConnectionWizard extends InteractiveComponent {
     private boolean remoteException;
 
     public ServerConnectionWizard() {
-        super();
+        super(1);
         logger = Logger.getLogger(ServerConnectionWizard.class.getName());
         logger.info("Initializing Server Connection wizard");
         malformedIp = false;
@@ -35,6 +35,9 @@ public class ServerConnectionWizard extends InteractiveComponent {
 
     @Override
     public InteractiveComponentReturns handleInput(String input) {
+        connectionTimedOut = false;
+        remoteException = false;
+        malformedIp = false;
 
         InteractiveComponentReturns superReturn = super.handleInput(input);
         if(superReturn == InteractiveComponentReturns.QUIT)
@@ -43,10 +46,11 @@ public class ServerConnectionWizard extends InteractiveComponent {
             return InteractiveComponentReturns.INCOMPLETE;
         }
 
+        int inputCounter = getInputCounter();
         if (inputCounter == 0) {
             if (InputValidator.validBinaryChoice(input)) {
                 choice = Integer.parseInt(input);
-                inputCounter++;
+                incrementInputCounter();
             }
             return InteractiveComponentReturns.INCOMPLETE;
 
@@ -65,7 +69,7 @@ public class ServerConnectionWizard extends InteractiveComponent {
                     ClientModel model = ClientModel.getInstance();
                     System.out.println("Attempting connection to server");
                     model.setClientConnector(new ClientConnectorRMI(input, new ClientController(model), model));
-                    inputCounter++;
+                    incrementInputCounter();
                     return InteractiveComponentReturns.COMPLETE;
                 }
                 catch (ConnectException connectException) {
@@ -85,7 +89,7 @@ public class ServerConnectionWizard extends InteractiveComponent {
                     ClientModel model = ClientModel.getInstance();
                     System.out.println("Attempting connection to server");
                     model.setClientConnector(new ClientConnectorSocket(input, new ClientController(model), model));
-                    inputCounter++;
+                    incrementInputCounter();
                     return InteractiveComponentReturns.COMPLETE;
                 } catch (SocketTimeoutException socketTimeoutException) {
                     connectionTimedOut = true;
@@ -114,10 +118,10 @@ public class ServerConnectionWizard extends InteractiveComponent {
         logger.info("Printing ServerConnectionWizard");
 
         if(connectionTimedOut) {
-            connectionTimedOut = false;
             System.out.println("\nCould not connect to the Server.\nTry with another server ip.");
         }
 
+        int inputCounter = getInputCounter();
         if (inputCounter == 0) {
             logger.fine("printing input counter = 0");
             System.out.println("\n" +  """
@@ -128,11 +132,9 @@ public class ServerConnectionWizard extends InteractiveComponent {
             logger.fine("printing input counter = 1");
 
             if (remoteException) {
-                remoteException = false;
                 System.out.println("\nAn error occurred while connecting to the server, please check the logs.");
             }
             else if (malformedIp) {
-                malformedIp = false;
                 System.out.println("\nThe provided IP is not correctly formatted, please type it again.");
                 System.out.println("Enter the IP address of the server, leave empty for localhost: ");
             }

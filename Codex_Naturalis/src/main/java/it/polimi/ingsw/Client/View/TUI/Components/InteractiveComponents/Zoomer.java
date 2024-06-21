@@ -2,7 +2,6 @@ package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
 import it.polimi.ingsw.Client.Model.Game;
 import it.polimi.ingsw.Client.View.TUI.Components.CardsHeldView;
-import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.Client.View.InputValidator;
 
 //todo further review zoomer class
@@ -13,7 +12,7 @@ public class Zoomer extends InteractiveComponent {
     private boolean invalidInput;
 
     public Zoomer() {
-        super();
+        super(1);
 
         refreshObserved();
 
@@ -34,18 +33,19 @@ public class Zoomer extends InteractiveComponent {
             return InteractiveComponentReturns.INCOMPLETE;
         }
 
+        int inputCounter = getInputCounter();
         if(inputCounter == 0){
             if (InputValidator.checkInputBound(input, 1, 3)) {
                 // Parse choice
                 choice = Integer.parseInt(input);
                 if (choice == 1) {
                     subComponent = new CardMapZoom();
-                    inputCounter++;
+                    incrementInputCounter();
                 } else if (choice == 2) {
-                    inputCounter++;
+                    incrementInputCounter();
                 } else if (choice == 3) {
                     subComponent = new CardPoolZoom();
-                    inputCounter++;
+                    incrementInputCounter();
                 }
             }
             else
@@ -58,7 +58,7 @@ public class Zoomer extends InteractiveComponent {
             //returns false if the user has still to complete all interactions in the subComponent
             InteractiveComponentReturns subcomponentResult = subComponent.handleInput(input);
             if(subcomponentResult.equals(InteractiveComponentReturns.QUIT))
-                inputCounter--;
+                decrementInputCounter();
 
             return subcomponentResult;
         }
@@ -83,6 +83,7 @@ public class Zoomer extends InteractiveComponent {
         if(!Game.getInstance().isSetupFinished())
             return;
 
+        int inputCounter = getInputCounter();
         if(inputCounter == 0) {
             System.out.println("\n" + """
                     Enter what do you want to zoom:

@@ -12,7 +12,7 @@ public class GameManualStarter extends InteractiveComponent {
     private boolean notEnoughPlayers;
 
     public GameManualStarter() {
-        super();
+        super(0);
         refreshObserved();
         wrongCommand = false;
         notEnoughPlayers = false;

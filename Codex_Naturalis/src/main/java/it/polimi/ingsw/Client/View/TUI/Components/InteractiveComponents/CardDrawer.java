@@ -38,7 +38,7 @@ public class CardDrawer extends InteractiveComponent{
 
     //CONSTRUCTOR
     public CardDrawer() {
-        super();
+        super(1);
 
         this.connection = ClientModel.getInstance().getClientConnector();
         this.cardPools = CardPools.getInstance();
@@ -92,6 +92,7 @@ public class CardDrawer extends InteractiveComponent{
             return InteractiveComponentReturns.INCOMPLETE;
         }
 
+        int inputCounter = getInputCounter();
         if (inputCounter == 0) {
             // Check if the input is a binary choice
             if (InputValidator.validBinaryChoice(input)) {
@@ -102,7 +103,7 @@ public class CardDrawer extends InteractiveComponent{
                     cardPoolChoice = CardPoolTypes.GOLDEN;
                 }
                 // Increment input counter
-                inputCounter++;
+                incrementInputCounter();
 
                 return InteractiveComponentReturns.INCOMPLETE;
             }
@@ -166,6 +167,7 @@ public class CardDrawer extends InteractiveComponent{
      */
     @Override
     public void print() {
+        int inputCounter = getInputCounter();
         if (inputCounter == 0) {
             // Print the available cards in both RESOURCE and GOLDEN pools
             new CardPoolView(CardPoolTypes.RESOURCE).print();
@@ -182,13 +184,13 @@ public class CardDrawer extends InteractiveComponent{
                 // If resource pool is empty, force choice to GOLDEN pool and reprint
                 System.out.println("\nYou can draw only from the Golden deck");
                 cardPoolChoice = CardPoolTypes.GOLDEN;
-                inputCounter++;
+                incrementInputCounter();
                 print();
             } else {
                 // If golden pool is empty, force choice to RESOURCE pool and reprint
                 System.out.println("\nYou can draw only from the Resource deck");
                 cardPoolChoice = CardPoolTypes.RESOURCE;
-                inputCounter++;
+                incrementInputCounter();
                 print();
             }
         } else if (inputCounter == 1 && cardPoolChoice == CardPoolTypes.RESOURCE) {
