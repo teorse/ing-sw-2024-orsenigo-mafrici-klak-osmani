@@ -15,16 +15,19 @@ public class DrawState extends GameState {
     private final Logger logger;
 
     public DrawState() {
-        super(new CardPlacer(), new ArrayList<>(){{add(new Zoomer());}});
-        logger = Logger.getLogger(WaitState.class.getName());
+        super(new CardDrawer(), new ArrayList<>(){{add(new Zoomer());}});
+        logger = Logger.getLogger(DrawState.class.getName());
 
         passiveComponents = new ArrayList<>();
+
+        if(Game.getInstance().isSetupFinished()){
+            passiveComponents.add(new SharedObjectiveView());
+            passiveComponents.add(new SecretObjectiveView());
+            passiveComponents.add(new ScoreBoardView());
+            passiveComponents.add(new CardMapView());
+        }
+
         passiveComponents.add(new ChatNotification());
-        passiveComponents.add(new SharedObjectiveView());
-        passiveComponents.add(new SecretObjectiveView());
-        passiveComponents.add(new ScoreBoardView());
-        passiveComponents.add(new CardMapView());
-        passiveComponents.add(new TurnShower());
     }
 
     @Override
@@ -45,6 +48,7 @@ public class DrawState extends GameState {
 
     @Override
     public void refreshObservables() {
+        super.refreshObservables();
         for(LiveComponent component : passiveComponents){
             component.refreshObserved();
         }

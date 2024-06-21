@@ -169,12 +169,12 @@ public class CardDrawer extends InteractiveComponent{
     public void print() {
         int inputCounter = getInputCounter();
         if (inputCounter == 0) {
-            // Print the available cards in both RESOURCE and GOLDEN pools
-            new CardPoolView(CardPoolTypes.RESOURCE).print();
-            new CardPoolView(CardPoolTypes.GOLDEN).print();
 
             // Prompt user to choose from which pool they want to draw a card
             if (!isResourceOver && !isGoldenOver) {
+                // Print the available cards in both RESOURCE and GOLDEN pools
+                new CardPoolView(CardPoolTypes.RESOURCE).print();
+                new CardPoolView(CardPoolTypes.GOLDEN).print();
                 System.out.println("\n" +
                         """
                         Enter from which pool you want to draw:
@@ -182,12 +182,14 @@ public class CardDrawer extends InteractiveComponent{
                          2 - Golden""");
             } else if (isResourceOver) {
                 // If resource pool is empty, force choice to GOLDEN pool and reprint
+                new CardPoolView(CardPoolTypes.GOLDEN).print();
                 System.out.println("\nYou can draw only from the Golden deck");
                 cardPoolChoice = CardPoolTypes.GOLDEN;
                 incrementInputCounter();
                 print();
             } else {
                 // If golden pool is empty, force choice to RESOURCE pool and reprint
+                new CardPoolView(CardPoolTypes.RESOURCE).print();
                 System.out.println("\nYou can draw only from the Resource deck");
                 cardPoolChoice = CardPoolTypes.RESOURCE;
                 incrementInputCounter();
