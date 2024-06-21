@@ -116,6 +116,7 @@ public class ServerConnectionWizard extends InteractiveComponent {
     @Override
     public void print() {
         logger.info("Printing ServerConnectionWizard");
+        super.print();
 
         if(connectionTimedOut) {
             System.out.println("\nCould not connect to the Server.\nTry with another server ip.");

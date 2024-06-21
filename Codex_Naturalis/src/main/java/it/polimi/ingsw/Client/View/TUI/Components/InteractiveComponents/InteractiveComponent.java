@@ -60,4 +60,10 @@ public abstract class InteractiveComponent extends LiveComponent {
     void resetInputCounter(){
         inputCounter = 0;
     }
+
+    @Override
+    public void print() {
+        if(inputCounter > 0 && inputCounter <= maxInputCounter)
+            System.out.println("\nIf you want to go back at the previous choice type: /back");
+    }
 }

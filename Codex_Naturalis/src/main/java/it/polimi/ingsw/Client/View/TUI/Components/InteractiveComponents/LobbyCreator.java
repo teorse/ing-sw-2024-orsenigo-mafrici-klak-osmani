@@ -72,6 +72,8 @@ public class LobbyCreator extends  InteractiveComponent {
     //TODO move the update of the boolean in the handle input
     @Override
     public void print() {
+        super.print();
+
         if(nameAlreadyTaken == null)
             nameAlreadyTaken = model.getJoinLobbyError();
 
@@ -99,7 +101,6 @@ public class LobbyCreator extends  InteractiveComponent {
         if(nameAlreadyTaken != null){
             System.out.println("You can't use "+lobbyName+" as a name for the lobby, choose a name that is not already taken.");
         }
-
     }
 
     @Override

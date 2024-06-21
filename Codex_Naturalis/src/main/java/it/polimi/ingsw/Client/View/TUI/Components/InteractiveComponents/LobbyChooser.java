@@ -82,6 +82,8 @@ public class LobbyChooser extends InteractiveComponent{
         }
 
         else if(inputCounter == 1){
+            if(subComponent.getInputCounter() == 0)
+                System.out.println("\nType /back to go to the previous menu");
             subComponent.print();
         }
     }

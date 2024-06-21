@@ -125,8 +125,8 @@ public abstract class ComplexState extends InteractiveState{
         else if (printHelp) {
             if (!keywordToComponentMap.isEmpty()) {
                 System.out.println("\nThese are the available commands:");
-                if (activeComponent.getInputCounter() > 0)
-                    System.out.println("/back -> to go back at the previous choice");
+                if (activeComponent.getInputCounter() == 0 && !activeComponent.equals(getMainComponent()))
+                    System.out.println("/back -> to go back to the previous screen");
                 for (String keyword : keywordToComponentMap.keySet()) {
                     System.out.println(keywordToComponentMap.get(keyword).getDescription());
                 }

@@ -155,5 +155,7 @@ public class CardMapZoom extends InteractiveComponent{
         else if(inputCounter == 2){
             System.out.println("\nChoose a COLUMN to zoom the card.");
         }
+
+        super.print();
     }
 }

@@ -195,6 +195,8 @@ public class CardPlacer extends InteractiveComponent {
             invalidCardIndex = false;
             System.out.println("The card index provided is not a valid index.\nPlease type a valid index");
         }
+
+        super.print();
     }
 
     private void sendPacket(){
