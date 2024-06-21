@@ -39,8 +39,6 @@ public class ChatState extends InteractiveState {
         TextUI.clearCMD();
         TextUI.displayChatState();
 
-        System.out.println("\nTo display the available commands type /help or /h");
-
         getMainComponent().print();
     }
 

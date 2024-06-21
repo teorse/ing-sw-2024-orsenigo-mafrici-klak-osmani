@@ -19,8 +19,6 @@ public class StarterPlaceState extends GameState {
         TextUI.clearCMD();
         TextUI.displayGameTitle();
 
-        System.out.println("\nTo display the available commands type /help or /h");
-
         cardsHeld.print();
         getActiveComponent().print();
         super.print();

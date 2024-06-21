@@ -28,7 +28,7 @@ public abstract class ComplexState extends InteractiveState{
         commandNotFund = false;
 
         for(InteractiveComponent secondaryComponent : secondaryComponents) {
-            keywordToComponentMap.put(secondaryComponent.getKeyword(), secondaryComponent);
+            keywordToComponentMap.put(secondaryComponent.getKeyword().toLowerCase(), secondaryComponent);
         }
     }
 
@@ -60,7 +60,7 @@ public abstract class ComplexState extends InteractiveState{
             //Removes char '/' and cuts the string based on spaces
             String[] parts = input.substring(1).toLowerCase().split(" ");
             //Picks the first word after '/' character
-            keyword = parts[0];
+            keyword = parts[0].toLowerCase();
         }
 
         if(keyword != null && !keyword.equalsIgnoreCase("back")) {
@@ -115,6 +115,9 @@ public abstract class ComplexState extends InteractiveState{
             logger.fine("active component is not null");
 
         activeComponent.print();
+
+        if(!keywordToComponentMap.isEmpty())
+            System.out.println("\nTo display the available commands type /help or /h");
 
         super.print();
 
