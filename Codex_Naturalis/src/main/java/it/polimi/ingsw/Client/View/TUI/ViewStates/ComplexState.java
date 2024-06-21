@@ -114,8 +114,6 @@ public abstract class ComplexState extends InteractiveState{
         else
             logger.fine("active component is not null");
 
-        activeComponent.print();
-
         if(!keywordToComponentMap.isEmpty())
             System.out.println("\nTo display the available commands type /help or /h");
 
