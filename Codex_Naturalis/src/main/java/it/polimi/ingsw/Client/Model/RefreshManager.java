@@ -45,6 +45,10 @@ public class RefreshManager implements Observer {
         }
 
 
+        addObserved(observed);
+    }
+
+    public synchronized void addObserved(Observable observed){
         if(!observableMap.containsKey(observed)) {
             observableMap.put(observed, 1);
             observed.subscribe(this);
