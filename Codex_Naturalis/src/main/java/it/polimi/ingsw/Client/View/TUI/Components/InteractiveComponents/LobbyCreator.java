@@ -11,7 +11,6 @@ public class LobbyCreator extends  InteractiveComponent {
     private String lobbyName;
     private final ClientModel model;
 
-    private boolean invalidLobbyName;
     private boolean invalidPlayerNumber;
 
     private ErrorsDictionary nameAlreadyTaken;
@@ -27,7 +26,6 @@ public class LobbyCreator extends  InteractiveComponent {
 
     @Override
     public InteractiveComponentReturns handleInput(String input) {
-        invalidLobbyName = false;
         invalidPlayerNumber = false;
 
         InteractiveComponentReturns superReturn = super.handleInput(input);
@@ -39,12 +37,8 @@ public class LobbyCreator extends  InteractiveComponent {
 
         int inputCounter = getInputCounter();
         if (inputCounter == 0) {
-            if (InputValidator.isNameValid(input)) {
-                lobbyName = input;
-                incrementInputCounter();
-            } else
-                invalidLobbyName = true;
-
+            lobbyName = input;
+            incrementInputCounter();
         }
         else if (inputCounter == 1) {
             if (InputValidator.checkInputBound(input, 2, 4)) {
@@ -92,9 +86,6 @@ public class LobbyCreator extends  InteractiveComponent {
             System.out.println("Waiting for server Response.");
         }
 
-        if(invalidLobbyName){
-            System.out.println("Invalid name. The name must have length between 4 and 14 characters, and start with a letter!.");
-        }
         if(invalidPlayerNumber){
             System.out.println("The number of users must be between 2 and 4!");
         }
