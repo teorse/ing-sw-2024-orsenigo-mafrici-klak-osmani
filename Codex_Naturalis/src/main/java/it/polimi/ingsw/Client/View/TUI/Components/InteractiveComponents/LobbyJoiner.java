@@ -61,6 +61,9 @@ public class LobbyJoiner extends InteractiveComponent {
 
     @Override
     public void print () {
+
+        super.print();
+
         System.out.println("\nLOBBY PREVIEWS");
 
         if(lobbyPreviews.getLobbyPreviews() != null) {

@@ -209,5 +209,7 @@ public class CardDrawer extends InteractiveComponent{
             invalidCardIndex = false;
             System.out.println("The card index provided is not a valid input.\nPlease try again.");
         }
+
+        super.print();
     }
 }

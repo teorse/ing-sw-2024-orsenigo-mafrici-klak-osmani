@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class ChatState extends InteractiveState {
-    //TODO fix the extends to provide the avaiable commands
+    //TODO fix the extends to provide the available commands
     private final List<Component> passiveComponents;
 
     ViewState previousState;

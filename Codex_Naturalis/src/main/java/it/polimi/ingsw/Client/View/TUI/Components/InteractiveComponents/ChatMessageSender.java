@@ -284,5 +284,7 @@ public class ChatMessageSender extends InteractiveComponent{
                 invalidInputBoundChoice = false;
             }
         }
+
+        super.print();
     }
 }

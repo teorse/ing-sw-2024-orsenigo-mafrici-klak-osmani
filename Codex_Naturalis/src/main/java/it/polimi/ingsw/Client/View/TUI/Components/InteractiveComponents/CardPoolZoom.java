@@ -84,5 +84,7 @@ public class CardPoolZoom extends InteractiveComponent{
             else
                 new CardPoolView(CardPoolTypes.GOLDEN).print();
         }
+
+        super.print();
     }
 }
