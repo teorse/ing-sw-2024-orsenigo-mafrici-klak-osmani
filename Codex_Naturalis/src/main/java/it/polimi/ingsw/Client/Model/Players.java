@@ -2,12 +2,15 @@ package it.polimi.ingsw.Client.Model;
 
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Players extends Observable{
     //SINGLETON PATTERN
     private static Players INSTANCE;
-    private Players(){}
+    private Players(){
+        players = new ArrayList<>();
+    }
     public static Players getInstance(){
         if(INSTANCE == null){
             INSTANCE = new Players();
@@ -20,7 +23,7 @@ public class Players extends Observable{
 
 
     //ATTRIBUTES
-    private List<PlayerRecord> players;
+    private final List<PlayerRecord> players;
 
 
 
@@ -28,10 +31,14 @@ public class Players extends Observable{
 
     //GETTERS
     public List<PlayerRecord> getPlayers() {
-        return players;
+        synchronized (players) {
+            return new ArrayList<>(players);
+        }
     }
     public int getPlayersSize(){
-        return players.size();
+        synchronized (players) {
+            return players.size();
+        }
     }
     public String getUsernameByIndex(int index){
         return players.get(index).username();
@@ -43,7 +50,10 @@ public class Players extends Observable{
 
     //SETTERS
     public void setPlayers(List<PlayerRecord> players) {
-        this.players = players;
+        synchronized (this.players) {
+            this.players.clear();
+            this.players.addAll(players);
+        }
         super.updateObservers();
     }
     public void setSpecificPlayer(PlayerRecord player){

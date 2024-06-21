@@ -83,9 +83,10 @@ public class RefreshManager implements Observer {
     }
 
     public synchronized void resetObservables(){
-        for(Map.Entry<Observable, Integer> entry : observableMap.entrySet()) {
-            observableMap.remove(entry.getKey());
-            entry.getKey().unsubscribe(this);
+        List<Observable> observables = new ArrayList<>(observableMap.keySet());
+        for(Observable observable : observables){
+            observableMap.remove(observable);
+            observable.unsubscribe(this);
         }
 
         observableMap.clear();
