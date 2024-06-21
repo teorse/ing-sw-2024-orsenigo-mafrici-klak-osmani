@@ -2,10 +2,17 @@ package it.polimi.ingsw.Client.Model;
 
 import it.polimi.ingsw.Server.Model.Game.Player.PlayerStates;
 
+import java.util.logging.Logger;
+
 public class MyPlayer extends Observable{
     //SINGLETON PATTERN
     private static MyPlayer INSTANCE;
     private MyPlayer(){
+        super();
+
+        logger = Logger.getLogger(MyPlayer.class.getName());
+        logger.info("Initializing MyPlayer class.");
+
         username = null;
         isAdmin = false;
         newState = false;
@@ -28,6 +35,8 @@ public class MyPlayer extends Observable{
     private final Object PlayerGameStateLock = new Object();
     private PlayerStates myPlayerGameState;
     private boolean newState;
+
+    private final Logger logger;
 
 
 
@@ -62,9 +71,14 @@ public class MyPlayer extends Observable{
         super.updateObservers();
     }
     public void setMyPlayerGameState(PlayerStates myPlayerGameState) {
+        logger.info("Setting My Player Game State to: "+myPlayerGameState);
+
         synchronized (PlayerGameStateLock) {
             this.myPlayerGameState = myPlayerGameState;
             newState = true;
+
+            logger.fine("Updating observers");
+            super.updateObservers();
         }
     }
     public void setAdmin(boolean admin) {
