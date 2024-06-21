@@ -2,7 +2,6 @@ package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.Model.SecretObjective;
-import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 
 public class SecretObjectiveView extends LiveComponent{
 
@@ -15,8 +14,10 @@ public class SecretObjectiveView extends LiveComponent{
     public void print() {
         SecretObjective secretObjective = SecretObjective.getInstance();
         System.out.println("Secret Objective:");
-        new ObjectiveView(secretObjective.getSecretObjective()).print();
-        out.println();
+        if(secretObjective.getSecretObjective() != null) {
+            new ObjectiveView(secretObjective.getSecretObjective()).print();
+            out.println();
+        }
     }
 
     @Override

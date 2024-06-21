@@ -2,7 +2,6 @@ package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.Model.SharedObjectives;
-import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.ObjectiveRecord;
 
 import java.util.List;
@@ -18,9 +17,12 @@ public class SharedObjectiveView extends LiveComponent{
         List<ObjectiveRecord> sharedObjectives = SharedObjectives.getInstance().getSharedObjectives();
 
         System.out.println("Shared Objectives:\n");
-        for (ObjectiveRecord objectiveRecord : sharedObjectives) {
-            new ObjectiveView(objectiveRecord).print();
-            out.println();
+
+        if(sharedObjectives != null) {
+            for (ObjectiveRecord objectiveRecord : sharedObjectives) {
+                new ObjectiveView(objectiveRecord).print();
+                out.println();
+            }
         }
     }
 

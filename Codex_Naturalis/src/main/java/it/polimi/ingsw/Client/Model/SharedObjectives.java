@@ -2,12 +2,15 @@ package it.polimi.ingsw.Client.Model;
 
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.ObjectiveRecord;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SharedObjectives extends Observable {
     //SINGLETON PATTERN
     private static SharedObjectives INSTANCE;
-    private SharedObjectives(){}
+    private SharedObjectives(){
+        sharedObjectives = new ArrayList<>();
+    }
     public static SharedObjectives getInstance(){
         if(INSTANCE == null){
             INSTANCE = new SharedObjectives();
@@ -37,7 +40,11 @@ public class SharedObjectives extends Observable {
 
     //SETTERS
     public void setSharedObjectives(List<ObjectiveRecord> sharedObjectives) {
-        this.sharedObjectives.addAll(sharedObjectives);
+        if(sharedObjectives != null)
+            this.sharedObjectives.addAll(sharedObjectives);
+        else
+            this.sharedObjectives = new ArrayList<>();
+
         super.updateObservers();
     }
 }

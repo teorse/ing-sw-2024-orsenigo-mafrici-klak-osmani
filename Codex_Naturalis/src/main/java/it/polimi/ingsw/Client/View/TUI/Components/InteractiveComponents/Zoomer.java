@@ -111,11 +111,13 @@ public class Zoomer extends InteractiveComponent {
 
     @Override
     public void cleanObserved() {
-        subComponent.cleanObserved();
+        if(subComponent != null)
+            subComponent.cleanObserved();
     }
 
     @Override
     public void refreshObserved() {
-        subComponent.refreshObserved();
+        if(subComponent != null)
+            subComponent.refreshObserved();
     }
 }
