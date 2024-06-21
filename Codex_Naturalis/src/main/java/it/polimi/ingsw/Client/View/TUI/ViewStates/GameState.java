@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
 import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.Model.MyPlayer;
 import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
 
@@ -18,6 +19,12 @@ public abstract class GameState extends LobbyStates{
     public GameState(InteractiveComponent mainComponent) {
         super(mainComponent);
         model = ClientModel.getInstance();
+    }
+
+    @Override
+    public void refreshObservables(){
+        super.refreshObservables();
+        RefreshManager.getInstance().addObserved(MyPlayer.getInstance());
     }
 
     @Override

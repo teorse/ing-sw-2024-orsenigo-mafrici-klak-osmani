@@ -12,6 +12,7 @@ public class StarterPlaceState extends GameState {
     public StarterPlaceState() {
         super(new CardStarterChoice());
         cardsHeld = new CardsHeldView();
+        refreshObservables();
     }
 
     @Override
@@ -26,6 +27,7 @@ public class StarterPlaceState extends GameState {
 
     @Override
     public void refreshObservables() {
+        super.refreshObservables();
         cardsHeld.refreshObserved();
     }
 
