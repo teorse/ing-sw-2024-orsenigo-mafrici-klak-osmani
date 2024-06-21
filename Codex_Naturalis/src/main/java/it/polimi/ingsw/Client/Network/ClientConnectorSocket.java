@@ -98,7 +98,8 @@ public class ClientConnectorSocket implements ClientConnector, Runnable {
                 try {
                     packet = (ServerClientPacket) ois.readObject();
                     //When a packet is found, execute the packet
-                    packet.execute(controller);
+                    ServerClientPacket finalPacket = packet;
+                    new Thread(() -> finalPacket.execute(controller)).start();
                 } catch (ClassNotFoundException e) {
                     System.out.println("Received an unsupported packet class.");
                 } catch (RuntimeException e) {

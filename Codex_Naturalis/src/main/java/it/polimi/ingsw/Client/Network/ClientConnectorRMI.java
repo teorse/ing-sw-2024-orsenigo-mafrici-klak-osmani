@@ -180,6 +180,6 @@ public class ClientConnectorRMI implements ClientConnector, ClientRemoteInterfac
      */
     @Override
     public void receivePacket(ServerClientPacket received) {
-        received.execute(controller);
+        new Thread(() -> received.execute(controller)).start();
     }
 }
