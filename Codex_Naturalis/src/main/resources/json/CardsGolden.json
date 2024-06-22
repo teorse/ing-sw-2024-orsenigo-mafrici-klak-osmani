@@ -48,6 +48,46 @@
           "cornerType": "EMPTY",
           "artifact": "NULL"
         }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
       ]
     ]
   },
@@ -100,6 +140,46 @@
           "cornerType": "ARTIFACT",
           "artifact": "INKWELL"
         }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
       ]
     ]
   },
@@ -147,6 +227,46 @@
         {
           "cornerDirection": "NE",
           "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
         },
         {
           "cornerType": "EMPTY",
@@ -204,6 +324,46 @@
           "cornerType": "EMPTY",
           "artifact": "NULL"
         }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
       ]
     ]
   },
@@ -251,6 +411,46 @@
         {
           "cornerDirection": "NE",
           "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
         },
         {
           "cornerType": "EMPTY",
@@ -308,6 +508,46 @@
           "cornerType": "NULL",
           "artifact": "NULL"
         }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
       ]
     ]
   },
@@ -359,6 +599,46 @@
           "cornerType": "NULL",
           "artifact": "NULL"
         }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
       ]
     ]
   },
@@ -405,6 +685,46 @@
         {
           "cornerDirection": "NE",
           "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
         },
         {
           "cornerType": "EMPTY",
@@ -460,6 +780,46 @@
         {
           "cornerType": "ARTIFACT",
           "artifact": "MANUSCRIPT"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
         }
       ]
     ]
@@ -512,6 +872,46 @@
           "cornerType": "NULL",
           "artifact": "NULL"
         }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
       ]
     ]
   },
@@ -559,6 +959,46 @@
         {
           "cornerDirection": "NE",
           "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
         },
         {
           "cornerType": "EMPTY",
@@ -616,6 +1056,46 @@
           "cornerType": "ARTIFACT",
           "artifact": "MANUSCRIPT"
         }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
       ]
     ]
   },
@@ -666,6 +1146,46 @@
         },
         {
           "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
           "artifact": "NULL"
         }
       ]
@@ -720,6 +1240,46 @@
           "cornerType": "EMPTY",
           "artifact": "NULL"
         }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
       ]
     ]
   },
@@ -767,6 +1327,46 @@
         {
           "cornerDirection": "NE",
           "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
         },
         {
           "cornerType": "EMPTY",
@@ -824,6 +1424,46 @@
           "cornerType": "NULL",
           "artifact": "NULL"
         }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
       ]
     ]
   },
@@ -875,6 +1515,46 @@
           "cornerType": "NULL",
           "artifact": "NULL"
         }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
       ]
     ]
   },
@@ -921,6 +1601,46 @@
         {
           "cornerDirection": "NE",
           "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
         },
         {
           "cornerType": "EMPTY",
@@ -976,6 +1696,46 @@
         {
           "cornerType": "ARTIFACT",
           "artifact": "INKWELL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
         }
       ]
     ]
@@ -1028,6 +1788,46 @@
           "cornerType": "EMPTY",
           "artifact": "NULL"
         }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
       ]
     ]
   },
@@ -1075,6 +1875,46 @@
         {
           "cornerDirection": "NE",
           "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
         },
         {
           "cornerType": "EMPTY",
@@ -1132,6 +1972,46 @@
           "cornerType": "EMPTY",
           "artifact": "NULL"
         }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
       ]
     ]
   },
@@ -1182,6 +2062,46 @@
         },
         {
           "cornerType": "NULL",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
           "artifact": "NULL"
         }
       ]
@@ -1236,6 +2156,46 @@
           "cornerType": "EMPTY",
           "artifact": "NULL"
         }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
       ]
     ]
   },
@@ -1288,6 +2248,46 @@
           "cornerType": "NULL",
           "artifact": "NULL"
         }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
       ]
     ]
   },
@@ -1335,6 +2335,46 @@
         {
           "cornerDirection": "NE",
           "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
         },
         {
           "cornerType": "EMPTY",
@@ -1391,6 +2431,46 @@
           "cornerType": "NULL",
           "artifact": "NULL"
         }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
       ]
     ]
   },
@@ -1441,6 +2521,46 @@
         {
           "cornerType": "ARTIFACT",
           "artifact": "INKWELL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
         }
       ]
     ]
@@ -1493,6 +2613,46 @@
           "cornerType": "EMPTY",
           "artifact": "NULL"
         }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
       ]
     ]
   },
@@ -1539,6 +2699,46 @@
         {
           "cornerDirection": "NE",
           "faceUp": true
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "NW",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SE",
+          "faceUp": false
+        },
+        {
+          "cornerType": "EMPTY",
+          "artifact": "NULL"
+        }
+      ],
+      [
+        {
+          "cornerDirection": "SW",
+          "faceUp": false
         },
         {
           "cornerType": "EMPTY",
