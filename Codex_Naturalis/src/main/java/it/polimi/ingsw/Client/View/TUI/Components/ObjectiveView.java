@@ -8,6 +8,7 @@ public class ObjectiveView extends Component {
 
     public ObjectiveView(ObjectiveRecord objective){
         this.objective = objective;
+
     }
 
     public void print(){
