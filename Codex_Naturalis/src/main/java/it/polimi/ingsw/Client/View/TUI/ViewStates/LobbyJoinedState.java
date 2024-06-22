@@ -34,6 +34,7 @@ public class LobbyJoinedState extends LobbyStates {
         TextUI.clearCMD();
         TextUI.displayGameTitle();
 
+        logger.fine("Calling lobbyView print");
         lobbyView.print();
         getActiveComponent().print();
         super.print();
