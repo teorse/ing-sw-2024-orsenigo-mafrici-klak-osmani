@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
+import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.Model.Game;
+import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.CardStarterChoice;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
@@ -29,5 +32,19 @@ public class StarterPlaceState extends GameState {
     public void update() {
         if(!nextState())
             print();
+    }
+
+    public synchronized boolean nextState() {
+        if(ClientModel.getInstance().getView().equals(this)) {
+            if (super.nextState())
+                return true;
+            if(Game.getInstance().isSetupFinished()){
+                RefreshManager.getInstance().resetObservables();
+                ClientModel.getInstance().setView(new PlaceState());
+                ClientModel.getInstance().getView().print();
+                return true;
+            }
+        }
+        return false;
     }
 }
