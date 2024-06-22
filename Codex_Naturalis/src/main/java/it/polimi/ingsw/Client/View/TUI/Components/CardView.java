@@ -25,13 +25,14 @@ public class CardView extends Component{
         out.println("Front Corners:");
         for (CornerOrientation co : card.corners().keySet()) {
             Corner corner = card.corners().get(co);
-
-            //Details about the corners
-            out.print(" - " + co.getCornerDirection().name() + ":");
-            if (corner.getCornerType() == CornerType.ARTIFACT)
-                out.println(" " + corner.getArtifact());
-            else
-                out.println(" " + corner.getCornerType());
+            if (co.isFaceUp()) {
+                //Details about the corners
+                out.print(" - " + co.getCornerDirection().name() + ":");
+                if (corner.getCornerType() == CornerType.ARTIFACT)
+                    out.println(" " + corner.getArtifact());
+                else
+                    out.println(" " + corner.getCornerType());
+            }
         }
         out.println("Back Corners: all empty");
 
