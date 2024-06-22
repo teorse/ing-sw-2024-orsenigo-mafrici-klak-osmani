@@ -3,7 +3,6 @@ package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 import it.polimi.ingsw.Client.Model.CardsHeld;
 import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.RefreshManager;
-import it.polimi.ingsw.Client.View.TUI.Components.CardStarterView;
 import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.Client.View.TUI.Components.CardView;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPPlayCard;
@@ -23,6 +22,8 @@ public class CardStarterChoice extends InteractiveComponent {
 
         refreshObserved();
     }
+
+    //TODO doesn't update properly when choosing front or back
 
     /**
      * Handles user input for playing a card on either the front or back side of the game.
