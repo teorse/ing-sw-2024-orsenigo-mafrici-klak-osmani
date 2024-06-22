@@ -5,6 +5,7 @@ import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.Components.CardStarterView;
 import it.polimi.ingsw.Client.View.InputValidator;
+import it.polimi.ingsw.Client.View.TUI.Components.CardView;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPPlayCard;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
 
@@ -80,7 +81,7 @@ public class CardStarterChoice extends InteractiveComponent {
         // Display the card starter view
         if(!CardsHeld.getInstance().getCardsHeld().isEmpty()) {
             CardRecord cardStarter = CardsHeld.getInstance().getCardsHeld().getFirst();
-            new CardStarterView(cardStarter).print();
+            new CardView(cardStarter).print();
         }
 
         // Print the side selection instructions
