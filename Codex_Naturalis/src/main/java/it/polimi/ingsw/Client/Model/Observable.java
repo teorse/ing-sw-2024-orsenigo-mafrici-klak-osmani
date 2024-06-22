@@ -26,13 +26,13 @@ public abstract class Observable {
 
 
     //METHODS
-    public void subscribe(Observer observer){
+    public synchronized void subscribe(Observer observer){
         observers.add(observer);
     }
-    public void unsubscribe(Observer observer){
+    public synchronized void unsubscribe(Observer observer){
         observers.remove(observer);
     }
-    protected void updateObservers(){
+    protected synchronized void updateObservers(){
         logger.info("Updating observers.");
 
         if(observers.isEmpty())
@@ -44,8 +44,7 @@ public abstract class Observable {
             }
         }
         for(Observer observer : observers) {
-            logger.info("Updating observer: "+ observer.getClass().getName());
-            observer.update();
+            new Thread(observer::update).start();
         }
     }
 }

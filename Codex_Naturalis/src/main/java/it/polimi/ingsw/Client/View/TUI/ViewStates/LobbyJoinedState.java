@@ -26,7 +26,7 @@ public class LobbyJoinedState extends LobbyStates {
     }
 
     @Override
-    public void print() {
+    public synchronized void print() {
         logger.info("Called print method");
 
         TextUI.clearCMD();

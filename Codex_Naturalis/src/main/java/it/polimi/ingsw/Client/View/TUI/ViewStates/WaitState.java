@@ -30,6 +30,8 @@ public class WaitState extends GameState {
         postSetupComponents.add(new ScoreBoardView());
         postSetupComponents.add(new CardMapView());
         postSetupComponents.add(new TurnShower());
+
+        refreshObservables();
     }
 
     @Override
@@ -55,6 +57,7 @@ public class WaitState extends GameState {
 
     @Override
     public void refreshObservables() {
+        super.refreshObservables();
         for(LiveComponent component : passiveComponents){
             component.refreshObserved();
         }

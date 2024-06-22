@@ -27,21 +27,23 @@ public class LobbySelectionState extends InteractiveState {
             print();
     }
 
-    boolean nextState(){
+    synchronized boolean nextState() {
         ClientModel model = ClientModel.getInstance();
 
-        if(super.nextState())
-            return true;
+        if (model.getView().equals(this)) {
+            if (super.nextState())
+                return true;
 
-        if(model.isInLobby()) {
-            getMainComponent().cleanObserved();
-            RefreshManager.getInstance().resetObservables();
-            model.setView(new LobbyJoinedState());
+            if (model.isInLobby()) {
+                getMainComponent().cleanObserved();
+                RefreshManager.getInstance().resetObservables();
+                model.setView(new LobbyJoinedState());
 
-            model.getView().print();
-            return true;
+                model.getView().print();
+                return true;
+            } else
+                return false;
         }
-        else
-            return false;
+        return true;
     }
 }

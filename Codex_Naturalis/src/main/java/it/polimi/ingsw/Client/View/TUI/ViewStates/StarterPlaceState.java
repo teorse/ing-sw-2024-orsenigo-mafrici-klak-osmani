@@ -1,17 +1,13 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.View.TUI.Components.CardsHeldView;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.CardStarterChoice;
-import it.polimi.ingsw.Client.View.TUI.Components.LiveComponent;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
 public class StarterPlaceState extends GameState {
-    private final LiveComponent cardsHeld;
 
 
     public StarterPlaceState() {
         super(new CardStarterChoice());
-        cardsHeld = new CardsHeldView();
         refreshObservables();
     }
 
@@ -20,7 +16,6 @@ public class StarterPlaceState extends GameState {
         TextUI.clearCMD();
         TextUI.displayGameTitle();
 
-        cardsHeld.print();
         getActiveComponent().print();
         super.print();
     }
@@ -28,7 +23,6 @@ public class StarterPlaceState extends GameState {
     @Override
     public void refreshObservables() {
         super.refreshObservables();
-        cardsHeld.refreshObserved();
     }
 
     @Override
