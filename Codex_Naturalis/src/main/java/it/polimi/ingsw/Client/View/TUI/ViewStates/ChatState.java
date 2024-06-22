@@ -44,12 +44,14 @@ public class ChatState extends InteractiveState {
 
     @Override
     public boolean handleInput(String input) {
-        if(input.equalsIgnoreCase("quitChat")) {
+        if(input.equalsIgnoreCase("/quitChat")) {
             quitChat = true;
             nextState();
         }
-        else
-            getMainComponent().handleInput(input);
+        else {
+            super.handleInput(input);
+            print();
+        }
         return true;
     }
 

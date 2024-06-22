@@ -1,13 +1,25 @@
 package it.polimi.ingsw.Client.Model;
 
+import it.polimi.ingsw.Client.View.Observer;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.ChatMessageRecord;
+import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.LobbyUserRecord;
+import it.polimi.ingsw.Server.Model.Lobby.LobbyConstants;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class Chat extends Observable{
+public class Chat extends Observable implements Observer {
     //SINGLETON PATTERN
     private static Chat INSTANCE;
-    private Chat(){}
+    private Chat(){
+        publicChatMessages = new ChatMessagesStack(ClientModelConstants.PublicMessageStackSize);
+        privateChatMessages = new HashMap<>();
+
+        LobbyUsers.getInstance().subscribe(this);
+        update();
+    }
     public static Chat getInstance(){
         if(INSTANCE == null){
             INSTANCE = new Chat();
@@ -23,8 +35,8 @@ public class Chat extends Observable{
 
 
     //ATTRIBUTES
-    ChatMessagesStack publicChatMessages;
-    Map<String, ChatMessagesStack> privateChatMessages;
+    private ChatMessagesStack publicChatMessages;
+    private Map<String, ChatMessagesStack> privateChatMessages;
 
 
 
@@ -79,5 +91,20 @@ public class Chat extends Observable{
         }
         else
             publicChatMessages.add(chatMessage);
+    }
+
+    @Override
+    public void update() {
+        List<LobbyUserRecord> users = LobbyUsers.getInstance().getLobbyUserRecords();
+
+        for(LobbyUserRecord user : users){
+            if(!privateChatMessages.containsKey(user.username()))
+                privateChatMessages.put(user.username(), new ChatMessagesStack(ClientModelConstants.PrivateMessageStackSize));
+        }
+        for(String username : new ArrayList<>(privateChatMessages.keySet())){
+            List<String> newUsernames = users.stream().map(LobbyUserRecord::username).toList();
+            if(!newUsernames.contains(username))
+                privateChatMessages.remove(username);
+        }
     }
 }

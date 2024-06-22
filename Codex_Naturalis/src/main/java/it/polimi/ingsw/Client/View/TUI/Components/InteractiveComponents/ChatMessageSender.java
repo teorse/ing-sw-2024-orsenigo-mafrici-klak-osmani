@@ -12,6 +12,7 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.Ch
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ChatMessageSender extends InteractiveComponent{
     //ATTRIBUTES
@@ -34,6 +35,8 @@ public class ChatMessageSender extends InteractiveComponent{
     private boolean invalidBinaryChoice = false;
     private boolean invalidInputBoundChoice = false;
 
+    private final Logger logger;
+
 
 
 
@@ -50,6 +53,8 @@ public class ChatMessageSender extends InteractiveComponent{
      */
     public ChatMessageSender() {
         super(1);
+        logger = Logger.getLogger(ChatMessageSender.class.getName());
+        logger.info("Initializing chat state.");
 
         // Initialize Chat instance
         chat = Chat.getInstance();
@@ -142,6 +147,7 @@ public class ChatMessageSender extends InteractiveComponent{
                     RefreshManager.getInstance().addObserved(this, conversationInteract);
 
                     inConversation = true;
+                    incrementInputCounter();
                     return InteractiveComponentReturns.INCOMPLETE;
                 }
                 incrementInputCounter();
@@ -235,6 +241,13 @@ public class ChatMessageSender extends InteractiveComponent{
      */
     @Override
     public void print() {
+        logger.fine("Printing Chat State.");
+        logger.fine("Input counter is: "+getInputCounter());
+        logger.fine("inConversation is: "+inConversation);
+
+        if(getInputCounter() == 0 || (getInputCounter() == 1 && choice == 2))
+            inConversation = false;
+
         //This print is executed if inside a conversation
         if(inConversation){
             //Print page header
