@@ -36,6 +36,7 @@ public class LobbyCreator extends  InteractiveComponent {
     public InteractiveComponentReturns handleInput(String input) {
         // Reset the invalid player number flag
         invalidPlayerNumber = false;
+        nameAlreadyTaken = null;
 
         // Process input through superclass method
         InteractiveComponentReturns superReturn = super.handleInput(input);
@@ -87,26 +88,25 @@ public class LobbyCreator extends  InteractiveComponent {
         if(nameAlreadyTaken == null)
             nameAlreadyTaken = model.getJoinLobbyError();
 
-        int inputCounter = getInputCounter();
+
         if(nameAlreadyTaken != null)
-            inputCounter = 0;
-
-
-        if (inputCounter == 0)
-            System.out.println("\nEnter lobby name: ");
-        else if (inputCounter == 1) {
-            System.out.println("\nLobby name: "+lobbyName);
-            System.out.println("\nEnter the number of wanted users in the game: ");
-        }
-        else if (inputCounter == 2) {
-            System.out.println("Waiting for server Response.");
-        }
+            resetInputCounter();
 
         if(invalidPlayerNumber){
             System.out.println("The number of users must be between 2 and 4!");
         }
         if(nameAlreadyTaken != null){
             System.out.println("You can't use "+lobbyName+" as a name for the lobby, choose a name that is not already taken.");
+        }
+
+        if (getInputCounter() == 0)
+            System.out.println("\nEnter lobby name: ");
+        else if (getInputCounter() == 1) {
+            System.out.println("\nLobby name: "+lobbyName);
+            System.out.println("\nEnter the number of wanted users in the game: ");
+        }
+        else if (getInputCounter() == 2) {
+            System.out.println("Waiting for server Response.");
         }
     }
 
