@@ -8,16 +8,16 @@ import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPPlayCard;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
 
+import java.util.List;
+
 public class CardStarterChoice extends InteractiveComponent {
     private final ClientModel model;
-    private final CardRecord cardStarter;
     private boolean invalidBinaryChoice;
 
     public CardStarterChoice() {
         super(0);
         this.model = ClientModel.getInstance();
-        //todo check if there is no scenario where .getFirst() will cause null pointer.
-        this.cardStarter = CardsHeld.getInstance().getCardsHeld().getFirst();
+
         invalidBinaryChoice = false;
 
         refreshObserved();
@@ -78,7 +78,10 @@ public class CardStarterChoice extends InteractiveComponent {
     @Override
     public void print() {
         // Display the card starter view
-        new CardStarterView(cardStarter).print();
+        if(!CardsHeld.getInstance().getCardsHeld().isEmpty()) {
+            CardRecord cardStarter = CardsHeld.getInstance().getCardsHeld().getFirst();
+            new CardStarterView(cardStarter).print();
+        }
 
         // Print the side selection instructions
         System.out.println("\n" +
