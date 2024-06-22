@@ -91,7 +91,10 @@ public abstract class LobbyStates extends ComplexState {
                     return true;
                 }
             }
+            //Returns false because could not match conditions for next state
+            return false;
         }
-        return false;
+        //Returns true because the initial if statement was false and therefore this state is already not the current state.
+        return true;
     }
 }

@@ -187,6 +187,8 @@ public class CardDrawer extends InteractiveComponent{
     public void print() {
         int inputCounter = getInputCounter();
 
+
+
         if (inputCounter == 0) {
             // Stage 1: Prompt user to choose from which pool they want to draw a card
             if (!isResourceOver && !isGoldenOver) {
@@ -215,9 +217,11 @@ public class CardDrawer extends InteractiveComponent{
             }
         } else if (inputCounter == 1 && cardPoolChoice == CardPoolTypes.RESOURCE) {
             // Stage 2: Prompt user to enter a number to pick a card from RESOURCE pool
+            new CardPoolView(CardPoolTypes.RESOURCE).print();
             System.out.println("\nEnter a number between " + resourceLB + " and " + resourceUB + " to pick a card: ");
         } else if (inputCounter == 1 && cardPoolChoice == CardPoolTypes.GOLDEN) {
             // Stage 3: Prompt user to enter a number to pick a card from GOLDEN pool
+            new CardPoolView(CardPoolTypes.GOLDEN).print();
             System.out.println("\nEnter a number between " + goldenLB + " and " + goldenUB + " to pick a card: ");
         }
 

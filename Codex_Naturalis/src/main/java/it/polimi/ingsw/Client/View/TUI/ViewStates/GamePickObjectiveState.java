@@ -13,6 +13,7 @@ public class GamePickObjectiveState extends GameState {
     public GamePickObjectiveState() {
         super(new PickSecretObjective());
         objectiveCandidates = new ObjectiveCandidatesView();
+        refreshObservables();
     }
 
     @Override
@@ -23,18 +24,20 @@ public class GamePickObjectiveState extends GameState {
         else
             TextUI.displayLastRound();
 
+        objectiveCandidates.print();
         getActiveComponent().print();
         super.print();
     }
 
     @Override
     public void refreshObservables() {
+        super.refreshObservables();
         objectiveCandidates.refreshObserved();
     }
 
     @Override
     public void update() {
-        if(nextState())
+        if(!nextState())
             print();
     }
 }
