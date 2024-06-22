@@ -33,12 +33,23 @@ public class ServerConnectionWizard extends InteractiveComponent {
         logger.info("Server Connection wizard initialized");
     }
 
+    /**
+     * Handles user input for establishing a connection to the server.
+     * This method processes the input through two stages: selecting the connection type (RMI or Socket),
+     * and entering the server's IP address. It validates the input at each stage and attempts to connect
+     * to the server using the selected connection type.
+     *
+     * @param input the user input string to be processed
+     * @return the state of the input handling process as an InteractiveComponentReturns enum
+     */
     @Override
     public InteractiveComponentReturns handleInput(String input) {
+        // Reset connection error flags
         connectionTimedOut = false;
         remoteException = false;
         malformedIp = false;
 
+        // Process input through superclass method
         InteractiveComponentReturns superReturn = super.handleInput(input);
         if(superReturn == InteractiveComponentReturns.QUIT)
             return superReturn;
@@ -47,6 +58,8 @@ public class ServerConnectionWizard extends InteractiveComponent {
         }
 
         int inputCounter = getInputCounter();
+
+        // Handle input for selecting connection type (RMI or Socket)
         if (inputCounter == 0) {
             if (InputValidator.validBinaryChoice(input)) {
                 choice = Integer.parseInt(input);
@@ -54,6 +67,7 @@ public class ServerConnectionWizard extends InteractiveComponent {
             }
             return InteractiveComponentReturns.INCOMPLETE;
 
+            // Handle input for entering server IP address
         } else if (inputCounter == 1) {
             if (input.isEmpty())
                 input = "127.0.0.1";
@@ -62,6 +76,7 @@ public class ServerConnectionWizard extends InteractiveComponent {
                 return InteractiveComponentReturns.INCOMPLETE;
             }
 
+            // Attempt to connect using RMI
             if (choice == 1) {
                 connectionTimedOut = false;
                 remoteException = false;
@@ -71,19 +86,18 @@ public class ServerConnectionWizard extends InteractiveComponent {
                     model.setClientConnector(new ClientConnectorRMI(input, new ClientController(model), model));
                     incrementInputCounter();
                     return InteractiveComponentReturns.COMPLETE;
-                }
-                catch (ConnectException connectException) {
+                } catch (ConnectException connectException) {
                     connectionTimedOut = true;
                     String stackTrace = Utilities.StackTraceToString(connectException);
                     logger.warning("Connection timed out while connecting to RMI server: " + input + "\n" +
                             "Stacktrace:\n" + stackTrace);
-                }
-                catch (RemoteException e) {
+                } catch (RemoteException e) {
                     String stackTrace = Utilities.StackTraceToString(e);
                     logger.warning("RemoteException was thrown while creating ClientConnectorRMI\nStacktrace:\n" + stackTrace);
                     remoteException = true;
                 }
 
+                // Attempt to connect using Socket
             } else {
                 try {
                     ClientModel model = ClientModel.getInstance();

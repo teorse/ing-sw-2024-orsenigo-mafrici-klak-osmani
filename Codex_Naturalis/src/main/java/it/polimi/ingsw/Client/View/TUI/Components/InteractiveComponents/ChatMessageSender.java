@@ -38,23 +38,41 @@ public class ChatMessageSender extends InteractiveComponent{
 
 
     //CONSTRUCTOR
-    public ChatMessageSender(){
+    /**
+     * Constructs a ChatMessageSender object, initializing it with specific attributes
+     * and settings related to chat messaging functionality.
+     *
+     * Initializes the object by calling the superclass constructor with a value of 1.
+     * Sets up the Chat instance and adds it to the list of observables for RefreshManager.
+     * Retrieves the lobby users and sets up the connection to the client model's client connector.
+     * Initializes the object with a flag indicating it is not in conversation.
+     * Sets up the recipients list by iterating through lobby users and excluding the current player.
+     */
+    public ChatMessageSender() {
         super(1);
+
+        // Initialize Chat instance
         chat = Chat.getInstance();
         observables = new ArrayList<>();
         observables.add(chat);
+
+        // Add Chat instance to RefreshManager observables
         RefreshManager.getInstance().addObserved(this, chat);
 
+        // Retrieve lobby users and initialize connection to client model's client connector
         lobbyUsers = LobbyUsers.getInstance();
         connection = ClientModel.getInstance().getClientConnector();
+
+        // Initialize conversation state
         inConversation = false;
 
+        // Initialize recipients list excluding the current player
         recipients = new ArrayList<>();
-
-        for(int i = 0; i < lobbyUsers.size(); i++){
+        for (int i = 0; i < lobbyUsers.size(); i++) {
             String username = lobbyUsers.getLobbyUserNameByIndex(i);
-            if(!username.equals(MyPlayer.getInstance().getUsername()))
+            if (!username.equals(MyPlayer.getInstance().getUsername())) {
                 recipients.add(username);
+            }
         }
     }
 
@@ -62,43 +80,28 @@ public class ChatMessageSender extends InteractiveComponent{
 
 
 
+
     //METHODS
     /**
-     * Handles user input for chat interactions, including selecting chat type (public or private),
-     * sending chat messages, and selecting private chat recipients.
+     * Handles user input for the chat system. Manages the state of the input handling process,
+     * including public and private chat interactions, and transitions between different input states.
      *
-     * @param input the user's input as a string.
-     * @return true if the input results in a successful chat operation, false otherwise.
-     * <p>
-     * This method processes the input based on several conditions:
-     * <p>
-     * 1. If the user is in an active conversation (indicated by inConversation):
-     *    - If choice is 1 (public chat), it handles the input as a public chat message and sends it.
-     *    - If choice is 2 (private chat), it handles the input as a private chat message and sends it.
-     * <p>
-     * 2. If inputCounter is 0 (initial chat type selection):
-     *    - It checks if the input is a valid binary choice (1 for public chat, 2 for private chat).
-     *    - If choice is 1, it sets up the public chat view and interaction.
-     *    - If choice is 2, it increments inputCounter to proceed to the next input phase.
-     * <p>
-     * 3. If inputCounter is 1 and choice is 2 (selecting a user for private chat):
-     *    - It checks if the input is within the valid range for selecting a private chat recipient.
-     *    - If valid, it sets up the private chat view and interaction with the chosen user.
-     * <p>
-     * If any input is invalid or results in an error, appropriate error messages are displayed,
-     * and the method returns false, indicating that the chat operation was not successful.
+     * @param input the user input string to be processed
+     * @return the state of the input handling process as an InteractiveComponentReturns enum
      */
     @Override
     public InteractiveComponentReturns handleInput(String input) {
 
+        // Process input through superclass method
         InteractiveComponentReturns superReturn = super.handleInput(input);
-        if(superReturn == InteractiveComponentReturns.QUIT)
+        if (superReturn == InteractiveComponentReturns.QUIT)
             return superReturn;
         else if (superReturn == InteractiveComponentReturns.COMPLETE) {
             return InteractiveComponentReturns.INCOMPLETE;
         }
 
-        if(inConversation) {
+        // Handle in-conversation input
+        if (inConversation) {
             if (choice == 1) {
                 // Handle public chat message input
                 if (!input.trim().isEmpty())
@@ -118,6 +121,7 @@ public class ChatMessageSender extends InteractiveComponent{
             }
         }
 
+        // Get current input counter state
         int inputCounter = getInputCounter();
         if (inputCounter == 0) {
             // Handle initial choice input (Public or Private Chat)
@@ -125,12 +129,15 @@ public class ChatMessageSender extends InteractiveComponent{
                 choice = Integer.parseInt(input);
                 if (choice == 1) {
 
+                    // Remove previous chat observable and refresh manager references
                     observables.remove(chat);
                     RefreshManager.getInstance().removeObserved(this, chat);
 
+                    // Set up public chat conversation view and interaction
                     conversationView = new ChatConversationView(chat.getPublicChat());
                     conversationInteract = chat.getPublicChat();
 
+                    // Add new chat observable and refresh manager references
                     observables.add(conversationInteract);
                     RefreshManager.getInstance().addObserved(this, conversationInteract);
 
@@ -148,12 +155,15 @@ public class ChatMessageSender extends InteractiveComponent{
             if (InputValidator.checkInputBound(input, 1, lobbyUsers.size() - 1)) {
                 chosenUser = recipients.get(Integer.parseInt(input) - 1);
 
+                // Remove previous chat observable and refresh manager references
                 observables.remove(chat);
                 RefreshManager.getInstance().removeObserved(this, chat);
 
+                // Set up private chat conversation view and interaction
                 conversationView = new ChatConversationView(chat.getPrivateChat(chosenUser));
                 conversationInteract = chat.getPrivateChat(chosenUser);
 
+                // Add new chat observable and refresh manager references
                 observables.add(conversationInteract);
                 RefreshManager.getInstance().addObserved(this, conversationInteract);
 
@@ -169,6 +179,7 @@ public class ChatMessageSender extends InteractiveComponent{
         }
         return InteractiveComponentReturns.INCOMPLETE;
     }
+
 
 
 

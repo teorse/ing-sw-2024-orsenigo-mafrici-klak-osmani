@@ -37,27 +37,50 @@ public class CardDrawer extends InteractiveComponent{
 
 
     //CONSTRUCTOR
+    /**
+     * Constructs a CardDrawer object, initializing it with specific attributes
+     * and settings related to card pools and drawing mechanics.
+     *
+     * Initializes the object by calling the superclass constructor with a value of 1.
+     * Sets up the connection to the client model's client connector.
+     * Retrieves and refreshes the observed card pools.
+     * Determines the lower and upper bounds for drawing cards from both RESOURCE and GOLDEN pools,
+     * considering the visibility and availability of cards.
+     * Checks if either RESOURCE or GOLDEN pools are depleted based on their availability.
+     * Initializes flags for tracking invalid binary choices and card index inputs.
+     */
     public CardDrawer() {
         super(1);
 
+        // Initialize connection to client connector
         this.connection = ClientModel.getInstance().getClientConnector();
+
+        // Refresh observed card pools
         this.cardPools = CardPools.getInstance();
         refreshObserved();
 
+        // Determine lower and upper bounds for RESOURCE pool cards
         resourceLB = 1 + ((cardPools.getCardPoolByType(CardPoolTypes.RESOURCE).coveredCardColor() == Artifacts.NULL) ? 1 : 0);
         resourceUB = 1 + cardPools.getCardPoolByType(CardPoolTypes.RESOURCE).visibleCards().size();
+
+        // Determine lower and upper bounds for GOLDEN pool cards
         goldenLB = 1 + ((cardPools.getCardPoolByType(CardPoolTypes.GOLDEN).coveredCardColor() == Artifacts.NULL) ? 1 : 0);
         goldenUB = 1 + cardPools.getCardPoolByType(CardPoolTypes.GOLDEN).visibleCards().size();
 
+        // Check if RESOURCE pool is depleted
         isResourceOver = resourceLB > resourceUB;
+
+        // Check if GOLDEN pool is depleted
         isGoldenOver = goldenLB > goldenUB;
 
+        // Check drawability of card pools and set flags accordingly
         Map<CardPoolTypes, Boolean> cardDrawability = CardPools.getInstance().getCardPoolDrawability();
-        if(!cardDrawability.get(CardPoolTypes.GOLDEN))
+        if (!cardDrawability.get(CardPoolTypes.GOLDEN))
             isGoldenOver = true;
-        if(!cardDrawability.get(CardPoolTypes.RESOURCE))
+        if (!cardDrawability.get(CardPoolTypes.RESOURCE))
             isResourceOver = true;
 
+        // Initialize flags for tracking input validation
         invalidBinaryChoice = false;
         invalidCardIndex = false;
     }
@@ -68,33 +91,26 @@ public class CardDrawer extends InteractiveComponent{
 
     //METHODS
     /**
-     * Handles user input for drawing cards from specified card pools.
+     * Handles user input for choosing and drawing cards from either the RESOURCE or GOLDEN pool.
+     * Manages different stages of input based on the current state of card pool selection and validates user inputs.
+     * Sends appropriate packets to the server based on user choices to draw cards.
      *
-     * @param input the user input to be processed
-     * @return an InteractiveComponentReturns enum indicating whether the input processing is complete or incomplete
-     * <p>
-     * The method performs the following:
-     * - If the input is "BACK", it delegates handling to the superclasses handleInput method.
-     * - If the inputCounter is 0, it checks if the input is a valid binary choice to select the card pool type (RESOURCE or GOLDEN).
-     * - If the card pool type is RESOURCE and the inputCounter is 1, it checks if the input is within bounds for RESOURCE cards,
-     *   parses the card choice, and sends a packet to draw the chosen RESOURCE card.
-     * - If the card pool type is GOLDEN and the inputCounter is 1, it checks if the input is within bounds for GOLDEN cards,
-     *   parses the card choice, and sends a packet to draw the chosen GOLDEN card.
-     * - Returns an InteractiveComponentReturns enum value indicating the state of input processing.
+     * @param input The user input provided during interaction.
+     * @return An {@link InteractiveComponentReturns} indicating the status of the interaction.
      */
     @Override
     public InteractiveComponentReturns handleInput(String input) {
-
+        // Process input through superclass method
         InteractiveComponentReturns superReturn = super.handleInput(input);
-        if(superReturn == InteractiveComponentReturns.QUIT)
+        if (superReturn == InteractiveComponentReturns.QUIT) {
             return superReturn;
-        else if (superReturn == InteractiveComponentReturns.COMPLETE) {
+        } else if (superReturn == InteractiveComponentReturns.COMPLETE) {
             return InteractiveComponentReturns.INCOMPLETE;
         }
 
         int inputCounter = getInputCounter();
         if (inputCounter == 0) {
-            // Check if the input is a binary choice
+            // Stage 1: Choose between RESOURCE and GOLDEN pool
             if (InputValidator.validBinaryChoice(input)) {
                 // Set card pool type based on input
                 if (Integer.parseInt(input) == 1) {
@@ -102,42 +118,43 @@ public class CardDrawer extends InteractiveComponent{
                 } else {
                     cardPoolChoice = CardPoolTypes.GOLDEN;
                 }
-                // Increment input counter
+                // Increment input counter to proceed to next stage
                 incrementInputCounter();
-
                 return InteractiveComponentReturns.INCOMPLETE;
-            }
-            else
+            } else {
+                // Invalid input for binary choice
                 invalidBinaryChoice = true;
-
-            // If input counter is 1 and card pool type is RESOURCE
-        } else if (inputCounter == 1 && cardPoolChoice == CardPoolTypes.RESOURCE) {
-            // Check if the input is within the bounds for RESOURCE cards
-            if (InputValidator.checkInputBound(input, resourceLB, resourceUB)) {
-                // Parse the card choice
-                cardChoice = Integer.parseInt(input);
-                // Send packet to draw the chosen RESOURCE card
-                connection.sendPacket(new CSPDrawCard(cardPoolChoice, cardChoice - 2));
-
-                return InteractiveComponentReturns.COMPLETE;
             }
-            else
-                invalidCardIndex = true;
-
-            // If input counter is 1 and card pool type is GOLDEN
-        } else if (inputCounter == 1 && cardPoolChoice == CardPoolTypes.GOLDEN) {
-            // Check if the input is within the bounds for GOLDEN cards
-            if (InputValidator.checkInputBound(input, goldenLB, goldenUB)) {
-                // Parse the card choice
-                cardChoice = Integer.parseInt(input);
-                // Send packet to draw the chosen GOLDEN card
-                connection.sendPacket(new CSPDrawCard(cardPoolChoice, cardChoice - 2));
-
-                return InteractiveComponentReturns.COMPLETE;
+        } else if (inputCounter == 1) {
+            // Stage 2: Choose a specific card from the selected pool
+            if (cardPoolChoice == CardPoolTypes.RESOURCE) {
+                // Check if the input is within the bounds for RESOURCE cards
+                if (InputValidator.checkInputBound(input, resourceLB, resourceUB)) {
+                    // Parse the card choice
+                    cardChoice = Integer.parseInt(input);
+                    // Send packet to draw the chosen RESOURCE card
+                    connection.sendPacket(new CSPDrawCard(cardPoolChoice, cardChoice - 2));
+                    return InteractiveComponentReturns.COMPLETE;
+                } else {
+                    // Invalid card index for RESOURCE pool
+                    invalidCardIndex = true;
+                }
+            } else if (cardPoolChoice == CardPoolTypes.GOLDEN) {
+                // Check if the input is within the bounds for GOLDEN cards
+                if (InputValidator.checkInputBound(input, goldenLB, goldenUB)) {
+                    // Parse the card choice
+                    cardChoice = Integer.parseInt(input);
+                    // Send packet to draw the chosen GOLDEN card
+                    connection.sendPacket(new CSPDrawCard(cardPoolChoice, cardChoice - 2));
+                    return InteractiveComponentReturns.COMPLETE;
+                } else {
+                    // Invalid card index for GOLDEN pool
+                    invalidCardIndex = true;
+                }
             }
-            else
-                invalidCardIndex = true;
         }
+
+        // Default return if the input does not complete the interaction
         return InteractiveComponentReturns.INCOMPLETE;
     }
 
@@ -162,15 +179,16 @@ public class CardDrawer extends InteractiveComponent{
     }
 
     /**
-     * Prints the current state of the card drawing interface, prompting the user to select from different card pools
-     * or to draw a card from the selected pool. Handles different input states to guide the user through the process.
+     * Prints prompts and messages related to the process of choosing a card from either the RESOURCE or GOLDEN pool.
+     * Manages different stages of input based on the current state of card availability in each pool.
+     * Handles prompts for pool selection and card index input, and manages error messages for invalid inputs.
      */
     @Override
     public void print() {
         int inputCounter = getInputCounter();
-        if (inputCounter == 0) {
 
-            // Prompt user to choose from which pool they want to draw a card
+        if (inputCounter == 0) {
+            // Stage 1: Prompt user to choose from which pool they want to draw a card
             if (!isResourceOver && !isGoldenOver) {
                 // Print the available cards in both RESOURCE and GOLDEN pools
                 new CardPoolView(CardPoolTypes.RESOURCE).print();
@@ -196,18 +214,18 @@ public class CardDrawer extends InteractiveComponent{
                 print();
             }
         } else if (inputCounter == 1 && cardPoolChoice == CardPoolTypes.RESOURCE) {
-            // Prompt user to enter a number to pick a card from RESOURCE pool
+            // Stage 2: Prompt user to enter a number to pick a card from RESOURCE pool
             System.out.println("\nEnter a number between " + resourceLB + " and " + resourceUB + " to pick a card: ");
         } else if (inputCounter == 1 && cardPoolChoice == CardPoolTypes.GOLDEN) {
-            // Prompt user to enter a number to pick a card from GOLDEN pool
+            // Stage 3: Prompt user to enter a number to pick a card from GOLDEN pool
             System.out.println("\nEnter a number between " + goldenLB + " and " + goldenUB + " to pick a card: ");
         }
 
-        if(invalidBinaryChoice){
+        // Print error messages for invalid inputs
+        if (invalidBinaryChoice) {
             invalidBinaryChoice = false;
             System.out.println("The number provided is not a valid input.\nPlease type 1 or 2.");
-        }
-        else if (invalidCardIndex) {
+        } else if (invalidCardIndex) {
             invalidCardIndex = false;
             System.out.println("The card index provided is not a valid input.\nPlease try again.");
         }

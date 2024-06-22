@@ -45,90 +45,93 @@ public class CardPlacer extends InteractiveComponent {
 
     //METHODS
     /**
-     * Handles user input for selecting and placing cards on the game board.
-     * <p>
-     * This method processes user input in a multistep manner to allow the selection
-     * and placement of cards held by the player. It guides the user through the following
-     * steps:
-     * 1. Selecting a card from the player's hand.
-     * 2. Choosing the row coordinate for card placement.
-     * 3. Choosing the column coordinate for card placement.
-     * 4. Confirming the card placement and whether the card should be placed face up or down.
+     * Handles user input during the card placement process, validating each input stage.
+     * This method manages the selection of a card from the player's hand, choosing a row
+     * and column on the board, and deciding whether to place the card face up or face down.
+     * It sends the appropriate packet to the server based on the validated inputs.
      *
-     * @param input the user input to be processed.
-     * @return a boolean indicating whether the input has been successfully processed and the action completed.
-     * <p>
-     * The method performs the following steps:
-     * 1. Validates the card selection input and increments the input counter.
-     * 2. Validates the row coordinate input and increments the input counter.
-     * 3. Validates the column coordinate input and increments the input counter, checking for valid placement.
-     * 4. Confirms card playability and placement orientation, sending the action if valid.
+     * @param input The user input to handle.
+     * @return Returns {@code InteractiveComponentReturns.COMPLETE} if the input handling is
+     *         successfully completed and the necessary packet is sent. Returns
+     *         {@code InteractiveComponentReturns.INCOMPLETE} if more input is required.
      */
     @Override
     public InteractiveComponentReturns handleInput(String input) {
 
+        // Process input through superclass method first
         InteractiveComponentReturns superReturn = super.handleInput(input);
-        if(superReturn == InteractiveComponentReturns.QUIT)
+        if (superReturn == InteractiveComponentReturns.QUIT)
             return superReturn;
         else if (superReturn == InteractiveComponentReturns.COMPLETE) {
             return InteractiveComponentReturns.INCOMPLETE;
         }
 
+        // Determine the maximum board side length based on cardMaps
         int maxBoardSide = (cardMaps.maxCoordinate() * 2) + 3;
 
+        // Check the current input stage and validate the input accordingly
         int inputCounter = getInputCounter();
         if (inputCounter == 0) {
-            if (InputValidator.checkInputBound(input,1, cardsHeld.getAmountHeld())) {
+            // Stage 1: Select a card from the player's hand
+            if (InputValidator.checkInputBound(input, 1, cardsHeld.getAmountHeld())) {
                 cardIndex = Integer.parseInt(input) - 1;
                 incrementInputCounter();
-            }
-            else
+            } else {
                 invalidCardIndex = true;
+            }
             return InteractiveComponentReturns.INCOMPLETE;
 
         } else if (inputCounter == 1) {
-            if (input.length() == 1 && InputValidator.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide - 1)) {
+            // Stage 2: Choose a row on the board
+            if (input.length() == 1 && InputValidator.isCharWithinBounds(input.toUpperCase().charAt(0), 'A', 'A' + maxBoardSide - 1)) {
                 chosenRow = input.charAt(0);
                 incrementInputCounter();
-            }
-            else
+            } else {
                 invalidRow = true;
+            }
             return InteractiveComponentReturns.INCOMPLETE;
 
         } else if (inputCounter == 2) {
-            if (input.length() == 1 && InputValidator.isCharWithinBounds(input.toUpperCase().charAt(0),'A', 'A' + maxBoardSide - 1)) {
+            // Stage 3: Choose a column on the board
+            if (input.length() == 1 && InputValidator.isCharWithinBounds(input.toUpperCase().charAt(0), 'A', 'A' + maxBoardSide - 1)) {
                 chosenCol = input.charAt(0);
                 incrementInputCounter();
-                int coordinatesChosen = cardMaps.coordinateIndexByCharIndexes(chosenRow, chosenCol, MyPlayer.getInstance().getUsername());
 
-                if(coordinatesChosen == -1){
+                // Validate the chosen coordinates against the board
+                int coordinatesChosen = cardMaps.coordinateIndexByCharIndexes(chosenRow, chosenCol, MyPlayer.getInstance().getUsername());
+                if (coordinatesChosen == -1) {
+                    // Invalid coordinate chosen
                     wrongCoordinate = true;
                     decrementInputCounter();
-                }
-                else
+                } else {
                     coordinateIndex = coordinatesChosen;
-            }
-            else
+                }
+            } else {
                 invalidColumn = true;
+            }
             return InteractiveComponentReturns.INCOMPLETE;
 
         } else if (inputCounter == 3) {
+            // Stage 4: Decide whether to place the card face up or face down
             boolean cardPlayability = CardsHeld.getInstance().getCardPlayability(cardIndex);
 
             if (InputValidator.validBinaryChoice(input)) {
                 faceUp = (Integer.parseInt(input) == 1);
                 if (cardPlayability || !faceUp) {
+                    // Send the appropriate packet based on the chosen options
                     sendPacket();
                     return InteractiveComponentReturns.COMPLETE;
-                }
-                else {
+                } else {
+                    // Invalid choice to play the card face up
                     invalidCardSide = true;
                 }
-            } else
+            } else {
                 invalidBinaryChoice = true;
+            }
             return InteractiveComponentReturns.INCOMPLETE;
-
         }
+
+        // Default return statement, should not be reached under normal circumstances
         return InteractiveComponentReturns.INCOMPLETE;
     }
 
@@ -154,11 +157,18 @@ public class CardPlacer extends InteractiveComponent {
         RefreshManager.getInstance().addObserved(this, cardMaps);
     }
 
+    /**
+     * Prints prompts and error messages based on the current state of the card placement interaction.
+     * This method handles different stages of card placement, including selecting a card from hand,
+     * choosing a row and column for placement, and deciding the side (front or back) to place the card.
+     * It also prints specific error messages for invalid inputs or placements.
+     */
     @Override
-    public void print(){
+    public void print() {
         int inputCounter = getInputCounter();
 
-        if(inputCounter == 0){
+        // Print prompts based on the current input counter
+        if (inputCounter == 0) {
             System.out.println("\nChoose a card from your hand to place.");
         } else if (inputCounter == 1) {
             System.out.println("\nChoose a ROW to place the card. (Only white squares with an X are allowed)");
@@ -166,38 +176,36 @@ public class CardPlacer extends InteractiveComponent {
             System.out.println("\nChoose a COLUMN to place the card. (Only white squares with an X are allowed)");
         } else if (inputCounter == 3) {
             System.out.println("\n" + """
-                    On which side do you want to place the card? Enter your choice:
-                     1 - Front
-                     2 - Back""");
+                On which side do you want to place the card? Enter your choice:
+                 1 - Front
+                 2 - Back""");
         }
 
-        if(invalidCardSide){
+        // Print specific error messages based on flags indicating invalid inputs or placements
+        if (invalidCardSide) {
             invalidCardSide = false;
             System.out.println("\nThis card can't be played face up. Select the other side or change card!");
-        }
-        else if (invalidBinaryChoice) {
+        } else if (invalidBinaryChoice) {
             invalidBinaryChoice = false;
             System.out.println("The number provided is not a valid input.\nPlease type a number between 1 and 2.");
-        }
-        else if (wrongCoordinate) {
+        } else if (wrongCoordinate) {
             wrongCoordinate = false;
             System.out.println("\nThe coordinates you entered are not in the available placements! Try again.");
-        }
-        else if (invalidColumn) {
+        } else if (invalidColumn) {
             invalidColumn = false;
-            System.out.println("The colum provided is not a valid column.\nPlease type a valid column");
-        }
-        else if (invalidRow) {
+            System.out.println("The column provided is not a valid column.\nPlease type a valid column");
+        } else if (invalidRow) {
             invalidRow = false;
             System.out.println("The row provided is not a valid row.\nPlease type a valid row");
-        }
-        else if (invalidCardIndex){
+        } else if (invalidCardIndex) {
             invalidCardIndex = false;
             System.out.println("The card index provided is not a valid index.\nPlease type a valid index");
         }
 
+        // Call superclass print method to ensure consistency in printing
         super.print();
     }
+
 
     private void sendPacket(){
         model.getClientConnector().sendPacket(new CSPPlayCard(cardIndex, coordinateIndex, faceUp));

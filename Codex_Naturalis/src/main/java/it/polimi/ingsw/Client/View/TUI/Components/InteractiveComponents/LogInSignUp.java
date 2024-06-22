@@ -38,6 +38,15 @@ public class LogInSignUp extends InteractiveComponent {
         invalidPassword = false;
     }
 
+    /**
+     * Handles user input for the login or sign-up process.
+     * This method processes the input through various stages: binary choice (login or sign-up),
+     * username input, and password input. It validates the input at each stage and sends the
+     * appropriate packet to the server for login or sign-up.
+     *
+     * @param input the user input string to be processed
+     * @return the state of the input handling process as an InteractiveComponentReturns enum
+     */
     @Override
     public InteractiveComponentReturns handleInput(String input) {
         invalidBinaryChoice = false;

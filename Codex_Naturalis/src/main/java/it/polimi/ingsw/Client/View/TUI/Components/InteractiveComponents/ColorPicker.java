@@ -35,25 +35,37 @@ public class ColorPicker extends InteractiveComponent{
 
 
     //METHODS
+    /**
+     * Handles user input for changing user color in the lobby. Processes the input to ensure it is within
+     * valid bounds and sends a packet to change the user color. Also manages the state transitions based on
+     * the result of the input handling.
+     *
+     * @param input the user input string to be processed
+     * @return the state of the input handling process as an InteractiveComponentReturns enum
+     */
     @Override
     public InteractiveComponentReturns handleInput(String input) {
 
+        // Process input through superclass method
         InteractiveComponentReturns superReturn = super.handleInput(input);
-        if(superReturn == InteractiveComponentReturns.QUIT)
+        if (superReturn == InteractiveComponentReturns.QUIT)
             return superReturn;
         else if (superReturn == InteractiveComponentReturns.COMPLETE) {
             return InteractiveComponentReturns.INCOMPLETE;
         }
 
+        // Validate the input against available user colors
         if (InputValidator.checkInputBound(input, 1, availableUserColors.size())) {
+            // Send packet to change user color based on the validated input
             model.getClientConnector().sendPacket(new CSPChangeColor(Lobby.getInstance().getAvailableUserColors().get(Integer.parseInt(input) - 1)));
             return InteractiveComponentReturns.COMPLETE;
-        }
-        else {
+        } else {
+            // Handle invalid input
             invalidChoice = true;
             return InteractiveComponentReturns.INCOMPLETE;
         }
     }
+
 
     @Override
     public String getKeyword() {

@@ -38,81 +38,73 @@ public class CardMapZoom extends InteractiveComponent{
 
 
     //METHODS
-
     /**
-     * Handles user input for selecting and viewing details of a card on the game board.
-     * <p>
-     * This method processes user input in a step-by-step manner to allow the selection of a card
-     * from another player's card map and displays the details of the selected card.
-     * The steps are as follows:
-     * 1. Select the player whose card map to view.
-     * 2. Choose the row coordinate for the card on the selected player's card map.
-     * 3. Choose the column coordinate for the card on the selected player's card map.
+     * Handles user input for zooming into a specific player's CardMap.
+     * Manages different input stages to select a player, row, and column to zoom into.
+     * Prints appropriate prompts and messages based on the current input stage.
+     * Resets the input counter upon completing the zoom operation.
      *
-     * @param input the user input to be processed.
-     * @return a boolean indicating whether the input has been successfully processed and the action completed.
-     * <p>
-     * The method performs the following steps:
-     * 1. Validates the player selection input and increments the input counter.
-     * 2. Validates the row coordinate input and increments the input counter.
-     * 3. Validates the column coordinate input, retrieves the card from the specified coordinates,
-     *    and displays the card details.
+     * @param input The user input provided during the interaction.
+     * @return The state of completion of the interactive component.
      */
     @Override
     public InteractiveComponentReturns handleInput(String input) {
         int inputCounter = getInputCounter();
 
+        // Process input through superclass method
         InteractiveComponentReturns superReturn = super.handleInput(input);
-        if(superReturn == InteractiveComponentReturns.QUIT)
+        if (superReturn == InteractiveComponentReturns.QUIT)
             return superReturn;
         else if (superReturn == InteractiveComponentReturns.COMPLETE) {
             return InteractiveComponentReturns.INCOMPLETE;
         }
 
+        // Handle input based on the current input stage
         if (inputCounter == 0) {
+            // Stage 1: Selecting a player's username to zoom into their CardMap
             if (InputValidator.checkInputBound(input, 1, players.getPlayersSize())) {
-                //Username of the chosen cardMap's owner
+                // Retrieve the username of the chosen cardMap's owner
                 chosenCardMapsOwner = players.getUsernameByIndex(Integer.parseInt(input) - 1);
                 // Increment input counter
                 incrementInputCounter();
-
                 // Print current state
                 print();
+            } else {
+                // todo: Print error message for index out of bounds
             }
-            else{
-                //todo print error message index out of bounds
-            }
-
             return InteractiveComponentReturns.INCOMPLETE;
-        }
-        else if(inputCounter == 1){
+        } else if (inputCounter == 1) {
+            // Stage 2: Choosing a row to zoom into
             if (input.length() == 1 && InputValidator.isCharWithinBounds(input.toUpperCase().charAt(0), 'A', 'A' + cardMaps.maxBoardSide() - 1)) {
-                // Choose row
+                // Select row
                 row = input.charAt(0);
                 // Increment input counter
                 incrementInputCounter();
-
                 // Print current state
                 print();
             }
             return InteractiveComponentReturns.INCOMPLETE;
-        }
-        else if(inputCounter == 2){
+        } else if (inputCounter == 2) {
+            // Stage 3: Choosing a column to zoom into
             if (input.length() == 1 && InputValidator.isCharWithinBounds(input.toUpperCase().charAt(0), 'A', 'A' + cardMaps.maxBoardSide() - 1)) {
-                // Choose row
+                // Select column
                 column = input.charAt(0);
 
+                // Convert row and column to coordinates
                 Coordinates coordinate = cardMaps.charsToCoordinates(row, column);
+
+                // Retrieve the card at the chosen coordinates and owner's CardMap
                 card = cardMaps.getCardByCoordinate(coordinate, chosenCardMapsOwner);
 
-                //print the zoomed card
+                // Print the zoomed card view
                 new PlacedCardView(card).print();
 
-                // Reset the input counter
+                // Reset the input counter for the next interaction
                 resetInputCounter();
                 return InteractiveComponentReturns.COMPLETE;
             }
         }
+
         return InteractiveComponentReturns.INCOMPLETE;
     }
 
@@ -138,24 +130,33 @@ public class CardMapZoom extends InteractiveComponent{
         RefreshManager.getInstance().addObserved(this, cardMaps);
     }
 
+    /**
+     * Prints the interactive prompts and messages for zooming into a specific player's
+     * CardMap. Depending on the current input stage, it displays different instructions
+     * for selecting a player and zooming into specific rows and columns of their CardMap.
+     * This method utilizes the superclass print method to ensure consistent output.
+     */
     @Override
     public void print() {
         int inputCounter = getInputCounter();
 
-        if(inputCounter == 0){
+        // Print instructions based on the current input stage
+        if (inputCounter == 0) {
+            // Stage 1: Prompt to select a player username
             System.out.println("\nSelect a player username to zoom its CardMap by inserting an integer");
             int i = 1;
             for (PlayerRecord playerRecord : Players.getInstance().getPlayers()) {
                 System.out.println(i++ + " - Player username: " + playerRecord.username());
             }
-        }
-        else if(inputCounter == 1){
+        } else if (inputCounter == 1) {
+            // Stage 2: Prompt to choose a row to zoom into
             System.out.println("\nChoose a ROW to zoom the card.");
-        }
-        else if(inputCounter == 2){
+        } else if (inputCounter == 2) {
+            // Stage 3: Prompt to choose a column to zoom into
             System.out.println("\nChoose a COLUMN to zoom the card.");
         }
 
+        // Call superclass print method for additional output if any
         super.print();
     }
 }

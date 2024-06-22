@@ -14,47 +14,67 @@ public class LobbyChooser extends InteractiveComponent{
         refreshObserved();
     }
 
+    /**
+     * Handles user input for creating or joining a lobby.
+     * This method processes the input, initializes the appropriate subcomponent based on user choice,
+     * and manages state transitions based on the input handling result.
+     *
+     * @param input the user input string to be processed
+     * @return the state of the input handling process as an InteractiveComponentReturns enum
+     */
     @Override
     public InteractiveComponentReturns handleInput(String input) {
         int inputCounter = getInputCounter();
+
+        // Handle initial input for choosing lobby creation or joining
         if (inputCounter == 0) {
 
+            // Process input through superclass method
             InteractiveComponentReturns superReturn = super.handleInput(input);
-            if(superReturn == InteractiveComponentReturns.QUIT)
+            if (superReturn == InteractiveComponentReturns.QUIT)
                 return superReturn;
             else if (superReturn == InteractiveComponentReturns.COMPLETE) {
                 return InteractiveComponentReturns.INCOMPLETE;
             }
 
+            // Validate binary choice input
             if (InputValidator.validBinaryChoice(input)) {
+                // Initialize subcomponent based on user choice
                 if (Integer.parseInt(input) == 1) {
                     subComponent = new LobbyCreator();
-                }
-                else if (Integer.parseInt(input) == 2)
+                } else if (Integer.parseInt(input) == 2) {
                     subComponent = new LobbyJoiner();
+                }
 
+                // Increment input counter
                 incrementInputCounter();
-            } else
+            } else {
+                // Handle invalid binary choice input
                 wrongBinaryChoice = true;
+            }
 
             return InteractiveComponentReturns.INCOMPLETE;
         }
-        if(inputCounter == 1){
+
+        // Handle input for the chosen subcomponent
+        if (inputCounter == 1) {
             InteractiveComponentReturns result = subComponent.handleInput(input);
 
-            if(result.equals(InteractiveComponentReturns.QUIT)) {
+            // Handle quit signal from subcomponent
+            if (result.equals(InteractiveComponentReturns.QUIT)) {
                 decrementInputCounter();
                 subComponent.cleanObserved();
                 return InteractiveComponentReturns.INCOMPLETE;
-            }
-            else if (result.equals(InteractiveComponentReturns.COMPLETE)) {
+            } else if (result.equals(InteractiveComponentReturns.COMPLETE)) {
                 subComponent.cleanObserved();
             }
 
             return result;
         }
+
         return InteractiveComponentReturns.INCOMPLETE;
     }
+
 
     @Override
     public String getKeyword() {

@@ -18,37 +18,48 @@ public class GameManualStarter extends InteractiveComponent {
         notEnoughPlayers = false;
     }
 
+    /**
+     * Handles user input for starting the game if the user is an admin and there are enough players.
+     * Processes the input to ensure it is valid and sends a packet to start the game if conditions are met.
+     * Manages the state transitions based on the result of the input handling.
+     *
+     * @param input the user input string to be processed
+     * @return the state of the input handling process as an InteractiveComponentReturns enum
+     */
     @Override
     public InteractiveComponentReturns handleInput(String input) {
 
+        // Process input through superclass method
         InteractiveComponentReturns superReturn = super.handleInput(input);
-        if(superReturn == InteractiveComponentReturns.QUIT)
+        if (superReturn == InteractiveComponentReturns.QUIT)
             return superReturn;
         else if (superReturn == InteractiveComponentReturns.COMPLETE) {
             return InteractiveComponentReturns.INCOMPLETE;
         }
 
+        // Check if the player is an admin
         if (MyPlayer.getInstance().isAdmin()) {
+            // Check if there are enough players to start the game
             if (LobbyUsers.getInstance().size() >= 2) {
-                // If input is to start the game
+                // If the input is to start the game
                 if (input.equalsIgnoreCase("START")) {
                     // Send packet to start the game
                     ClientModel.getInstance().getClientConnector().sendPacket(new CSPStartGame());
                     return InteractiveComponentReturns.COMPLETE;
-                }
-                else {
-                    // Prompt to start the game
+                } else {
+                    // Handle incorrect command
                     wrongCommand = true;
                     return InteractiveComponentReturns.INCOMPLETE;
                 }
-            }
-            else {
+            } else {
+                // Handle not enough players case
                 notEnoughPlayers = true;
                 return InteractiveComponentReturns.INCOMPLETE;
             }
         }
         return InteractiveComponentReturns.COMPLETE;
     }
+
 
     @Override
     public String getKeyword() {

@@ -11,9 +11,18 @@ public class PickSecretObjective extends InteractiveComponent {
         super(0);
     }
 
+    /**
+     * Handles the user's input for choosing a secret objective.
+     * Sends a packet to the server with the selected objective index if the input is a valid binary choice.
+     *
+     * @param input The user's input to select the secret objective (either "1" or "2").
+     * @return {@code InteractiveComponentReturns.COMPLETE} if the input is valid and the packet is sent successfully;
+     *         {@code InteractiveComponentReturns.INCOMPLETE} otherwise.
+     */
     @Override
     public InteractiveComponentReturns handleInput(String input) {
         if (InputValidator.validBinaryChoice(input)) {
+            // Send a packet to the server with the selected objective index (0 or 1 based on input)
             ClientModel.getInstance().getClientConnector().sendPacket(new CSPPickObjective(Integer.parseInt(input) - 1));
             return InteractiveComponentReturns.COMPLETE;
         }
@@ -30,10 +39,15 @@ public class PickSecretObjective extends InteractiveComponent {
         return "";
     }
 
+    /**
+     * Prints a prompt for the user to choose a secret objective.
+     * This method displays a message instructing the user to select a secret objective.
+     */
     @Override
     public void print() {
         System.out.println("\nChoose a secret objective: \n");
     }
+
 
     @Override
     public void cleanObserved() {

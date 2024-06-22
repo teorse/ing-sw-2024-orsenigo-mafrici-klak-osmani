@@ -23,26 +23,41 @@ public class CardStarterChoice extends InteractiveComponent {
         refreshObserved();
     }
 
+    /**
+     * Handles user input for playing a card on either the front or back side of the game.
+     * Sends a packet to the server based on the user's choice of card placement.
+     * Also manages validation for binary choices and sets error flags accordingly.
+     *
+     * @param input The user's input representing their choice of card placement (1 for front, 2 for back).
+     * @return {@link InteractiveComponentReturns#COMPLETE} if the operation completes successfully,
+     *         {@link InteractiveComponentReturns#INCOMPLETE} otherwise.
+     */
     @Override
     public InteractiveComponentReturns handleInput(String input) {
-
+        // Process input through superclass method
         InteractiveComponentReturns superReturn = super.handleInput(input);
-        if(superReturn == InteractiveComponentReturns.QUIT)
+        if (superReturn == InteractiveComponentReturns.QUIT)
             return superReturn;
         else if (superReturn == InteractiveComponentReturns.COMPLETE) {
             return InteractiveComponentReturns.INCOMPLETE;
         }
 
+        // Check if the input is a valid binary choice (1 or 2)
         if (InputValidator.validBinaryChoice(input)) {
+            // Convert input to boolean (true for front, false for back)
             boolean faceUp = (Integer.parseInt(input) == 1);
+
+            // Send packet to play the card with the chosen orientation
             model.getClientConnector().sendPacket(new CSPPlayCard(0, 0, faceUp));
             return InteractiveComponentReturns.COMPLETE;
-        }
-        else
+        } else {
+            // Flag as invalid binary choice if input is not 1 or 2
             invalidBinaryChoice = true;
+        }
 
         return InteractiveComponentReturns.INCOMPLETE;
     }
+
 
     @Override
     public String getKeyword() {
@@ -55,16 +70,25 @@ public class CardStarterChoice extends InteractiveComponent {
     }
 
 
+    /**
+     * Prints the view for placing a card on either the front or back side.
+     * Displays the card starter view followed by instructions for side selection.
+     * Also handles displaying error messages for invalid binary choices.
+     */
     @Override
     public void print() {
+        // Display the card starter view
         new CardStarterView(cardStarter).print();
+
+        // Print the side selection instructions
         System.out.println("\n" +
                 """
                 On which side do you want to place the card? Enter your choice:
                  1 - Front
                  2 - Back""");
 
-        if(invalidBinaryChoice){
+        // Display error message for invalid binary choices, if applicable
+        if (invalidBinaryChoice) {
             invalidBinaryChoice = false;
             System.out.println("The number you provided is not a valid input, please type 1 or 2.");
         }

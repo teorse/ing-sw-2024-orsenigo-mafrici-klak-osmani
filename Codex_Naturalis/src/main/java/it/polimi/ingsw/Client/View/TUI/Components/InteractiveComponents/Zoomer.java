@@ -21,22 +21,36 @@ public class Zoomer extends InteractiveComponent {
 
 
     //METHODS
+    /**
+     * Handles user input for interacting with zoom options related to different components of the game.
+     * Allows the user to select which component details to view and interacts with subcomponents accordingly.
+     *
+     * @param input The user input provided during interaction.
+     * @return {@code InteractiveComponentReturns.COMPLETE} if the game setup is not finished;
+     *         {@code InteractiveComponentReturns.QUIT} if the superclass interaction returns quit;
+     *         {@code InteractiveComponentReturns.INCOMPLETE} if the superclass interaction is complete;
+     *         otherwise, returns the result of interaction with subcomponents.
+     */
     @Override
     public InteractiveComponentReturns handleInput(String input) {
-        if(!Game.getInstance().isSetupFinished())
+        // If the game setup is not finished, complete the current component interaction
+        if (!Game.getInstance().isSetupFinished())
             return InteractiveComponentReturns.COMPLETE;
 
+        // Process input through superclass method
         InteractiveComponentReturns superReturn = super.handleInput(input);
-        if(superReturn == InteractiveComponentReturns.QUIT)
+        if (superReturn == InteractiveComponentReturns.QUIT)
             return superReturn;
         else if (superReturn == InteractiveComponentReturns.COMPLETE) {
             return InteractiveComponentReturns.INCOMPLETE;
         }
 
         int inputCounter = getInputCounter();
-        if(inputCounter == 0){
+
+        // Handle the first stage of input
+        if (inputCounter == 0) {
             if (InputValidator.checkInputBound(input, 1, 3)) {
-                // Parse choice
+                // Parse choice and initialize subcomponents based on the choice
                 choice = Integer.parseInt(input);
                 if (choice == 1) {
                     subComponent = new CardMapZoom();
@@ -47,25 +61,29 @@ public class Zoomer extends InteractiveComponent {
                     subComponent = new CardPoolZoom();
                     incrementInputCounter();
                 }
-            }
-            else
+            } else {
                 invalidInput = true;
+            }
 
             return InteractiveComponentReturns.INCOMPLETE;
         }
-        if(inputCounter == 1) {
-            //returns true if the subComponent has finished its interaction cycle
-            //returns false if the user has still to complete all interactions in the subComponent
+
+        // Handle the interaction with subcomponents
+        if (inputCounter == 1) {
+            // Process input through the subcomponent and manage the result
             InteractiveComponentReturns subcomponentResult = subComponent.handleInput(input);
-            if(subcomponentResult.equals(InteractiveComponentReturns.QUIT))
+            if (subcomponentResult.equals(InteractiveComponentReturns.QUIT))
                 decrementInputCounter();
 
             return subcomponentResult;
         }
 
-        //todo add logger, program should not reach this code
+        // This code should not be reached; log an error if it does
+        // todo add logger, program should not reach this code
         return InteractiveComponentReturns.INCOMPLETE;
     }
+
+
 
     @Override
     public String getKeyword() {
@@ -77,33 +95,44 @@ public class Zoomer extends InteractiveComponent {
         return "/zoom -> to zoom a card map, cards held or card pool";
     }
 
+    /**
+     * Prints the current state of the view to the console. This method handles the display of different options
+     * based on the input counter and the user's choice. It provides instructions for navigating the zoom options
+     * and prints relevant details for each option.
+     */
     @Override
     public void print() {
 
-        if(!Game.getInstance().isSetupFinished())
+        // Check if the game setup is finished
+        if (!Game.getInstance().isSetupFinished())
             return;
 
         int inputCounter = getInputCounter();
-        if(inputCounter == 0) {
+
+        // Display initial zoom options
+        if (inputCounter == 0) {
             System.out.println("\n" + """
-                    Enter what do you want to zoom:
-                     1 - CardMap details
-                     2 - CardHeld
-                     3 - CardPool""");
+                Enter what do you want to zoom:
+                 1 - CardMap details
+                 2 - CardHeld
+                 3 - CardPool""");
         }
 
-        else if(inputCounter == 1) {
-            if(choice == 2){
+        // Display the selected option's details or navigate back
+        else if (inputCounter == 1) {
+            if (choice == 2) {
                 new CardsHeldView().print();
-            }
-            else
+            } else {
                 subComponent.print();
+            }
 
-            if(subComponent.getInputCounter() == 0)
+            // Provide navigation option to go back
+            if (subComponent.getInputCounter() == 0)
                 System.out.println("\nType /back to go to the previous menu");
         }
 
-        if(invalidInput){
+        // Handle invalid input case
+        if (invalidInput) {
             invalidInput = false;
             System.out.println("The number provided is not a valid input.\nPlease type a number between 1 and 3.");
         }

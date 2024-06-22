@@ -24,29 +24,45 @@ public class LobbyCreator extends  InteractiveComponent {
     }
 
 
+    /**
+     * Handles user input for creating a game lobby.
+     * This method processes the input to set the lobby name and the target number of users,
+     * and sends a packet to start the lobby. It also manages state transitions based on input validation.
+     *
+     * @param input the user input string to be processed
+     * @return the state of the input handling process as an InteractiveComponentReturns enum
+     */
     @Override
     public InteractiveComponentReturns handleInput(String input) {
+        // Reset the invalid player number flag
         invalidPlayerNumber = false;
 
+        // Process input through superclass method
         InteractiveComponentReturns superReturn = super.handleInput(input);
-        if(superReturn == InteractiveComponentReturns.QUIT)
+        if (superReturn == InteractiveComponentReturns.QUIT) {
             return superReturn;
-        else if (superReturn == InteractiveComponentReturns.COMPLETE) {
+        } else if (superReturn == InteractiveComponentReturns.COMPLETE) {
             return InteractiveComponentReturns.INCOMPLETE;
         }
 
         int inputCounter = getInputCounter();
+
+        // Handle input for lobby name
         if (inputCounter == 0) {
             lobbyName = input;
             incrementInputCounter();
         }
+        // Handle input for the target number of users
         else if (inputCounter == 1) {
+            // Validate input for the number of users
             if (InputValidator.checkInputBound(input, 2, 4)) {
                 targetNumberUsers = Integer.parseInt(input);
+                // Send packet to start the lobby
                 model.getClientConnector().sendPacket(new CSPStartLobby(lobbyName, targetNumberUsers));
                 incrementInputCounter();
                 return InteractiveComponentReturns.COMPLETE;
             } else {
+                // Handle invalid number of users
                 invalidPlayerNumber = true;
             }
         }
