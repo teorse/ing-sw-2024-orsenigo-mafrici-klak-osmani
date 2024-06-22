@@ -40,7 +40,7 @@ public class CardDrawer extends InteractiveComponent{
     /**
      * Constructs a CardDrawer object, initializing it with specific attributes
      * and settings related to card pools and drawing mechanics.
-     *
+     * <p>
      * Initializes the object by calling the superclass constructor with a value of 1.
      * Sets up the connection to the client model's client connector.
      * Retrieves and refreshes the observed card pools.

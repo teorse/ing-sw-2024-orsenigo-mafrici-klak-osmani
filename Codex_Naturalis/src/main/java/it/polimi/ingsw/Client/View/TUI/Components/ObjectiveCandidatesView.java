@@ -20,7 +20,8 @@ public class ObjectiveCandidatesView extends LiveComponent {
         int i = 1;
         for (ObjectiveRecord objectiveRecord : objectiveCandidates) {
             System.out.println("\n" + i + ")");
-            new ObjectiveView(objectiveCandidates.get(i-1)); //todo What is this strange for loop???
+            ObjectiveView objectiveView = new ObjectiveView(objectiveRecord); //Creating instance ObjectiveView
+            objectiveView.print(); //Print of the objective using print() method of ObjectiveView
             i++;
         }
     }
