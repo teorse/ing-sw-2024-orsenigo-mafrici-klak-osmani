@@ -127,7 +127,7 @@ public class Zoomer extends InteractiveComponent {
             }
 
             // Provide navigation option to go back
-            if (subComponent.getInputCounter() == 0)
+            if (subComponent != null && subComponent.getInputCounter() == 0)
                 System.out.println("\nType /back to go to the previous menu");
         }
 
