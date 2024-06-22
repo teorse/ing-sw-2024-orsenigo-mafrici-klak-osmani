@@ -23,6 +23,8 @@ public class LobbyJoinedState extends LobbyStates {
 
         lobbyView = new LobbyView();
         gameStartingStatus = new GameStartingStatus();
+
+        refreshObservables();
     }
 
     @Override

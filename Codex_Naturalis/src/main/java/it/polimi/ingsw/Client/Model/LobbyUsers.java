@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.Model;
 
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.LobbyUserRecord;
+import it.polimi.ingsw.Server.Model.Lobby.LobbyRoles;
 import it.polimi.ingsw.Server.Model.Lobby.LobbyUserColors;
 import it.polimi.ingsw.Server.Model.Lobby.LobbyUserConnectionStates;
 
@@ -74,6 +75,19 @@ public class LobbyUsers extends Observable{
     //SETTERS
     public void setLobbyUserRecords(List<LobbyUserRecord> lobbyUserRecords) {
         this.lobbyUserRecords = lobbyUserRecords;
+
+        for(LobbyUserRecord user : lobbyUserRecords){
+            if(user.username().equals(MyPlayer.getInstance().getUsername())) {
+                if(user.role().equals(LobbyRoles.ADMIN)){
+                    MyPlayer.getInstance().setIsAdmin(true);
+                }
+                else{
+                    MyPlayer.getInstance().setIsAdmin(false);
+                }
+                break;
+            }
+        }
+
         super.updateObservers();
     }
 }
