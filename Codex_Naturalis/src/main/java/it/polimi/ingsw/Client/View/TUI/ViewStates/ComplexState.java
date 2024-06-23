@@ -54,7 +54,7 @@ public abstract class ComplexState extends InteractiveState{
         printHelp = false;
 
         String keyword = null;
-        if (input.charAt(0) == '/') {
+        if ((input != null && !input.isEmpty()) && input.charAt(0) == '/') {
             if (keywordToComponentMap.isEmpty() && !input.equalsIgnoreCase("/back"))
                 return false;
 
