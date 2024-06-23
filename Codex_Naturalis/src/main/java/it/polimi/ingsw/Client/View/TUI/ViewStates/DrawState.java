@@ -17,6 +17,7 @@ public class DrawState extends GameState {
     public DrawState() {
         super(new CardDrawer(), new ArrayList<>(){{add(new Zoomer());}});
         logger = Logger.getLogger(DrawState.class.getName());
+        logger.info("Initializing Draw State");
 
         passiveComponents = new ArrayList<>();
 

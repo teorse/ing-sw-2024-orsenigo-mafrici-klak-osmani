@@ -72,7 +72,7 @@ public abstract class ComplexState extends InteractiveState{
             } else {
                 activeComponent = keywordToComponentMap.get(keyword);
             }
-            print();
+            ClientModel.getInstance().printView();
             return true;
         }
 
@@ -93,7 +93,7 @@ public abstract class ComplexState extends InteractiveState{
                 activeComponent = getMainComponent();
             }
         }
-        print();
+        ClientModel.getInstance().printView();
         return true;
     }
 

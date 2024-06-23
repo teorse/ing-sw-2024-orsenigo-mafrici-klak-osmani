@@ -93,9 +93,11 @@ public abstract class LobbyStates extends ComplexState {
                     return true;
                 }
             }
+            logger.fine("No eligible state was found, returing false");
             //Returns false because could not match conditions for next state
             return false;
         }
+        logger.fine("State was already changed before this call, returning true");
         //Returns true because the initial if statement was false and therefore this state is already not the current state.
         return true;
     }

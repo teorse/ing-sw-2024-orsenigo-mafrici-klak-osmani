@@ -44,16 +44,17 @@ public abstract class GameState extends LobbyStates{
             logger.info("Evaluating next state in GameState");
 
             if(ClientModel.getInstance().isGameOver()){
-                logger.fine("The game is over, setting view state to GameOvrState");
+                logger.fine("The game is over, setting view state to GameOverState");
                 RefreshManager.getInstance().resetObservables();
                 ClientModel.getInstance().setView(new GameOverState());
-                ClientModel.getInstance().getView().print();
+                ClientModel.getInstance().printView();
                 return true;
             }
             logger.fine("No elegible state found, returning false");
             //Returns false because could not match conditions for next state
             return false;
         }
+        logger.fine("State was already changed before this call, returning true");
         //Returns true because the initial if statement was false and therefore this state is already not the current state.
         return true;
     }

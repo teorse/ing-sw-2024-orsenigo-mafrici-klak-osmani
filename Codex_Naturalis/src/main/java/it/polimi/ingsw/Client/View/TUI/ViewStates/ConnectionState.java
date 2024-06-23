@@ -38,22 +38,23 @@ public class ConnectionState extends InteractiveState {
     @Override
     boolean nextState(){
         logger.info("Checking evaluating next state in ConnectionState");
-        ClientModel model = ClientModel.getInstance();
 
-        if(super.nextState())
-            return true;
+        if(ClientModel.getInstance().getView().equals(this)) {
+            ClientModel model = ClientModel.getInstance();
 
-        logger.fine("No next state was found in the superClass, continuing in ConnectionState to look for next state.");
+            logger.fine("No next state was found in the superClass, continuing in ConnectionState to look for next state.");
 
-        if (model.isConnected()) {
-            RefreshManager.getInstance().resetObservables();
-            model.setView(new LoginSignUpState());
-            model.getView().print();
-            logger.fine("next state chosen is LoginSignUpState");
-            return true;
-        } else {
-            logger.fine("No next state was found in the base class, returing false.");
-            return false;
+            if (model.isConnected()) {
+                RefreshManager.getInstance().resetObservables();
+                model.setView(new LoginSignUpState());
+                ClientModel.getInstance().printView();
+                logger.fine("next state chosen is LoginSignUpState");
+                return true;
+            } else {
+                logger.fine("No next state was found in the base class, returing false.");
+                return false;
+            }
         }
+        return true;
     }
 }

@@ -26,6 +26,7 @@ public class StarterPlaceState extends GameState {
     @Override
     public void refreshObservables() {
         super.refreshObservables();
+        RefreshManager.getInstance().addObserved(Game.getInstance());
     }
 
     @Override
@@ -44,7 +45,8 @@ public class StarterPlaceState extends GameState {
                 ClientModel.getInstance().printView();
                 return true;
             }
+            return false;
         }
-        return false;
+        return true;
     }
 }

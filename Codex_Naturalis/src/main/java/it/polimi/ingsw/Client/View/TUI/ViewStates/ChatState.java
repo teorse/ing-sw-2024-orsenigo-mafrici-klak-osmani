@@ -49,7 +49,7 @@ public class ChatState extends InteractiveState {
         }
         else {
             super.handleInput(input);
-            print();
+            ClientModel.getInstance().printView();
         }
         return true;
     }
@@ -62,22 +62,28 @@ public class ChatState extends InteractiveState {
     @Override
     public void update() {
         if(!nextState())
-            print();
+            ClientModel.getInstance().printView();
     }
 
-    boolean nextState() {
-        if(super.nextState())
-            return true;
+    synchronized boolean nextState() {
+        if(ClientModel.getInstance().getView().equals(this)) {
 
-        if(quitChat) {
-            RefreshManager.getInstance().resetObservables();
-            ClientModel.getInstance().setView(previousState);
-            previousState.refreshObservables();
-            previousState.print();
+            if (super.nextState())
+                return true;
 
-            return true;
+            if (quitChat) {
+                Chat.getInstance().resetNewMessages();
+
+                RefreshManager.getInstance().resetObservables();
+                ClientModel.getInstance().setView(previousState);
+                previousState.refreshObservables();
+                ClientModel.getInstance().printView();
+
+                return true;
+            }
+
+            return false;
         }
-
-        return false;
+        return true;
     }
 }

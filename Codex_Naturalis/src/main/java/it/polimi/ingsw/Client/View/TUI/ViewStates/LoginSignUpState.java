@@ -30,16 +30,24 @@ public class LoginSignUpState extends InteractiveState {
     boolean nextState(){
         ClientModel model = ClientModel.getInstance();
 
-        if(super.nextState())
-            return true;
+        if(model.getView().equals(this)) {
+            if(!ClientModel.getInstance().isConnected()){
+                RefreshManager.getInstance().resetObservables();
+                model.setView(new ConnectionState());
 
-        if(model.isLoggedIn()){
-            RefreshManager.getInstance().resetObservables();
-            model.setView(new LobbySelectionState());
+                model.printView();
+                return true;
+            }
 
-            model.getView().print();
-            return true;
+            if (model.isLoggedIn()) {
+                RefreshManager.getInstance().resetObservables();
+                model.setView(new LobbySelectionState());
+
+                model.printView();
+                return true;
+            }
+            return false;
         }
-        return false;
+        return true;
     }
 }

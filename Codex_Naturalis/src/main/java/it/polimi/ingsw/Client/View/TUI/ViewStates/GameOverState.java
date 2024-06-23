@@ -44,4 +44,20 @@ public class GameOverState extends ViewState {
         else
             print();
     }
+
+    private synchronized boolean nextState(){
+        if(ClientModel.getInstance().getView().equals(this)) {
+            if (exitGameOver) {
+                gameOverView.cleanObserved();
+                RefreshManager.getInstance().resetObservables();
+
+                ClientModel.getInstance().setView(new LobbyJoinedState());
+                ClientModel.getInstance().printView();
+
+                return true;
+            }
+            return false;
+        }
+        return true;
+    }
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.View.TUI.Components.GameStartingStatus;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.ColorPicker;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.GameManualStarter;
@@ -51,7 +52,7 @@ public class LobbyJoinedState extends LobbyStates {
     }
 
     @Override
-    public void update() {
+    public synchronized void update() {
         if (!nextState())
             ClientModel.getInstance().printView();
     }

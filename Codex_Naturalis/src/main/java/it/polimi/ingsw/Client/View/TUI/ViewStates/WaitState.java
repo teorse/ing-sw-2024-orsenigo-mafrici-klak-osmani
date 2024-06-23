@@ -20,6 +20,7 @@ public class WaitState extends GameState {
     public WaitState() {
         super(new Zoomer());
         logger = Logger.getLogger(WaitState.class.getName());
+        logger.info("Initializing wait State");
 
         passiveComponents = new ArrayList<>();
         passiveComponents.add(new ChatNotification());

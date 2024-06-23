@@ -184,8 +184,9 @@ public class ClientModel extends Observable {
     }
 
     //TODO add the Reset of the observer here
-    public void setView(ViewState view) {
+    public synchronized void setView(ViewState view) {
         this.view = view;
+        view.update();
     }
 
     public void setStartLobbyError(ErrorsDictionary startLobbyError) {
@@ -217,5 +218,9 @@ public class ClientModel extends Observable {
         gameOver = false;
 
         super.updateObservers();
+    }
+
+    public synchronized void printView(){
+        view.print();
     }
 }

@@ -37,7 +37,7 @@ public abstract class InteractiveState extends ViewState {
                 attemptToExitMainComponent = true;
 
             if (ClientModel.getInstance().getView().equals(this))
-                print();
+                ClientModel.getInstance().printView();
 
         return true;
     }
@@ -49,25 +49,28 @@ public abstract class InteractiveState extends ViewState {
 
     boolean nextState(){
         logger.info("Evaluating next state in InteractiveState abstract class");
-        if(!ClientModel.getInstance().isConnected()){
-            RefreshManager.getInstance().resetObservables();
-            ClientModel.getInstance().setView(new ConnectionState());
-            ClientModel.getInstance().getView().print();
+        if(ClientModel.getInstance().getView().equals(this)) {
+            if (!ClientModel.getInstance().isConnected()) {
+                RefreshManager.getInstance().resetObservables();
+                ClientModel.getInstance().setView(new ConnectionState());
+                ClientModel.getInstance().printView();
 
-            logger.fine("next state chosen is ConnectionState");
-            return true;
+                logger.fine("next state chosen is ConnectionState");
+                return true;
+            } else if (!ClientModel.getInstance().isLoggedIn()) {
+                RefreshManager.getInstance().resetObservables();
+                ClientModel.getInstance().setView(new LoginSignUpState());
+                ClientModel.getInstance().printView();
+
+                logger.fine("next state chosen is LoginSignUpState");
+                return true;
+            }
+
+            logger.fine("No eligible next state found, returning false");
+
+            return false;
         }
-        else if (!ClientModel.getInstance().isLoggedIn()) {
-            RefreshManager.getInstance().resetObservables();
-            ClientModel.getInstance().setView(new LoginSignUpState());
-            ClientModel.getInstance().getView().print();
-
-            logger.fine("next state chosen is LoginSignUpState");
-            return true;
-        }
-
-        logger.fine("No eligible next state found, returning false");
-
-        return false;
+        logger.fine("State was already changed before this call, returning true");
+        return true;
     }
 }

@@ -81,7 +81,6 @@ public class Chat extends Observable implements Observer {
 
     //METHODS
     public void receiveChatMessage(ChatMessageRecord chatMessage){
-        newMessages = true;
         if(chatMessage.isMessagePrivate()){
             String sender = chatMessage.getSender();
             if (sender.equals(MyPlayer.getInstance().getUsername()))
@@ -91,6 +90,9 @@ public class Chat extends Observable implements Observer {
         }
         else
             publicChatMessages.add(chatMessage);
+
+        newMessages = true;
+        super.updateObservers();
     }
 
     @Override
