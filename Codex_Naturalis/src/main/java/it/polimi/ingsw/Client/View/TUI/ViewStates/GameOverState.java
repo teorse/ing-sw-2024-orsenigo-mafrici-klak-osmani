@@ -4,6 +4,7 @@ import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.Components.GameOverView;
 import it.polimi.ingsw.Client.View.TUI.Components.LiveComponent;
+import it.polimi.ingsw.Client.View.TUI.TextUI;
 
 import java.util.logging.Logger;
 
@@ -23,6 +24,8 @@ public class GameOverState extends ViewState {
     @Override
     public void print() {
         synchronized (printLock) {
+            TextUI.clearCMD();
+
             gameOverView.print();
         }
     }
