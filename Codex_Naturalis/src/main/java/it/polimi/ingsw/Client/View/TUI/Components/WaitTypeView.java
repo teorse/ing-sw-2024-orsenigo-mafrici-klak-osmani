@@ -14,10 +14,7 @@ public class WaitTypeView extends LiveComponent{
     @Override
     public void print() {
         if (Game.getInstance().isSetupFinished()) {
-                if (!Game.getInstance().isWaitingForReconnections()) {
-                    new TurnShower().print();
-                }
-                else
+                if (Game.getInstance().isWaitingForReconnections())
                     System.out.println("\nYou're the only player online. Waiting for reconnections!");
         } else {
             System.out.println("\nThe Set Up is not completed. Please wait!");
