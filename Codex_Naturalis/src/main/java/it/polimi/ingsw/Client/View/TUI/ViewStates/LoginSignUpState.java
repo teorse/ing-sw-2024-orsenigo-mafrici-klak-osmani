@@ -24,7 +24,7 @@ public class LoginSignUpState extends InteractiveState {
     @Override
     public void update() {
         if(!nextState())
-            print();
+            ClientModel.getInstance().printView();
     }
 
     boolean nextState(){

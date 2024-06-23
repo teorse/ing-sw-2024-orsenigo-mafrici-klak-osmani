@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.Game;
 import it.polimi.ingsw.Client.View.TUI.Components.*;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.*;
@@ -53,6 +54,6 @@ public class PlaceState extends GameState {
     @Override
     public void update() {
         if(!nextState())
-            print();
+            ClientModel.getInstance().printView();
     }
 }

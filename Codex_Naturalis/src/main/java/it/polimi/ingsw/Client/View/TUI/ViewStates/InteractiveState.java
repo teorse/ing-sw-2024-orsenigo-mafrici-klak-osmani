@@ -70,6 +70,4 @@ public abstract class InteractiveState extends ViewState {
 
         return false;
     }
-
-
 }

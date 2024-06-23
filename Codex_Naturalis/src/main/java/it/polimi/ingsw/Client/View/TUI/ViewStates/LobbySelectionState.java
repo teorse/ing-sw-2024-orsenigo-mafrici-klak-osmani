@@ -24,7 +24,7 @@ public class LobbySelectionState extends InteractiveState {
     @Override
     public void update() {
         if(!nextState())
-            print();
+            ClientModel.getInstance().printView();
     }
 
     synchronized boolean nextState() {
@@ -39,7 +39,7 @@ public class LobbySelectionState extends InteractiveState {
                 RefreshManager.getInstance().resetObservables();
                 model.setView(new LobbyJoinedState());
 
-                model.getView().print();
+                model.printView();
                 return true;
             } else
                 return false;

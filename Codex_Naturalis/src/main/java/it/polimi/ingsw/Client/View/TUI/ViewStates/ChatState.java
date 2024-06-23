@@ -35,10 +35,9 @@ public class ChatState extends InteractiveState {
     }
 
     @Override
-    public void print() {
+    public synchronized void print() {
         TextUI.clearCMD();
         TextUI.displayChatState();
-
         getMainComponent().print();
     }
 

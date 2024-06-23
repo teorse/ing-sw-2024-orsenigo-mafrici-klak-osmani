@@ -31,7 +31,7 @@ public class StarterPlaceState extends GameState {
     @Override
     public void update() {
         if(!nextState())
-            print();
+            ClientModel.getInstance().printView();
     }
 
     public synchronized boolean nextState() {
@@ -41,7 +41,7 @@ public class StarterPlaceState extends GameState {
             if(Game.getInstance().isSetupFinished()){
                 RefreshManager.getInstance().resetObservables();
                 ClientModel.getInstance().setView(new PlaceState());
-                ClientModel.getInstance().getView().print();
+                ClientModel.getInstance().printView();
                 return true;
             }
         }
