@@ -8,7 +8,7 @@ public class ObjectiveCandidates extends Observable {
     //SINGLETON PATTERN
     private static ObjectiveCandidates INSTANCE;
     private ObjectiveCandidates(){}
-    public static ObjectiveCandidates getInstance(){
+    public synchronized static ObjectiveCandidates getInstance(){
         if(INSTANCE == null){
             INSTANCE = new ObjectiveCandidates();
         }

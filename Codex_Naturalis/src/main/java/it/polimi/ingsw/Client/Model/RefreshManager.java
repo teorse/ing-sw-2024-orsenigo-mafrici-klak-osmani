@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 public class RefreshManager implements Observer {
     //SINGLETON PATTERN
     private static RefreshManager INSTANCE;
-    public static RefreshManager getInstance(){
+    public synchronized static RefreshManager getInstance(){
         if(INSTANCE == null){
             INSTANCE = new RefreshManager();
         }

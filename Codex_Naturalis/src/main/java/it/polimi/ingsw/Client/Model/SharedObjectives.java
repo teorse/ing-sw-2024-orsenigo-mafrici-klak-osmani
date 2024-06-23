@@ -11,7 +11,7 @@ public class SharedObjectives extends Observable {
     private SharedObjectives(){
         sharedObjectives = new ArrayList<>();
     }
-    public static SharedObjectives getInstance(){
+    public synchronized static SharedObjectives getInstance(){
         if(INSTANCE == null){
             INSTANCE = new SharedObjectives();
         }

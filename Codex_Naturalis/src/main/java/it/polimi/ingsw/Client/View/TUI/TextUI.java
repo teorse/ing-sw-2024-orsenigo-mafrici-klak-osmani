@@ -40,7 +40,7 @@ public class TextUI{
     }
 
     public static void displayLastRound() {
-        System.out.println("""
+        System.out.print("""
                 ██╗      █████╗ ███████╗████████╗    ██████╗  ██████╗ ██╗   ██╗███╗   ██╗██████╗
                 ██║     ██╔══██╗██╔════╝╚══██╔══╝    ██╔══██╗██╔═══██╗██║   ██║████╗  ██║██╔══██╗
                 ██║     ███████║███████╗   ██║       ██████╔╝██║   ██║██║   ██║██╔██╗ ██║██║  ██║
@@ -51,7 +51,7 @@ public class TextUI{
     }
 
     public static void displayChatState() {
-        System.out.println("""
+        System.out.print("""
                  ██████╗██╗  ██╗ █████╗ ████████╗
                 ██╔════╝██║  ██║██╔══██╗╚══██╔══╝
                 ██║     ███████║███████║   ██║

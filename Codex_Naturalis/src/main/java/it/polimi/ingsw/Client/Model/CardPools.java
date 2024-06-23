@@ -9,7 +9,7 @@ public class CardPools extends Observable {
     //SINGLETON PATTERN
     private static CardPools INSTANCE;
     private CardPools(){};
-    public static CardPools getInstance(){
+    public synchronized static CardPools getInstance(){
         if(INSTANCE == null){
             INSTANCE = new CardPools();
         }

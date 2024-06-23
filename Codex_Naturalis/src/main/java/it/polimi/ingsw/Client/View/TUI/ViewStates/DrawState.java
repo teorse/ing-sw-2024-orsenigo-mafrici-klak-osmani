@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.Game;
 import it.polimi.ingsw.Client.View.TUI.Components.*;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.*;
@@ -32,7 +33,9 @@ public class DrawState extends GameState {
     }
 
     @Override
-    public void print() {
+    public synchronized void print() {
+        logger.info("Printing Draw State");
+
         TextUI.clearCMD();
         if(!Game.getInstance().isLastRoundFlag())
             TextUI.displayGameTitle();
@@ -56,8 +59,11 @@ public class DrawState extends GameState {
     }
 
     @Override
-    public void update() {
-        if(!nextState())
-            print();
+    public synchronized void update() {
+        logger.info("Received update signal in Draw State, evaluating next state");
+        if(!nextState()) {
+            logger.fine("No next state found, printing Draw State");
+            ClientModel.getInstance().printView();
+        }
     }
 }

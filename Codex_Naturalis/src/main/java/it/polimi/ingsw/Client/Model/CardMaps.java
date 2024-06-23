@@ -10,7 +10,7 @@ public class CardMaps extends Observable{
     //SINGLETON PATTERN
     private static CardMaps INSTANCE;
     private CardMaps(){};
-    public static CardMaps getInstance(){
+    public synchronized static CardMaps getInstance(){
         if(INSTANCE == null){
             INSTANCE = new CardMaps();
         }

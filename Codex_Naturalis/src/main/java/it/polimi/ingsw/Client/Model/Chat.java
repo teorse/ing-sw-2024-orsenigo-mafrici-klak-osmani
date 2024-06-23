@@ -20,7 +20,7 @@ public class Chat extends Observable implements Observer {
         LobbyUsers.getInstance().subscribe(this);
         update();
     }
-    public static Chat getInstance(){
+    public synchronized static Chat getInstance(){
         if(INSTANCE == null){
             INSTANCE = new Chat();
         }

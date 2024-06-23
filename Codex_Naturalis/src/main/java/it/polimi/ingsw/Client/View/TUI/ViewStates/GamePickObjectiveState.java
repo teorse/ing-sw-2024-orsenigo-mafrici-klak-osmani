@@ -18,7 +18,7 @@ public class GamePickObjectiveState extends GameState {
     }
 
     @Override
-    public void print() {
+    public synchronized void print() {
         TextUI.clearCMD();
         if(!Game.getInstance().isLastRoundFlag())
             TextUI.displayGameTitle();
@@ -37,7 +37,7 @@ public class GamePickObjectiveState extends GameState {
     }
 
     @Override
-    public void update() {
+    public synchronized void update() {
         if(!nextState())
             ClientModel.getInstance().printView();
     }

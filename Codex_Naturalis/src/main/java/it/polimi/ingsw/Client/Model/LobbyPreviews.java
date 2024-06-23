@@ -8,7 +8,7 @@ public class LobbyPreviews extends Observable {
     //SINGLETON PATTERN
     private static LobbyPreviews INSTANCE;
     private LobbyPreviews() {}
-    public static LobbyPreviews getInstance() {
+    public synchronized static LobbyPreviews getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new LobbyPreviews();
         }

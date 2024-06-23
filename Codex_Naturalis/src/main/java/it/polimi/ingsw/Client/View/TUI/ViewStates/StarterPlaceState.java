@@ -15,7 +15,7 @@ public class StarterPlaceState extends GameState {
     }
 
     @Override
-    public void print() {
+    public synchronized void print() {
         TextUI.clearCMD();
         TextUI.displayGameTitle();
 
@@ -30,7 +30,7 @@ public class StarterPlaceState extends GameState {
     }
 
     @Override
-    public void update() {
+    public synchronized void update() {
         if(!nextState())
             ClientModel.getInstance().printView();
     }

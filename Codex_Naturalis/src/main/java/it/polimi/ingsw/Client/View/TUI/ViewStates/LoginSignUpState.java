@@ -12,7 +12,7 @@ public class LoginSignUpState extends InteractiveState {
     }
 
     @Override
-    public void print() {
+    public synchronized void print() {
         TextUI.clearCMD();
         TextUI.displayGameTitle();
 
@@ -22,12 +22,12 @@ public class LoginSignUpState extends InteractiveState {
     }
 
     @Override
-    public void update() {
+    public synchronized void update() {
         if(!nextState())
             ClientModel.getInstance().printView();
     }
 
-    boolean nextState(){
+    synchronized boolean nextState(){
         ClientModel model = ClientModel.getInstance();
 
         if(model.getView().equals(this)) {

@@ -23,7 +23,7 @@ public abstract class InteractiveState extends ViewState {
     }
 
     @Override
-    public void print() {
+    public synchronized void print() {
         if(attemptToExitMainComponent) {
             attemptToExitMainComponent = false;
             System.out.println("\nYou can't go further back than this, please follow the instructions on screen.");
@@ -47,7 +47,7 @@ public abstract class InteractiveState extends ViewState {
         mainComponent.refreshObserved();
     }
 
-    boolean nextState(){
+    synchronized boolean nextState(){
         logger.info("Evaluating next state in InteractiveState abstract class");
         if(ClientModel.getInstance().getView().equals(this)) {
             if (!ClientModel.getInstance().isConnected()) {

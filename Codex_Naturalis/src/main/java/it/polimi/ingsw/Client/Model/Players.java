@@ -11,7 +11,7 @@ public class Players extends Observable{
     private Players(){
         players = new ArrayList<>();
     }
-    public static Players getInstance(){
+    public synchronized static Players getInstance(){
         if(INSTANCE == null){
             INSTANCE = new Players();
         }

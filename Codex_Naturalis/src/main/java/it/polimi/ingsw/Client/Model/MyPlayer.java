@@ -17,7 +17,7 @@ public class MyPlayer extends Observable{
         isAdmin = false;
         newState = false;
     }
-    public static MyPlayer getInstance(){
+    public synchronized static MyPlayer getInstance(){
         if(INSTANCE == null){
             INSTANCE = new MyPlayer();
         }

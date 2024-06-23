@@ -6,7 +6,7 @@ public class SecretObjective extends Observable{
     //SINGLETON PATTERN
     private static SecretObjective INSTANCE;
     private SecretObjective(){}
-    public static SecretObjective getInstance(){
+    public synchronized static SecretObjective getInstance(){
         if(INSTANCE == null){
             INSTANCE = new SecretObjective();
         }

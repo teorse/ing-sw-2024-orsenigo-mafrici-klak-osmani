@@ -5,7 +5,7 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.Ga
 public class Game extends Observable{
     //SINGLETON PATTERN
     private static Game INSTANCE;
-    public static Game getInstance(){
+    public synchronized static Game getInstance(){
         if(INSTANCE == null){
             INSTANCE = new Game();
         }

@@ -9,7 +9,7 @@ public class Lobby extends Observable {
     //SINGLETON PATTERN
     private static Lobby INSTANCE;
     private Lobby(){}
-    public static Lobby getInstance(){
+    public synchronized static Lobby getInstance(){
         if(INSTANCE == null){
             INSTANCE = new Lobby();
         }

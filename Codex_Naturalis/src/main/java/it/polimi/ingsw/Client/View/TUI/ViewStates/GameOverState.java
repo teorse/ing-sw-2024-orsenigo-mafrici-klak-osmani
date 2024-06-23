@@ -17,7 +17,7 @@ public class GameOverState extends ViewState {
     }
 
     @Override
-    public void print() {
+    public synchronized void print() {
         gameOverView.print();
     }
 
@@ -33,16 +33,9 @@ public class GameOverState extends ViewState {
     }
 
     @Override
-    public void update() {
-        if(exitGameOver) {
-            gameOverView.cleanObserved();
-            RefreshManager.getInstance().resetObservables();
-
-            ClientModel.getInstance().setView(new LobbyJoinedState());
-            ClientModel.getInstance().getView().print();
-        }
-        else
-            print();
+    public synchronized void update() {
+        if(!nextState())
+            ClientModel.getInstance().printView();
     }
 
     private synchronized boolean nextState(){

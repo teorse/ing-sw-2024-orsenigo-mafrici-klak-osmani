@@ -60,7 +60,7 @@ public class ChatState extends InteractiveState {
     }
 
     @Override
-    public void update() {
+    public synchronized void update() {
         if(!nextState())
             ClientModel.getInstance().printView();
     }

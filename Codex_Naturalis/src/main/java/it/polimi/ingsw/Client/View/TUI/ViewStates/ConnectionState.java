@@ -18,7 +18,7 @@ public class ConnectionState extends InteractiveState {
 
 
     @Override
-    public void print() {
+    public synchronized void print() {
         logger.info("Printing viewState");
         TextUI.clearCMD();
         TextUI.displayGameTitle();
@@ -29,14 +29,14 @@ public class ConnectionState extends InteractiveState {
     }
 
     @Override
-    public void update() {
+    public synchronized void update() {
         logger.info("Updating viewState");
         if(!nextState())
-            print();
+            ClientModel.getInstance().printView();
     }
 
     @Override
-    boolean nextState(){
+    synchronized boolean nextState(){
         logger.info("Checking evaluating next state in ConnectionState");
 
         if(ClientModel.getInstance().getView().equals(this)) {

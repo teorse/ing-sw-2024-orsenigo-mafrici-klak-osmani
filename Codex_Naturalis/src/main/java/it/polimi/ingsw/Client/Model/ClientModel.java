@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class ClientModel extends Observable {
     //SINGLETON PATTERN
     private static ClientModel INSTANCE;
-    public static ClientModel getInstance(){
+    public synchronized static ClientModel getInstance(){
         if(INSTANCE == null){
             INSTANCE = new ClientModel();
         }

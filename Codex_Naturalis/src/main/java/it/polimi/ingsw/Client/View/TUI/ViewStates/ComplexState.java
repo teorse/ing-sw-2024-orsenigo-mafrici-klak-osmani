@@ -106,7 +106,7 @@ public abstract class ComplexState extends InteractiveState{
     }
 
     @Override
-    public void print(){
+    public synchronized void print(){
         logger.info("Printing active component in abstract class ComplexState");
 
         if(activeComponent == null)

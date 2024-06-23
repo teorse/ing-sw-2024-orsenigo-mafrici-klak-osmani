@@ -11,7 +11,7 @@ public class GameOver extends Observable{
     //SINGLETON PATTERN
     private static GameOver INSTANCE;
     private GameOver(){}
-    public static GameOver getInstance(){
+    public synchronized static GameOver getInstance(){
         if(INSTANCE == null){
             INSTANCE = new GameOver();
         }

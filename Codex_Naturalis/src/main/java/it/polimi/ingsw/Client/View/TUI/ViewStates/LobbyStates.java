@@ -39,14 +39,14 @@ public abstract class LobbyStates extends ComplexState {
     public boolean handleInput(String input) {
         if (input.equalsIgnoreCase("/CHAT")) {
             model.setView(new ChatState(this));
-            model.getView().print();
+            model.printView();
             return true;
         }
         else if(input.equalsIgnoreCase("/QUITLOBBY")) {
             model.quitLobby();
             model.getClientConnector().sendPacket(new CSPQuitLobby());
             model.setView(new LobbySelectionState());
-            model.getView().print();
+            model.printView();
             return true;
         }
         else
@@ -65,7 +65,7 @@ public abstract class LobbyStates extends ComplexState {
                     logger.fine("User is no longer in the Lobby, setting next state as LobbyStateSelection.");
                     RefreshManager.getInstance().resetObservables();
                     ClientModel.getInstance().setView(new LobbySelectionState());
-                    ClientModel.getInstance().getView().print();
+                    ClientModel.getInstance().printView();
 
                     return true;
                 }
@@ -89,7 +89,7 @@ public abstract class LobbyStates extends ComplexState {
                         case WAIT -> model.setView(new WaitState());
                     }
                     logger.fine("New view state is: "+ClientModel.getInstance().getView().getClass().getSimpleName());
-                    ClientModel.getInstance().getView().print();
+                    ClientModel.getInstance().printView();
                     return true;
                 }
             }
