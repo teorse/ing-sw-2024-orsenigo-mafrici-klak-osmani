@@ -5,45 +5,55 @@ import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.LobbyChooser;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
+import java.util.logging.Logger;
+
 public class LobbySelectionState extends InteractiveState {
+    private final Logger logger;
 
     public LobbySelectionState() {
         super(new LobbyChooser());
+        logger = Logger.getLogger(LobbySelectionState.class.getName());
     }
 
     @Override
-    public synchronized void print() {
-        TextUI.clearCMD();
-        TextUI.displayGameTitle();
+    public void print() {
+        synchronized (printLock) {
+            TextUI.clearCMD();
+            TextUI.displayGameTitle();
 
-        super.print();
+            super.print();
 
-        getMainComponent().print();
+            getMainComponent().print();
+        }
     }
 
     @Override
-    public synchronized void update() {
+    public void update() {
+        logger.fine("Updating in LobbySelectionState");
         if(!nextState())
             ClientModel.getInstance().printView();
+        logger.fine("finished updating in LobbySelectionState");
     }
 
-    synchronized boolean nextState() {
-        ClientModel model = ClientModel.getInstance();
+    boolean nextState() {
+        synchronized (nextStateLock) {
+            ClientModel model = ClientModel.getInstance();
 
-        if (model.getView().equals(this)) {
-            if (super.nextState())
-                return true;
+            if (model.getView().equals(this)) {
+                if (super.nextState())
+                    return true;
 
-            if (model.isInLobby()) {
-                getMainComponent().cleanObserved();
-                RefreshManager.getInstance().resetObservables();
-                model.setView(new LobbyJoinedState());
+                if (model.isInLobby()) {
+                    getMainComponent().cleanObserved();
+                    RefreshManager.getInstance().resetObservables();
+                    model.setView(new LobbyJoinedState());
 
-                model.printView();
-                return true;
-            } else
-                return false;
+                    model.printView();
+                    return true;
+                } else
+                    return false;
+            }
+            return true;
         }
-        return true;
     }
 }

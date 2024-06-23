@@ -1,12 +1,5 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
-import it.polimi.ingsw.Client.Model.ClientModel;
-import it.polimi.ingsw.Client.Model.Observable;
-import it.polimi.ingsw.Client.View.Observer;
-
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Abstract class representing the state of the client in the game.
  * <p>
@@ -16,6 +9,8 @@ import java.util.Map;
  * The class also provides a method to determine the next game state based on the current game conditions.
  */
 public abstract class ViewState {
+    final Object printLock = new Object();
+    final Object nextStateLock = new Object();
 
     public abstract void print();
 

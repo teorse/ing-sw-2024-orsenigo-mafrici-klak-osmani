@@ -23,15 +23,18 @@ public abstract class InteractiveState extends ViewState {
     }
 
     @Override
-    public synchronized void print() {
-        if(attemptToExitMainComponent) {
-            attemptToExitMainComponent = false;
-            System.out.println("\nYou can't go further back than this, please follow the instructions on screen.");
+    public void print() {
+        synchronized (printLock) {
+            if(attemptToExitMainComponent) {
+                attemptToExitMainComponent = false;
+                System.out.println("\nYou can't go further back than this, please follow the instructions on screen.");
+            }
         }
     }
 
     @Override
     public boolean handleInput(String input) {
+        logger.info("Handling input with main component: "+mainComponent.getClass().getSimpleName());
             InteractiveComponentReturns returnValue = mainComponent.handleInput(input);
             if (returnValue.equals(InteractiveComponentReturns.QUIT))
                 attemptToExitMainComponent = true;
@@ -47,30 +50,32 @@ public abstract class InteractiveState extends ViewState {
         mainComponent.refreshObserved();
     }
 
-    synchronized boolean nextState(){
-        logger.info("Evaluating next state in InteractiveState abstract class");
-        if(ClientModel.getInstance().getView().equals(this)) {
-            if (!ClientModel.getInstance().isConnected()) {
-                RefreshManager.getInstance().resetObservables();
-                ClientModel.getInstance().setView(new ConnectionState());
-                ClientModel.getInstance().printView();
+    boolean nextState(){
+        synchronized (nextStateLock) {
+            logger.info("Evaluating next state in InteractiveState abstract class");
+            if(ClientModel.getInstance().getView().equals(this)) {
+                if (!ClientModel.getInstance().isConnected()) {
+                    RefreshManager.getInstance().resetObservables();
+                    ClientModel.getInstance().setView(new ConnectionState());
+                    ClientModel.getInstance().printView();
 
-                logger.fine("next state chosen is ConnectionState");
-                return true;
-            } else if (!ClientModel.getInstance().isLoggedIn()) {
-                RefreshManager.getInstance().resetObservables();
-                ClientModel.getInstance().setView(new LoginSignUpState());
-                ClientModel.getInstance().printView();
+                    logger.fine("next state chosen is ConnectionState");
+                    return true;
+                } else if (!ClientModel.getInstance().isLoggedIn()) {
+                    RefreshManager.getInstance().resetObservables();
+                    ClientModel.getInstance().setView(new LoginSignUpState());
+                    ClientModel.getInstance().printView();
 
-                logger.fine("next state chosen is LoginSignUpState");
-                return true;
+                    logger.fine("next state chosen is LoginSignUpState");
+                    return true;
+                }
+
+                logger.fine("No eligible next state found, returning false");
+
+                return false;
             }
-
-            logger.fine("No eligible next state found, returning false");
-
-            return false;
+            logger.fine("State was already changed before this call, returning true");
+            return true;
         }
-        logger.fine("State was already changed before this call, returning true");
-        return true;
     }
 }

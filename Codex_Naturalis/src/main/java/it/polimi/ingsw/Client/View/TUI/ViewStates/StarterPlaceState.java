@@ -6,21 +6,26 @@ import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.CardStarterChoice;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
-public class StarterPlaceState extends GameState {
+import java.util.logging.Logger;
 
+public class StarterPlaceState extends GameState {
+    private final Logger logger;
 
     public StarterPlaceState() {
         super(new CardStarterChoice());
+        logger = Logger.getLogger(StarterPlaceState.class.getName());
         refreshObservables();
     }
 
     @Override
-    public synchronized void print() {
-        TextUI.clearCMD();
-        TextUI.displayGameTitle();
+    public void print() {
+        synchronized (printLock) {
+            TextUI.clearCMD();
+            TextUI.displayGameTitle();
 
-        getActiveComponent().print();
-        super.print();
+            getActiveComponent().print();
+            super.print();
+        }
     }
 
     @Override
@@ -30,23 +35,27 @@ public class StarterPlaceState extends GameState {
     }
 
     @Override
-    public synchronized void update() {
+    public void update() {
+        logger.info("Updating StarterPlaceState");
         if(!nextState())
             ClientModel.getInstance().printView();
+        logger.fine("finished updating in StarterPlaceState");
     }
 
-    public synchronized boolean nextState() {
-        if(ClientModel.getInstance().getView().equals(this)) {
-            if (super.nextState())
-                return true;
-            if(Game.getInstance().isSetupFinished()){
-                RefreshManager.getInstance().resetObservables();
-                ClientModel.getInstance().setView(new PlaceState());
-                ClientModel.getInstance().printView();
-                return true;
+    public boolean nextState() {
+        synchronized (nextStateLock) {
+            if(ClientModel.getInstance().getView().equals(this)) {
+                if (super.nextState())
+                    return true;
+                if(Game.getInstance().isSetupFinished()){
+                    RefreshManager.getInstance().resetObservables();
+                    ClientModel.getInstance().setView(new PlaceState());
+                    ClientModel.getInstance().printView();
+                    return true;
+                }
+                return false;
             }
-            return false;
+            return true;
         }
-        return true;
     }
 }

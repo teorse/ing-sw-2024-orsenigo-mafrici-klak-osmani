@@ -99,7 +99,8 @@ public class RefreshManager implements Observer {
 
     @Override
     public void update() {
-        logger.info("Received an update, updating the view.");
+        logger.info("Refresh Manager Received an update, updating the view.");
         ClientModel.getInstance().getView().update();
+        logger.fine("View Updated from RefreshManager");
     }
 }

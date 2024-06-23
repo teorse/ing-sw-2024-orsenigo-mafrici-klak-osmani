@@ -48,6 +48,7 @@ public abstract class ComplexState extends InteractiveState{
 
     @Override
     public boolean handleInput(String input) {
+        logger.info("Handling input in Client State with main component: "+getMainComponent().getClass().getSimpleName());
         attemptToExitMainComponent = false;
         commandNotFund = false;
         printHelp = false;
@@ -106,34 +107,36 @@ public abstract class ComplexState extends InteractiveState{
     }
 
     @Override
-    public synchronized void print(){
-        logger.info("Printing active component in abstract class ComplexState");
+    public void print(){
+        synchronized (printLock) {
+            logger.info("Printing active component in abstract class ComplexState");
 
-        if(activeComponent == null)
-            logger.fine("active component is null");
-        else
-            logger.fine("active component is not null");
+            if(activeComponent == null)
+                logger.fine("active component is null");
+            else
+                logger.fine("active component is not null");
 
-        if(!keywordToComponentMap.isEmpty())
-            System.out.println("\nTo display the available commands type /help or /h");
+            if(!keywordToComponentMap.isEmpty())
+                System.out.println("\nTo display the available commands type /help or /h");
 
-        super.print();
+            super.print();
 
-        if (commandNotFund) {
-            System.out.println("\nCommand not found");
-        }
-        else if (printHelp) {
-            if (!keywordToComponentMap.isEmpty()) {
-                System.out.println("\nThese are the available commands:");
-                for (String keyword : keywordToComponentMap.keySet()) {
-                    System.out.println(keywordToComponentMap.get(keyword).getDescription());
-                }
-                if (ClientModel.getInstance().isInLobby()) {
-                    System.out.println("/chat -> to enter in the chat state");
-                    System.out.println("/quitlobby -> to quit the lobby");
-                }
-            } else
-                System.out.println("\nThere are no commands available!");
+            if (commandNotFund) {
+                System.out.println("\nCommand not found");
+            }
+            else if (printHelp) {
+                if (!keywordToComponentMap.isEmpty()) {
+                    System.out.println("\nThese are the available commands:");
+                    for (String keyword : keywordToComponentMap.keySet()) {
+                        System.out.println(keywordToComponentMap.get(keyword).getDescription());
+                    }
+                    if (ClientModel.getInstance().isInLobby()) {
+                        System.out.println("/chat -> to enter in the chat state");
+                        System.out.println("/quitlobby -> to quit the lobby");
+                    }
+                } else
+                    System.out.println("\nThere are no commands available!");
+            }
         }
     }
 }

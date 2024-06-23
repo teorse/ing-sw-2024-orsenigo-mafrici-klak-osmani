@@ -29,18 +29,20 @@ public class LobbyJoinedState extends LobbyStates {
     }
 
     @Override
-    public synchronized void print() {
+    public void print() {
         logger.info("Called print method");
 
-        if (ClientModel.getInstance().getView().equals(this)) {
-            TextUI.clearCMD();
-            TextUI.displayGameTitle();
+        synchronized (printLock) {
+            if (ClientModel.getInstance().getView().equals(this)) {
+                TextUI.clearCMD();
+                TextUI.displayGameTitle();
 
-            logger.fine("Calling lobbyView print");
-            lobbyView.print();
-            getActiveComponent().print();
-            super.print();
-            gameStartingStatus.print();
+                logger.fine("Calling lobbyView print");
+                lobbyView.print();
+                getActiveComponent().print();
+                super.print();
+                gameStartingStatus.print();
+            }
         }
     }
 
@@ -52,8 +54,13 @@ public class LobbyJoinedState extends LobbyStates {
     }
 
     @Override
-    public synchronized void update() {
-        if (!nextState())
+    public void update() {
+        logger.info("Updating LobbyJoinedState");
+
+        if (!nextState()) {
+            logger.fine("No next state was found for LobbyJoinedState, proceeding to call model.print method");
             ClientModel.getInstance().printView();
+        }
+        logger.fine("finished updating in LobbyJoinedState");
     }
 }

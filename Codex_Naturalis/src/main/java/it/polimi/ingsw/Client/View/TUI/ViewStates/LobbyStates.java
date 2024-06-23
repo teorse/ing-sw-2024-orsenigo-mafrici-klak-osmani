@@ -54,51 +54,53 @@ public abstract class LobbyStates extends ComplexState {
     }
 
     @Override
-    synchronized boolean nextState(){
-        if (model.getView().equals(this)) {
-            if(super.nextState())
-                return true;
-            else {
-                logger.info("Evaluating next state in LobbyState");
-
-                if (!ClientModel.getInstance().isInLobby()) {
-                    logger.fine("User is no longer in the Lobby, setting next state as LobbyStateSelection.");
-                    RefreshManager.getInstance().resetObservables();
-                    ClientModel.getInstance().setView(new LobbySelectionState());
-                    ClientModel.getInstance().printView();
-
+    boolean nextState(){
+        synchronized (nextStateLock) {
+            if (model.getView().equals(this)) {
+                if(super.nextState())
                     return true;
-                }
-                else if(MyPlayer.getInstance().isNewState() && !ClientModel.getInstance().isGameOver()) {
-                    logger.fine("User is still in the Lobby and the game is not over and a new player game state has been delivered.");
+                else {
+                    logger.info("Evaluating next state in LobbyState");
 
-                    RefreshManager.getInstance().resetObservables();
+                    if (!ClientModel.getInstance().isInLobby()) {
+                        logger.fine("User is no longer in the Lobby, setting next state as LobbyStateSelection.");
+                        RefreshManager.getInstance().resetObservables();
+                        ClientModel.getInstance().setView(new LobbySelectionState());
+                        ClientModel.getInstance().printView();
 
-                    PlayerStates playerState = MyPlayer.getInstance().getMyPlayerGameState();
-                    logger.fine("The new player game state is: "+ playerState);
-
-                    switch (playerState) {
-                        case PLACE -> {
-                            if (!Game.getInstance().isSetupFinished())
-                                model.setView(new StarterPlaceState());
-                            else
-                                model.setView(new PlaceState());
-                        }
-                        case DRAW -> model.setView(new DrawState());
-                        case PICK_OBJECTIVE -> model.setView(new GamePickObjectiveState());
-                        case WAIT -> model.setView(new WaitState());
+                        return true;
                     }
-                    logger.fine("New view state is: "+ClientModel.getInstance().getView().getClass().getSimpleName());
-                    ClientModel.getInstance().printView();
-                    return true;
+                    else if(MyPlayer.getInstance().isNewState() && !ClientModel.getInstance().isGameOver()) {
+                        logger.fine("User is still in the Lobby and the game is not over and a new player game state has been delivered.");
+
+                        RefreshManager.getInstance().resetObservables();
+
+                        PlayerStates playerState = MyPlayer.getInstance().getMyPlayerGameState();
+                        logger.fine("The new player game state is: "+ playerState);
+
+                        switch (playerState) {
+                            case PLACE -> {
+                                if (!Game.getInstance().isSetupFinished())
+                                    model.setView(new StarterPlaceState());
+                                else
+                                    model.setView(new PlaceState());
+                            }
+                            case DRAW -> model.setView(new DrawState());
+                            case PICK_OBJECTIVE -> model.setView(new GamePickObjectiveState());
+                            case WAIT -> model.setView(new WaitState());
+                        }
+                        logger.fine("New view state is: "+ClientModel.getInstance().getView().getClass().getSimpleName());
+                        ClientModel.getInstance().printView();
+                        return true;
+                    }
                 }
+                logger.fine("No eligible state was found, returing false");
+                //Returns false because could not match conditions for next state
+                return false;
             }
-            logger.fine("No eligible state was found, returing false");
-            //Returns false because could not match conditions for next state
-            return false;
+            logger.fine("State was already changed before this call, returning true");
+            //Returns true because the initial if statement was false and therefore this state is already not the current state.
+            return true;
         }
-        logger.fine("State was already changed before this call, returning true");
-        //Returns true because the initial if statement was false and therefore this state is already not the current state.
-        return true;
     }
 }

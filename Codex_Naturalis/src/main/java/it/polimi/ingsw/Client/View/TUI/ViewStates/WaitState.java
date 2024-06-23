@@ -34,31 +34,38 @@ public class WaitState extends GameState {
         postSetupComponents.add(new TurnShower());
 
         refreshObservables();
+        logger.fine("Wait State initialized");
     }
 
     @Override
-    public synchronized void print() {
-        TextUI.clearCMD();
-        if(!Game.getInstance().isLastRoundFlag())
-            TextUI.displayGameTitle();
-        else
-            TextUI.displayLastRound();
+    public void print() {
+        logger.info("Called print method in WaitState");
 
-        if (Game.getInstance().isSetupFinished()){
-            for (Component component : postSetupComponents) {
+        synchronized (printLock) {
+            TextUI.clearCMD();
+            if (!Game.getInstance().isLastRoundFlag())
+                TextUI.displayGameTitle();
+            else
+                TextUI.displayLastRound();
+
+            if (Game.getInstance().isSetupFinished()) {
+                for (Component component : postSetupComponents) {
+                    component.print();
+                }
+            }
+            for (Component component : passiveComponents) {
                 component.print();
             }
-        }
-        for (Component component : passiveComponents) {
-            component.print();
-        }
 
-        getActiveComponent().print();
-        super.print();
+            getActiveComponent().print();
+            super.print();
+        }
     }
 
     @Override
     public void refreshObservables() {
+        logger.fine("Refreshing observables in Wait State");
+
         super.refreshObservables();
         for(LiveComponent component : passiveComponents){
             component.refreshObserved();
@@ -69,8 +76,13 @@ public class WaitState extends GameState {
     }
 
     @Override
-    public synchronized void update(){
-        if(!nextState())
+    public void update(){
+        logger.info("Called update method in WaitState");
+
+        if(!nextState()) {
+            logger.fine("No state was found to switch to from Wait State, proceeding to call model.print");
             ClientModel.getInstance().printView();
+        }
+        logger.fine("finished updating in WaitState");
     }
 }

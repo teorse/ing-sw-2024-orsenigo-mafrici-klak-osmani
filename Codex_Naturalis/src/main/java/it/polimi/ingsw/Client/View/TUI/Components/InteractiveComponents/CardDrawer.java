@@ -6,13 +6,13 @@ import it.polimi.ingsw.Client.Model.Game;
 import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.Network.ClientConnector;
 import it.polimi.ingsw.Client.View.TUI.Components.CardPoolView;
-import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPDrawCard;
 import it.polimi.ingsw.Server.Model.Game.Artifacts;
 import it.polimi.ingsw.Server.Model.Game.Table.CardPoolTypes;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 //todo review code
 public class CardDrawer extends InteractiveComponent{
@@ -31,6 +31,8 @@ public class CardDrawer extends InteractiveComponent{
 
     private boolean invalidBinaryChoice;
     private boolean invalidCardIndex;
+
+    private final Logger logger;
 
 
 
@@ -51,6 +53,8 @@ public class CardDrawer extends InteractiveComponent{
      */
     public CardDrawer() {
         super(1);
+        logger = Logger.getLogger(CardDrawer.class.getName());
+        logger.info("Initializing CardDrawer Component.");
 
         // Initialize connection to client connector
         this.connection = ClientModel.getInstance().getClientConnector();
@@ -100,6 +104,8 @@ public class CardDrawer extends InteractiveComponent{
      */
     @Override
     public InteractiveComponentReturns handleInput(String input) {
+        logger.info("Handling in put in CardDrawer");
+
         // Process input through superclass method
         InteractiveComponentReturns superReturn = super.handleInput(input);
         if (superReturn == InteractiveComponentReturns.QUIT) {

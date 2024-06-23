@@ -108,6 +108,7 @@ public class ClientModel extends Observable {
     }
 
     public ViewState getView() {
+        logger.info("getView method called in ClientModel, current value of view is: "+view.getClass().getSimpleName());
         return view;
     }
 
@@ -220,7 +221,7 @@ public class ClientModel extends Observable {
         super.updateObservers();
     }
 
-    public synchronized void printView(){
+    public void printView(){
         view.print();
     }
 }

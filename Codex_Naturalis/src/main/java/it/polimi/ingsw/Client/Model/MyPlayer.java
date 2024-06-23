@@ -52,6 +52,7 @@ public class MyPlayer extends Observable{
     }
     public PlayerStates getMyPlayerGameState() {
         synchronized (PlayerGameStateLock) {
+            logger.info("Getting My Player Game State, current value is: "+myPlayerGameState);
             newState = false;
             return myPlayerGameState;
         }
@@ -71,11 +72,11 @@ public class MyPlayer extends Observable{
         super.updateObservers();
     }
     public void setMyPlayerGameState(PlayerStates myPlayerGameState) {
-        logger.info("Setting My Player Game State to: "+myPlayerGameState);
-
         synchronized (PlayerGameStateLock) {
+            logger.info("Setting My Player Game State to: "+myPlayerGameState);
             this.myPlayerGameState = myPlayerGameState;
             newState = true;
+            logger.fine("My Player Game State after setting is: "+this.myPlayerGameState);
 
             logger.fine("Updating observers");
             super.updateObservers();

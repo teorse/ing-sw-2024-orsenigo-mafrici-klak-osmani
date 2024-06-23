@@ -18,43 +18,48 @@ public class ConnectionState extends InteractiveState {
 
 
     @Override
-    public synchronized void print() {
-        logger.info("Printing viewState");
-        TextUI.clearCMD();
-        TextUI.displayGameTitle();
+    public void print() {
+        synchronized (printLock) {
+            logger.info("Printing viewState");
+            TextUI.clearCMD();
+            TextUI.displayGameTitle();
 
-        super.print();
+            super.print();
 
-        getMainComponent().print();
+            getMainComponent().print();
+        }
     }
 
     @Override
-    public synchronized void update() {
-        logger.info("Updating viewState");
+    public void update() {
+        logger.info("Updating ConnectionState");
         if(!nextState())
             ClientModel.getInstance().printView();
+        logger.fine("finished updating in ConnectionState");
     }
 
     @Override
-    synchronized boolean nextState(){
-        logger.info("Checking evaluating next state in ConnectionState");
+    boolean nextState(){
+        synchronized (nextStateLock) {
+            logger.info("Checking evaluating next state in ConnectionState");
 
-        if(ClientModel.getInstance().getView().equals(this)) {
-            ClientModel model = ClientModel.getInstance();
+            if(ClientModel.getInstance().getView().equals(this)) {
+                ClientModel model = ClientModel.getInstance();
 
-            logger.fine("No next state was found in the superClass, continuing in ConnectionState to look for next state.");
+                logger.fine("No next state was found in the superClass, continuing in ConnectionState to look for next state.");
 
-            if (model.isConnected()) {
-                RefreshManager.getInstance().resetObservables();
-                model.setView(new LoginSignUpState());
-                ClientModel.getInstance().printView();
-                logger.fine("next state chosen is LoginSignUpState");
-                return true;
-            } else {
-                logger.fine("No next state was found in the base class, returing false.");
-                return false;
+                if (model.isConnected()) {
+                    RefreshManager.getInstance().resetObservables();
+                    model.setView(new LoginSignUpState());
+                    ClientModel.getInstance().printView();
+                    logger.fine("next state chosen is LoginSignUpState");
+                    return true;
+                } else {
+                    logger.fine("No next state was found in the base class, returing false.");
+                    return false;
+                }
             }
+            return true;
         }
-        return true;
     }
 }

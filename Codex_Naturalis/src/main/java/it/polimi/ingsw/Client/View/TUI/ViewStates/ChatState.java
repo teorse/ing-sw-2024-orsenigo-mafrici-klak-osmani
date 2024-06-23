@@ -35,10 +35,12 @@ public class ChatState extends InteractiveState {
     }
 
     @Override
-    public synchronized void print() {
-        TextUI.clearCMD();
-        TextUI.displayChatState();
-        getMainComponent().print();
+    public void print() {
+        synchronized (printLock) {
+            TextUI.clearCMD();
+            TextUI.displayChatState();
+            getMainComponent().print();
+        }
     }
 
     @Override
@@ -60,30 +62,34 @@ public class ChatState extends InteractiveState {
     }
 
     @Override
-    public synchronized void update() {
+    public void update() {
+        logger.fine("Updating in ChatState");
         if(!nextState())
             ClientModel.getInstance().printView();
+        logger.fine("finished updating in ChatState");
     }
 
-    synchronized boolean nextState() {
-        if(ClientModel.getInstance().getView().equals(this)) {
+    boolean nextState() {
+        synchronized (nextStateLock) {
+            if(ClientModel.getInstance().getView().equals(this)) {
 
-            if (super.nextState())
-                return true;
+                if (super.nextState())
+                    return true;
 
-            if (quitChat) {
-                Chat.getInstance().resetNewMessages();
+                if (quitChat) {
+                    Chat.getInstance().resetNewMessages();
 
-                RefreshManager.getInstance().resetObservables();
-                ClientModel.getInstance().setView(previousState);
-                previousState.refreshObservables();
-                ClientModel.getInstance().printView();
+                    RefreshManager.getInstance().resetObservables();
+                    ClientModel.getInstance().setView(previousState);
+                    previousState.refreshObservables();
+                    ClientModel.getInstance().printView();
 
-                return true;
+                    return true;
+                }
+
+                return false;
             }
-
-            return false;
+            return true;
         }
-        return true;
     }
 }

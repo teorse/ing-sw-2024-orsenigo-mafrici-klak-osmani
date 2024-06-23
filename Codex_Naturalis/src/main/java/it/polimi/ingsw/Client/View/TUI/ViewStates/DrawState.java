@@ -28,30 +28,35 @@ public class DrawState extends GameState {
             passiveComponents.add(new ScoreBoardView());
             passiveComponents.add(new CardMapView());
         }
-
         passiveComponents.add(new ChatNotification());
+
+        refreshObservables();
+        logger.fine("Draw State Initialized");
     }
 
     @Override
-    public synchronized void print() {
+    public void print() {
         logger.info("Printing Draw State");
 
-        TextUI.clearCMD();
-        if(!Game.getInstance().isLastRoundFlag())
-            TextUI.displayGameTitle();
-        else
-            TextUI.displayLastRound();
+        synchronized (printLock) {
+            TextUI.clearCMD();
+            if(!Game.getInstance().isLastRoundFlag())
+                TextUI.displayGameTitle();
+            else
+                TextUI.displayLastRound();
 
-        for (Component component : passiveComponents) {
-            component.print();
+            for (Component component : passiveComponents) {
+                component.print();
+            }
+
+            getActiveComponent().print();
+            super.print();
         }
-
-        getActiveComponent().print();
-        super.print();
     }
 
     @Override
     public void refreshObservables() {
+        logger.info("Refreshing observables in Draw State");
         super.refreshObservables();
         for(LiveComponent component : passiveComponents){
             component.refreshObserved();
@@ -59,11 +64,12 @@ public class DrawState extends GameState {
     }
 
     @Override
-    public synchronized void update() {
+    public void update() {
         logger.info("Received update signal in Draw State, evaluating next state");
         if(!nextState()) {
-            logger.fine("No next state found, printing Draw State");
+            logger.fine("No next state found, calling model.print method");
             ClientModel.getInstance().printView();
         }
+        logger.fine("finished updating in DrawState");
     }
 }

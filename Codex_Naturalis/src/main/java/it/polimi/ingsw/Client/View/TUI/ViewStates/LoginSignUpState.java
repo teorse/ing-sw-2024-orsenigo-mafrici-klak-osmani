@@ -5,49 +5,59 @@ import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.LogInSignUp;
 import it.polimi.ingsw.Client.View.TUI.TextUI;
 
+import java.util.logging.Logger;
+
 public class LoginSignUpState extends InteractiveState {
+    private final Logger logger;
 
     public LoginSignUpState() {
         super(new LogInSignUp());
+        logger = Logger.getLogger(LoginSignUpState.class.getName());
     }
 
     @Override
-    public synchronized void print() {
-        TextUI.clearCMD();
-        TextUI.displayGameTitle();
+    public void print() {
+        synchronized (printLock) {
+            TextUI.clearCMD();
+            TextUI.displayGameTitle();
 
-        super.print();
+            super.print();
 
-        getMainComponent().print();
+            getMainComponent().print();
+        }
     }
 
     @Override
-    public synchronized void update() {
+    public void update() {
+        logger.fine("Updating in LoginSignUpState");
         if(!nextState())
             ClientModel.getInstance().printView();
+        logger.fine("finished updating in LoginSignUpState");
     }
 
-    synchronized boolean nextState(){
+    boolean nextState(){
         ClientModel model = ClientModel.getInstance();
 
-        if(model.getView().equals(this)) {
-            if(!ClientModel.getInstance().isConnected()){
-                RefreshManager.getInstance().resetObservables();
-                model.setView(new ConnectionState());
+        synchronized (nextStateLock) {
+            if(model.getView().equals(this)) {
+                if(!ClientModel.getInstance().isConnected()){
+                    RefreshManager.getInstance().resetObservables();
+                    model.setView(new ConnectionState());
 
-                model.printView();
-                return true;
+                    model.printView();
+                    return true;
+                }
+
+                if (model.isLoggedIn()) {
+                    RefreshManager.getInstance().resetObservables();
+                    model.setView(new LobbySelectionState());
+
+                    model.printView();
+                    return true;
+                }
+                return false;
             }
-
-            if (model.isLoggedIn()) {
-                RefreshManager.getInstance().resetObservables();
-                model.setView(new LobbySelectionState());
-
-                model.printView();
-                return true;
-            }
-            return false;
+            return true;
         }
-        return true;
     }
 }
