@@ -55,7 +55,7 @@ public abstract class ComplexState extends InteractiveState{
 
         String keyword = null;
         if (input.charAt(0) == '/') {
-            if (keywordToComponentMap.isEmpty())
+            if (keywordToComponentMap.isEmpty() && !input.equalsIgnoreCase("/back"))
                 return false;
 
             //Removes char '/' and cuts the string based on spaces
