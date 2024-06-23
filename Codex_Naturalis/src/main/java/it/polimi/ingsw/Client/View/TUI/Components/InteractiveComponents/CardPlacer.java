@@ -103,6 +103,7 @@ public class CardPlacer extends InteractiveComponent {
                     // Invalid coordinate chosen
                     wrongCoordinate = true;
                     decrementInputCounter();
+                    decrementInputCounter();
                 } else {
                     coordinateIndex = coordinatesChosen;
                 }
