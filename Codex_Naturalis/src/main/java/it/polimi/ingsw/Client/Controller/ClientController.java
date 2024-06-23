@@ -248,7 +248,6 @@ public class ClientController  implements ServerClientMessageExecutor {
 
     @Override
     public void changeColorFailed() {
-        //todo add error communication
         logger.info("changeColorFailed method called");
     }
 

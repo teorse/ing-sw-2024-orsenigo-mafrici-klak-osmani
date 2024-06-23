@@ -12,7 +12,6 @@ import java.util.Map;
  * <p>This record implements the {@code Serializable} interface to support serialization.
  */
 
-//TODO remove objectiveRecord
 public record PlayerSecretInfoRecord(List<CardRecord> cardsHeld, Map<CardRecord, Boolean> cardPlayability, ObjectiveRecord objectiveRecord)
         implements Serializable {
 

@@ -130,12 +130,10 @@ public class ClientConnectorRMI implements ClientConnector, ClientRemoteInterfac
                 catch (InterruptedException e) {
                     String stackTrace = Utilities.StackTraceToString(e);
                     logger.warning("InterruptedException thrown in the pinger thread of the ClientConnectorRMI.\nStacktrace:\n"+stackTrace);
-                    //todo add method in client to handle server death.
                 }
                 catch (RemoteException e) {
                     //If remote exception is thrown then the connection to the server has died and
                     //the while loop is broken
-                    //todo add method in client to handle server death.
                     String stackTrace = Utilities.StackTraceToString(e);
                     logger.warning("The server just died, RIP.\n" + "Stack Trace: \n" + stackTrace);
                     model.resetConnection();
