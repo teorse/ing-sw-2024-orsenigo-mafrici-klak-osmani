@@ -43,10 +43,12 @@ public abstract class LobbyStates extends ComplexState {
             return true;
         }
         else if(input.equalsIgnoreCase("/QUITLOBBY")) {
+            logger.info("Quitting lobby command in Lobby State");
             model.quitLobby();
             model.getClientConnector().sendPacket(new CSPQuitLobby());
             model.setView(new LobbySelectionState());
             model.printView();
+            logger.fine("Game over value after quit lobby command is: "+ClientModel.getInstance().isGameOver());
             return true;
         }
         else
@@ -61,6 +63,7 @@ public abstract class LobbyStates extends ComplexState {
                     return true;
                 else {
                     logger.info("Evaluating next state in LobbyState");
+                    logger.fine("GameOver value in Lobby States is: "+ClientModel.getInstance().isGameOver());
 
                     if (!ClientModel.getInstance().isInLobby()) {
                         logger.fine("User is no longer in the Lobby, setting next state as LobbyStateSelection.");

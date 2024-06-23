@@ -181,6 +181,7 @@ public class ClientModel extends Observable {
     }
 
     public void setGameOver(boolean gameOver) {
+        logger.info("setGameOver method called with value: "+gameOver);
         this.gameOver = gameOver;
     }
 
@@ -208,17 +209,19 @@ public class ClientModel extends Observable {
     }
 
     public void quitLobby() {
+        logger.info("Quitting lobby in model");
         inLobby = false;
-
         resetGame();
     }
 
     public void resetGame() {
+        logger.info("Quitting game in model");
         gameStartable = false;
         gameStarted = false;
         gameOver = false;
 
         super.updateObservers();
+        logger.fine("gameOver value after quitting game is: "+gameOver);
     }
 
     public void printView(){

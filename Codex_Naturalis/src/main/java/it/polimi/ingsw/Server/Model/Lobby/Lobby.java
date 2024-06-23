@@ -300,6 +300,7 @@ public class Lobby implements ServerModelLayer {
     @Override
     public void quit(String username){
         LobbyUser lobbyUser = lobbyUsers.get(username);
+        removeUser(lobbyUser);
 
         System.out.println("User "+username+" has quit from the lobby");
         if(gameStarted) {
@@ -307,7 +308,6 @@ public class Lobby implements ServerModelLayer {
                 tryForVictoryByDefault();
             game.quit(username);
         }
-        removeUser(lobbyUser);
     }
 
     private void tryForVictoryByDefault(){

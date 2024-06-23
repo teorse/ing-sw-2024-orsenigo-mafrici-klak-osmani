@@ -30,7 +30,7 @@ public class GameOverState extends ViewState {
     @Override
     public boolean handleInput(String input) {
         exitGameOver = true;
-        ClientModel.getInstance().setGameOver(false);
+        ClientModel.getInstance().resetGame();
         update();
         return true;
     }

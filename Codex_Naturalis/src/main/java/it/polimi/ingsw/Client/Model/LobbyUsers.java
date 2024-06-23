@@ -16,6 +16,7 @@ public class LobbyUsers extends Observable{
     private static LobbyUsers INSTANCE;
     private LobbyUsers(){
         lobbyUserRecords = new ArrayList<>();
+        lobbyUserColors = new HashMap<>();
         logger = Logger.getLogger(LobbyUsers.class.getName());
         logger.info("Initializing LobbyUsers Class");
     }
@@ -32,6 +33,7 @@ public class LobbyUsers extends Observable{
 
     //ATTRIBUTES
     private List<LobbyUserRecord> lobbyUserRecords;
+    private final Map<String, LobbyUserColors> lobbyUserColors;
     private final Logger logger;
 
 
@@ -55,19 +57,12 @@ public class LobbyUsers extends Observable{
             return 0;
     }
     public LobbyUserColors getLobbyUserColors(String username) {
-        for (LobbyUserRecord lobbyUserRecord : lobbyUserRecords) {
-            if (lobbyUserRecord.username().equals(username)) {
-                return lobbyUserRecord.color();
-            }
-        }
+        if(lobbyUserColors.containsKey(username))
+            return lobbyUserColors.get(username);
         return null;
     }
     public Map<String, LobbyUserColors> getLobbyUserColorsMap(){
-        Map<String, LobbyUserColors> map = new HashMap<>();
-        for(LobbyUserRecord lobbyUser : lobbyUserRecords){
-            map.put(lobbyUser.username(), lobbyUser.color());
-        }
-        return map;
+        return new HashMap<>(lobbyUserColors);
     }
     public LobbyUserConnectionStates getLobbyUsersConnectionState(String username) {
         for (LobbyUserRecord lobbyUserRecord : lobbyUserRecords) {
@@ -89,6 +84,10 @@ public class LobbyUsers extends Observable{
         logger.fine("Parameter lobby user records are: " +lobbyUserRecords);
 
         this.lobbyUserRecords = new ArrayList<>(lobbyUserRecords);
+
+        for(LobbyUserRecord user : lobbyUserRecords){
+            lobbyUserColors.put(user.username(), user.color());
+        }
 
         for(LobbyUserRecord user : lobbyUserRecords){
             if(user.username().equals(MyPlayer.getInstance().getUsername())) {
