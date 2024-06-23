@@ -26,6 +26,7 @@ public class PlaceState extends GameState {
         passiveComponents.add(new ScoreBoardView());
         passiveComponents.add(new CardMapView());
         passiveComponents.add(new TurnShower());
+        passiveComponents.add(new CardsHeldView());
     }
 
     @Override
