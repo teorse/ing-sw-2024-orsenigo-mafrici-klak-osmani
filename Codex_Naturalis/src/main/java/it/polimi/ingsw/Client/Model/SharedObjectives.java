@@ -31,7 +31,7 @@ public class SharedObjectives extends Observable {
 
     //GETTERS
     public List<ObjectiveRecord> getSharedObjectives() {
-        return sharedObjectives;
+        return new ArrayList<>(sharedObjectives);
     }
 
 
@@ -41,7 +41,7 @@ public class SharedObjectives extends Observable {
     //SETTERS
     public void setSharedObjectives(List<ObjectiveRecord> sharedObjectives) {
         if(sharedObjectives != null)
-            this.sharedObjectives.addAll(sharedObjectives);
+            this.sharedObjectives = new ArrayList<>(sharedObjectives);
         else
             this.sharedObjectives = new ArrayList<>();
 
