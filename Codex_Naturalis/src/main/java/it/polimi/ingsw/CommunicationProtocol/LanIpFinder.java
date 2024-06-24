@@ -28,7 +28,8 @@ public class LanIpFinder {
                 NetworkInterface networkInterface = interfaces.nextElement();
 
                 // Check if the interface is not a loopback and is up
-                if (!networkInterface.isLoopback() && networkInterface.isUp()) {
+                if (!networkInterface.getDisplayName().contains("Ethernet")
+                        &&!networkInterface.isLoopback() && networkInterface.isUp() && !networkInterface.isVirtual()) {
                     Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
 
                     // Iterate through all addresses associated with the interface
