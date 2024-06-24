@@ -10,11 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Represents the state where players are placing their cards on the board.
+ */
 public class PlaceState extends GameState {
     List<LiveComponent> passiveComponents;
 
     private final Logger logger;
 
+    /**
+     * Constructs a PlaceState with a CardPlacer as the main component and a Zoomer as a secondary component.
+     */
     public PlaceState() {
         super(new CardPlacer(), new ArrayList<>(){{add(new Zoomer());}});
         logger = Logger.getLogger(PlaceState.class.getName());
@@ -33,6 +39,9 @@ public class PlaceState extends GameState {
         logger.fine("Place State Initialized");
     }
 
+    /**
+     * Prints the current state including all passive components and the active component.
+     */
     @Override
     public void print() {
         logger.info("Printing Place State");
@@ -53,6 +62,9 @@ public class PlaceState extends GameState {
         }
     }
 
+    /**
+     * Refreshes the observables for all passive components in the PlaceState.
+     */
     @Override
     public void refreshObservables() {
         logger.info("Refreshing observables in PlaceState");
@@ -62,6 +74,9 @@ public class PlaceState extends GameState {
         }
     }
 
+    /**
+     * Updates the state and checks if there is a next state to transition to.
+     */
     @Override
     public void update() {
         logger.info("Called update method in PlaceState");
@@ -69,6 +84,6 @@ public class PlaceState extends GameState {
             logger.fine("No state was found to switch to from Place State, proceeding to call model.print");
             ClientModel.getInstance().printView();
         }
-        logger.fine("finished updating in PlaceState");
+        logger.fine("Finished updating in PlaceState");
     }
 }
