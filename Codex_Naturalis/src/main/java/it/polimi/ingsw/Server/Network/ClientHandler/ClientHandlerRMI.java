@@ -110,7 +110,7 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, ClientHandlerR
             while (receivedPing) {
 
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(10000);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -136,7 +136,7 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, ClientHandlerR
             }
             catch (RemoteException ex) {
                 String stackTraceString = Utilities.StackTraceToString(ex);
-                logger.warning("RemoteException caught in Client Handler RMI while unbinding client handler.\nStacktrace:\n"+stackTraceString);
+                logger.warning("RemoteException caught in Client Handler RMI while unbinding client handler.\nName: "+ex.getCause()+"\nStacktrace:\n"+stackTraceString);
             }
             catch (NotBoundException ex) {
                 String stackTraceString = Utilities.StackTraceToString(ex);
@@ -162,7 +162,7 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, ClientHandlerR
         }
         catch (RemoteException e){
             String stackTraceString = Utilities.StackTraceToString(e);
-            logger.warning("RemoteException caught in Client Handler RMI while sending message to client: "+clientRemote+".\nStacktrace:\n"+stackTraceString);
+            logger.warning("RemoteException caught in Client Handler RMI while sending message to client: "+clientRemote+".\nName: "+e.getCause()+"\nStacktrace:\n"+stackTraceString);
         }
     }
 
