@@ -8,15 +8,24 @@ import it.polimi.ingsw.Client.View.TUI.TextUI;
 
 import java.util.logging.Logger;
 
+/**
+ * Represents the state where players choose the starting cards to place on the board.
+ */
 public class StarterPlaceState extends GameState {
     private final Logger logger;
 
+    /**
+     * Constructs a StarterPlaceState with a CardStarterChoice as the main component.
+     */
     public StarterPlaceState() {
         super(new CardStarterChoice());
         logger = Logger.getLogger(StarterPlaceState.class.getName());
         refreshObservables();
     }
 
+    /**
+     * Prints the current state including the active component and any super components.
+     */
     @Override
     public void print() {
         synchronized (printLock) {
@@ -28,20 +37,31 @@ public class StarterPlaceState extends GameState {
         }
     }
 
+    /**
+     * Refreshes the observables for the StarterPlaceState, adding Game.getInstance() as an observed object.
+     */
     @Override
     public void refreshObservables() {
         super.refreshObservables();
         RefreshManager.getInstance().addObserved(Game.getInstance());
     }
 
+    /**
+     * Updates the state and checks if there is a next state to transition to.
+     * If setup is finished in the game, transitions to PlaceState; otherwise, remains in StarterPlaceState.
+     */
     @Override
     public void update() {
         logger.info("Updating StarterPlaceState");
         if(!nextState())
             ClientModel.getInstance().printView();
-        logger.fine("finished updating in StarterPlaceState");
+        logger.fine("Finished updating in StarterPlaceState");
     }
 
+    /**
+     * Determines the next state to transition to based on game setup status.
+     * @return true if a state transition occurs, false otherwise.
+     */
     public boolean nextState() {
         synchronized (nextStateLock) {
             if(ClientModel.getInstance().getView().equals(this)) {
