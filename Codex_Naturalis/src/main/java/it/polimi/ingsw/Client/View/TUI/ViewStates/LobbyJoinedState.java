@@ -11,14 +11,22 @@ import it.polimi.ingsw.Client.View.TUI.TextUI;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+/**
+ * Represents the state when a player has joined a lobby.
+ */
 public class LobbyJoinedState extends LobbyStates {
     LiveComponent lobbyView;
     LiveComponent gameStartingStatus;
 
     private final Logger logger;
 
+    /**
+     * Constructs a LobbyJoinedState with the specified components.
+     */
     public LobbyJoinedState() {
-        super(new GameManualStarter(), new ArrayList<>() {{add(new ColorPicker());}});
+        super(new GameManualStarter(), new ArrayList<>() {{
+            add(new ColorPicker());
+        }});
         logger = Logger.getLogger(LobbyJoinedState.class.getName());
         logger.info("Initializing LobbyJoinedState");
 
@@ -28,6 +36,9 @@ public class LobbyJoinedState extends LobbyStates {
         refreshObservables();
     }
 
+    /**
+     * Prints the current state, including lobby information and game starting status.
+     */
     @Override
     public void print() {
         logger.info("Called print method");
@@ -46,6 +57,9 @@ public class LobbyJoinedState extends LobbyStates {
         }
     }
 
+    /**
+     * Refreshes the observables for the current state.
+     */
     @Override
     public void refreshObservables() {
         super.refreshObservables();
@@ -53,6 +67,9 @@ public class LobbyJoinedState extends LobbyStates {
         gameStartingStatus.refreshObserved();
     }
 
+    /**
+     * Updates the state and determines if there is a next state to transition to.
+     */
     @Override
     public void update() {
         logger.info("Updating LobbyJoinedState");
@@ -61,6 +78,6 @@ public class LobbyJoinedState extends LobbyStates {
             logger.fine("No next state was found for LobbyJoinedState, proceeding to call model.print method");
             ClientModel.getInstance().printView();
         }
-        logger.fine("finished updating in LobbyJoinedState");
+        logger.fine("Finished updating in LobbyJoinedState");
     }
 }
