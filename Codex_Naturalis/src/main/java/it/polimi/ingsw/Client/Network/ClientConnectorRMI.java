@@ -3,6 +3,7 @@ package it.polimi.ingsw.Client.Network;
 import it.polimi.ingsw.Client.Controller.ClientController;
 import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.ClientServerPacket;
+import it.polimi.ingsw.CommunicationProtocol.LanIpFinder;
 import it.polimi.ingsw.CommunicationProtocol.NetworkConstants;
 import it.polimi.ingsw.CommunicationProtocol.RMI.ClientRemoteInterfaces.ClientRemoteInterface;
 import it.polimi.ingsw.CommunicationProtocol.RMI.ServerRemoteInterfaces.ClientHandlerRemoteInterface;
@@ -57,6 +58,9 @@ public class ClientConnectorRMI implements ClientConnector, ClientRemoteInterfac
         logger = Logger.getLogger(ClientConnectorRMI.class.getName());
         logger.info("Initializing Client Connector RMI");
 
+        String lanIP = LanIpFinder.getLAN_IP();
+        System.setProperty("java.rmi.server.hostname", lanIP);
+
         this.controller = controller;
         this.model = model;
 
@@ -88,7 +92,9 @@ public class ClientConnectorRMI implements ClientConnector, ClientRemoteInterfac
             //Using the socket factory to generate a socket with a reasonable connection timeout to avoid
             //waiting for 5+ minutes if the entered ip address for the server is not reachable
             RMIClientSocketFactory RMIClientSocketFactory = new RMIClientSocketFactory();
+            logger.fine("Locating server Registry");
             Registry serverRegister = LocateRegistry.getRegistry(serverIp, NetworkConstants.RMIServerRegistryPort, RMIClientSocketFactory);
+            logger.fine("Server Registry located, looking up the stub");
             ServerListenerRemoteInterface serverListenerStub = (ServerListenerRemoteInterface) serverRegister.lookup(NetworkConstants.RMIListenerStubName);
             logger.fine("Connected to server RMI listener, proceeding to request dedicated client handler.");
 
