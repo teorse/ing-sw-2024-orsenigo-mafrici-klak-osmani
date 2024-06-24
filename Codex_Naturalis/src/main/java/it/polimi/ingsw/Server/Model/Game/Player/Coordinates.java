@@ -1,8 +1,11 @@
 package it.polimi.ingsw.Server.Model.Game.Player;
 
+import it.polimi.ingsw.Server.Model.Game.Cards.CornerDirection;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * The Coordinates class is used to store information about where played cards have been placed by the player
@@ -54,11 +57,47 @@ public class Coordinates implements Serializable {
      * coordinate given as parameter.<br>
      * Can be used to rapidly calculate new coordinates given a starting point and an
      * offset value.
-     * @param offset Coordinates object containing the values to be added (offset) to the current X and Y
-     * @return
+     *
+     * @param   offset Coordinates object containing the values to be added (offset) to the current X and Y
+     *
+     * @return  new Coordinate object with coordinates set to old coordinates + provided offset.
      */
     public Coordinates add(Coordinates offset){
         return new Coordinates(this.coordX + offset.getCoordX(), this.coordY + offset.getCoordY());
+    }
+
+    /**
+     * Determines the relative corner direction of the given coordinate with respect to this coordinate.
+     * <p>
+     * If the given coordinate is offset by exactly +/-1 on both axes, it returns an appropriate
+     * {@link CornerDirection} value. Otherwise, it returns {@link Optional#empty()}.
+     * <p>
+     * The corner directions are determined as follows:
+     * <ul>
+     *   <li>{@link CornerDirection#NE} for an offset of (1, 1)</li>
+     *   <li>{@link CornerDirection#NW} for an offset of (-1, 1)</li>
+     *   <li>{@link CornerDirection#SW} for an offset of (-1, -1)</li>
+     *   <li>{@link CornerDirection#SE} for an offset of (1, -1)</li>
+     * </ul>
+     *
+     * @param other the coordinate to compare with this coordinate
+     * @return an {@link Optional} containing the {@link CornerDirection} if the offset is valid, otherwise {@link Optional#empty()}
+     */
+    public Optional<CornerDirection> cornerOfAdjacency(Coordinates other){
+        int offsetX = other.getCoordX() - this.coordX;
+        int offsetY = other.getCoordY() - this.coordY;
+
+        if (offsetX == 1 && offsetY == 1) {
+            return Optional.of(CornerDirection.NE);
+        } else if (offsetX == -1 && offsetY == 1) {
+            return Optional.of(CornerDirection.NW);
+        } else if (offsetX == -1 && offsetY == -1) {
+            return Optional.of(CornerDirection.SW);
+        } else if (offsetX == 1 && offsetY == -1) {
+            return Optional.of(CornerDirection.SE);
+        } else {
+            return Optional.empty();
+        }
     }
 
 
