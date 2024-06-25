@@ -5,50 +5,72 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.Pl
 import java.util.ArrayList;
 import java.util.List;
 
-public class Players extends Observable{
-    //SINGLETON PATTERN
+/**
+ * Singleton class representing the collection of players in the client-side model.
+ */
+public class Players extends Observable {
+    // Singleton instance
     private static Players INSTANCE;
-    private Players(){
+
+    // Attributes
+    private final List<PlayerRecord> players;
+
+    /**
+     * Private constructor to enforce singleton pattern.
+     */
+    private Players() {
         players = new ArrayList<>();
     }
-    public synchronized static Players getInstance(){
-        if(INSTANCE == null){
+
+    /**
+     * Retrieves the singleton instance of the Players class.
+     *
+     * @return The singleton instance of Players.
+     */
+    public synchronized static Players getInstance() {
+        if (INSTANCE == null) {
             INSTANCE = new Players();
         }
         return INSTANCE;
     }
 
-
-
-
-
-    //ATTRIBUTES
-    private final List<PlayerRecord> players;
-
-
-
-
-
-    //GETTERS
+    /**
+     * Retrieves the list of players.
+     *
+     * @return A new list containing all player records.
+     */
     public List<PlayerRecord> getPlayers() {
         synchronized (players) {
             return new ArrayList<>(players);
         }
     }
-    public int getPlayersSize(){
+
+    /**
+     * Retrieves the number of players currently stored.
+     *
+     * @return The number of players.
+     */
+    public int getPlayersSize() {
         synchronized (players) {
             return players.size();
         }
     }
-    public String getUsernameByIndex(int index){
+
+    /**
+     * Retrieves the username of a player at a specified index.
+     *
+     * @param index The index of the player whose username is to be retrieved.
+     * @return The username of the player at the specified index.
+     */
+    public String getUsernameByIndex(int index) {
         return players.get(index).username();
     }
 
-
-
-
-
-    //SETTERS
+    /**
+     * Sets the list of players to the provided list.
+     *
+     * @param players The list of players to set.
+     */
     public void setPlayers(List<PlayerRecord> players) {
         synchronized (this.players) {
             this.players.clear();
@@ -56,18 +78,20 @@ public class Players extends Observable{
         }
         super.updateObservers();
     }
-    public void setSpecificPlayer(PlayerRecord player){
-        PlayerRecord currentPlayer;
 
+    /**
+     * Updates a specific player's record in the collection.
+     *
+     * @param player The updated player record.
+     */
+    public void setSpecificPlayer(PlayerRecord player) {
         for (int i = 0; i < players.size(); i++) {
-            currentPlayer = players.get(i);
-
+            PlayerRecord currentPlayer = players.get(i);
             if (currentPlayer.username().equals(player.username())) {
                 players.set(i, player);
                 break;
             }
         }
-
         super.updateObservers();
     }
 }

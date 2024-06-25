@@ -4,42 +4,57 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.Ob
 
 import java.util.List;
 
+/**
+ * Singleton class representing the list of objective candidates available in the client-side model.
+ */
 public class ObjectiveCandidates extends Observable {
-    //SINGLETON PATTERN
+    // Singleton instance
     private static ObjectiveCandidates INSTANCE;
-    private ObjectiveCandidates(){}
-    public synchronized static ObjectiveCandidates getInstance(){
-        if(INSTANCE == null){
+
+    // Attributes
+    private List<ObjectiveRecord> objectiveCandidates;
+
+    /**
+     * Private constructor to enforce singleton pattern.
+     */
+    private ObjectiveCandidates() {}
+
+    /**
+     * Retrieves the singleton instance of the ObjectiveCandidates class.
+     *
+     * @return The singleton instance of ObjectiveCandidates.
+     */
+    public synchronized static ObjectiveCandidates getInstance() {
+        if (INSTANCE == null) {
             INSTANCE = new ObjectiveCandidates();
         }
         return INSTANCE;
     }
 
-
-
-
-
-    //ATTRIBUTES
-    private List<ObjectiveRecord> objectiveCandidates;
-
-
-
-
-
-    //GETTERS
+    /**
+     * Retrieves the list of objective candidates.
+     *
+     * @return The list of objective candidates.
+     */
     public List<ObjectiveRecord> getObjectiveCandidates() {
         return objectiveCandidates;
     }
-    public ObjectiveRecord getObjectiveCandidatesByIndex(int index){
+
+    /**
+     * Retrieves a specific objective candidate by index.
+     *
+     * @param index The index of the objective candidate to retrieve.
+     * @return The objective candidate at the specified index.
+     */
+    public ObjectiveRecord getObjectiveCandidatesByIndex(int index) {
         return objectiveCandidates.get(index);
     }
 
-
-
-
-
-
-    //SETTERS
+    /**
+     * Sets the list of objective candidates.
+     *
+     * @param objectiveCandidates The list of objective candidates to set.
+     */
     public void setCandidates(List<ObjectiveRecord> objectiveCandidates) {
         this.objectiveCandidates = objectiveCandidates;
     }
