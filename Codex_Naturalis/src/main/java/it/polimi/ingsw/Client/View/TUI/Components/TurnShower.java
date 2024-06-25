@@ -11,13 +11,25 @@ import it.polimi.ingsw.Server.Model.Game.Player.PlayerStates;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * The TurnShower class is a live component that displays whose turn it is in the game.
+ * It observes the players' states and updates its display based on the current player turn.
+ */
 public class TurnShower extends LiveComponent {
 
+    /**
+     * Constructs a new TurnShower and initializes the observed data.
+     */
     public TurnShower() {
         super();
         refreshObserved();
     }
 
+    /**
+     * Prints the current turn information.
+     * If it is the user's turn, it prints "It's your turn."
+     * If it is another player's turn, it prints "It's [player's name] turn."
+     */
     @Override
     public void print() {
         List<PlayerRecord> playerRecords = Players.getInstance().getPlayers();
@@ -32,11 +44,17 @@ public class TurnShower extends LiveComponent {
         }
     }
 
+    /**
+     * Cleans the observed data of this component by removing it from the RefreshManager's list of observed objects.
+     */
     @Override
     public void cleanObserved() {
         RefreshManager.getInstance().removeObserved(this, Players.getInstance());
     }
 
+    /**
+     * Refreshes the observed data of this component by adding it to the RefreshManager's list of observed objects.
+     */
     @Override
     public void refreshObserved() {
         RefreshManager.getInstance().addObserved(this, Players.getInstance());
