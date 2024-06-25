@@ -54,10 +54,10 @@ public abstract class SynchronousGameState extends GameState {
             logger.fine("The player to remove is the current player");
             players.remove(player);
             logger.fine("Player removed");
-            if(currentPlayerIndex > 0)
-                currentPlayerIndex--;
+            currentPlayerIndex--;
             logger.fine("Current player index decremented");
-            findNextPlayer();
+            if(players.size() > 1)
+                findNextPlayer();
             logger.fine("Looking for the next player");
         }
 

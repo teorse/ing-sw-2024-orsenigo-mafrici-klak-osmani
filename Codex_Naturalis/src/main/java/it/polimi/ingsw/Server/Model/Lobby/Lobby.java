@@ -478,6 +478,10 @@ public class Lobby implements ServerModelLayer {
 
     public void gameOver(){
         updateGameController(null);
+        if(victoryByDefaultTimer != null) {
+            victoryByDefaultTimer.cancel();
+            victoryByDefaultTimer.purge();
+        }
         game = null;
         gameStarted = false;
 

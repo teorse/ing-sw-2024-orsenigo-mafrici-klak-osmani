@@ -59,7 +59,8 @@ public class PlayerSwitcherResilient extends PlayerSwitcher{
 
         int playersSize = players.size();
 
-        logger.fine("Current player was: "+players.get(currentPlayerIndex).getUsername()+
+        if(currentPlayerIndex >= 0)
+            logger.fine("Current player was: "+players.get(currentPlayerIndex).getUsername()+
                 "\nCurrent player index was: "+currentPlayerIndex+", real life number is: "+currentPlayerIndex+1+
                 "\nTotal players in this game: "+playersSize);
 
