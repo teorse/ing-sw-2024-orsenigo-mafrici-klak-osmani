@@ -183,6 +183,7 @@ public class ClientModel extends Observable {
     public void setGameOver(boolean gameOver) {
         logger.info("setGameOver method called with value: "+gameOver);
         this.gameOver = gameOver;
+        super.updateObservers();
     }
 
     //TODO add the Reset of the observer here

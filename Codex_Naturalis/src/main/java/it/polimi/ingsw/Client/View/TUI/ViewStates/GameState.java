@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.ViewStates;
 
 import it.polimi.ingsw.Client.Model.ClientModel;
+import it.polimi.ingsw.Client.Model.GameOver;
 import it.polimi.ingsw.Client.Model.MyPlayer;
 import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents.InteractiveComponent;
@@ -49,6 +50,9 @@ public abstract class GameState extends LobbyStates {
     public void refreshObservables() {
         super.refreshObservables();
         RefreshManager.getInstance().addObserved(MyPlayer.getInstance());
+        RefreshManager.getInstance().addObserved(ClientModel.getInstance());
+        RefreshManager.getInstance().addObserved(GameOver.getInstance());
+
     }
 
     /**
