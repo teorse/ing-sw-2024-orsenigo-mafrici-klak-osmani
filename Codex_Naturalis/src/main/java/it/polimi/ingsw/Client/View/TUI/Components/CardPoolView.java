@@ -10,17 +10,29 @@ import it.polimi.ingsw.Server.Model.Game.Table.CardPoolTypes;
 
 import java.util.List;
 
-public class CardPoolView extends LiveComponent{
+/**
+ * The CardPoolView class is a live component that displays the cards in a specified card pool.
+ * It observes changes in the card pools and updates its display accordingly.
+ */
+public class CardPoolView extends LiveComponent {
 
     private final CardPoolTypes cardPoolType;
 
+    /**
+     * Constructs a new CardPoolView for the specified card pool type.
+     *
+     * @param cardPoolType the type of card pool to display (e.g., RESOURCE, GOLDEN).
+     */
     public CardPoolView(CardPoolTypes cardPoolType) {
         super();
         this.cardPoolType = cardPoolType;
         refreshObserved();
     }
 
-
+    /**
+     * Prints the current state of the card pool.
+     * It shows the top card of the deck (if any) and the visible cards in the pool.
+     */
     @Override
     public void print() {
         CardPools cardPools = CardPools.getInstance();
@@ -28,13 +40,16 @@ public class CardPoolView extends LiveComponent{
         Artifacts topDeckCardColor = cardPool.coveredCardColor();
         List<CardRecord> visibleCards = cardPool.visibleCards();
 
-        switch (cardPoolType){
+        // Print the card pool based on its type
+        switch (cardPoolType) {
             case RESOURCE -> {
                 out.println("\nRESOURCE POOL:");
                 if (topDeckCardColor != null) {
                     out.println("1 - Artifact Type: " + topDeckCardColor.name() + " (covered card)");
-                } else
+                } else {
                     out.println("1 - The covered resource deck is empty");
+                }
+                // Print visible cards
                 for (int i = 0; i < visibleCards.size(); i++) {
                     CardRecord card = visibleCards.get(i);
                     out.print((i + 2) + " - ");
@@ -45,8 +60,10 @@ public class CardPoolView extends LiveComponent{
                 out.println("\nGOLDEN POOL:");
                 if (topDeckCardColor != null) {
                     out.println("1 - Artifact Type: " + topDeckCardColor.name() + " (covered card)");
-                } else
+                } else {
                     out.println("1 - The covered golden deck is empty");
+                }
+                // Print visible cards
                 for (int i = 0; i < visibleCards.size(); i++) {
                     CardRecord card = visibleCards.get(i);
                     out.print((i + 2) + " - ");
@@ -56,9 +73,21 @@ public class CardPoolView extends LiveComponent{
         }
     }
 
+    /**
+     * Removes this component from the list of observed objects in the RefreshManager.
+     * This stops the component from receiving updates.
+     */
     @Override
-    public void cleanObserved() {RefreshManager.getInstance().removeObserved(this, CardPools.getInstance());}
+    public void cleanObserved() {
+        RefreshManager.getInstance().removeObserved(this, CardPools.getInstance());
+    }
 
+    /**
+     * Adds this component to the list of observed objects in the RefreshManager.
+     * This allows the component to receive updates when the card pools change.
+     */
     @Override
-    public void refreshObserved() {RefreshManager.getInstance().addObserved(this, CardPools.getInstance());}
+    public void refreshObserved() {
+        RefreshManager.getInstance().addObserved(this, CardPools.getInstance());
+    }
 }
