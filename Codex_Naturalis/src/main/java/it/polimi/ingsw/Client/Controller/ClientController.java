@@ -407,6 +407,10 @@ public class ClientController  implements ServerClientMessageExecutor {
 
     @Override
     public void updateCardPoolDrawability(Map<CardPoolTypes, Boolean> cardPoolDrawability) {
+
+        logger.info("updateCardPoolDrawability method called.");
+        logger.fine("Received cardPoolDrawability: " + cardPoolDrawability);
+
         CardPools.getInstance().setCardPoolDrawability(cardPoolDrawability);
     }
 
