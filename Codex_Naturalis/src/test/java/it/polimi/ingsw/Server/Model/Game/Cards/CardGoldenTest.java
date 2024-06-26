@@ -1,4 +1,4 @@
-package Server.Model.Game.Cards;
+package it.polimi.ingsw.Server.Model.Game.Cards;
 
 import it.polimi.ingsw.Server.Model.Game.Cards.*;
 import it.polimi.ingsw.Server.Model.Game.Player.CardMap;
@@ -12,8 +12,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CardGoldenTest {
 
@@ -25,7 +24,7 @@ public class CardGoldenTest {
 
     @BeforeEach
     public void setUp() {
-        CM = new CardMap(null, "");
+        CM = new CardMap(null, "userTest");
         constraint = new HashMap<>();
         corners = new HashMap<>();
     }
@@ -36,19 +35,55 @@ public class CardGoldenTest {
         constraint.put(Artifacts.FUNGI,2);
         constraint.put(Artifacts.INSECT,0);
         constraint.put(Artifacts.PLANT,1);
-        CM.changeArtifactAmount(Artifacts.ANIMAL,3);
-        CM.changeArtifactAmount(Artifacts.FUNGI,5);
-        CM.changeArtifactAmount(Artifacts.INSECT,2);
-        CM.changeArtifactAmount(Artifacts.PLANT,1);
+
+
+        Card cheatCard = new CardStarter(
+                new HashMap<>(){{
+                    put(new CornerOrientation(CornerDirection.NW,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.NE,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SE,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SW,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.NW,false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.NE,false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SE,false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SW,false), new Corner(CornerType.EMPTY));
+                }},
+                new HashMap<>(){{
+                    put(Artifacts.ANIMAL, 3);
+                    put(Artifacts.FUNGI, 5);
+                    put(Artifacts.INSECT, 2);
+                    put(Artifacts.PLANT, 1);
+                }}
+        );
+
+        assertDoesNotThrow(() -> CM.place(cheatCard, 0, false));
+
         Card c = new CardGolden(Artifacts.ANIMAL, 2, corners, Artifacts.QUILL, constraint);
         assertTrue(c.isPlaceable(CM));
     }
 
     @Test
     public void testCountPointsArtifact() {
-        CM.changeArtifactAmount(Artifacts.INKWELL,2);
-        CM.changeArtifactAmount(Artifacts.MANUSCRIPT,3);
-        CM.changeArtifactAmount(Artifacts.QUILL,5);
+        Card cheatCard = new CardStarter(
+                new HashMap<>(){{
+                    put(new CornerOrientation(CornerDirection.NW,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.NE,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SE,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SW,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.NW,false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.NE,false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SE,false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SW,false), new Corner(CornerType.EMPTY));
+                }},
+                new HashMap<>(){{
+                    put(Artifacts.INKWELL, 2);
+                    put(Artifacts.MANUSCRIPT, 3);
+                    put(Artifacts.QUILL, 5);
+                }}
+        );
+
+        assertDoesNotThrow(() -> CM.place(cheatCard, 0, false));
+
         Coordinates coordinates = new Coordinates(0,0);
         Card c1 = new CardGolden(Artifacts.ANIMAL, 2, corners, Artifacts.INKWELL, constraint);
         Card c2 = new CardGolden(Artifacts.ANIMAL, 3, corners, Artifacts.MANUSCRIPT, constraint);
@@ -59,7 +94,7 @@ public class CardGoldenTest {
     }
 
     @Test
-    public void testCountPointsCornerns() {
+    public void testCountPointsCorners() {
         Card testCard = new CardResource(Artifacts.ANIMAL, corners);
         Map<Coordinates, CardVisibility> cardsPlacedValue = new HashMap<>();
         Map<Coordinates, CardVisibility> cardsPlacedValue1 = new HashMap<>();
