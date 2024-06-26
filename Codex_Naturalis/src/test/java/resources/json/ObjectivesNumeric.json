@@ -1,0 +1,60 @@
+[
+  {
+    "requiredItems": {
+      "FUNGI": 3
+    },
+    "description": "Awards 2 points for every 3 FUNGI",
+    "points": 2
+  },
+  {
+    "requiredItems": {
+      "PLANT": 3
+    },
+    "description": "Awards 2 points for every 3 PLANTS",
+    "points": 2
+  },
+  {
+    "requiredItems": {
+      "ANIMAL": 3
+    },
+    "description": "Awards 2 points for every 3 ANIMALS",
+    "points": 2
+  },
+  {
+    "requiredItems": {
+      "INSECT": 3
+    },
+    "description": "Awards 2 points for every 3 INSECTS",
+    "points": 2
+  },
+  {
+    "requiredItems": {
+      "INKWELL": 1,
+      "QUILL": 1,
+      "MANUSCRIPT": 1
+    },
+    "description": "Awards 3 points for every set of QUILL, INKWELL and MANUSCRIPT",
+    "points": 3
+  },
+  {
+    "requiredItems": {
+      "MANUSCRIPT": 2
+    },
+    "description": "Awards 2 points for every 2 MANUSCRIPTS",
+    "points": 2
+  },
+  {
+    "requiredItems": {
+      "INKWELL": 2
+    },
+    "description": "Awards 2 points for every 2 INKWELLS",
+    "points": 2
+  },
+  {
+    "requiredItems": {
+      "QUILL": 2
+    },
+    "description": "Awards 2 points for every 2 QUILLS",
+    "points": 2
+  }
+]

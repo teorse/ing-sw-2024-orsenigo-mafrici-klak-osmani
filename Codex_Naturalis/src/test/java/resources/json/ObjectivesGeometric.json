@@ -1,0 +1,218 @@
+[
+  {
+    "objectivePattern": [
+      [
+        {
+          "coordX": 0,
+          "coordY": 0
+        },
+        "FUNGI"
+      ],
+      [
+        {
+          "coordX": 1,
+          "coordY": 1
+        },
+        "FUNGI"
+      ],
+      [
+        {
+          "coordX": 2,
+          "coordY": 2
+        },
+        "FUNGI"
+      ]
+    ],
+    "description": "Awards 2 points for each time a set of unique cards, among the ones you placed, create this pattern\n⬛️⬛️🟥\n⬛️🟥⬛️\n🟥⬛️⬛️",
+    "points": 2
+  },
+  {
+    "objectivePattern": [
+      [
+        {
+          "coordX": 0,
+          "coordY": 0
+        },
+        "PLANT"
+      ],
+      [
+        {
+          "coordX": 2,
+          "coordY": -2
+        },
+        "PLANT"
+      ],
+      [
+        {
+          "coordX": 1,
+          "coordY": -1
+        },
+        "PLANT"
+      ]
+    ],
+    "description": "Awards 2 points for each time a set of unique cards, among the ones you placed, create this pattern\n🟩⬛️⬛️\n⬛️🟩⬛️\n⬛️⬛️🟩",
+    "points": 2
+  },
+  {
+    "objectivePattern": [
+      [
+        {
+          "coordX": 0,
+          "coordY": 0
+        },
+        "ANIMAL"
+      ],
+      [
+        {
+          "coordX": 1,
+          "coordY": 1
+        },
+        "ANIMAL"
+      ],
+      [
+        {
+          "coordX": 2,
+          "coordY": 2
+        },
+        "ANIMAL"
+      ]
+    ],
+    "description": "Awards 2 points for each time a set of unique cards, among the ones you placed, create this pattern\n⬛️⬛️🟦\n⬛️🟦⬛️\n🟦⬛️⬛️",
+    "points": 2
+  },
+  {
+    "objectivePattern": [
+      [
+        {
+          "coordX": 0,
+          "coordY": 0
+        },
+        "INSECT"
+      ],
+      [
+        {
+          "coordX": 2,
+          "coordY": -2
+        },
+        "INSECT"
+      ],
+      [
+        {
+          "coordX": 1,
+          "coordY": -1
+        },
+        "INSECT"
+      ]
+    ],
+    "description": "Awards 2 points for each time a set of unique cards, among the ones you placed, create this pattern\n🟪⬛️⬛️\n⬛️🟪⬛️\n⬛️⬛️🟪",
+    "points": 2
+  },
+  {
+    "objectivePattern": [
+      [
+        {
+          "coordX": 0,
+          "coordY": 0
+        },
+        "FUNGI"
+      ],
+      [
+        {
+          "coordX": 1,
+          "coordY": -3
+        },
+        "PLANT"
+      ],
+      [
+        {
+          "coordX": 0,
+          "coordY": -2
+        },
+        "FUNGI"
+      ]
+    ],
+    "description": "Awards 3 points for each time a set of unique cards, among the ones you placed, create this pattern\n⬛️🟥⬛️\n⬛️🟥⬛️\n⬛️⬛️🟩",
+    "points": 3
+  },
+  {
+    "objectivePattern": [
+      [
+        {
+          "coordX": 0,
+          "coordY": 0
+        },
+        "PLANT"
+      ],
+      [
+        {
+          "coordX": 0,
+          "coordY": -2
+        },
+        "PLANT"
+      ],
+      [
+        {
+          "coordX": -1,
+          "coordY": -3
+        },
+        "INSECT"
+      ]
+    ],
+    "description": "Awards 3 points for each time a set of unique cards, among the ones you placed, create this pattern\n⬛️🟩⬛️\n⬛️🟩⬛️\n🟪⬛️⬛️",
+    "points": 3
+  },
+  {
+    "objectivePattern": [
+      [
+        {
+          "coordX": 0,
+          "coordY": 0
+        },
+        "FUNGI"
+      ],
+      [
+        {
+          "coordX": -1,
+          "coordY": -1
+        },
+        "ANIMAL"
+      ],
+      [
+        {
+          "coordX": -1,
+          "coordY": -3
+        },
+        "ANIMAL"
+      ]
+    ],
+    "description": "Awards 3 points for each time a set of unique cards, among the ones you placed, create this pattern\n⬛️⬛️🟥\n⬛️🟦⬛️\n⬛️🟦⬛️",
+    "points": 3
+  },
+  {
+    "objectivePattern": [
+      [
+        {
+          "coordX": 0,
+          "coordY": 0
+        },
+        "ANIMAL"
+      ],
+      [
+        {
+          "coordX": 1,
+          "coordY": -3
+        },
+        "INSECT"
+      ],
+      [
+        {
+          "coordX": 1,
+          "coordY": -1
+        },
+        "INSECT"
+      ]
+    ],
+    "description": "Awards 3 points for each time a set of unique cards, among the ones you placed, create this pattern\n🟦⬛️⬛️\n⬛️🟪⬛️\n⬛️🟪⬛️",
+    "points": 3
+  }
+]

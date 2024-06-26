@@ -1,5 +1,6 @@
-package Server.Model.Game.Objectives;
+package it.polimi.ingsw.Server.Model.Game.Objectives;
 
+import it.polimi.ingsw.Server.Model.Game.Cards.*;
 import it.polimi.ingsw.Server.Model.Game.Objectives.ObjectiveNumeric;
 import it.polimi.ingsw.Server.Model.Game.Player.CardMap;
 import it.polimi.ingsw.Server.Model.Game.Player.CardVisibility;
@@ -101,10 +102,26 @@ class ObjectiveNumericTest {
         List<Coordinates> coordinatesToBePlaced = new ArrayList<>();
         CardMap cardMap = CardMapReflectionBuilder(cardsToBePlaced,artifactsIntegerReflection,coordinatesToBePlaced);
 
-        cardMap.changeArtifactAmount(Artifacts.ANIMAL, 5);
-        cardMap.changeArtifactAmount(Artifacts.FUNGI,3);
-        cardMap.changeArtifactAmount(Artifacts.INSECT, 6);
-        cardMap.changeArtifactAmount(Artifacts.PLANT,8);
+        Card cheatCard = new CardStarter(
+                new HashMap<>(){{
+                    put(new CornerOrientation(CornerDirection.NW,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.NE,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SE,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SW,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.NW,false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.NE,false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SE,false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SW,false), new Corner(CornerType.EMPTY));
+                }},
+                new HashMap<>(){{
+                    put(Artifacts.ANIMAL, 5);
+                    put(Artifacts.FUNGI, 3);
+                    put(Artifacts.INSECT, 6);
+                    put(Artifacts.PLANT, 8);
+                }}
+        );
+
+        assertDoesNotThrow(()-> cardMap.place(cheatCard, 0, false));
 
         Map<Artifacts,Integer> requiredItems = new HashMap<>();
         requiredItems.put(Artifacts.INSECT, 3);
@@ -123,10 +140,26 @@ class ObjectiveNumericTest {
         List<Coordinates> coordinatesToBePlaced = new ArrayList<>();
         CardMap cardMap = CardMapReflectionBuilder(cardsToBePlaced,artifactsIntegerReflection,coordinatesToBePlaced);
 
-        cardMap.changeArtifactAmount(Artifacts.ANIMAL, 5);
-        cardMap.changeArtifactAmount(Artifacts.FUNGI,3);
-        cardMap.changeArtifactAmount(Artifacts.INSECT, 6);
-        cardMap.changeArtifactAmount(Artifacts.PLANT,8);
+        Card cheatCard = new CardStarter(
+                new HashMap<>(){{
+                    put(new CornerOrientation(CornerDirection.NW,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.NE,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SE,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SW,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.NW,false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.NE,false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SE,false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SW,false), new Corner(CornerType.EMPTY));
+                }},
+                new HashMap<>(){{
+                    put(Artifacts.ANIMAL, 5);
+                    put(Artifacts.FUNGI, 3);
+                    put(Artifacts.INSECT, 6);
+                    put(Artifacts.PLANT, 8);
+                }}
+        );
+
+        assertDoesNotThrow(()-> cardMap.place(cheatCard, 0, false));
 
         Map<Artifacts,Integer> requiredItems = new HashMap<>();
         requiredItems.put(Artifacts.INSECT, 1);
@@ -166,10 +199,26 @@ class ObjectiveNumericTest {
         List<Coordinates> coordinatesToBePlaced = new ArrayList<>();
         CardMap cardMap = CardMapReflectionBuilder(cardsToBePlaced,artifactsIntegerReflection,coordinatesToBePlaced);
 
-        cardMap.changeArtifactAmount(Artifacts.ANIMAL, 5);
-        cardMap.changeArtifactAmount(Artifacts.FUNGI,3);
-        cardMap.changeArtifactAmount(Artifacts.INSECT, 6);
-        cardMap.changeArtifactAmount(Artifacts.PLANT,8);
+        Card cheatCard = new CardStarter(
+                new HashMap<>(){{
+                    put(new CornerOrientation(CornerDirection.NW,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.NE,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SE,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SW,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.NW,false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.NE,false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SE,false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SW,false), new Corner(CornerType.EMPTY));
+                }},
+                new HashMap<>(){{
+                    put(Artifacts.ANIMAL, 5);
+                    put(Artifacts.FUNGI, 3);
+                    put(Artifacts.INSECT, 6);
+                    put(Artifacts.PLANT, 8);
+                }}
+        );
+
+        assertDoesNotThrow(()-> cardMap.place(cheatCard, 0, false));
 
         Map<Artifacts,Integer> requiredItems = new HashMap<>();
         requiredItems.put(Artifacts.INSECT, 2);
@@ -187,13 +236,29 @@ class ObjectiveNumericTest {
         List<Coordinates> coordinatesToBePlaced = new ArrayList<>();
         CardMap cardMap = CardMapReflectionBuilder(cardsToBePlaced,artifactsIntegerReflection,coordinatesToBePlaced);
 
-        cardMap.changeArtifactAmount(Artifacts.ANIMAL, 5);
-        cardMap.changeArtifactAmount(Artifacts.FUNGI,3);
-        cardMap.changeArtifactAmount(Artifacts.INSECT, 6);
-        cardMap.changeArtifactAmount(Artifacts.PLANT,8);
-        cardMap.changeArtifactAmount(Artifacts.INKWELL,3);
-        cardMap.changeArtifactAmount(Artifacts.MANUSCRIPT,2);
-        cardMap.changeArtifactAmount(Artifacts.QUILL,4);
+        Card cheatCard = new CardStarter(
+                new HashMap<>(){{
+                    put(new CornerOrientation(CornerDirection.NW,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.NE,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SE,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SW,true), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.NW,false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.NE,false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SE,false), new Corner(CornerType.EMPTY));
+                    put(new CornerOrientation(CornerDirection.SW,false), new Corner(CornerType.EMPTY));
+                }},
+                new HashMap<>(){{
+                    put(Artifacts.ANIMAL, 5);
+                    put(Artifacts.FUNGI, 3);
+                    put(Artifacts.INSECT, 6);
+                    put(Artifacts.PLANT, 8);
+                    put(Artifacts.INKWELL, 3);
+                    put(Artifacts.MANUSCRIPT, 2);
+                    put(Artifacts.QUILL, 4);
+                }}
+        );
+
+        assertDoesNotThrow(()-> cardMap.place(cheatCard, 0, false));
 
         Map<Artifacts,Integer> requiredItems = new HashMap<>();
         requiredItems.put(Artifacts.INKWELL, 1);
