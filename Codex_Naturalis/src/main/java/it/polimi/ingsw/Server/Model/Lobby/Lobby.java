@@ -485,11 +485,19 @@ public class Lobby implements ServerModelLayer {
         game = null;
         gameStarted = false;
 
-        if(lobbyUsers.size() < lobbySize)
-            lobbyClosed = false;
+        for(LobbyUser user: new ArrayList<>(lobbyUsers.values())){
+            if(user.getConnectionStatus().equals(LobbyUserConnectionStates.OFFLINE))
+                removeUser(user);
+        }
 
         System.out.println("Game finished in lobby: "+lobbyName);
-        lobbyPreviewObserverRelay.updateLobbyPreview(toLobbyPreview());
+
+        if(!lobbyUsers.isEmpty()) {
+            if (lobbyUsers.size() < lobbySize)
+                lobbyClosed = false;
+
+            lobbyPreviewObserverRelay.updateLobbyPreview(toLobbyPreview());
+        }
     }
 
     /**
