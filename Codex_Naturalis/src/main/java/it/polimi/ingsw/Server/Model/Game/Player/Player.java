@@ -93,10 +93,14 @@ public class Player implements LayerUser {
     //SETTERS
     public void setPlayerState(PlayerStates playerState){
         this.playerState = playerState;
-        observer.update(new SCPUpdateSpecificPlayer(this.toTransferableDataObject()));
+        logger.info("PlayerState of player: "+getUsername()+" has been set to: "+playerState+"\n" +
+                "Proceeding to updated the clients.");
+        if(observer != null) {
+            observer.update(new SCPUpdateSpecificPlayer(this.toTransferableDataObject()));
 
-        if(user.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE))
-            observer.update(user.getUsername(), new SCPUpdateClientGameState(playerState));
+            if (user.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE))
+                observer.update(user.getUsername(), new SCPUpdateClientGameState(playerState));
+        }
     }
     public void setWinner(){
         winner = true;
