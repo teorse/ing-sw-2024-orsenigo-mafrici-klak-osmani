@@ -3,6 +3,7 @@ package it.polimi.ingsw.Server.Controller.InputHandler;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.ChatMessageRecord;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.ClientServerMessageExecutor;
 import it.polimi.ingsw.Exceptions.Game.GameException;
+import it.polimi.ingsw.Exceptions.Game.Model.Player.CoordinateIndexOutOfBounds;
 import it.polimi.ingsw.Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.GameRequiredException;
 import it.polimi.ingsw.Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.LobbyRequiredException;
 import it.polimi.ingsw.Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.LogInRequiredException;
@@ -388,7 +389,7 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
 
             gameController.playCard(username, cardIndex, coordinateIndex, faceUp);
         }
-        catch (MissingRequirementException | GameException e){
+        catch (MissingRequirementException | GameException | CoordinateIndexOutOfBounds e){
             //todo
             //connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
         }

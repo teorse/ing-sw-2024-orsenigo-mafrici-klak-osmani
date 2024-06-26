@@ -2,7 +2,6 @@ package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
 import it.polimi.ingsw.Client.Model.CardPools;
 import it.polimi.ingsw.Client.Model.ClientModel;
-import it.polimi.ingsw.Client.Model.Game;
 import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.Network.ClientConnector;
 import it.polimi.ingsw.Client.View.TUI.Components.CardPoolView;

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Server.Model.Game.Logic.States;
 
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.GameRecord;
+import it.polimi.ingsw.Exceptions.Game.Model.Player.CoordinateIndexOutOfBounds;
 import it.polimi.ingsw.Server.Model.Game.Table.CardPoolTypes;
 import it.polimi.ingsw.Server.Model.Game.Logic.Game;
 import it.polimi.ingsw.Server.Model.Game.Player.Player;
@@ -57,7 +58,7 @@ public abstract class GameState {
      * @throws InvalidActionForPlayerStateException If the action is invalid for the player's state.
      * @throws InvalidActionForGameStateException   If the action is not allowed in the current game state.
      */
-    public void playCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws MoveAttemptOnWaitStateException, NotYourTurnException, InvalidActionForPlayerStateException, InvalidActionForGameStateException{
+    public void playCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws MoveAttemptOnWaitStateException, NotYourTurnException, InvalidActionForPlayerStateException, InvalidActionForGameStateException, CoordinateIndexOutOfBounds {
         throw new InvalidActionForGameStateException("You can't place cards in this state.");
     }
 

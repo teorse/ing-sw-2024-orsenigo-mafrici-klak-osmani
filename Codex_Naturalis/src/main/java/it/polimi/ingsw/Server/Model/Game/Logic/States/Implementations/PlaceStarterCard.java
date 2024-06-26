@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Server.Model.Game.Logic.States.Implementations;
 
+import it.polimi.ingsw.Exceptions.Game.Model.Player.CoordinateIndexOutOfBounds;
 import it.polimi.ingsw.Server.Model.Game.Logic.Game;
 import it.polimi.ingsw.Server.Model.Game.Logic.States.ASynchronousGameState;
 import it.polimi.ingsw.Server.Model.Game.Player.Player;
@@ -61,7 +62,7 @@ public class PlaceStarterCard extends ASynchronousGameState {
      * @throws InvalidActionForPlayerStateException Thrown if the player attempts an action that is not valid in their current state.
      */
     @Override
-    public void playCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException {
+    public void playCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, CoordinateIndexOutOfBounds {
         logger.info("Player "+player.getUsername()+" is now placing a card");
         logger.fine("Checking if player has the correct internal state to place cards");
         //Throws exception if the player has already performed all his moves for this turn.

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Server.Controller;
 
+import it.polimi.ingsw.Exceptions.Game.Model.Player.CoordinateIndexOutOfBounds;
 import it.polimi.ingsw.Server.Model.Game.Table.CardPoolTypes;
 import it.polimi.ingsw.Server.Model.Game.Logic.Game;
 import it.polimi.ingsw.Exceptions.Game.*;
@@ -31,7 +32,7 @@ public class GameController {
 
 
     //CONTROLLER METHODS
-    public void playCard(String username, int cardIndex, int coordinateIndex, boolean faceUp) throws NotYourTurnException, MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException {
+    public void playCard(String username, int cardIndex, int coordinateIndex, boolean faceUp) throws NotYourTurnException, MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException, CoordinateIndexOutOfBounds {
         model.playCard(username, cardIndex, coordinateIndex, faceUp);
     }
     public void drawCard(String username, CardPoolTypes cardPoolType, int index) throws NotYourTurnException, MoveAttemptOnWaitStateException, MaxResourceCardsDrawnException, InvalidActionForPlayerStateException, InvalidActionForGameStateException, MaxGoldenCardsDrawnException {

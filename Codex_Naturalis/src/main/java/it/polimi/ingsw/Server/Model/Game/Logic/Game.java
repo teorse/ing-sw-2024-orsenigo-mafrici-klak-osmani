@@ -3,6 +3,7 @@ package it.polimi.ingsw.Server.Model.Game.Logic;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardMapRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.GameRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
+import it.polimi.ingsw.Exceptions.Game.Model.Player.CoordinateIndexOutOfBounds;
 import it.polimi.ingsw.Server.Model.Game.Cards.Card;
 import it.polimi.ingsw.Server.Model.Game.Logic.States.Implementations.PlaceStarterCard;
 import it.polimi.ingsw.Server.Model.Game.Logic.States.GameState;
@@ -114,7 +115,7 @@ public class Game implements ServerModelLayer {
         this.state = state;
         gameObserverRelay.update(new SCPUpdateGame(this.toRecord()));
     }
-    public void playCard(String username, int cardIndex, int coordinateIndex, boolean faceUp) throws NotYourTurnException, MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException {
+    public void playCard(String username, int cardIndex, int coordinateIndex, boolean faceUp) throws NotYourTurnException, MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException, CoordinateIndexOutOfBounds {
         Player player = getPlayerByUsername(username);
         state.playCard(player, cardIndex, coordinateIndex, faceUp);
     }

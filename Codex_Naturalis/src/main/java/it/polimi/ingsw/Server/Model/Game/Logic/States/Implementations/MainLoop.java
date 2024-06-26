@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Server.Model.Game.Logic.States.Implementations;
 
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.GameRecord;
+import it.polimi.ingsw.Exceptions.Game.Model.Player.CoordinateIndexOutOfBounds;
 import it.polimi.ingsw.Server.Model.Game.Cards.Card;
 import it.polimi.ingsw.Exceptions.Game.InvalidActionForPlayerStateException;
 import it.polimi.ingsw.Exceptions.Game.NotYourTurnException;
@@ -87,7 +88,7 @@ public class MainLoop extends SynchronousGameState {
      * @throws InvalidActionForPlayerStateException Thrown if the player attempts an invalid action in their current state.
      */
     @Override
-    public void playCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws NotYourTurnException, InvalidActionForPlayerStateException {
+    public void playCard(Player player, int cardIndex, int coordinateIndex, boolean faceUp) throws NotYourTurnException, InvalidActionForPlayerStateException, CoordinateIndexOutOfBounds {
 
         //Throws exception if it's not the player's turn.
         if (!players.get(currentPlayerIndex).equals(player))

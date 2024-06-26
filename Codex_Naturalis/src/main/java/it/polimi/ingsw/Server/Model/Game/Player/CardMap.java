@@ -2,6 +2,7 @@ package it.polimi.ingsw.Server.Model.Game.Player;
 
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardMapRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardVisibilityRecord;
+import it.polimi.ingsw.Exceptions.Game.Model.Player.CoordinateIndexOutOfBounds;
 import it.polimi.ingsw.Server.Model.Game.Cards.Card;
 import it.polimi.ingsw.Server.Model.Game.Cards.CornerDirection;
 import it.polimi.ingsw.Server.Model.Game.Cards.CornerType;
@@ -25,18 +26,18 @@ public class CardMap {
     /**
      * Map storing the cards previously placed during the game by the player.
      */
-    private Map<Coordinates, CardVisibility> cardsPlaced;
+    private final Map<Coordinates, CardVisibility> cardsPlaced;
     /**
      * A List containing all the allowed coordinates where the player can place his next card.
      */
-    private List<Coordinates> availablePlacements;
+    private final List<Coordinates> availablePlacements;
 
     /**
      * Stores the coordinates placed during this game in a chronological order.<br>
      * It can be used by the GUI to more easily reconstruct which card covers which other card by placing them in the same
      * order as in this list.
      */
-    private List<Coordinates> coordinatesPlaced;
+    private final List<Coordinates> coordinatesPlaced;
 
     /**
      * List stores all coordinates placed sorted by Y and then by X.<br>
@@ -49,7 +50,7 @@ public class CardMap {
     /**
      * A map used as a counter for the Artifacts currently held by the player.
      */
-    private Map<Artifacts, Integer> artifactsCounter;
+    private final Map<Artifacts, Integer> artifactsCounter;
 
     private final ObserverRelay gameObserverRelay;
     private final String username;
@@ -92,7 +93,7 @@ public class CardMap {
      * @return HashMap with player's card placement.
      */
     public List<Coordinates> getCoordinatesPlaced() {
-        return Collections.unmodifiableList(coordinatesPlaced);
+        return new ArrayList<>(coordinatesPlaced);
     }
 
     /**
@@ -101,7 +102,30 @@ public class CardMap {
      * @return ArrayList of Model.Utility.Coordinates available for the placement of the next card.
      */
     public List<Coordinates> getAvailablePlacements() {
-        return Collections.unmodifiableList(availablePlacements);
+        return new ArrayList<>(availablePlacements);
+    }
+
+    public Map<Artifacts, Integer> getArtifactsCounter(){
+        return new HashMap<>(artifactsCounter);
+    }
+
+    /**
+     * Method to get the amount of artifacts of type "artifacts" held by the player
+     * @param   artifact The artifact type of which the amount is to be returned.
+     * @return  int corresponding to the number of artifacts of type "artifacts" held by the player
+     */
+    public int getAmountOfArtifacts(Artifacts artifact) {
+        //Verifies if the map contains the specified artifact
+        //Returns the number of artifacts of that type
+        //If the specified artifact isn't present in the map, it returns 0
+        return artifactsCounter.getOrDefault(artifact, 0);
+    }
+
+    public Optional<CardVisibility> getCardVisibilityByCoordinate(Coordinates coordinate){
+        if(cardsPlaced.containsKey(coordinate))
+            return Optional.of(cardsPlaced.get(coordinate));
+        else
+            return Optional.empty();
     }
 
 
@@ -114,7 +138,7 @@ public class CardMap {
      * @param artifact
      * @param delta
      */
-    public void changeArtifactAmount(Artifacts artifact, int delta) {
+    private void changeArtifactAmount(Artifacts artifact, int delta) {
         logger.finest("Adding "+delta+" "+artifact);
         if(artifactsCounter.containsKey(artifact)) {
             artifactsCounter.put(artifact, artifactsCounter.get(artifact)+delta);
@@ -132,15 +156,22 @@ public class CardMap {
     /**
      * Method which places the card in cardsPlaced map, updates resources and items of the player,
      * updates covered corners of nearby cards, updates the list of coordinates placed, calls the method
-     * to update the available placements and returns the points gained by the player by placing this card.
+     * to update the available placements and returns the points gained by the player by placing this card.</br>
+     * It does not check if the given card can or can't be placed according to the rules, it requires the cards to
+     * have been already checked on their constraints.
      *
      * @param cardToPlace
      * @param coordinateIndex
      * @param faceUp
      * @return Points earned by the player for placing the card.
      */
-    public int place(Card cardToPlace, int coordinateIndex, boolean faceUp) {
+    public int place(Card cardToPlace, int coordinateIndex, boolean faceUp) throws CoordinateIndexOutOfBounds {
         logger.info("Player "+username+" is placing a card.");
+
+        //Checks if the provided coordinate index is valid
+        if(coordinateIndex < 0 || coordinateIndex >= availablePlacements.size())
+            throw new CoordinateIndexOutOfBounds();
+
         logger.fine("Artifact Counter before place:\n"+artifactsCounter+
                 "\nCard that is being placed:\n"+cardToPlace.toRecord()+
                 "\nCoordinate where it is being placed: "+availablePlacements.get(coordinateIndex));
@@ -174,24 +205,11 @@ public class CardMap {
         //Resets coordinates sorted
         coordinatesSorted = null;
 
-        //todo
         if(gameObserverRelay != null)
             gameObserverRelay.update(new SCPUpdateCardMap(username, this.toTransferableDataObject()));
 
         logger.fine("Artifact Counter after placing the card: "+artifactsCounter);
         return points;
-    }
-
-    /**
-     * Method to get the amount of artifacts of type "artifacts" held by the player
-     * @param artifacts
-     * @return int corresponding to the number of artifacts of type "artifacts" held by the player
-     */
-    public int getAmountOfArtifacts(Artifacts artifacts) {
-        //Verifies if the map contains the specified artifact
-        //Returns the number of artifacts of that type
-        //If the specified artifact isn't present in the map, it returns 0
-        return artifactsCounter.getOrDefault(artifacts, 0);
     }
 
     /**

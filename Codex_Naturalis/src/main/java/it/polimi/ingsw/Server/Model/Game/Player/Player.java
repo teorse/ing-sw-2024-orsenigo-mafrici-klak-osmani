@@ -4,6 +4,7 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.Ca
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.PlayerSecretInfoRecord;
+import it.polimi.ingsw.Exceptions.Game.Model.Player.CoordinateIndexOutOfBounds;
 import it.polimi.ingsw.Server.Model.Game.Cards.Card;
 import it.polimi.ingsw.Server.Model.Game.Objectives.Objective;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.SCPUpdateClientGameState;
@@ -165,7 +166,7 @@ public class Player implements LayerUser {
      * @param coordinateIndex
      * @param faceUp
      */
-    public void playCard(int cardIndex, int coordinateIndex, boolean faceUp) {
+    public void playCard(int cardIndex, int coordinateIndex, boolean faceUp) throws CoordinateIndexOutOfBounds {
         Card playedCard;
 
         try {
