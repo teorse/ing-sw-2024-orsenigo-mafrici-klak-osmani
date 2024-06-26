@@ -62,14 +62,26 @@ public class MainLoop extends SynchronousGameState {
     }
 
     //PRIVATE SETTERS
-    private void startLastRound(){
+    /**
+     * Sets the game to its last round state and updates all game observers.
+     * Notifies observers with the updated game state.
+     */
+    private void startLastRound() {
         lastRound = true;
         gameObserverRelay.update(new SCPUpdateGame(game.toRecord()));
     }
-    private void setWaitingForReconnections(boolean value){
+
+    /**
+     * Sets whether the game is waiting for player reconnections.
+     *
+     * @param value The boolean value indicating if the game is waiting for reconnections.
+     *              True if waiting for reconnections, false otherwise.
+     */
+    private void setWaitingForReconnections(boolean value) {
         waitingForReconnections = value;
         gameObserverRelay.update(new SCPUpdateGame(game.toRecord()));
     }
+
 
 
 
@@ -186,22 +198,36 @@ public class MainLoop extends SynchronousGameState {
         }
     }
 
+    /**
+     * Handles the reconnection procedure for a player in the game's Main Loop state.
+     * Restores the player's previous state and updates card drawability for the reconnected player.
+     *
+     * @param player The player who is reconnecting to the game.
+     */
     @Override
     public void userReconnectionProcedure(Player player) {
-        logger.info("Player "+player.getUsername()+" is reconnecting to the game Main Loop state");
-        if(waitingForReconnections){
+        logger.info("Player " + player.getUsername() + " is reconnecting to the game Main Loop state");
+
+        // Check if the game was waiting for player reconnections
+        if (waitingForReconnections) {
             logger.info("Detected waitingForReconnection true, restoring the old current player from their wait state");
+
+            // Reset waitingForReconnections flag and restore current player's state
             setWaitingForReconnections(false);
             Player currentPlayer = players.get(currentPlayerIndex);
             currentPlayer.setPlayerState(playerStatesBeforeDisconnection.remove(currentPlayer.getUsername()));
+
             logger.info("Game Loop restored");
         }
-        Map<CardPoolTypes, Boolean> cardDrawbilityMap = new HashMap<>();
-        cardDrawbilityMap.put(CardPoolTypes.GOLDEN, true);
-        cardDrawbilityMap.put(CardPoolTypes.RESOURCE, true);
 
-        gameObserverRelay.update(player.getUsername(), new SCPUpdateCardPoolDrawability(cardDrawbilityMap));
+        // Update card drawability for the reconnected player
+        Map<CardPoolTypes, Boolean> cardDrawabilityMap = new HashMap<>();
+        cardDrawabilityMap.put(CardPoolTypes.GOLDEN, true);
+        cardDrawabilityMap.put(CardPoolTypes.RESOURCE, true);
+
+        gameObserverRelay.update(player.getUsername(), new SCPUpdateCardPoolDrawability(cardDrawabilityMap));
     }
+
 
     /**
      * {@inheritDoc}
@@ -214,61 +240,82 @@ public class MainLoop extends SynchronousGameState {
         super.removePlayer(player);
     }
 
-    private void oneOnlinePlayerLeftProcedure(){
+    /**
+     * Handles the procedure when only one player is left online in the game.
+     * Sets the remaining player to wait for reconnection and manages state restoration if the player disconnects.
+     */
+    private void oneOnlinePlayerLeftProcedure() {
         logger.info("Checking how many players are left online");
         int onlinePlayersCounter = 0;
-
         Player onlinePlayer = null;
 
-        for(Player player : players){
-            logger.finest("Checking player: "+player.getUsername());
-            logger.finest("Player connection status: "+player.getConnectionStatus());
-            if(player.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)) {
+        // Count online players and identify the remaining online player
+        for (Player player : players) {
+            logger.finest("Checking player: " + player.getUsername());
+            logger.finest("Player connection status: " + player.getConnectionStatus());
+            if (player.getConnectionStatus().equals(LobbyUserConnectionStates.ONLINE)) {
                 onlinePlayersCounter++;
                 onlinePlayer = player;
             }
         }
-        logger.fine(onlinePlayersCounter+" players found online");
+        logger.fine(onlinePlayersCounter + " players found online");
 
-        if(onlinePlayersCounter == 1){
-            logger.info("Only 1 player was found online, while waiting for reconnections setting current player to wait.");
-            logger.finest("Only online player found is: "+onlinePlayer.getUsername()+"\nAdding player state to playerStatesBeforeDisconnection");
+        // Perform actions if only one player is online
+        if (onlinePlayersCounter == 1) {
+            logger.info("Only 1 player was found online, setting current player to wait while waiting for reconnections.");
+            logger.finest("Only online player found is: " + onlinePlayer.getUsername() + "\nAdding player state to playerStatesBeforeDisconnection");
 
+            // Set flag to wait for reconnections
             setWaitingForReconnections(true);
 
-            if(!onlinePlayer.getPlayerState().equals(PlayerStates.WAIT))
+            // Save current player state if it's not already in wait state
+            if (!onlinePlayer.getPlayerState().equals(PlayerStates.WAIT)) {
                 playerStatesBeforeDisconnection.put(onlinePlayer.getUsername(), onlinePlayer.getPlayerState());
+            }
 
+            // Set current player to wait state
             logger.finest("Setting current player to wait");
             onlinePlayer.setPlayerState(PlayerStates.WAIT);
+
+            // Update client state
             logger.finest("Updating client state");
             gameObserverRelay.update(onlinePlayer.getUsername(), new SCPUpdateClientGameState(onlinePlayer.getPlayerState()));
-            logger.finest("Setting waiting for reconnection to true.");
 
+            logger.finest("Setting waiting for reconnection to true.");
         }
+
         logger.fine("Exiting Game disconnection procedure");
     }
 
-    public PlayerStates determinePlayerState(Player player){
-        //Check which state to assign to the player
 
-        if(!waitingForReconnections) {
-            //If the game is not waiting for reconnections then assign to the first player either their state before disconnections
-            //or give them the default state of PLACE
-            if(!lastRound)
-                //If we are not in the last round then the player can both place and draw cards so we recover their state from the cache
+    /**
+     * Determines the state of the player based on the current game phase and connection status.
+     *
+     * @param player The player for whom the state is to be determined.
+     * @return The state of the player.
+     */
+    public PlayerStates determinePlayerState(Player player) {
+        // Check if the game is waiting for reconnections
+        if (!waitingForReconnections) {
+            // If the game is not waiting for reconnections
+            if (!lastRound) {
+                // Not in the last round: players can both place and draw cards
                 return playerStatesBeforeDisconnection.getOrDefault(player.getUsername(), PlayerStates.PLACE);
-            else
-                //If we are in the last round then they can only place cards
+            } else {
+                // In the last round: players can only place cards
                 return PlayerStates.PLACE;
-        }
-        else{
-            if(!playerStatesBeforeDisconnection.containsKey(player.getUsername()))
+            }
+        } else {
+            // If the game is waiting for reconnections
+            if (!playerStatesBeforeDisconnection.containsKey(player.getUsername())) {
+                // Set default state to PLACE if player state before disconnection is not recorded
                 playerStatesBeforeDisconnection.put(player.getUsername(), PlayerStates.PLACE);
-
+            }
+            // All players are in WAIT state while waiting for reconnections
             return PlayerStates.WAIT;
         }
     }
+
 
 
 

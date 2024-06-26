@@ -19,7 +19,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-//todo fix javadoc
+/**
+ * Represents the game state where players draw initial cards during the setup phase.
+ * This state extends {@link SynchronousGameState} and manages the process of drawing
+ * golden and resource cards for each player in a synchronous turn-based manner.
+ */
 public class DrawInitialCards extends SynchronousGameState {
 
     //ATTRIBUTES
@@ -35,35 +39,31 @@ public class DrawInitialCards extends SynchronousGameState {
 
     //CONSTRUCTOR
     /**
-     * Default Constructor.
+     * Constructs a new DrawInitialCards state for the game.
      *
-     * @param game The game instance to which this MainLoop state belongs.
+     * @param game The game instance associated with this state.
      */
-    public DrawInitialCards(Game game){
+    public DrawInitialCards(Game game) {
         super(game, new PlayerSwitcherNonResilient(game.getPlayers()));
         table = game.getTable();
-
         goldenCardsDrawn = new HashMap<>();
         resourceCardsDrawn = new HashMap<>();
-
         setupStateCounter = 0;
-
         logger = Logger.getLogger(DrawInitialCards.class.getName());
 
-
-        for(Player player : players){
-
-            //Set up the card-draw counters.
+        // Initialize card draw counters for each player
+        for (Player player : players) {
             resourceCardsDrawn.put(player, 0);
-            goldenCardsDrawn.put(player,0);
+            goldenCardsDrawn.put(player, 0);
         }
 
+        // Notify clients about initial card drawability
         Map<CardPoolTypes, Boolean> drawability = new HashMap<>();
         drawability.put(CardPoolTypes.GOLDEN, true);
         drawability.put(CardPoolTypes.RESOURCE, true);
-
         gameObserverRelay.update(new SCPUpdateCardPoolDrawability(drawability));
 
+        // Start the setup phase by determining the first player
         findFirstPlayer();
     }
 
@@ -73,13 +73,15 @@ public class DrawInitialCards extends SynchronousGameState {
 
     //STATE PATTERN METHODS
     /**
-     * {@inheritDoc}
+     * Handles a player's attempt to draw a card during the setup phase.
      *
-     * @param player       The player who is drawing the card.
-     * @param cardPoolType The type of card pool from which the card will be drawn.
+     * @param player       The player attempting to draw the card.
+     * @param cardPoolType The type of card pool from which the card will be drawn (golden or resource).
      * @param index        The index of the card in the card pool.
-     * @throws NotYourTurnException                 Thrown if the player attempts to draw a card out of turn.
-     * @throws InvalidActionForPlayerStateException Thrown if the player attempts an invalid action in their current state.
+     * @throws NotYourTurnException                 If the player attempts to draw out of turn.
+     * @throws InvalidActionForPlayerStateException If the player attempts an invalid action in their current state.
+     * @throws MaxGoldenCardsDrawnException         If the player tries to draw more golden cards than allowed.
+     * @throws MaxResourceCardsDrawnException       If the player tries to draw more resource cards than allowed.
      */
     @Override
     public void drawCard(Player player, CardPoolTypes cardPoolType, int index) throws NotYourTurnException, InvalidActionForPlayerStateException, MaxGoldenCardsDrawnException, MaxResourceCardsDrawnException {
@@ -141,18 +143,30 @@ public class DrawInitialCards extends SynchronousGameState {
         updateCardDrawability(player);
     }
 
-    private void updateCardDrawability(Player player){
+    /**
+     * Updates the drawability of cards for a specific player based on the number of cards drawn.
+     * Notifies the game observer relay about the updated card pool drawability.
+     *
+     * @param player The player for whom to update card drawability.
+     */
+    private void updateCardDrawability(Player player) {
         Map<CardPoolTypes, Boolean> drawability = new HashMap<>();
-        if(goldenCardsDrawn.get(player) == GameConstants.goldenCardsToDrawSetup)
-            drawability.put(CardPoolTypes.GOLDEN, false);
-        else
-            drawability.put(CardPoolTypes.GOLDEN, true);
 
-        if(resourceCardsDrawn.get(player) == GameConstants.resourceCardsToDrawSetup)
-            drawability.put(CardPoolTypes.RESOURCE, false);
-        else
-            drawability.put(CardPoolTypes.RESOURCE, true);
+        // Check if the player has drawn all allowed golden cards
+        if (goldenCardsDrawn.get(player) == GameConstants.goldenCardsToDrawSetup) {
+            drawability.put(CardPoolTypes.GOLDEN, false); // No more golden cards can be drawn
+        } else {
+            drawability.put(CardPoolTypes.GOLDEN, true); // Golden cards can still be drawn
+        }
 
+        // Check if the player has drawn all allowed resource cards
+        if (resourceCardsDrawn.get(player) == GameConstants.resourceCardsToDrawSetup) {
+            drawability.put(CardPoolTypes.RESOURCE, false); // No more resource cards can be drawn
+        } else {
+            drawability.put(CardPoolTypes.RESOURCE, true); // Resource cards can still be drawn
+        }
+
+        // Notify the game observer relay about the updated card pool drawability for the player
         gameObserverRelay.update(player.getUsername(), new SCPUpdateCardPoolDrawability(drawability));
     }
 
@@ -160,7 +174,13 @@ public class DrawInitialCards extends SynchronousGameState {
 
 
 
+
     //RECONNECTION
+    /**
+     * Handles reconnection procedure for a player in the DrawInitialCards state.
+     *
+     * @param player The player who is reconnecting.
+     */
     @Override
     public void userReconnectionProcedure(Player player){
        super.userReconnectionProcedure(player);
@@ -200,6 +220,12 @@ public class DrawInitialCards extends SynchronousGameState {
         }
     }
 
+    /**
+     * Determines the initial player state for each player in the setup phase.
+     *
+     * @param player The player for whom to determine the initial state.
+     * @return The initial state of the player.
+     */
     @Override
     protected PlayerStates determinePlayerState(Player player) {
         if(player.equals(players.get(currentPlayerIndex)))
