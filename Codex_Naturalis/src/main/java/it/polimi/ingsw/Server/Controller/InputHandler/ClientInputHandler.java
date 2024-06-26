@@ -38,10 +38,15 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
     private String username;
     private final Logger logger;
 
-    public ClientInputHandler(ClientHandler connection, ServerController serverController){
+    /**
+     * Constructs a ClientInputHandler with the specified connection and server controller.
+     *
+     * @param connection       the client handler connection
+     * @param serverController the server controller
+     */
+    public ClientInputHandler(ClientHandler connection, ServerController serverController) {
         logger = Logger.getLogger(ClientInputHandler.class.getName());
         logger.fine("Initializing ServerInputHandler");
-
 
         this.connection = connection;
         this.serverController = serverController;
@@ -50,106 +55,113 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
         logger.fine("ServerInputHandler initialized");
     }
 
-
-
-
-
-    //INPUT HANDLER METHODS
+    /**
+     * Handles the input message received from the client.
+     *
+     * @param packet The ClientServerPacket representing the input from the client.
+     */
     @Override
     public void handleInput(ClientServerPacket packet) {
         packet.execute(this);
     }
 
+    /**
+     * Handles the accidental disconnection of the client.
+     */
     @Override
     public void clientDisconnectionProcedure() {
         logger.info("Client disconnection procedure initiated.");
-        if(username != null){
+        if (username != null) {
             logger.info("User disconnected: " + username);
             serverController.userDisconnectionProcedure(username);
-            }
-        if(lobbyController != null) {
+        }
+        if (lobbyController != null) {
             logger.info("Disconnecting from lobby: " + lobbyController.getLobbyName());
             lobbyController.userDisconnectionProcedure(username);
         }
-        if(gameController != null) {
+        if (gameController != null) {
             gameController = null;
             logger.info("Game controller cleared.");
         }
     }
 
-
-
-
-
-    //EXECUTOR METHODS
-    //SERVER LAYER
+    /**
+     * Processes a login request from the client.
+     *
+     * @param username The username provided by the client.
+     * @param password The password provided by the client.
+     */
     @Override
     public void logIn(String username, String password) {
         logger.info("LogIn message received.");
-        logger.fine("LogIn message contents:\n"+"Username: "+username+"\nPassword: "+password);
+        logger.fine("LogIn message contents:\n" + "Username: " + username + "\nPassword: " + password);
 
-        try{
-            if(this.username != null){
-                //todo
+        try {
+            if (this.username != null) {
+                // todo
                 throw new MultipleLoginViolationException(connection, "placeholder", username, "");
             }
             this.username = serverController.login(connection, username, password);
             connection.sendPacket(new SCPLogInSuccess(this.username));
-        }
-        catch(MultipleLoginViolationException e){
+        } catch (MultipleLoginViolationException e) {
             String stackTraceString = Utilities.StackTraceToString(e);
-            logger.warning("MultipleLoginViolationException by: "+username+".\nStacktrace:\n"+stackTraceString);
+            logger.warning("MultipleLoginViolationException by: " + username + ".\nStacktrace:\n" + stackTraceString);
             connection.sendPacket(new SCPLogInFailed(ErrorsDictionary.YOU_ARE_ALREADY_LOGGED_IN));
-        }
-        catch (IncorrectPasswordException e){
+        } catch (IncorrectPasswordException e) {
             String stackTraceString = Utilities.StackTraceToString(e);
-            logger.warning("IncorrectPasswordException for: "+username+".\nStacktrace:\n"+stackTraceString);
+            logger.warning("IncorrectPasswordException for: " + username + ".\nStacktrace:\n" + stackTraceString);
             connection.sendPacket(new SCPLogInFailed(ErrorsDictionary.WRONG_PASSWORD));
-        }
-        catch (AccountNotFoundException e){
+        } catch (AccountNotFoundException e) {
             String stackTraceString = Utilities.StackTraceToString(e);
-            logger.warning("AccountNotFoundException for: "+username+".\nStacktrace:\n"+stackTraceString);
+            logger.warning("AccountNotFoundException for: " + username + ".\nStacktrace:\n" + stackTraceString);
             connection.sendPacket(new SCPLogInFailed(ErrorsDictionary.USERNAME_NOT_FOUND));
-        }
-        catch (AccountAlreadyLoggedInException e){
+        } catch (AccountAlreadyLoggedInException e) {
             String stackTraceString = Utilities.StackTraceToString(e);
-            logger.warning("AccountAlreadyLoggedInException for: "+username+".\nStacktrace:\n"+stackTraceString);
+            logger.warning("AccountAlreadyLoggedInException for: " + username + ".\nStacktrace:\n" + stackTraceString);
             connection.sendPacket(new SCPLogInFailed(ErrorsDictionary.ACCOUNT_ALREADY_LOGGED_IN_BY_SOMEONE_ELSE));
         }
     }
 
+    /**
+     * Processes a sign-up request from the client.
+     *
+     * @param username The username provided by the client.
+     * @param password The password provided by the client.
+     */
     @Override
     public void signUp(String username, String password) {
         logger.info("SignUp message received.");
-        logger.fine("SignUp message contents:\n"+"Username: "+username+"\nPassword: "+password);
+        logger.fine("SignUp message contents:\n" + "Username: " + username + "\nPassword: " + password);
 
         try {
-            if(this.username != null){
-                //todo
+            if (this.username != null) {
+                // todo
                 throw new MultipleLoginViolationException(connection, "placeholder", username, "");
             }
 
             this.username = serverController.signUp(connection, username, password);
             connection.sendPacket(new SCPSignUpSuccess(this.username));
-        }
-        catch (AccountAlreadyExistsException e){
+        } catch (AccountAlreadyExistsException e) {
             String stackTraceString = Utilities.StackTraceToString(e);
-            logger.warning("AccountAlreadyExistsException by: "+username+".\nStacktrace:\n"+stackTraceString);
+            logger.warning("AccountAlreadyExistsException by: " + username + ".\nStacktrace:\n" + stackTraceString);
             connection.sendPacket(new SCPSignUpFailed(ErrorsDictionary.USERNAME_ALREADY_TAKEN));
-        }
-        catch(MultipleLoginViolationException e){
+        } catch (MultipleLoginViolationException e) {
             String stackTraceString = Utilities.StackTraceToString(e);
-            logger.warning("MultipleLoginViolationException by: "+username+".\nStacktrace:\n"+stackTraceString);
+            logger.warning("MultipleLoginViolationException by: " + username + ".\nStacktrace:\n" + stackTraceString);
             connection.sendPacket(new SCPSignUpFailed(ErrorsDictionary.YOU_ARE_ALREADY_LOGGED_IN));
         }
     }
 
+
+    /**
+     * Processes a logout request from the client.
+     */
     @Override
     public void logOut() {
         logger.info("LogOut message received.");
-        if(username == null)
+        if (username == null)
             return;
-        if(lobbyController != null){
+        if (lobbyController != null) {
             lobbyController.quitLobby(username);
         }
         serverController.quitLayer(username);
@@ -159,6 +171,9 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
         logger.info("LogOut procedure completed.");
     }
 
+    /**
+     * Handles the request to view lobby previews.
+     */
     @Override
     public void viewLobbyPreviews() {
         logger.info("ViewLobbyPreviews message received");
@@ -170,30 +185,38 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
             serverController.addLobbyPreviewObserver(username, connection);
         } catch (LogInRequiredException e) {
             String stackTraceString = Utilities.StackTraceToString(e);
-            logger.warning("LogInRequiredException\nStacktrace:\n"+stackTraceString);
+            logger.warning("LogInRequiredException\nStacktrace:\n" + stackTraceString);
         }
     }
 
+    /**
+     * Handles the request to stop viewing lobby previews.
+     */
     @Override
     public void stopViewingLobbyPreviews() {
-        logger.info("StopViewingLobbyPreviews Message received");
+        logger.info("StopViewingLobbyPreviews message received");
 
         try {
             if (username == null) {
                 throw new LogInRequiredException("You need to be logged in to perform this action");
             }
             serverController.removeLobbyPreviewObserver(username);
-        }
-        catch (LogInRequiredException e) {
+        } catch (LogInRequiredException e) {
             String stackTraceString = Utilities.StackTraceToString(e);
-            logger.warning("LogInRequiredException\nStacktrace:\n"+stackTraceString);
+            logger.warning("LogInRequiredException\nStacktrace:\n" + stackTraceString);
         }
     }
 
+    /**
+     * Handles the request to start a new lobby.
+     *
+     * @param lobbyName The name of the lobby to be created.
+     * @param lobbySize The size of the lobby to be created.
+     */
     @Override
     public void startLobby(String lobbyName, int lobbySize) {
         logger.info("StartLobby message received");
-        logger.fine("Message contents:\nLobby name: "+lobbyName+"\nLobby Size: "+lobbySize);
+        logger.fine("Message contents:\nLobby name: " + lobbyName + "\nLobby Size: " + lobbySize);
         try {
             if (username == null) {
                 throw new LogInRequiredException("");
@@ -203,33 +226,35 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
                 lobbyController = serverController.createNewLobby(lobbyName, username, lobbySize, connection);
                 lobbyController.addGameControllerObserver(username, this);
             }
-        }
-        catch (LogInRequiredException e){
+        } catch (LogInRequiredException e) {
             String stackTraceString = Utilities.StackTraceToString(e);
-            logger.warning("LogInRequiredException\nStacktrace:\n"+stackTraceString);
+            logger.warning("LogInRequiredException\nStacktrace:\n" + stackTraceString);
             connection.sendPacket(new SCPStartLobbyFailed(ErrorsDictionary.GENERIC_ERROR));
-        }
-        catch (MultipleLobbiesException e){
+        } catch (MultipleLobbiesException e) {
             String stackTraceString = Utilities.StackTraceToString(e);
-            logger.warning("MultipleLobbiesException\nStacktrace:\n"+stackTraceString);
+            logger.warning("MultipleLobbiesException\nStacktrace:\n" + stackTraceString);
             connection.sendPacket(new SCPStartLobbyFailed(ErrorsDictionary.GENERIC_ERROR));
-        }
-        catch (LobbyNameAlreadyTakenException e){
+        } catch (LobbyNameAlreadyTakenException e) {
             String stackTraceString = Utilities.StackTraceToString(e);
-            logger.warning("LobbyNameAlreadyTakenException\nStacktrace:\n"+stackTraceString);
+            logger.warning("LobbyNameAlreadyTakenException\nStacktrace:\n" + stackTraceString);
             connection.sendPacket(new SCPStartLobbyFailed(ErrorsDictionary.LOBBY_NAME_ALREADY_TAKEN));
-        }
-        catch (InvalidLobbySettingsException e) {
+        } catch (InvalidLobbySettingsException e) {
             String stackTraceString = Utilities.StackTraceToString(e);
-            logger.warning("InvalidLobbySettingsException\nStacktrace:\n"+stackTraceString);
+            logger.warning("InvalidLobbySettingsException\nStacktrace:\n" + stackTraceString);
             connection.sendPacket(new SCPStartLobbyFailed(ErrorsDictionary.INVALID_LOBBY_SIZE));
         }
     }
 
+
+    /**
+     * Handles the request to join an existing lobby.
+     *
+     * @param lobbyName The name of the lobby to join.
+     */
     @Override
     public void joinLobby(String lobbyName) {
         logger.info("Received join lobby message");
-        logger.fine("Message content:\nLobby Name: "+lobbyName);
+        logger.fine("Message content:\nLobby Name: " + lobbyName);
 
         try {
             if (username == null) {
@@ -241,45 +266,46 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
                 gameController = lobbyController.getGameController();
                 lobbyController.addGameControllerObserver(username, this);
             }
-        }
-        catch (LogInRequiredException e){
+        } catch (LogInRequiredException e) {
             String stackTraceString = Utilities.StackTraceToString(e);
-            logger.warning("LogInRequiredException\nStacktrace:\n"+stackTraceString);
+            logger.warning("LogInRequiredException\nStacktrace:\n" + stackTraceString);
             connection.sendPacket(new SCPJoinLobbyFailed(ErrorsDictionary.GENERIC_ERROR));
-        }
-        catch (MultipleLobbiesException e){
+        } catch (MultipleLobbiesException e) {
             String stackTraceString = Utilities.StackTraceToString(e);
-            logger.warning("MultipleLobbiesException\nStacktrace:\n"+stackTraceString);
+            logger.warning("MultipleLobbiesException\nStacktrace:\n" + stackTraceString);
             connection.sendPacket(new SCPJoinLobbyFailed(ErrorsDictionary.GENERIC_ERROR));
-        }
-        catch (LobbyNotFoundException e){
+        } catch (LobbyNotFoundException e) {
             String stackTraceString = Utilities.StackTraceToString(e);
-            logger.warning("LobbyNotFoundException\nStacktrace:\n"+stackTraceString);
+            logger.warning("LobbyNotFoundException\nStacktrace:\n" + stackTraceString);
             connection.sendPacket(new SCPJoinLobbyFailed(ErrorsDictionary.LOBBY_NAME_NOT_FOUND));
-        }
-        catch (LobbyUserAlreadyConnectedException e){
+        } catch (LobbyUserAlreadyConnectedException e) {
             String stackTraceString = Utilities.StackTraceToString(e);
-            logger.warning("LobbyUserAlreadyConnectedException\nStacktrace:\n"+stackTraceString);
+            logger.warning("LobbyUserAlreadyConnectedException\nStacktrace:\n" + stackTraceString);
             connection.sendPacket(new SCPJoinLobbyFailed(ErrorsDictionary.GENERIC_ERROR));
-        }
-        catch (LobbyClosedException e){
+        } catch (LobbyClosedException e) {
             String stackTraceString = Utilities.StackTraceToString(e);
-            logger.warning("LobbyClosedException\nStacktrace:\n"+stackTraceString);
+            logger.warning("LobbyClosedException\nStacktrace:\n" + stackTraceString);
             connection.sendPacket(new SCPJoinLobbyFailed(ErrorsDictionary.LOBBY_IS_CLOSED));
         }
     }
 
 
 
+
     //LOBBY LAYER
+    /**
+     * Handles the request to start the game within the current lobby.
+     * This operation requires the user to be in a lobby and to have admin privileges.
+     */
     @Override
     public void startGame() {
         logger.info("Start Game message received");
         try {
             if (lobbyController != null) {
                 lobbyController.startGame(username);
-            } else
+            } else {
                 throw new LobbyRequiredException("You need to be in a Lobby to start a game");
+            }
         }
         catch (LobbyRequiredException e){
             //todo
@@ -297,6 +323,11 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
         }
     }
 
+
+    /**
+     * Handles the request to quit the current lobby.
+     * If the user is in a game associated with the lobby, it will be terminated.
+     */
     @Override
     public void quitLobby() {
         logger.info("Quit Lobby message received");
@@ -306,12 +337,11 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
 
         try {
             if (lobbyController != null) {
-                //todo
-                //lobbyController.removeGameControllerObserver(this);
                 lobbyController.quitLobby(username);
                 lobbyController = null;
-            } else
+            } else {
                 throw new LobbyRequiredException("You need to be in a Lobby to quit the Lobby");
+            }
         }
         catch (LobbyRequiredException e){
             String stackTraceString = Utilities.StackTraceToString(e);
@@ -322,6 +352,12 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
         }
     }
 
+
+    /**
+     * Handles the request to change the user's color in the current lobby.
+     *
+     * @param newColor The new color chosen by the user.
+     */
     @Override
     public void changeColor(LobbyUserColors newColor) {
         logger.info("Change color message received");
@@ -343,6 +379,12 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
         }
     }
 
+
+    /**
+     * Handles the request to send a chat message.
+     *
+     * @param chatMessage The chat message to be sent.
+     */
     @Override
     public void sendChatMessage(ChatMessageRecord chatMessage) {
         logger.info("sendChatMessage message received from user "+username);
@@ -372,7 +414,15 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
     }
 
 
+
     //GAME LAYER
+    /**
+     * Handles the request to play a card in the game.
+     *
+     * @param cardIndex The index of the card to play.
+     * @param coordinateIndex The index of the coordinate to play the card on.
+     * @param faceUp Flag indicating whether the card should be played face up.
+     */
     @Override
     public void playCard(int cardIndex, int coordinateIndex, boolean faceUp) {
         logger.info("Play Card message received");
@@ -385,7 +435,6 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
             if(gameController == null)
                 throw new GameRequiredException("The game has to already have started to perform this action");
 
-
             gameController.playCard(username, cardIndex, coordinateIndex, faceUp);
         }
         catch (MissingRequirementException | GameException e){
@@ -394,6 +443,13 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
         }
     }
 
+
+    /**
+     * Handles the request to draw a card in the game.
+     *
+     * @param cardPoolType The type of card pool from which to draw the card.
+     * @param cardIndex The index of the card to draw.
+     */
     @Override
     public void drawCard(CardPoolTypes cardPoolType, int cardIndex) {
         logger.info("Draw Card message received");
@@ -414,6 +470,12 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
         }
     }
 
+
+    /**
+     * Handles the request for a player to pick an objective in the game.
+     *
+     * @param objectiveIndex The index of the objective to be picked.
+     */
     @Override
     public void pickObjective(int objectiveIndex) {
         try{
@@ -436,10 +498,15 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
 
 
 
+
     //OBSERVER
+    /**
+     * Updates the current game controller instance.
+     *
+     * @param gameController The updated game controller instance.
+     */
     @Override
     public void updateGameController(GameController gameController) {
         this.gameController = gameController;
     }
-
 }

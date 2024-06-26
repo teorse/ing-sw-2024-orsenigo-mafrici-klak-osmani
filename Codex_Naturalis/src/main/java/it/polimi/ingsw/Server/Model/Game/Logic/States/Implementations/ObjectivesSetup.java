@@ -100,18 +100,29 @@ public class ObjectivesSetup extends ASynchronousGameState {
 
 
     //RECONNECTION
+    /**
+     * Handles the reconnection procedure for a player during a game session.
+     *
+     * @param player The player who is reconnecting.
+     */
     @Override
-    public void userReconnectionProcedure(Player player){
+    public void userReconnectionProcedure(Player player) {
+        // Perform any general reconnection procedure defined in the superclass
         super.userReconnectionProcedure(player);
 
+        // Retrieve secret objective candidates for the reconnected player
         List<ObjectiveRecord> candidateRecords = new ArrayList<>();
-        List<Objective>objectivesCandidates = secretObjectiveCandidates.get(player.getUsername());
+        List<Objective> objectivesCandidates = secretObjectiveCandidates.get(player.getUsername());
 
-        for(Objective objective : objectivesCandidates)
+        // Convert objectives to their record representations
+        for (Objective objective : objectivesCandidates) {
             candidateRecords.add(objective.toRecord());
+        }
 
+        // Update the client with the secret objective candidates available to the player
         gameObserverRelay.update(player.getUsername(), new SCPUpdateSecretObjectiveCandidates(candidateRecords));
     }
+
 
 
 

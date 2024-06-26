@@ -217,29 +217,53 @@ public class ServerModel implements ServerModelLayer {
         removeUser(username);
     }
 
-    private void removeUser(String username){
-        removeLobbyPreviewObserver(username);
-        loggedInUsers.remove(username);
-        logger.info("User "+username+" removed from Server Layer");
+    /**
+     * Removes a user from the Server Layer.
+     *
+     * @param username The username of the user to be removed.
+     */
+    private void removeUser(String username) {
+        removeLobbyPreviewObserver(username); // Remove the user from lobby preview observers
+        loggedInUsers.remove(username); // Remove the user from the list of logged-in users
+        logger.info("User " + username + " removed from Server Layer"); // Log the removal of the user
     }
 
-    public void removeLobby(String lobbyName){
-        logger.info("Removing lobby "+lobbyName+" from Server model");
-        lobbiesMap.remove(lobbyName);
+
+    /**
+     * Removes a lobby from the Server model.
+     *
+     * @param lobbyName The name of the lobby to be removed.
+     */
+    public void removeLobby(String lobbyName) {
+        logger.info("Removing lobby " + lobbyName + " from Server model"); // Log the removal of the lobby
+        lobbiesMap.remove(lobbyName); // Remove the lobby from the map of lobbies
     }
+
 
 
 
 
 
     //OBSERVER METHODS
-    public void addLobbyPreviewObserver(String username, ClientHandler ch){
-        logger.fine("Adding observer "+username+ " to lobby previews");
-        this.lobbyPreviewObserverRelay.addObserver(username, ch);
+    /**
+     * Adds an observer to lobby previews for a specific username.
+     *
+     * @param username The username of the observer to be added.
+     * @param ch       The ClientHandler instance associated with the observer.
+     */
+    public void addLobbyPreviewObserver(String username, ClientHandler ch) {
+        logger.fine("Adding observer " + username + " to lobby previews"); // Log the addition of the observer
+        this.lobbyPreviewObserverRelay.addObserver(username, ch); // Add the observer to the lobby preview observers relay
     }
 
-    public void removeLobbyPreviewObserver(String username){
-        logger.fine("Removing observer "+username+ " from lobby previews");
-        this.lobbyPreviewObserverRelay.removeObserver(username);
+
+    /**
+     * Removes an observer from lobby previews for a specific username.
+     *
+     * @param username The username of the observer to be removed.
+     */
+    public void removeLobbyPreviewObserver(String username) {
+        logger.fine("Removing observer " + username + " from lobby previews"); // Log the removal of the observer
+        this.lobbyPreviewObserverRelay.removeObserver(username); // Remove the observer from the lobby preview observers relay
     }
 }
