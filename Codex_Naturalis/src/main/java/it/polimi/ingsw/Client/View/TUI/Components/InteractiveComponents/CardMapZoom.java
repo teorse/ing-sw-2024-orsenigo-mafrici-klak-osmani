@@ -10,6 +10,8 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.Ca
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
 import it.polimi.ingsw.Server.Model.Game.Player.Coordinates;
 
+import java.util.logging.Logger;
+
 public class CardMapZoom extends InteractiveComponent{
     //ATTRIBUTES
     private final Players players;
@@ -18,7 +20,7 @@ public class CardMapZoom extends InteractiveComponent{
     private String chosenCardMapsOwner;
     private char row;
     private char column;
-    private CardVisibilityRecord card;
+    private CardVisibilityRecord selectedCard;
 
 
 
@@ -26,7 +28,8 @@ public class CardMapZoom extends InteractiveComponent{
 
     //CONSTRUCTOR
     public CardMapZoom() {
-        super(2);
+        super(3);
+
         players = Players.getInstance();
         cardMaps = CardMaps.getInstance();
 
@@ -94,15 +97,17 @@ public class CardMapZoom extends InteractiveComponent{
                 Coordinates coordinate = cardMaps.charsToCoordinates(row, column);
 
                 // Retrieve the card at the chosen coordinates and owner's CardMap
-                card = cardMaps.getCardByCoordinate(coordinate, chosenCardMapsOwner);
-
-                // Print the zoomed card view
-                new PlacedCardView(card).print();
+                selectedCard = cardMaps.getCardByCoordinate(coordinate, chosenCardMapsOwner);
 
                 // Reset the input counter for the next interaction
-                resetInputCounter();
-                return InteractiveComponentReturns.COMPLETE;
+                incrementInputCounter();
+                return InteractiveComponentReturns.INCOMPLETE;
             }
+        } else if (inputCounter == 3) {
+            //Reset the input counter after the user sends any input as by this point they are assumed
+            //to have seen the card and will now be redirected back to the cardMap zoom menu
+            resetInputCounter();
+            return InteractiveComponentReturns.COMPLETE;
         }
 
         return InteractiveComponentReturns.INCOMPLETE;
@@ -154,6 +159,9 @@ public class CardMapZoom extends InteractiveComponent{
         } else if (inputCounter == 2) {
             // Stage 3: Prompt to choose a column to zoom into
             System.out.println("\nChoose a COLUMN to zoom the card.");
+        } else if(inputCounter == 3) {
+            // Print the zoomed card view
+            new PlacedCardView(selectedCard).print();
         }
 
         // Call superclass print method for additional output if any
