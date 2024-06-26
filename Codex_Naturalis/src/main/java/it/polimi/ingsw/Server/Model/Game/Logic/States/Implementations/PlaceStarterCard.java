@@ -6,7 +6,6 @@ import it.polimi.ingsw.Server.Model.Game.Logic.States.ASynchronousGameState;
 import it.polimi.ingsw.Server.Model.Game.Player.Player;
 import it.polimi.ingsw.Server.Model.Game.Table.Table;
 import it.polimi.ingsw.Server.Model.Game.Player.PlayerStates;
-import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.SCPUpdateClientGameState;
 import it.polimi.ingsw.Exceptions.Game.InvalidActionForPlayerStateException;
 import it.polimi.ingsw.Exceptions.Game.MoveAttemptOnWaitStateException;
 
@@ -39,10 +38,7 @@ public class PlaceStarterCard extends ASynchronousGameState {
             player.addCardHeld(table.drawStarterCard());
             player.setPlayerState(PlayerStates.PLACE);
         }
-
-        logger.fine("Game state PlaceStarterCard initialized.\n" +
-                "Broadcasting Client State Update PLACE.");
-        gameObserverRelay.update(new SCPUpdateClientGameState(PlayerStates.PLACE));
+        logger.fine("Game state PlaceStarterCard initialized.");
     }
 
 
@@ -78,8 +74,6 @@ public class PlaceStarterCard extends ASynchronousGameState {
         player.playCard(cardIndex, coordinateIndex, faceUp);
         logger.fine("Updating Client State to WAIT");
         player.setPlayerState(PlayerStates.WAIT);
-        logger.fine("Sending to player "+player.getUsername()+" Update Client State package to "+PlayerStates.WAIT);
-        gameObserverRelay.update(player.getUsername(), new SCPUpdateClientGameState(PlayerStates.WAIT));
 
         logger.fine("Setting player "+player.getUsername()+" as READY for this state.");
         playerReadiness.put(player, true);

@@ -12,7 +12,6 @@ import it.polimi.ingsw.Server.Model.Game.Logic.States.SynchronousGameState;
 import it.polimi.ingsw.Server.Model.Game.Table.Table;
 import it.polimi.ingsw.Server.Model.Game.Player.Player;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.SCPUpdateCardPoolDrawability;
-import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.SCPUpdateClientGameState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.SCPUpdateGame;
 import it.polimi.ingsw.Server.Model.Game.Player.PlayerStates;
 import it.polimi.ingsw.Server.Model.Lobby.LobbyUserConnectionStates;
@@ -114,8 +113,23 @@ public class MainLoop extends SynchronousGameState {
         player.playCard(cardIndex, coordinateIndex, faceUp);
 
         //After placing the card, if the two card pools are not empty then set the player to the DRAW state
-        if(!table.areAllCardPoolsEmpty() && !lastRound)
+        if(!table.areAllCardPoolsEmpty() && !lastRound) {
+            Map<CardPoolTypes, Boolean> drawability = new HashMap<>();
+            if(table.isCardPoolEmpty(CardPoolTypes.RESOURCE))
+                drawability.put(CardPoolTypes.RESOURCE, false);
+            else
+                drawability.put(CardPoolTypes.RESOURCE, true);
+
+            if(table.isCardPoolEmpty(CardPoolTypes.GOLDEN))
+                drawability.put(CardPoolTypes.GOLDEN, false);
+            else
+                drawability.put(CardPoolTypes.GOLDEN, true);
+
+            gameObserverRelay.update(player.getUsername(), new SCPUpdateCardPoolDrawability(drawability));
+
+
             player.setPlayerState(PlayerStates.DRAW);
+        }
         else {
             //If the two card Pools are empty then set the player state to wait and go to the next player
             player.setPlayerState(PlayerStates.WAIT);
@@ -276,10 +290,6 @@ public class MainLoop extends SynchronousGameState {
             // Set current player to wait state
             logger.finest("Setting current player to wait");
             onlinePlayer.setPlayerState(PlayerStates.WAIT);
-
-            // Update client state
-            logger.finest("Updating client state");
-            gameObserverRelay.update(onlinePlayer.getUsername(), new SCPUpdateClientGameState(onlinePlayer.getPlayerState()));
 
             logger.finest("Setting waiting for reconnection to true.");
         }

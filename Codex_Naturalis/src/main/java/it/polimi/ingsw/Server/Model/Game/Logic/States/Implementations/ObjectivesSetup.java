@@ -9,7 +9,6 @@ import it.polimi.ingsw.Server.Model.Game.Table.Table;
 import it.polimi.ingsw.Server.Model.Game.Objectives.Objective;
 import it.polimi.ingsw.Server.Model.Game.Player.Player;
 import it.polimi.ingsw.Server.Model.Game.Player.PlayerStates;
-import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.SCPUpdateClientGameState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.SCPUpdateSecretObjectiveCandidates;
 
 import java.util.*;
@@ -57,7 +56,6 @@ public class ObjectivesSetup extends ASynchronousGameState {
 
             player.setPlayerState(PlayerStates.PICK_OBJECTIVE);
         }
-        gameObserverRelay.update(new SCPUpdateClientGameState(PlayerStates.PICK_OBJECTIVE));
     }
 
 

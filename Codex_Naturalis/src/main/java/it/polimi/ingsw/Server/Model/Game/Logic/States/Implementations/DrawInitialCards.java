@@ -206,13 +206,6 @@ public class DrawInitialCards extends SynchronousGameState {
         if(setupStateCounter == GameConstants.goldenCardsToDrawSetup+GameConstants.resourceCardsToDrawSetup) {
             logger.fine("Setup Draw state has finished, proceeding to next state.");
             game.setState(new ObjectivesSetup(game));
-
-            Map<CardPoolTypes, Boolean> drawability = new HashMap<>();
-            drawability.put(CardPoolTypes.GOLDEN, true);
-            drawability.put(CardPoolTypes.RESOURCE, true);
-
-            gameObserverRelay.update(new SCPUpdateCardPoolDrawability(drawability));
-
         }
         else {
             logger.fine("Setup Draw state has not yet finished, proceeding to another round of drawing.");
