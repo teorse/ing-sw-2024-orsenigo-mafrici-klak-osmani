@@ -1,11 +1,9 @@
 package it.polimi.ingsw.Server.Model.Game.Table;
 
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardPoolRecord;
-import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.ObjectiveRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.TableRecord;
 import it.polimi.ingsw.Server.Model.Game.Cards.Card;
-import it.polimi.ingsw.Server.Model.Game.Artifacts;
 import it.polimi.ingsw.Server.Model.Game.Objectives.Objective;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.SCPUpdateTable;
 import it.polimi.ingsw.Server.Model.Lobby.ObserverRelay;
@@ -118,6 +116,16 @@ public class Table {
                 return false;
         }
         return true;
+    }
+
+    public boolean isCardPoolEmpty(CardPoolTypes cardPoolType){
+        CardPool cardPool = cardPools.get(cardPoolType);
+        if (cardPool.getAmountLeftInDeck() > 0)
+            return false;
+        if(cardPool.getAmountOfVisibleCards() > 0)
+            return false;
+        else
+            return true;
     }
 
     /**
