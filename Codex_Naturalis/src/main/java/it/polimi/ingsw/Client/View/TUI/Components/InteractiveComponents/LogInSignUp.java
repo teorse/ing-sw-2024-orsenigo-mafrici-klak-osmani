@@ -10,6 +10,18 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.ErrorsDictiona
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The `LogInSignUp` class represents an interactive component responsible for handling
+ * user interactions related to logging in or signing up in a text-based user interface (TUI).
+ * It manages the process of collecting and validating user input for username and password,
+ * sending login or signup requests to the server, and handling errors associated with these operations.
+ * <p>
+ * This component interacts with the `ClientModel` to retrieve login and signup errors,
+ * and communicates with the server via `CSPLogIn` and `CSPSignUp` packets.
+ * <p>
+ * The class maintains internal state to track the current stage of user input,
+ * manages error handling for invalid inputs, and resets input states when necessary.
+ */
 public class LogInSignUp extends InteractiveComponent {
 
     private int choice;
@@ -25,7 +37,10 @@ public class LogInSignUp extends InteractiveComponent {
 
 
 
-
+    /**
+     * Constructs a `LogInSignUp` instance with initializations for managing user interactions
+     * related to log in and signup processes.
+     */
     public LogInSignUp() {
         super(2);
         this.model = ClientModel.getInstance();
@@ -113,16 +128,28 @@ public class LogInSignUp extends InteractiveComponent {
         return InteractiveComponentReturns.INCOMPLETE;
     }
 
+    /**
+     *{@inheritDoc}
+     */
     @Override
     public String getKeyword() {
         return "loginsignup";
     }
 
+    /**
+     * Returns an empty string as there is no specific description associated with the `LogInSignUp` component.
+     *
+     * @return An empty string.
+     */
     @Override
     public String getDescription() {
         return "";
     }
 
+    /**
+     * Prints the login or signup prompts and handles user interaction for collecting
+     * username and password inputs. Displays error messages for invalid inputs.
+     */
     @Override
     public void print() {
         super.print();
@@ -181,11 +208,21 @@ public class LogInSignUp extends InteractiveComponent {
         }
     }
 
+    /**
+     * Cleans up any observed components or resources associated with the `LogInSignUp` interactive component.
+     * This method is intended to handle cleanup tasks specific to observing components, although in the
+     * context of `LogInSignUp`, there are no observed components to clean up.
+     */
     @Override
     public void cleanObserved() {
 
     }
 
+    /**
+     * Refreshes observed components or resources associated with the `LogInSignUp` interactive component.
+     * This method is intended to refresh any state or data that might have changed and needs updating,
+     * although in the context of `LogInSignUp`, there are no observed components to refresh.
+     */
     @Override
     public void refreshObserved() {
 

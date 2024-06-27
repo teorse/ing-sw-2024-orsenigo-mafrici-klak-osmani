@@ -2,6 +2,17 @@ package it.polimi.ingsw.Client.View.TUI.Components.InteractiveComponents;
 
 import it.polimi.ingsw.Client.View.TUI.Components.LiveComponent;
 
+/**
+ * Abstract class representing an interactive component in a text-based user interface (TUI).
+ * This class extends {@link LiveComponent} and manages user interactions involving multiple
+ * stages of input. It includes methods for handling input navigation back to previous menus
+ * or choices, managing input counters, and printing prompts for user interaction. Each subclass
+ * must implement methods to return keywords and descriptions for identification and user guidance.
+ * Subclasses define specific behaviors for handling user input and managing interaction flow,
+ * such as selecting options, placing cards, or navigating menus. The {@link #handleInput(String)}
+ * method processes user inputs based on the current interaction stage and returns appropriate
+ * status codes to indicate completion, quitting, or incomplete input handling.
+ */
 public abstract class InteractiveComponent extends LiveComponent {
     //ATTRIBUTES
     private int inputCounter = 0;
@@ -14,6 +25,14 @@ public abstract class InteractiveComponent extends LiveComponent {
      */
     private final int maxInputCounter;
 
+    /**
+     * Constructs an interactive component with a specified maximum input counter.
+     * This counter determines the maximum stage of input processing the component will handle.
+     * After reaching this maximum input stage, further inputs are ignored until the counter is reset.
+     *
+     * @param maxInputCounter The maximum value of the input counter at which inputs will still be processed.
+     *                        Inputs beyond this counter are ignored until the counter is reset.
+     */
     public InteractiveComponent(int maxInputCounter) {
         super();
         this.maxInputCounter = maxInputCounter;
@@ -48,27 +67,65 @@ public abstract class InteractiveComponent extends LiveComponent {
         return InteractiveComponentReturns.INCOMPLETE;
     }
 
+    /**
+     * Returns the keyword associated with this interactive component.
+     * The keyword is used to determine which component should handle the input when there are multiple
+     * interactive component in the same view state.
+     *
+     * @return The keyword associated with this interactive component.
+     */
     public abstract String getKeyword();
 
+    /**
+     * Returns the description of this interactive component.
+     * The description can be used to communicate to the user the purpose or behavior of the component.
+     *
+     * @return The description of this interactive component.
+     */
     public abstract String getDescription();
 
+    /**
+     * Retrieves the current input counter of this interactive component.
+     * The input counter tracks the current stage of user inputs being processed.
+     *
+     * @return The current input counter of this interactive component.
+     */
     public int getInputCounter() {
         return inputCounter;
     }
 
+    /**
+     * Retrieves the maximum input counter value allowed for this interactive component.
+     * Inputs are processed only up to this maximum counter value.
+     *
+     * @return The maximum input counter value allowed for this interactive component.
+     */
     public int getMaxInputCounter() {
         return maxInputCounter;
     }
 
+    /**
+     * Increments the input counter by one.
+     * This method is typically used to advance to the next input stage during user interaction.
+     */
     void incrementInputCounter(){
         inputCounter++;
     }
 
+    /**
+     * Decrements the input counter by one, if it is greater than zero.
+     * This method is used to move back to the previous input stage during user interaction.
+     * If the input counter is already zero, it remains unchanged.
+     */
     void decrementInputCounter(){
         if(inputCounter > 0)
             inputCounter--;
     }
 
+    /**
+     * Resets the input counter to zero.
+     * This method is used to reset the input stage when starting a new interaction or after completing an interaction.
+     */
     void resetInputCounter(){
         inputCounter = 0;
     }

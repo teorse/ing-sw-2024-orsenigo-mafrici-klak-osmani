@@ -31,8 +31,9 @@ public class ObjectiveNumeric extends Objective{
     }
 
     /**
-     * Method to access the required Items.
-     * @return  Map<Item, Integer> map with Item and number of units required.
+     * Retrieves the map of required items associated with this object.
+     *
+     * @return A map where keys are artifacts and values are integers representing the required quantity of each artifact.
      */
     public Map<Artifacts, Integer> getRequiredItems() {
         return requiredItems;
@@ -85,7 +86,7 @@ public class ObjectiveNumeric extends Objective{
 
     /**
      * Method to find the minimum number in a list of integers
-     * @param list List<Integer>.
+     * @param list The list of integers in which to find the minimum value.
      * @return int minimum number of the list.
      */
     public int findMin (List<Integer> list){
@@ -105,6 +106,17 @@ public class ObjectiveNumeric extends Objective{
 
     //EQUALS AND HASH
 
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     * Two ObjectiveNumeric objects are considered equal if they satisfy the following conditions:
+     * - They are the same instance (reference equality).
+     * - They belong to the same class.
+     * - They have the same super class equality.
+     * - They have the same requiredItems.
+     *
+     * @param o The object to compare this ObjectiveNumeric instance with.
+     * @return true if the given object is equal to this ObjectiveNumeric object, false otherwise.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -114,6 +126,12 @@ public class ObjectiveNumeric extends Objective{
         return Objects.equals(requiredItems, that.requiredItems);
     }
 
+    /**
+     * Returns a hash code value for the ObjectiveNumeric object.
+     * The hash code is computed based on the hash code of its superclass and the requiredItems attribute.
+     *
+     * @return A hash code value for this ObjectiveNumeric object.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), requiredItems);

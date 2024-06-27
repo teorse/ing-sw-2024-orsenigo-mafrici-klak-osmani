@@ -43,7 +43,7 @@ public class CardPool {
     /**
      * Method to retrieve cards from the collection.
      * @param index Specifies the card to be retrieved. If index = -1 then pops a card from the deck,
-     *              If -1< index < number of visible cards then returns the specified visible card.
+     *              If -1 lt index lt number of visible cards then returns the specified visible card.
      * @return      Card object specified by the index.
      */
     public Card getCard(int index){
@@ -75,6 +75,12 @@ public class CardPool {
 
 
     //MODEL CLIENT CONVERSION
+    /**
+     * Converts this CardPool instance into a CardPoolRecord object for serialization.
+     * The CardPoolRecord contains information about the deck and visible cards in this CardPool.
+     *
+     * @return The CardPoolRecord representing this CardPool instance.
+     */
     public CardPoolRecord toRecord(){
         List<CardRecord> visibleCards = new ArrayList<>();
         for (Card visibleCard : this.visibleCards) {

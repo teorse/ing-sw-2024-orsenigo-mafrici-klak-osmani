@@ -32,8 +32,9 @@ public class ObjectiveGeometric extends Objective{
     }
 
     /**
-     * Method to access the required card Pattern.
-     * @return  Map<Model.Utility.Coordinates, Resource> map with coordinates and type of resource for the card pattern.
+     * Retrieves the objective pattern associated with this object.
+     *
+     * @return A map where keys are coordinates and values are artifacts representing the pattern or layout of objectives.
      */
     public Map<Coordinates, Artifacts> getObjectivePattern() {
         return objectivePattern;
@@ -55,7 +56,17 @@ public class ObjectiveGeometric extends Objective{
 
 
     //EQUALS AND HASH
-
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     * Two ObjectiveGeometric objects are considered equal if they satisfy the following conditions:
+     * - They are the same instance (reference equality).
+     * - They belong to the same class.
+     * - They have the same super class equality.
+     * - They have the same objectivePattern.
+     *
+     * @param o The object to compare this ObjectiveGeometric instance with.
+     * @return true if the given object is equal to this ObjectiveGeometric object, false otherwise.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,6 +76,12 @@ public class ObjectiveGeometric extends Objective{
         return Objects.equals(objectivePattern, that.objectivePattern);
     }
 
+    /**
+     * Returns a hash code value for the ObjectiveGeometric object.
+     * The hash code is computed based on the hash code of its superclass and the objectivePattern attribute.
+     *
+     * @return A hash code value for this ObjectiveGeometric object.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), objectivePattern);

@@ -45,6 +45,13 @@ public class Player implements LayerUser {
 
 
     //CONSTRUCTOR
+    /**
+     * Constructs a new Player with the specified user and observer relay.
+     * Initializes the player with default values and sets up logging.
+     *
+     * @param user the LobbyUser representing the player
+     * @param gameObserverRelay the ObserverRelay to update game state
+     */
     public Player(LobbyUser user, ObserverRelay gameObserverRelay) {
         logger = Logger.getLogger(Player.class.getName());
         logger.info("Initializing player: "+user.getUsername());
@@ -91,6 +98,12 @@ public class Player implements LayerUser {
 
 
     //SETTERS
+    /**
+     * Sets the player's state and updates the observer with the player's new state.
+     * If the player is online, it also sends an update to the client's game state.
+     *
+     * @param playerState the new state to set for the player
+     */
     public void setPlayerState(PlayerStates playerState){
         this.playerState = playerState;
         logger.info("PlayerState of player: "+getUsername()+" has been set to: "+playerState+"\n" +
@@ -102,6 +115,7 @@ public class Player implements LayerUser {
                 observer.update(user.getUsername(), new SCPUpdateClientGameState(playerState));
         }
     }
+
     public void setWinner(){
         winner = true;
     }
@@ -111,11 +125,11 @@ public class Player implements LayerUser {
 
 
     //METHODS
-    //todo update javadoc
     /**
-     * Method allows to select an objective from the list of secret objective candidates and adds it to
-     * the player's actually confirmed objectives that will be used to count points at the end of the game.
-     * @param selectedObjective Index of the objective candidate the player wants to select.
+     * Adds a selected objective to the player's list of secret objectives.
+     * Updates the observer with the player's updated secret information.
+     *
+     * @param selectedObjective the objective to add to the player's secret objectives
      */
     public void addSecretObjective(Objective selectedObjective){
         secretObjectives.add(selectedObjective);
@@ -226,6 +240,13 @@ public class Player implements LayerUser {
 
 
     //EQUALS HASH
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     * Compares this Player object with the specified object for equality.
+     *
+     * @param o the reference object with which to compare
+     * @return {@code true} if this object is the same as the o argument; {@code false} otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -234,11 +255,22 @@ public class Player implements LayerUser {
         return Objects.equals(user, player.user);
     }
 
+    /**
+     * Returns a hash code value for the player based on the user's attributes.
+     *
+     * @return a hash code value for this player
+     */
     @Override
     public int hashCode() {
         return Objects.hashCode(user);
     }
 
+    /**
+     * Converts the player's secret information to a transferable data object.
+     * This includes the cards held by the player, their playability status, and the first secret objective.
+     *
+     * @return a PlayerSecretInfoRecord containing the player's secret information
+     */
     public PlayerSecretInfoRecord toSecretPlayer() {
         List<CardRecord> cardsHeldRecord = new ArrayList<>();
         Map<CardRecord, Boolean> cardPlayabilityRecord = new HashMap<>();

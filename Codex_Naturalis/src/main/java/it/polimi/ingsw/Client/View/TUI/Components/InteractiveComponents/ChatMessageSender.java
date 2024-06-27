@@ -14,6 +14,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Represents an interactive component responsible for managing the chat messaging functionality
+ * in the client-side user interface (TUI).
+ * <p>
+ * This component handles user input for sending messages either in public chat or private chat
+ * to selected users. It manages the state of chat conversations, including switching between
+ * public and private chats, sending messages, and displaying chat interfaces.
+ * </p>
+ * <p>
+ * The class extends InteractiveComponent and integrates with the client model's Chat instance
+ * to facilitate chat operations. It observes changes in the chat state using RefreshManager
+ * and interacts with the client connector to send chat messages to the server.
+ * </p>
+ * <p>
+ * The chat messaging flow includes:
+ * <ul>
+ * <li>Choosing between public and private chat.</li>
+ * <li>Selecting recipients for private messages.</li>
+ * <li>Sending messages and handling errors such as empty messages or invalid inputs.</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Debug logging is used to track the state of the chat and ensure proper functionality
+ * during conversation handling.
+ * </p>
+ */
 public class ChatMessageSender extends InteractiveComponent{
     //ATTRIBUTES
     private final Chat chat;
@@ -187,21 +213,34 @@ public class ChatMessageSender extends InteractiveComponent{
     }
 
 
-
-
-
-
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getKeyword() {
         return "chat";
     }
 
+    /**
+     * Retrieves the description of the class.
+     *
+     * @return A string describing the functionality of the ChatMessageSender class, which includes managing
+     * the state of the client-side user interface and interacting with the client model to manage chat
+     * functionality. The string includes instructions for the user to exit the chat state by typing "/exit".
+     */
     @Override
     public String getDescription() {
         return "/exit -> to exit the chat state";
     }
 
+    /**
+     * Cleans up the observed state of the class.
+     * <p>
+     * This method removes the ChatMessageSender instance from the list of observers in RefreshManager
+     * for each observable object stored in the observables list. It ensures that the class no longer
+     * receives updates from these observables.
+     * </p>
+     */
     @Override
     public void cleanObserved() {
         for(Observable observable : observables){
@@ -209,6 +248,14 @@ public class ChatMessageSender extends InteractiveComponent{
         }
     }
 
+    /**
+     * Refreshes the observed state of the class.
+     * <p>
+     * This method adds the ChatMessageSender instance to the list of observers in RefreshManager
+     * for each observable object stored in the observables list. It ensures that the class receives
+     * updates from these observables.
+     * </p>
+     */
     @Override
     public void refreshObserved() {
         for(Observable observable : observables){

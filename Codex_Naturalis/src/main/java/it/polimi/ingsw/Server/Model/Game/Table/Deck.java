@@ -61,6 +61,10 @@ public class Deck {
 
 
     //MODEL CLIENT CONVERSION
+    /**
+     * Converts the first card in the deck to a CardRecord.
+     * @return CardRecord of the first card in the deck, or null if the deck is empty.
+     */
     protected CardRecord toRecord(){
         if(!deck.isEmpty())
             return deck.getFirst().toRecord();

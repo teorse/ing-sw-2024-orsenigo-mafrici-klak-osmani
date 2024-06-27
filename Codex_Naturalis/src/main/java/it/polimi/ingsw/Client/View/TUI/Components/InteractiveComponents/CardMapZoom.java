@@ -12,6 +12,22 @@ import it.polimi.ingsw.Server.Model.Game.Player.Coordinates;
 
 import java.util.logging.Logger;
 
+/**
+ * The {@code CardMapZoom} class represents an interactive component in a text-based user interface (TUI)
+ * that allows users to zoom into a specific player's CardMap by selecting a player, row, and column.
+ * <p>
+ * This component handles user inputs to progressively zoom into a CardMap, displaying the selected
+ * player's cards or placements at specified coordinates. It interacts with {@link Players} and {@link CardMaps}
+ * to retrieve player information and card maps, and it uses {@link RefreshManager} to observe changes in data.
+ * <p>
+ * The interactive process involves multiple stages:
+ * 1. Selecting a player from a list of players.
+ * 2. Choosing a row (identified by a character) from the player's CardMap.
+ * 3. Choosing a column (identified by a character) from the selected row to zoom into.
+ * <p>
+ * After completing the input stages, the class retrieves and displays the selected card's details using
+ * {@link PlacedCardView}, providing visual feedback to the user.
+ */
 public class CardMapZoom extends InteractiveComponent{
     //ATTRIBUTES
     private final Players players;
@@ -27,6 +43,11 @@ public class CardMapZoom extends InteractiveComponent{
 
 
     //CONSTRUCTOR
+    /**
+     * Initializes a CardMapZoom component with an input counter set to 3, enabling interactive zooming
+     * into a player's CardMap. Uses {@link Players} and {@link CardMaps} for data access and refreshes
+     * observations with {@link RefreshManager}.
+     */
     public CardMapZoom() {
         super(3);
 
@@ -113,22 +134,38 @@ public class CardMapZoom extends InteractiveComponent{
         return InteractiveComponentReturns.INCOMPLETE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getKeyword() {
         return "cardmapzoom";
     }
 
+    /**
+     * Provides an empty description for this interactive component.
+     *
+     * @return An empty string as there is no specific description needed.
+     */
     @Override
     public String getDescription() {
         return "";
     }
 
+    /**
+     * Removes this component from the list of observed objects managed by {@link RefreshManager}
+     * for both {@link Players} and {@link CardMaps}.
+     */
     @Override
     public void cleanObserved() {
         RefreshManager.getInstance().removeObserved(this, players);
         RefreshManager.getInstance().removeObserved(this, cardMaps);
     }
 
+    /**
+     * Adds this component to the list of observed objects managed by {@link RefreshManager}
+     * for both {@link Players} and {@link CardMaps}.
+     */
     @Override
     public void refreshObserved() {
         RefreshManager.getInstance().addObserved(this, players);

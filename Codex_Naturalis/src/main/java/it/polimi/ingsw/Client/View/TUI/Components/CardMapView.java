@@ -13,25 +13,53 @@ import it.polimi.ingsw.Server.Model.Game.Player.Coordinates;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents a component responsible for displaying the card maps of players in a terminal-based user interface (TUI).
+ * It extends the {@link LiveComponent} class and implements methods to print and manage the visual representation of card maps.
+ * <p>
+ * The {@code CardMapView} class interacts with {@link CardMaps} and {@link Players} instances to retrieve and display
+ * card placement information and status on a board-like grid. It provides methods to print the card maps for multiple players
+ * side by side, showing card placements, availability for placement, and background colors based on the card's artifact type
+ * or checkerboard pattern.
+ * <p>
+ * It includes methods to observe changes in the card maps and players' information through {@link RefreshManager},
+ * ensuring the displayed information remains synchronized with the underlying model.
+ */
 public class CardMapView extends LiveComponent {
 
     //CONSTRUCTOR
+    /**
+     * Constructs a {@code CardMapView} object, initializing it to observe changes in {@link CardMaps} and {@link Players}.
+     * It calls {@link LiveComponent}'s constructor and immediately refreshes observed data.
+     */
     public CardMapView(){
         super();
         refreshObserved();
     }
 
+    /**
+     * Prints the card maps for all players currently in the game.
+     * This method retrieves the list of players from {@link Players} and displays their card maps using {@link #showCardMaps(List)}.
+     */
     @Override
     public void print() {
         showCardMaps(Players.getInstance().getPlayers());
     }
 
+    /**
+     * Removes this component from the list of observed objects in {@link RefreshManager} for both {@link CardMaps} and {@link Players}.
+     * This method is called to stop observing changes in card maps and player information when the component is no longer needed.
+     */
     @Override
     public void cleanObserved() {
         RefreshManager.getInstance().removeObserved(this, CardMaps.getInstance());
         RefreshManager.getInstance().removeObserved(this, Players.getInstance());
     }
 
+    /**
+     * Adds this component to the list of observed objects in {@link RefreshManager} for both {@link CardMaps} and {@link Players}.
+     * This method is called to start observing changes in card maps and player information when the component is instantiated.
+     */
     @Override
     public void refreshObserved() {
         RefreshManager.getInstance().addObserved(this, CardMaps.getInstance());

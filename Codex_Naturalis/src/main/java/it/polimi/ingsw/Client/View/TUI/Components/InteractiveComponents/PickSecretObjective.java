@@ -5,8 +5,20 @@ import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPPickObjective;
 
+/**
+ * The `PickSecretObjective` class represents an interactive component in a text-based user interface (TUI)
+ * for allowing a user to choose a secret objective in a game. It handles user input to select between
+ * two possible secret objectives and sends the chosen objective to the server via a network packet.
+ * This class extends `InteractiveComponent`, which provides common functionality for interactive components
+ * in the TUI framework.
+ */
 public class PickSecretObjective extends InteractiveComponent {
 
+    /**
+     * Constructs a new instance of `PickSecretObjective`.
+     * Initializes the component with a superclass constructor and sets up for handling user input
+     * to pick a secret objective.
+     */
     public PickSecretObjective() {
         super(0);
     }
@@ -29,11 +41,20 @@ public class PickSecretObjective extends InteractiveComponent {
         return InteractiveComponentReturns.INCOMPLETE;
     }
 
+    /**
+     *{@inheritDoc}
+     */
     @Override
     public String getKeyword() {
         return "picksecretobjective";
     }
 
+    /**
+     * Retrieves the description associated with this component.
+     * Since this component does not have a specific description to display, it returns an empty string.
+     *
+     * @return An empty string indicating no specific description.
+     */
     @Override
     public String getDescription() {
         return "";
@@ -48,12 +69,21 @@ public class PickSecretObjective extends InteractiveComponent {
         System.out.println("\nChoose a secret objective:");
     }
 
-
+    /**
+     * Performs cleanup actions related to observed data or resources.
+     * This method is not implemented for the `PickSecretObjective` component,
+     * as it does not require any cleanup of observed data.
+     */
     @Override
     public void cleanObserved() {
 
     }
 
+    /**
+     * Refreshes the observed data or resources related to the component.
+     * This method is not implemented for the `PickSecretObjective` component,
+     * as it does not observe or refresh any data.
+     */
     @Override
     public void refreshObserved() {
 

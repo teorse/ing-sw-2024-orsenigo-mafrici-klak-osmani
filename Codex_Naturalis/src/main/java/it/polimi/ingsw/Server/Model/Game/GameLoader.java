@@ -12,8 +12,19 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.List;
 
+/**
+ * Class responsible for loading and starting a new game.
+ */
 public class GameLoader {
 
+    /**
+     * Starts a new game with the given lobby users, lobby, and observer relay.
+     *
+     * @param lobbyUsers the list of users in the lobby
+     * @param lobby the lobby in which the game is started
+     * @param updater the observer relay to update game state
+     * @return the newly started game
+     */
     public static Game startNewGame(List<LobbyUser> lobbyUsers, Lobby lobby, ObserverRelay updater){
         List<Objective> objectives = null;
         List<Card> cardsResource = null;
@@ -57,6 +68,14 @@ public class GameLoader {
         return game;
     }
 
+    /**
+     * Loads cards from the specified file path.
+     *
+     * @param cardsResource the list to store the loaded cards
+     * @param cardsPath the path to the cards directory
+     * @param cardsResourceFileName the name of the file containing the cards
+     * @return the list of loaded cards
+     */
     private static List<Card> getCards(List<Card> cardsResource, String cardsPath, String cardsResourceFileName) {
         try (InputStream inputStream = GameLoader.class.getClassLoader().getResourceAsStream(cardsPath + cardsResourceFileName);
              ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {

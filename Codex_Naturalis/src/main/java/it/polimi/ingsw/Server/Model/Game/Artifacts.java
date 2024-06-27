@@ -1,9 +1,9 @@
 package it.polimi.ingsw.Server.Model.Game;
 
 /**
- * 
+ * Enum representing different types of artifacts with their respective categories.
+ * Each artifact is associated with a specific category defined in {@link ArtifactCategories}.
  */
-//TODO fix the label
 public enum Artifacts {
     //ANIMAL(ArtifactCategories.RESOURCE, "\uD83D\uDC3E"),//Blue Paws emoji
     ANIMAL(ArtifactCategories.RESOURCE, "\uD83D\uDC3A"),//Wolf Face emoji

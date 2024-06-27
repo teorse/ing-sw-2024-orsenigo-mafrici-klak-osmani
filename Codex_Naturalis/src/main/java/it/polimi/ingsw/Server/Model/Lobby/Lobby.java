@@ -116,6 +116,13 @@ public class Lobby implements ServerModelLayer {
         logger.fine("Lobby initialized");
     }
 
+    /**
+     * Adds a new lobby user to the lobby with the provided client handler and assigns them a random color.
+     * Updates lobby previews and notifies observers about the changes.
+     *
+     * @param ch         The client handler associated with the lobby user.
+     * @param lobbyUser  The lobby user to add to the lobby.
+     */
     private void addLobbyUserToLobby(ClientHandler ch, LobbyUser lobbyUser){
         logger.info("Adding user "+lobbyUser.getUsername()+" to lobby");
 
@@ -198,6 +205,17 @@ public class Lobby implements ServerModelLayer {
         addLobbyUserToLobby(ch, lobbyUser);
     }
 
+    /**
+     * Handles the reconnection procedure for a lobby user who was previously disconnected.
+     * If the user is not disconnected, throws a {@link LobbyUserAlreadyConnectedException}.
+     * Cancels any active reconnection timers and resets the victory by default timer if present.
+     * Updates the lobby observer with the new connection source and notifies about the user's status change.
+     * Initiates the user reconnection procedure in the associated game.
+     *
+     * @param lobbyUser  The lobby user attempting to reconnect.
+     * @param ch         The client handler associated with the reconnection.
+     * @throws LobbyUserAlreadyConnectedException If the user is already connected to the lobby.
+     */
     private void reconnect(LobbyUser lobbyUser, ClientHandler ch) throws LobbyUserAlreadyConnectedException {
 
         //If reconnecting to user that is not actually DISCONNECTED throw exception
@@ -310,6 +328,11 @@ public class Lobby implements ServerModelLayer {
         }
     }
 
+    /**
+     * Checks if victory by default conditions are met when a user disconnects during the game.
+     * If only one user remains online in the lobby, starts a victory by default timer.
+     * This method is triggered during user disconnection events to potentially end the game.
+     */
     private void tryForVictoryByDefault(){
         if(!gameStarted)
             return;
@@ -328,9 +351,18 @@ public class Lobby implements ServerModelLayer {
         }
     }
 
+    /**
+     * Removes a user from the lobby and performs necessary updates.
+     * If the removed user is the lobby's admin, a new admin is randomly assigned if there are other users present.
+     * Stops the game start timer if it was running.
+     * If the lobby becomes empty after removing the user, it is removed from the server model.
+     *
+     * @param lobbyUser The LobbyUser to be removed from the lobby.
+     */
     private void removeUser(LobbyUser lobbyUser){
         logger.info("Removing user "+lobbyUser.getUsername()+" from lobby "+lobbyName);
         synchronized (usersLock) {
+            // Cancel the game start timer if it's running
             if(startGameTimer != null){
                 startGameTimer.cancel();
                 startGameTimer.purge();
@@ -339,15 +371,18 @@ public class Lobby implements ServerModelLayer {
                 System.out.println("Start game timer has been stopped in lobby: "+lobbyName);
             }
 
+            // Remove the user from lobby data structures
             lobbyUsers.remove(lobbyUser.getUsername());
             availableUserColors.add(lobbyUser.getColor());
             lobbyObserver.unsubscribe(lobbyUser.getUsername());
 
+            // If the removed user was an admin, assign admin role to another user
             if(lobbyUser.getLobbyRole().equals(LobbyRoles.ADMIN)) {
                 logger.fine("Removing old admin, generating new admin");
                 List<LobbyUser> lobbyUsersList = lobbyUsers.values().stream().toList();
                 if(lobbyUsersList.size() > 1) {
                     logger.fine("More than one user detected in lobby, generating new admin randomly");
+                    // Choose a new admin randomly from remaining users
                     Random random = new Random();
                     int nextAdminIndex = random.nextInt(lobbyUsersList.size() - 1);
                     lobbyUsersList.get(nextAdminIndex).setAdmin();
@@ -385,6 +420,14 @@ public class Lobby implements ServerModelLayer {
     }
 
     //TIMER TASKS
+    /**
+     * Creates a TimerTask to handle disconnection timeout for the specified lobby user.
+     * The task removes the user from the lobby, removes them from the game if it has started,
+     * and cancels any reconnection timer associated with the user.
+     *
+     * @param lobbyUser The lobby user for whom the disconnection timer task is created.
+     * @return TimerTask that handles disconnection timeout for the user.
+     */
     private TimerTask getDisconnectUserTimerTask(LobbyUser lobbyUser){
 
         String username = lobbyUser.getUsername();
@@ -402,6 +445,14 @@ public class Lobby implements ServerModelLayer {
             }
         };
     }
+
+    /**
+     * Creates a TimerTask to handle victory by default timeout in the lobby.
+     * The task removes offline users from the lobby and the game, and triggers
+     * the game over procedure once all offline users are removed.
+     *
+     * @return TimerTask that handles victory by default timeout in the lobby.
+     */
     private TimerTask getVictoryByDefaultTimerTask(){
         return new TimerTask() {
             @Override
@@ -426,6 +477,14 @@ public class Lobby implements ServerModelLayer {
             }
         };
     }
+
+    /**
+     * Creates a TimerTask to handle starting the game when the timer expires.
+     * The task checks if the game has not already started, and if not, starts the game
+     * and logs the event.
+     *
+     * @return TimerTask that handles starting the game when the timer expires.
+     */
     private TimerTask getStartGameTask(){
         return new TimerTask() {
             @Override
@@ -464,6 +523,11 @@ public class Lobby implements ServerModelLayer {
         startGame();
     }
 
+    /**
+     * Starts the game within the lobby. Sets the gameStarted flag to true,
+     * closes the lobby, initializes the game with the lobby users, updates
+     * the game controller, and updates the lobby preview.
+     */
     private void startGame(){
         gameStarted = true;
         lobbyClosed = true;
@@ -476,6 +540,11 @@ public class Lobby implements ServerModelLayer {
         lobbyPreviewObserverRelay.updateLobbyPreview(toLobbyPreview());
     }
 
+    /**
+     * Handles the game over event in the lobby. Resets game-related variables,
+     * cancels victory by default timer if active, removes offline users from the lobby,
+     * updates lobby status, and notifies lobby preview observers.
+     */
     public void gameOver(){
         updateGameController(null);
         if(victoryByDefaultTimer != null) {
@@ -528,6 +597,14 @@ public class Lobby implements ServerModelLayer {
         lobbyObserver.update(new SCPUpdateLobby(toLobbyRecord()));
     }
 
+    /**
+     * Sends a chat message in the lobby, either broadcasting it to all lobby users or sending it privately
+     * to a specific recipient and the sender.
+     *
+     * @param chatMessage The chat message record containing sender, recipient, and message details.
+     * @throws NoSuchRecipientException   If the recipient specified in the message is not found in the lobby.
+     * @throws InvalidRecipientException  If the sender attempts to send a private message to themselves.
+     */
     public void sendChatMessage(ChatMessageRecord chatMessage) throws NoSuchRecipientException, InvalidRecipientException {
         logger.info("Sending message in Lobby "+lobbyName+" from user "+chatMessage.getSender());
         if(!chatMessage.isMessagePrivate()) {
@@ -580,14 +657,30 @@ public class Lobby implements ServerModelLayer {
         }
     }
 
+    /**
+     * Generates a summary record of the lobby's current state for preview purposes.
+     *
+     * @return A {@link LobbyPreviewRecord} summarizing the lobby's name, current user count, maximum capacity, and game start status.
+     */
     private LobbyPreviewRecord toLobbyPreview(){
         return new LobbyPreviewRecord(lobbyName, lobbyUsers.size(), lobbySize, gameStarted);
     }
 
+    /**
+     * Adds a game controller observer for a specific user in the lobby.
+     *
+     * @param username The username of the user to add the observer for.
+     * @param observer The {@link GameControllerObserver} instance to observe the game controller.
+     */
     public void addGameControllerObserver(String username, GameControllerObserver observer){
         gameControllerObservers.put(username, observer);
     }
 
+    /**
+     * Removes the game controller observer associated with a specific user from the lobby.
+     *
+     * @param username The username of the user whose game controller observer needs to be removed.
+     */
     private void removeGameControllerObserver(String username){
         gameControllerObservers.remove(username);
     }
@@ -597,10 +690,20 @@ public class Lobby implements ServerModelLayer {
 
 
     //TO RECORD METHODS
+    /**
+     * Converts the current lobby's state into a detailed record format.
+     *
+     * @return A {@link LobbyRecord} representing the lobby's name, size, available user colors, and game start readiness.
+     */
     private LobbyRecord toLobbyRecord(){
         return new LobbyRecord(lobbyName, lobbySize, availableUserColors, gameStartable);
     }
 
+    /**
+     * Converts all lobby users into their record representations.
+     *
+     * @return A list of {@link LobbyUserRecord} objects, each representing a user's details in the lobby.
+     */
     private List<LobbyUserRecord> toLobbyUserRecord(){
         List<LobbyUserRecord> lobbyUserRecords = new ArrayList<>();
         for(LobbyUser lobbyUser : lobbyUsers.values())

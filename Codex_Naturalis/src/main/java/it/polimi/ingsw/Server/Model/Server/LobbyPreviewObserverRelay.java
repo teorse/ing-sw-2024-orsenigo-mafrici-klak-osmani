@@ -34,17 +34,33 @@ public class LobbyPreviewObserverRelay {
 
 
     //OBSERVER METHODS
+    /**
+     * Updates the lobby preview set with the provided preview.
+     * Notifies all observers about the updated lobby previews.
+     *
+     * @param preview The lobby preview record to update.
+     */
     public void updateLobbyPreview(LobbyPreviewRecord preview){
         lobbyPreviewSet.remove(preview);
         lobbyPreviewSet.add(preview);
         broadCastPreviews();
     }
 
+    /**
+     * Removes the specified lobby preview from the set.
+     * Notifies all observers about the updated lobby previews.
+     *
+     * @param preview The lobby preview record to remove.
+     */
     public void removeLobbyPreview(LobbyPreviewRecord preview){
         lobbyPreviewSet.remove(preview);
         broadCastPreviews();
     }
 
+    /**
+     * Broadcasts the current set of lobby previews to all registered observers.
+     * Uses SCPUpdateLobbyPreviews packet to send the lobby previews.
+     */
     private void broadCastPreviews(){
         ServerClientPacket packet = new SCPUpdateLobbyPreviews(lobbyPreviewSet.stream().toList());
 

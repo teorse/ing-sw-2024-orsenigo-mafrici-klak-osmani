@@ -15,6 +15,17 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.ErrorsDictiona
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * The `LobbyJoiner` class represents an interactive component responsible for handling user
+ * interactions related to joining lobbies in a text-based user interface (TUI). It allows users
+ * to view available lobby previews, select a lobby to join, and handles the process of sending
+ * join requests to the server.
+ * <p>
+ * This component manages the lifecycle of joining a lobby, including displaying lobby previews,
+ * processing user input to join a specific lobby, and managing errors related to the join process.
+ * It interacts with the `ClientModel`, `LobbyPreviews`, and `RefreshManager` to synchronize
+ * lobby data between the client and server.
+ */
 public class LobbyJoiner extends InteractiveComponent {
 
     private final LobbyPreviews lobbyPreviews;
@@ -22,6 +33,10 @@ public class LobbyJoiner extends InteractiveComponent {
     private final ClientModel model;
     private final Logger logger;
 
+    /**
+     * Constructs a `LobbyJoiner` instance. Initializes necessary attributes such as the logger,
+     * `LobbyPreviews`, `ClientModel`, and observes changes in lobby previews.
+     */
     public LobbyJoiner() {
         super(0);
         logger = Logger.getLogger(LobbyJoiner.class.getName());
@@ -76,11 +91,19 @@ public class LobbyJoiner extends InteractiveComponent {
         return InteractiveComponentReturns.INCOMPLETE;
     }
 
+    /**
+     *{@inheritDoc}
+     */
     @Override
     public String getKeyword () {
         return "joinlobby";
     }
 
+    /**
+     * Returns an empty string as there is no specific description associated with the `LobbyJoiner` component.
+     *
+     * @return An empty string.
+     */
     @Override
     public String getDescription() {
         return "";
@@ -133,13 +156,19 @@ public class LobbyJoiner extends InteractiveComponent {
         }
     }
 
-
+    /**
+     * Cleans up observed components and stops viewing lobby previews by sending the appropriate packet to the server.
+     */
     @Override
     public void cleanObserved() {
         ClientModel.getInstance().getClientConnector().sendPacket(new CSPStopViewingLobbyPreviews());
         RefreshManager.getInstance().removeObserved(this, lobbyPreviews);
     }
 
+    /**
+     * Refreshes observed components by sending a packet to the server to view lobby previews and adds this component
+     * to the observer list in the `RefreshManager`.
+     */
     @Override
     public void refreshObserved() {
         ClientModel.getInstance().getClientConnector().sendPacket(new CSPViewLobbyPreviews());

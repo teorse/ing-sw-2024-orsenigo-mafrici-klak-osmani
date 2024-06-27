@@ -44,18 +44,48 @@ public class ServerController {
 
 
     //CONTROLLER METHODS
+    /**
+     * Signs up a new user with the specified username and password.
+     *
+     * @param ch       The client handler associated with the user.
+     * @param username The username of the user.
+     * @param password The password of the user.
+     * @return A message indicating the success of the signup process.
+     * @throws AccountAlreadyExistsException If an account with the same username already exists.
+     */
     public String signUp(ClientHandler ch, String username, String password) throws AccountAlreadyExistsException {
         return model.signUp(ch, username, password);
     }
 
+    /**
+     * Logs in a user with the specified username and password.
+     *
+     * @param ch       The client handler associated with the user.
+     * @param username The username of the user.
+     * @param password The password of the user.
+     * @return A message indicating the success of the login process.
+     * @throws IncorrectPasswordException     If the provided password is incorrect.
+     * @throws AccountAlreadyLoggedInException If the account is already logged in.
+     * @throws AccountNotFoundException       If the account with the specified username does not exist.
+     */
     public String login(ClientHandler ch, String username, String password) throws IncorrectPasswordException, AccountAlreadyLoggedInException, AccountNotFoundException {
         return model.login(ch, username, password);
     }
 
+    /**
+     * Handles the disconnection of a user.
+     *
+     * @param username The username of the disconnected user.
+     */
     public void userDisconnectionProcedure(String username){
          model.userDisconnectionProcedure(username);
     }
 
+    /**
+     * Quits the layer for a user, terminating their session.
+     *
+     * @param username The username of the user to quit.
+     */
     public void quitLayer(String username){
         model.quit(username);
     }
@@ -87,10 +117,21 @@ public class ServerController {
 
 
     //OBSERVER METHODS
+    /**
+     * Adds a client handler as an observer for lobby preview updates.
+     *
+     * @param username The username of the observer.
+     * @param ch       The client handler associated with the observer.
+     */
     public void addLobbyPreviewObserver(String username, ClientHandler ch){
         model.addLobbyPreviewObserver(username, ch);
     }
 
+    /**
+     * Removes a client handler as an observer for lobby preview updates.
+     *
+     * @param username The username of the observer to remove.
+     */
     public void removeLobbyPreviewObserver(String username){
         model.removeLobbyPreviewObserver(username);
     }

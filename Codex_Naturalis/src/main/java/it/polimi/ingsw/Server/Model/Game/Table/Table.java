@@ -108,6 +108,10 @@ public class Table {
             return false;
     }
 
+    /**
+     * Checks if all card pools are empty.
+     * @return true if all card pools are empty, false otherwise.
+     */
     public boolean areAllCardPoolsEmpty(){
         for(CardPool cardPool : cardPools.values()){
             if (cardPool.getAmountLeftInDeck() > 0)
@@ -118,6 +122,11 @@ public class Table {
         return true;
     }
 
+    /**
+     * Checks if the specified card pool is empty.
+     * @param cardPoolType the type of card pool to check.
+     * @return true if the specified card pool is empty, false otherwise.
+     */
     public boolean isCardPoolEmpty(CardPoolTypes cardPoolType){
         CardPool cardPool = cardPools.get(cardPoolType);
         if (cardPool.getAmountLeftInDeck() > 0)
@@ -143,6 +152,10 @@ public class Table {
 
 
     //DATA TRANSFER OBJECT
+    /**
+     * Converts the Table object to a TableRecord.
+     * @return TableRecord representation of the Table object.
+     */
     public TableRecord toRecord(){
         List<ObjectiveRecord> sharedObjectives = new ArrayList<>();
         for(Objective objective : this.sharedObjectives)

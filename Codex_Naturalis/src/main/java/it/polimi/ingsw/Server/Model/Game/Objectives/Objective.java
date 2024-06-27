@@ -51,6 +51,16 @@ public abstract class Objective implements Serializable {
 
     //EQUALS AND HASH
 
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     * Two Objective objects are considered equal if they satisfy the following conditions:
+     * - They are the same instance (reference equality).
+     * - They belong to the same class.
+     * - They have the same points and description attributes.
+     *
+     * @param o The object to compare this Objective instance with.
+     * @return true if the given object is equal to this Objective object, false otherwise.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,11 +69,21 @@ public abstract class Objective implements Serializable {
         return points == objective.points && Objects.equals(description, objective.description);
     }
 
+    /**
+     * Returns a hash code value for the Objective object.
+     * The hash code is computed based on the description and points attributes.
+     *
+     * @return A hash code value for this Objective object.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(description, points);
     }
 
+    /**
+     * Converts the objective into an ObjectiveRecord
+     * @return ObjectiveRecord
+     */
     public ObjectiveRecord toRecord() {
         return new ObjectiveRecord(description,points);
     }

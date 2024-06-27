@@ -14,6 +14,14 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 //todo review code
+/**
+ * The CardDrawer class represents an interactive component in a text-based user interface (TUI)
+ * that allows the user to choose and draw cards from either the RESOURCE or GOLDEN card pools.
+ * It extends InteractiveComponent and interacts with the client-side model and network connector
+ * to handle user inputs, validate choices, and send corresponding requests to the server.
+ * The class manages input stages, validates user selections, and displays prompts and messages
+ * related to card drawing operations, including error handling for invalid inputs.
+ */
 public class CardDrawer extends InteractiveComponent{
     //ATTRIBUTES
     private CardPoolTypes cardPoolChoice;
@@ -163,21 +171,37 @@ public class CardDrawer extends InteractiveComponent{
         return InteractiveComponentReturns.INCOMPLETE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getKeyword() {
         return "draw";
     }
 
+    /**
+     * Retrieves the description associated with the card drawing action.
+     *
+     * @return An empty string (no specific description provided).
+     */
     @Override
     public String getDescription() {
         return "";
     }
 
+    /**
+     * Removes this component from the list of observed components managed by RefreshManager,
+     * specifically targeting the cardPools instance.
+     */
     @Override
     public void cleanObserved() {
         RefreshManager.getInstance().removeObserved(this, cardPools);
     }
 
+    /**
+     * Adds this component to the list of observed components managed by RefreshManager,
+     * specifically targeting the cardPools instance.
+     */
     @Override
     public void refreshObserved() {
         RefreshManager.getInstance().addObserved(this, cardPools);
