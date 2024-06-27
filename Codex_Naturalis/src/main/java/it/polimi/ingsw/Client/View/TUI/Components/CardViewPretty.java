@@ -94,6 +94,8 @@ public class CardViewPretty extends Component{
             System.out.print("   FRONT  ");//Prints 10 spaces
             System.out.print("          ");//Prints 10 spaces
 
+            System.out.println();
+
             for(int i = 0; i < 7; i++){
                 cardToPrint.append(drawSide(true, i, true)).append(drawCenter(i, true)).append(drawSide(false, i, true))
                         .append("\n");
@@ -105,6 +107,8 @@ public class CardViewPretty extends Component{
             System.out.print("          ");//Prints 10 spaces
             System.out.print("   BACK   ");//Prints 10 spaces
             System.out.print("          ");//Prints 10 spaces
+
+            System.out.println();
 
             for(int i = 0; i < 7; i++){
                 cardToPrint.append(drawSide(true, i, false)).append(drawCenter(i, false)).append(drawSide(false, i, false))

@@ -1,14 +1,21 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.CardPools;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardPoolRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
 import it.polimi.ingsw.Server.Model.Game.Artifacts;
+import it.polimi.ingsw.Server.Model.Game.Cards.Corner;
+import it.polimi.ingsw.Server.Model.Game.Cards.CornerDirection;
+import it.polimi.ingsw.Server.Model.Game.Cards.CornerOrientation;
+import it.polimi.ingsw.Server.Model.Game.Cards.CornerType;
 import it.polimi.ingsw.Server.Model.Game.Table.CardPoolTypes;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The CardPoolView class is a live component that displays the cards in a specified card pool.
@@ -40,12 +47,34 @@ public class CardPoolView extends LiveComponent {
         Artifacts topDeckCardColor = cardPool.coveredCardColor();
         List<CardRecord> visibleCards = cardPool.visibleCards();
 
+        Map<CornerOrientation, Corner> coveredCardCorners = new HashMap<>(){{
+           put(new CornerOrientation(CornerDirection.NW, false), new Corner(CornerType.EMPTY));
+            put(new CornerOrientation(CornerDirection.NE, false), new Corner(CornerType.EMPTY));
+            put(new CornerOrientation(CornerDirection.SE, false), new Corner(CornerType.EMPTY));
+            put(new CornerOrientation(CornerDirection.SW, false), new Corner(CornerType.EMPTY));
+        }};
+
+        Map<Artifacts, Integer> coveredCardConstraint = new HashMap<>();
+        if(cardPoolType.equals(CardPoolTypes.GOLDEN))
+            coveredCardConstraint.put(Artifacts.NULL, 1);
+
+        CardRecord coveredCard = new CardRecord(topDeckCardColor, 0, coveredCardCorners, false, Artifacts.NULL, coveredCardConstraint, new HashMap<>(){{
+            put(topDeckCardColor, 1);
+        }});
+
+
         // Print the card pool based on its type
         switch (cardPoolType) {
             case RESOURCE -> {
                 out.println("\nRESOURCE POOL:");
                 if (topDeckCardColor != null) {
-                    out.println("1 - Artifact Type: " + topDeckCardColor.name() + " (covered card)");
+                    if (!ClientModel.getInstance().getFancyGraphics()) {
+                        out.println("1 - Artifact Type: " + topDeckCardColor.name() + " (covered card)");
+                    }
+                    else{
+                        out.println("1 - (covered card)");
+                        new CardViewPretty(coveredCard, false, true).print();
+                    }
                 } else {
                     out.println("1 - The covered resource deck is empty");
                 }
@@ -59,14 +88,20 @@ public class CardPoolView extends LiveComponent {
             case GOLDEN -> {
                 out.println("\nGOLDEN POOL:");
                 if (topDeckCardColor != null) {
-                    out.println("1 - Artifact Type: " + topDeckCardColor.name() + " (covered card)");
+                    if (!ClientModel.getInstance().getFancyGraphics()) {
+                        out.println("1 - Artifact Type: " + topDeckCardColor.name() + " (covered card)");
+                    }
+                    else{
+                        out.println("1 - (covered card)");
+                        new CardViewPretty(coveredCard, false, true).print();
+                    }
                 } else {
                     out.println("1 - The covered golden deck is empty");
                 }
                 // Print visible cards
                 for (int i = 0; i < visibleCards.size(); i++) {
                     CardRecord card = visibleCards.get(i);
-                    out.print((i + 2) + " - ");
+                    out.println((i + 2) + " - ");
                     new CardView(card).print();
                 }
             }

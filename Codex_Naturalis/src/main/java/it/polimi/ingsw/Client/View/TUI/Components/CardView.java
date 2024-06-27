@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
 import it.polimi.ingsw.Server.Model.Game.Artifacts;
 import it.polimi.ingsw.Server.Model.Game.Cards.Corner;
@@ -28,46 +29,53 @@ public class CardView extends Component {
      */
     @Override
     public void print() {
-        // Prints the central artifacts of the card
-        if (card.centralArtifacts() != null) {
-            System.out.println("\nCentral Artifacts:");
-            for (Artifacts artifacts : card.centralArtifacts().keySet()) {
-                System.out.println(" - " + artifacts.name() + ": " + card.centralArtifacts().get(artifacts));
+        if (!ClientModel.getInstance().getFancyGraphics()) {
+            //If the game is not set to have fancy graphics then print the old way
+
+            // Prints the central artifacts of the card
+            if (card.centralArtifacts() != null) {
+                System.out.println("\nCentral Artifacts:");
+                for (Artifacts artifacts : card.centralArtifacts().keySet()) {
+                    System.out.println(" - " + artifacts.name() + ": " + card.centralArtifacts().get(artifacts));
+                }
+            }
+
+            // Prints the artifact type of the card
+            if (card.cardColor() != null)
+                out.println("Artifact Type: " + card.cardColor());
+
+            // Prints the points of the card
+            if (card.cardColor() != null)
+                out.println("Points: " + card.points());
+
+            // Prints the front corners of the card
+            System.out.println("Front Corners:");
+            showCornersDetails(card, true);
+
+            // Prints the back corners of the card
+            System.out.println("Back Corners:");
+            showCornersDetails(card, false);
+
+            // Prints if the card requires corners to gain points
+            if (card.requiresCorner()) {
+                out.println("Requires Corner");
+            }
+
+            // Prints the required artifact of the card
+            if (card.requiredArtifact() != Artifacts.NULL && card.requiredArtifact() != null) {
+                out.println("Required Object: " + card.requiredArtifact());
+            }
+
+            // Prints the existing constraints of the card
+            if (card.constraint() != null) {
+                out.println("Constraints:");
+                for (Artifacts artifacts : card.constraint().keySet()) {
+                    out.println(" - " + artifacts + ": " + card.constraint().get(artifacts));
+                }
             }
         }
-
-        // Prints the artifact type of the card
-        if (card.cardColor() != null)
-            out.println("Artifact Type: " + card.cardColor());
-
-        // Prints the points of the card
-        if (card.cardColor() != null)
-            out.println("Points: " + card.points());
-
-        // Prints the front corners of the card
-        System.out.println("Front Corners:");
-        showCornersDetails(card, true);
-
-        // Prints the back corners of the card
-        System.out.println("Back Corners:");
-        showCornersDetails(card, false);
-
-        // Prints if the card requires corners to gain points
-        if (card.requiresCorner()) {
-            out.println("Requires Corner");
-        }
-
-        // Prints the required artifact of the card
-        if (card.requiredArtifact() != Artifacts.NULL && card.requiredArtifact() != null) {
-            out.println("Required Object: " + card.requiredArtifact());
-        }
-
-        // Prints the existing constraints of the card
-        if (card.constraint() != null) {
-            out.println("Constraints:");
-            for (Artifacts artifacts : card.constraint().keySet()) {
-                out.println(" - " + artifacts + ": " + card.constraint().get(artifacts));
-            }
+        else{
+            new CardViewPretty(card, true, true).print();
         }
     }
 
