@@ -32,8 +32,9 @@ public class ObjectiveGeometric extends Objective{
     }
 
     /**
-     * Method to access the required card Pattern.
-     * @return  Map <Model.Utility.Coordinates, Resource> map with coordinates and type of resource for the card pattern.
+     * Retrieves the objective pattern associated with this object.
+     *
+     * @return A map where keys are coordinates and values are artifacts representing the pattern or layout of objectives.
      */
     public Map<Coordinates, Artifacts> getObjectivePattern() {
         return objectivePattern;
