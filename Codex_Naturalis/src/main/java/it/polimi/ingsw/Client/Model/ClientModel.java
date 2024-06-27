@@ -43,6 +43,8 @@ public class ClientModel extends Observable {
         logger.fine("Printing view object");
         view.print();
     }
+    private boolean fancyGraphics;
+
 
     // Internal Logic
     boolean connected;
@@ -179,6 +181,14 @@ public class ClientModel extends Observable {
         logger.info("getView method called in ClientModel, current value of view is: "+view.getClass().getSimpleName());
         return view;
     }
+
+    public boolean getFancyGraphics() {
+        return fancyGraphics;
+    }
+
+
+
+
 
     // SETTERS
     /**
@@ -319,6 +329,10 @@ public class ClientModel extends Observable {
     public void setStartLobbyError(ErrorsDictionary startLobbyError) {
         this.startLobbyError = startLobbyError;
         super.updateObservers();
+    }
+
+    public void setFancyGraphics(boolean fancyGraphics){
+        this.fancyGraphics = fancyGraphics;
     }
 
 
