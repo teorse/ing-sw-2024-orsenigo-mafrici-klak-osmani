@@ -6,6 +6,7 @@ import it.polimi.ingsw.Server.Model.Game.Artifacts;
 import it.polimi.ingsw.Server.Model.Game.Player.Coordinates;
 
 import java.io.Serial;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -116,11 +117,15 @@ public class CardGolden extends CardResource {
 
     @Override
     public CardRecord toRecord() {
-        return new CardRecord(super.getCardColor(), super.getPoints(), super.getCorners(), requiresCorner, requiredArtifact, constraint, null);
+        Map<Artifacts, Integer> centralArtifacts = new HashMap<>();
+        centralArtifacts.put(getCardColor(), 1);
+        return new CardRecord(super.getCardColor(), super.getPoints(), super.getCorners(), requiresCorner, requiredArtifact, constraint, centralArtifacts);
     }
 
     @Override
     public CardRecord toRecord(boolean faceUp){
-        return new CardRecord(super.getCardColor(), super.getPoints(), super.getCorners(faceUp), requiresCorner, requiredArtifact, constraint, null);
+        Map<Artifacts, Integer> centralArtifacts = new HashMap<>();
+        centralArtifacts.put(getCardColor(), 1);
+        return new CardRecord(super.getCardColor(), super.getPoints(), super.getCorners(faceUp), requiresCorner, requiredArtifact, constraint, centralArtifacts);
     }
 }

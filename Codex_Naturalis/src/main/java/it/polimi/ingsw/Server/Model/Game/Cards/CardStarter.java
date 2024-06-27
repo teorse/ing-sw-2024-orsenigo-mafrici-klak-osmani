@@ -113,11 +113,11 @@ public class CardStarter extends Card {
 
     @Override
     public CardRecord toRecord() {
-        return new CardRecord(null, 0, super.getCorners(), false, null, null, centralArtifacts);
+        return new CardRecord(Artifacts.NULL, 0, super.getCorners(), false, Artifacts.NULL, null, centralArtifacts);
     }
 
     @Override
     public CardRecord toRecord(boolean faceUp) {
-        return new CardRecord(null, 0, super.getCorners(faceUp), false, null, null, centralArtifacts);
+        return new CardRecord(Artifacts.NULL, 0, super.getCorners(faceUp), false, Artifacts.NULL, null, centralArtifacts);
     }
 }

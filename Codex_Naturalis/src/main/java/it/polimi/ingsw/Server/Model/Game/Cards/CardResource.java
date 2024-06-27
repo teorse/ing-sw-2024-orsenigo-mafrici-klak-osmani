@@ -116,11 +116,15 @@ public class CardResource extends Card {
 
     @Override
     public CardRecord toRecord() {
-        return new CardRecord(getCardColor(), getPoints(), super.getCorners(), false, null, null, null);
+        Map<Artifacts, Integer> centralArtifacts = new HashMap<>();
+        centralArtifacts.put(cardColor, 1);
+        return new CardRecord(getCardColor(), getPoints(), super.getCorners(), false, Artifacts.NULL, null, centralArtifacts);
     }
 
     @Override
     public CardRecord toRecord(boolean faceUp) {
-        return new CardRecord(getCardColor(), getPoints(), super.getCorners(faceUp), false, null, null, null);
+        Map<Artifacts, Integer> centralArtifacts = new HashMap<>();
+        centralArtifacts.put(cardColor, 1);
+        return new CardRecord(getCardColor(), getPoints(), super.getCorners(faceUp), false, Artifacts.NULL, null, centralArtifacts);
     }
 }
