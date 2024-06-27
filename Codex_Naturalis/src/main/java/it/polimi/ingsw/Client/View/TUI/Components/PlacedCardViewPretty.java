@@ -34,98 +34,142 @@ public class PlacedCardViewPretty extends CardViewPretty{
                     }
                 }
                 case 1 -> {
-                    corner = card.corners().get(new CornerOrientation(CornerDirection.NW, faceUp));
-                    if (corner.getCornerType().equals(CornerType.EMPTY))
-                        return cardColor + "│" + TerminalColor.RESET + "    " + cardColor + "│" + TerminalColor.RESET + cardBackgroundColor + "  " + TerminalColor.RESET;
-                    else if (!corner.getCornerType().equals(CornerType.NULL))
-                        return cardColor + "│" + TerminalColor.RESET + " " + corner.getArtifact().getUnicodeIcon() + " " + cardColor + "│" + cardBackgroundColor + "  " + TerminalColor.RESET;
-                    else
-                        return cardColor + "│" + cardBackgroundColor + "       " + TerminalColor.RESET;//7 spaces
+                    if (cardVisibility.cornerVisibility().get(CornerDirection.NW)) {
+                        corner = card.corners().get(new CornerOrientation(CornerDirection.NW, faceUp));
+                        if (corner.getCornerType().equals(CornerType.EMPTY))
+                            return cardColor + "│" + TerminalColor.RESET + "    " + cardColor + "│" + TerminalColor.RESET + cardBackgroundColor + "  " + TerminalColor.RESET;
+                        else if (!corner.getCornerType().equals(CornerType.NULL))
+                            return cardColor + "│" + TerminalColor.RESET + " " + corner.getArtifact().getUnicodeIcon() + " " + cardColor + "│" + cardBackgroundColor + "  " + TerminalColor.RESET;
+                        else
+                            return cardColor + "│" + cardBackgroundColor + "       " + TerminalColor.RESET;//7 spaces
+                    } else {
+                        return "     " + cardColor + "│" + TerminalColor.RESET + cardBackgroundColor + "  " + TerminalColor.RESET;
+                    }
                 }
                 case 2 -> {
-                    corner = card.corners().get(new CornerOrientation(CornerDirection.NW, faceUp));
-                    if (!corner.getCornerType().equals(CornerType.NULL))
-                        return cardColor + "├────┘" + cardBackgroundColor + "  " + TerminalColor.RESET;
-                    else
-                        return cardColor + "│" + cardBackgroundColor + "       " + TerminalColor.RESET;//7 spaces
+                    if (cardVisibility.cornerVisibility().get(CornerDirection.NW)) {
+                        corner = card.corners().get(new CornerOrientation(CornerDirection.NW, faceUp));
+                        if (!corner.getCornerType().equals(CornerType.NULL))
+                            return cardColor + "├────┘" + cardBackgroundColor + "  " + TerminalColor.RESET;
+                        else
+                            return cardColor + "│" + cardBackgroundColor + "       " + TerminalColor.RESET;//7 spaces
+                    } else {
+                        return cardColor + "┌────┘" + cardBackgroundColor + "  " + TerminalColor.RESET;
+                    }
                 }
                 case 3 -> {
                     return cardColor + "│" + cardBackgroundColor + "       " + TerminalColor.RESET;//7 spaces
                 }
                 case 4 -> {
-                    corner = card.corners().get(new CornerOrientation(CornerDirection.SW, faceUp));
-                    if (!corner.getCornerType().equals(CornerType.NULL))
-                        return cardColor + "├────┐" + cardBackgroundColor + "  " + TerminalColor.RESET;
-                    else
-                        return cardColor + "│" + cardBackgroundColor + "       " + TerminalColor.RESET;//7 spaces
+                    if (cardVisibility.cornerVisibility().get(CornerDirection.SW)) {
+                        corner = card.corners().get(new CornerOrientation(CornerDirection.SW, faceUp));
+                        if (!corner.getCornerType().equals(CornerType.NULL))
+                            return cardColor + "├────┐" + cardBackgroundColor + "  " + TerminalColor.RESET;
+                        else
+                            return cardColor + "│" + cardBackgroundColor + "       " + TerminalColor.RESET;//7 spaces
+                    } else {
+                        return cardColor + "└────┐"+ cardBackgroundColor + "  " + TerminalColor.RESET;
+                    }
                 }
                 case 5 -> {
-                    corner = card.corners().get(new CornerOrientation(CornerDirection.SW, faceUp));
-                    if (corner.getCornerType().equals(CornerType.EMPTY))
-                        return cardColor + "│    │" + cardBackgroundColor + "  " + TerminalColor.RESET;
-                    else if (!corner.getCornerType().equals(CornerType.NULL))
-                        return cardColor + "│ " + corner.getArtifact().getUnicodeIcon() + " │" + cardBackgroundColor + "  " + TerminalColor.RESET;
-                    else
-                        return cardColor + "│" + cardBackgroundColor + "       " + TerminalColor.RESET;//7 spaces
+                    if (cardVisibility.cornerVisibility().get(CornerDirection.SW)) {
+                        corner = card.corners().get(new CornerOrientation(CornerDirection.SW, faceUp));
+                        if (corner.getCornerType().equals(CornerType.EMPTY))
+                            return cardColor + "│    │" + cardBackgroundColor + "  " + TerminalColor.RESET;
+                        else if (!corner.getCornerType().equals(CornerType.NULL))
+                            return cardColor + "│ " + corner.getArtifact().getUnicodeIcon() + " │" + cardBackgroundColor + "  " + TerminalColor.RESET;
+                        else
+                            return cardColor + "│" + cardBackgroundColor + "       " + TerminalColor.RESET;//7 spaces
+                    } else {
+                        return "     " + cardColor + "│" + TerminalColor.RESET + cardBackgroundColor + "  " + TerminalColor.RESET;
+                    }
                 }
                 case 6 -> {
-                    corner = card.corners().get(new CornerOrientation(CornerDirection.SW, faceUp));
-                    if (!corner.getCornerType().equals(CornerType.NULL))
-                        return cardColor + "└────┴──" + TerminalColor.RESET;
-                    else
-                        return cardColor + "└───────" + TerminalColor.RESET;
+                    if (cardVisibility.cornerVisibility().get(CornerDirection.SW)) {
+                        corner = card.corners().get(new CornerOrientation(CornerDirection.SW, faceUp));
+                        if (!corner.getCornerType().equals(CornerType.NULL))
+                            return cardColor + "└────┴──" + TerminalColor.RESET;
+                        else
+                            return cardColor + "└───────" + TerminalColor.RESET;
+                    } else {
+                        return cardColor + "     └──" + TerminalColor.RESET;
+                    }
                 }
             }
         } else {
             switch (row) {
                 case 0 -> {
-                    corner = card.corners().get(new CornerOrientation(CornerDirection.NE, faceUp));
-                    if (!corner.getCornerType().equals(CornerType.NULL))
-                        return cardColor + "──┬────┐" + TerminalColor.RESET;
-                    else
-                        return cardColor + "───────┐" + TerminalColor.RESET;
+                    if (cardVisibility.cornerVisibility().get(CornerDirection.NE)) {
+                        corner = card.corners().get(new CornerOrientation(CornerDirection.NE, faceUp));
+                        if (!corner.getCornerType().equals(CornerType.NULL))
+                            return cardColor + "──┬────┐" + TerminalColor.RESET;
+                        else
+                            return cardColor + "───────┐" + TerminalColor.RESET;
+                    } else {
+                        return cardColor + "──┐     " + TerminalColor.RESET;
+                    }
                 }
                 case 1 -> {
-                    corner = card.corners().get(new CornerOrientation(CornerDirection.NE, faceUp));
-                    if (corner.getCornerType().equals(CornerType.EMPTY))
-                        return cardBackgroundColor + "  " + TerminalColor.RESET + cardColor + "│    │" + TerminalColor.RESET;
-                    else if (!corner.getCornerType().equals(CornerType.NULL))
-                        return cardBackgroundColor + "  " + TerminalColor.RESET + cardColor + "│ " + corner.getArtifact().getUnicodeIcon() + " │" + TerminalColor.RESET;
-                    else
-                        return cardBackgroundColor + "       " + TerminalColor.RESET + cardColor + "│" + TerminalColor.RESET;//7 spaces
+                    if (cardVisibility.cornerVisibility().get(CornerDirection.NE)) {
+                        corner = card.corners().get(new CornerOrientation(CornerDirection.NE, faceUp));
+                        if (corner.getCornerType().equals(CornerType.EMPTY))
+                            return cardBackgroundColor + "  " + TerminalColor.RESET + cardColor + "│    │" + TerminalColor.RESET;
+                        else if (!corner.getCornerType().equals(CornerType.NULL))
+                            return cardBackgroundColor + "  " + TerminalColor.RESET + cardColor + "│ " + corner.getArtifact().getUnicodeIcon() + " │" + TerminalColor.RESET;
+                        else
+                            return cardBackgroundColor + "       " + TerminalColor.RESET + cardColor + "│" + TerminalColor.RESET;//7 spaces
+                    } else {
+                        return cardBackgroundColor + "  " + TerminalColor.RESET + cardColor + "│     " + TerminalColor.RESET;
+                    }
                 }
                 case 2 -> {
-                    corner = card.corners().get(new CornerOrientation(CornerDirection.NE, faceUp));
-                    if (!corner.getCornerType().equals(CornerType.NULL))
-                        return cardBackgroundColor + "  " + TerminalColor.RESET + cardColor + "└────┤" + TerminalColor.RESET;
-                    else
-                        return cardBackgroundColor + "       " + TerminalColor.RESET + cardColor + "│" + TerminalColor.RESET;//7 spaces
+                    if (cardVisibility.cornerVisibility().get(CornerDirection.NE)) {
+                        corner = card.corners().get(new CornerOrientation(CornerDirection.NE, faceUp));
+                        if (!corner.getCornerType().equals(CornerType.NULL))
+                            return cardBackgroundColor + "  " + TerminalColor.RESET + cardColor + "└────┤" + TerminalColor.RESET;
+                        else
+                            return cardBackgroundColor + "       " + TerminalColor.RESET + cardColor + "│" + TerminalColor.RESET;//7 spaces
+                    } else {
+                        return cardBackgroundColor + "  " + TerminalColor.RESET + cardColor + "└────┐" + TerminalColor.RESET;
+                    }
                 }
                 case 3 -> {
                     return cardBackgroundColor + "       " + TerminalColor.RESET + cardColor + "│" + TerminalColor.RESET;//7 spaces
                 }
                 case 4 -> {
-                    corner = card.corners().get(new CornerOrientation(CornerDirection.SE, faceUp));
-                    if (!corner.getCornerType().equals(CornerType.NULL))
-                        return cardBackgroundColor + "  " + TerminalColor.RESET + cardColor + "┌────┤" + TerminalColor.RESET;
-                    else
-                        return cardBackgroundColor + "       " + TerminalColor.RESET + cardColor + "│" + TerminalColor.RESET;//7 spaces
+                    if (cardVisibility.cornerVisibility().get(CornerDirection.SE)) {
+                        corner = card.corners().get(new CornerOrientation(CornerDirection.SE, faceUp));
+                        if (!corner.getCornerType().equals(CornerType.NULL))
+                            return cardBackgroundColor + "  " + TerminalColor.RESET + cardColor + "┌────┤" + TerminalColor.RESET;
+                        else
+                            return cardBackgroundColor + "       " + TerminalColor.RESET + cardColor + "│" + TerminalColor.RESET;//7 spaces
+                    } else {
+                        return cardBackgroundColor + "  " + TerminalColor.RESET + cardColor + "┌────┘" + TerminalColor.RESET;
+                    }
                 }
                 case 5 -> {
-                    corner = card.corners().get(new CornerOrientation(CornerDirection.SE, faceUp));
-                    if (corner.getCornerType().equals(CornerType.EMPTY))
-                        return cardBackgroundColor + "  " + TerminalColor.RESET + cardColor + "│    │" + TerminalColor.RESET;
-                    else if (!corner.getCornerType().equals(CornerType.NULL))
-                        return cardBackgroundColor + "  " + TerminalColor.RESET + cardColor + "│ " + corner.getArtifact().getUnicodeIcon() + " │" + TerminalColor.RESET;
-                    else
-                        return cardBackgroundColor + "       " + TerminalColor.RESET + cardColor + "│" + TerminalColor.RESET;//7 spaces
+                    if (cardVisibility.cornerVisibility().get(CornerDirection.SE)) {
+                        corner = card.corners().get(new CornerOrientation(CornerDirection.SE, faceUp));
+                        if (corner.getCornerType().equals(CornerType.EMPTY))
+                            return cardBackgroundColor + "  " + TerminalColor.RESET + cardColor + "│    │" + TerminalColor.RESET;
+                        else if (!corner.getCornerType().equals(CornerType.NULL))
+                            return cardBackgroundColor + "  " + TerminalColor.RESET + cardColor + "│ " + corner.getArtifact().getUnicodeIcon() + " │" + TerminalColor.RESET;
+                        else
+                            return cardBackgroundColor + "       " + TerminalColor.RESET + cardColor + "│" + TerminalColor.RESET;//7 spaces
+                    } else {
+                        return cardBackgroundColor + "  " + TerminalColor.RESET + cardColor + "│     " + TerminalColor.RESET;
+                    }
                 }
                 case 6 -> {
-                    corner = card.corners().get(new CornerOrientation(CornerDirection.SE, faceUp));
-                    if (!corner.getCornerType().equals(CornerType.NULL))
-                        return cardColor + "──┴────┘" + TerminalColor.RESET;
-                    else
-                        return cardColor + "───────┘" + TerminalColor.RESET;
+                    if (cardVisibility.cornerVisibility().get(CornerDirection.SE)) {
+                        corner = card.corners().get(new CornerOrientation(CornerDirection.SE, faceUp));
+                        if (!corner.getCornerType().equals(CornerType.NULL))
+                            return cardColor + "──┴────┘" + TerminalColor.RESET;
+                        else
+                            return cardColor + "───────┘" + TerminalColor.RESET;
+                    } else {
+                        return cardColor + "──┘     " + TerminalColor.RESET;
+                    }
                 }
             }
         }
