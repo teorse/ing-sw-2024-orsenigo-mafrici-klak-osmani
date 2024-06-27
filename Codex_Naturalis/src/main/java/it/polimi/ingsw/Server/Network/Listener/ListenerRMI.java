@@ -51,7 +51,7 @@ public class ListenerRMI implements Runnable, ServerListenerRemoteInterface, Unr
 
         //Locating the ip address and configuring the rmi server hostname
         //This configuration prevents the "host refused connection" error.
-        String lanIP = LanIpFinder.getLAN_IP();
+        String lanIP = LanIpFinder.getInstance().getLAN_IP();
         System.setProperty("java.rmi.server.hostname", lanIP);
 
         System.out.println("Server Ip address is: "+lanIP);

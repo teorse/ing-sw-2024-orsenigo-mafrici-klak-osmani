@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Client.View;
 
+import it.polimi.ingsw.CommunicationProtocol.LanIpFinder;
+
 public abstract class InputValidator {
 
     /**
@@ -11,23 +13,7 @@ public abstract class InputValidator {
      * @return {@code true} if the string is a valid IPv4 address, {@code false} otherwise
      */
     public static boolean isValidIPAddress(String ip) {
-        String[] parts = ip.split("\\.");
-
-        if (parts.length != 4) {
-            return false;
-        }
-
-        for (String part : parts) {
-            try {
-                int num = Integer.parseInt(part);
-                if (num < 0 || num > 255) {
-                    return false;
-                }
-            } catch (NumberFormatException e) {
-                return false;
-            }
-        }
-        return true;
+        return LanIpFinder.isValidIPAddress(ip);
     }
 
     /**

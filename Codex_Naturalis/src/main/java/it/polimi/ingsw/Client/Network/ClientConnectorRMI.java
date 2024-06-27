@@ -58,7 +58,7 @@ public class ClientConnectorRMI implements ClientConnector, ClientRemoteInterfac
         logger = Logger.getLogger(ClientConnectorRMI.class.getName());
         logger.info("Initializing Client Connector RMI");
 
-        String lanIP = LanIpFinder.getLAN_IP();
+        String lanIP = LanIpFinder.getInstance().getLAN_IP();
         System.setProperty("java.rmi.server.hostname", lanIP);
 
         this.controller = controller;
