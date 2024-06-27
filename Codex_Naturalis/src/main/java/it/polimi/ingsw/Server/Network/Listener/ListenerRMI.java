@@ -39,15 +39,13 @@ public class ListenerRMI implements Runnable, ServerListenerRemoteInterface, Unr
 
     //CONSTRUCTOR
     /**
-     * Constructs a ListenerRMI object with the specified server controller and initializes the server RMI registry
-     *
-     * @param serverController The server controller associated with this RMI listener.
+     * Constructs a ListenerRMI object and initializes the server RMI registry
      */
-    public ListenerRMI(ServerController serverController){
+    public ListenerRMI(){
         logger = Logger.getLogger(ListenerRMI.class.getName());
         logger.fine("Initializing RMI Listener");
 
-        this.serverController = serverController;
+        serverController = ServerController.getInstance();
 
         //Locating the ip address and configuring the rmi server hostname
         //This configuration prevents the "host refused connection" error.
@@ -138,9 +136,6 @@ public class ListenerRMI implements Runnable, ServerListenerRemoteInterface, Unr
         //Initialize and start the new client handler
         logger.info("Creating new RMI client handler for: " + client);
         ClientHandlerRMI clientHandler = new ClientHandlerRMI(client);
-
-        logger.fine("Setting client Handler's input handler");
-        clientHandler.setInputHandler(new ClientInputHandler(clientHandler, serverController));
 
 
         Thread thread = new Thread(clientHandler);

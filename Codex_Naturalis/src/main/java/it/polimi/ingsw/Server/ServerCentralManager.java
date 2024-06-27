@@ -43,19 +43,15 @@ public class ServerCentralManager {
 
         logger.fine("Creating Server Model");
         System.out.println("Creating server Model");
-        serverModel = new ServerModel();
-
-        // Creating the server controller and passing the server model
-        logger.fine("Creating Server Controller");
-        serverController = new ServerController(serverModel);
+        serverModel = ServerModel.getInstance();
 
         // Creating the server socket listener and passing the server controller
         logger.fine("Creating Server socket Listener");
-        listenerSocket = new ListenerSocket(serverController);
+        listenerSocket = new ListenerSocket();
 
         //Creating the server RMI listener and passing the server controller
         logger.fine("Creating Server RMI Listener");
-        listenerRMI = new ListenerRMI(serverController);
+        listenerRMI = new ListenerRMI();
     }
 
 

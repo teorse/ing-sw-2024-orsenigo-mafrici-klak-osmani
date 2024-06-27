@@ -40,17 +40,16 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
     private final Logger logger;
 
     /**
-     * Constructs a ClientInputHandler with the specified connection and server controller.
+     * Constructs a ClientInputHandler with the specified connection.
      *
      * @param connection       the client handler connection
-     * @param serverController the server controller
      */
-    public ClientInputHandler(ClientHandler connection, ServerController serverController) {
+    public ClientInputHandler(ClientHandler connection) {
         logger = Logger.getLogger(ClientInputHandler.class.getName());
         logger.fine("Initializing ServerInputHandler");
 
         this.connection = connection;
-        this.serverController = serverController;
+        serverController = ServerController.getInstance();
         username = null;
 
         logger.fine("ServerInputHandler initialized");

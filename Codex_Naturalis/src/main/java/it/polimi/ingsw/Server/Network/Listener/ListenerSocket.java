@@ -28,15 +28,13 @@ public class ListenerSocket implements Runnable{
 
     //CONSTRUCTOR
     /**
-     * Constructs a ListenerSocket object with the specified ServerController.
-     *
-     * @param serverController The ServerController object to interact with the server.
+     * Constructs a ListenerSocket object.
      */
-    public ListenerSocket(ServerController serverController){
+    public ListenerSocket(){
         logger = Logger.getLogger(ListenerSocket.class.getName());
         logger.fine("Initializing Socket Listener");
 
-        this.serverController = serverController;
+        serverController = ServerController.getInstance();
         try {
             serverSocket = new ServerSocket(NetworkConstants.ServerSocketListenerPort);
             logger.fine("Socket Listener initialized");
@@ -77,10 +75,6 @@ public class ListenerSocket implements Runnable{
                 System.out.println("Creating new socket handler...");
                 logger.info("Creating new socket client handler for client: " + socket);
                 ClientHandler handler = new ClientHandlerSocket(socket);
-
-                //Giving the ClientHandler an Input interpreter to interact with the server
-                logger.fine("Setting client Handler's input handler");
-                handler.setInputHandler(new ClientInputHandler(handler, serverController));
 
                 // Start the thread for the new clientHandler.
                 Thread thread = new Thread(handler);

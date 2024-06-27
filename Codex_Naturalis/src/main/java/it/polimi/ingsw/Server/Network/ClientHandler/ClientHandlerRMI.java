@@ -7,6 +7,7 @@ import it.polimi.ingsw.CommunicationProtocol.RMI.ClientRemoteInterfaces.ClientRe
 import it.polimi.ingsw.CommunicationProtocol.RMI.ServerRemoteInterfaces.ClientHandlerRemoteInterface;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.SCPConnectionAck;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.ServerClientPacket;
+import it.polimi.ingsw.Server.Controller.InputHandler.ClientInputHandler;
 import it.polimi.ingsw.Server.Controller.InputHandler.InputHandler;
 import it.polimi.ingsw.Utils.Utilities;
 
@@ -33,7 +34,7 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, ClientHandlerR
 
     private boolean ping;
 
-    private InputHandler serverInputHandler;
+    private final InputHandler clientInputHandler;
     private final Logger logger;
 
 
@@ -63,7 +64,7 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, ClientHandlerR
             serverRegistryTemp = LocateRegistry.getRegistry(NetworkConstants.RMIServerRegistryPort);
 
 
-            //todo remove binidng to registry
+            //todo remove binding to registry
             boolean bound = false;
             while (!bound) {
                 //generate the id for the new client handler
@@ -89,6 +90,8 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, ClientHandlerR
             System.exit(666);
         }
         serverRegistry = serverRegistryTemp;
+
+        clientInputHandler = new ClientInputHandler(this);
     }
 
 
@@ -125,7 +128,7 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, ClientHandlerR
         catch (ClientDisconnectedException e){
             logger.warning("No heartbeat detected from RMI Client: "+clientRemote);
             System.out.println("No heartbeat detected from client: "+clientRemote);
-            serverInputHandler.clientDisconnectionProcedure();
+            clientInputHandler.clientDisconnectionProcedure();
         }
         finally {
             //Removing the client handler from the registry to clean up
@@ -166,15 +169,6 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, ClientHandlerR
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * @param inputHandler The InputHandler object to be set for the client.
-     */
-    @Override
-    public void setInputHandler(InputHandler inputHandler) {
-        this.serverInputHandler = inputHandler;
-    }
-
 
 
 
@@ -186,7 +180,7 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, ClientHandlerR
     @Override
     public void sendCSP(ClientServerPacket packet) throws RemoteException {
         logger.fine("Receiving packet from client: "+clientRemote);
-        serverInputHandler.handleInput(packet);
+        clientInputHandler.handleInput(packet);
     }
 
     /**

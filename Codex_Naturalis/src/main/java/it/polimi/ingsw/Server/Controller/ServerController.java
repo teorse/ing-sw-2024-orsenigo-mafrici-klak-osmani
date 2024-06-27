@@ -20,6 +20,15 @@ import java.util.logging.Logger;
  * It handles operations related to server functionalities such as creating and joining lobbies.
  */
 public class ServerController {
+    // SINGLETON PATTERN
+    private static ServerController INSTANCE;
+    public static ServerController getInstance(){
+        if(INSTANCE == null){
+            INSTANCE = new ServerController();
+        }
+        return INSTANCE;
+    }
+
     //ATTRIBUTES
     private final ServerModel model;
 
@@ -29,13 +38,11 @@ public class ServerController {
     //CONSTRUCTOR
     /**
      * Constructs a ServerController object with the specified server model.
-     *
-     * @param model The ServerModel object associated with this controller.
      */
-    public ServerController(ServerModel model){
+    private ServerController(){
         Logger logger = Logger.getLogger(ServerMain.class.getName());
         logger.fine("Initializing ServerModel Controller");
-        this.model = model;
+        model = ServerModel.getInstance();
         logger.info("Server Model Controller created");
     }
 

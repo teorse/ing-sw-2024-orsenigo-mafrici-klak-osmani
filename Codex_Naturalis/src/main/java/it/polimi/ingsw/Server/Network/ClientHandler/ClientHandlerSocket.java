@@ -3,6 +3,7 @@ package it.polimi.ingsw.Server.Network.ClientHandler;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.ClientServerPacket;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.SCPConnectionAck;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.ServerClientPacket;
+import it.polimi.ingsw.Server.Controller.InputHandler.ClientInputHandler;
 import it.polimi.ingsw.Server.Controller.InputHandler.InputHandler;
 import it.polimi.ingsw.Utils.Utilities;
 
@@ -20,7 +21,7 @@ public class ClientHandlerSocket implements ClientHandler, Runnable{
     //ATTRIBUTES
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
-    private InputHandler serverInputHandler;
+    private final InputHandler clientInputHandler;
     private final Socket socket;
     private final Logger logger;
 
@@ -52,6 +53,8 @@ public class ClientHandlerSocket implements ClientHandler, Runnable{
             logger.warning("IOException caught in Client Handler Socket Constructor while opening socket streams.\nStacktrace:\n"+stackTraceString);
             closeSocket();
         }
+
+        clientInputHandler = new ClientInputHandler(this);
     }
 
 
@@ -83,7 +86,7 @@ public class ClientHandlerSocket implements ClientHandler, Runnable{
                     logger.fine("Message received in client handler socket from client "+socket);
 
                     //Start new thread to handle the input so that this thread can go back to listening for more inputs
-                    Thread thread = new Thread(() -> serverInputHandler.handleInput(received));
+                    Thread thread = new Thread(() -> clientInputHandler.handleInput(received));
                     thread.start();
                 }
                 catch (ClassNotFoundException e) {
@@ -99,7 +102,7 @@ public class ClientHandlerSocket implements ClientHandler, Runnable{
             logger.warning("Lost connection to client: "+socket+"\nStacktrace:\n"+stackTraceString);
         }
         finally {
-            serverInputHandler.clientDisconnectionProcedure();
+            clientInputHandler.clientDisconnectionProcedure();
             closeSocket();
         }
     }
@@ -128,16 +131,6 @@ public class ClientHandlerSocket implements ClientHandler, Runnable{
             String stackTraceString = Utilities.StackTraceToString(e);
             logger.warning("IOException caught in Client Handler Socket while sending message to client"+socket+".\nStacktrace:\n"+stackTraceString);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     * @param inputHandler The InputHandler object to be set for the client.
-     * @see InputHandler
-     */
-    @Override
-    public void setInputHandler(InputHandler inputHandler) {
-        this.serverInputHandler = inputHandler;
     }
 
 

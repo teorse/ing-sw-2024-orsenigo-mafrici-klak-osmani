@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Server.Model.Server;
 
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Exceptions.Server.LobbyNameAlreadyTakenException;
 import it.polimi.ingsw.Exceptions.Server.LobbyNotFoundException;
 import it.polimi.ingsw.Server.Controller.LobbyController;
@@ -22,6 +23,18 @@ import java.util.logging.Logger;
  * This class represents the model of the server, managing user accounts, authentication, and lobbies.
  */
 public class ServerModel implements ServerModelLayer {
+    // SINGLETON PATTERN
+    private static ServerModel INSTANCE;
+    public static ServerModel getInstance(){
+        if(INSTANCE == null){
+            INSTANCE = new ServerModel();
+        }
+        return INSTANCE;
+    }
+
+
+
+
     //ATTRIBUTES
     private final Map<String, ServerUserInfo> userDatabase;
     private final Map<String, LobbyController> lobbiesMap;
@@ -40,7 +53,7 @@ public class ServerModel implements ServerModelLayer {
     /**
      * Default Constructor
      */
-    public ServerModel(){
+    private ServerModel(){
         logger = Logger.getLogger(ServerModel.class.getName());
         logger.info("Initializing server Model");
 
