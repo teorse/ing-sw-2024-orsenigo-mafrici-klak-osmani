@@ -156,13 +156,13 @@ public class CardMap {
     /**
      * Method which places the card in cardsPlaced map, updates resources and items of the player,
      * updates covered corners of nearby cards, updates the list of coordinates placed, calls the method
-     * to update the available placements and returns the points gained by the player by placing this card.</br>
+     * to update the available placements and returns the points gained by the player by placing this card.
      * It does not check if the given card can or can't be placed according to the rules, it requires the cards to
      * have been already checked on their constraints.
      *
-     * @param cardToPlace
-     * @param coordinateIndex
-     * @param faceUp
+     * @param cardToPlace Card
+     * @param coordinateIndex int
+     * @param faceUp boolean
      * @return Points earned by the player for placing the card.
      */
     public int place(Card cardToPlace, int coordinateIndex, boolean faceUp) throws CoordinateIndexOutOfBounds {
@@ -216,7 +216,7 @@ public class CardMap {
      * Method to get the amount of corners that would be covered if a card was to be placed
      * at that coordinates. Precondition: All the coordinates passed as parameters of the function are taken
      * from availablePlacements, so we don't need to check if they're legit or not
-     * @param coordinates
+     * @param coordinates Coordinates
      * @return int corresponding to number of corners that would be covered
      * if a card was to be placed at that coordinates
      */
@@ -312,7 +312,7 @@ public class CardMap {
     /**
      * Method which updates the number of artifacts of the player and
      * the corners that will be covered by the card placed
-     * @param placed
+     * @param placed Coordinates
      */
     protected void updateCoveredCornersAndArtifacts(Coordinates placed) {
         //Array containing the four possible cornerDirections of a corner.

@@ -32,7 +32,7 @@ public class ObjectiveNumeric extends Objective{
 
     /**
      * Method to access the required Items.
-     * @return  Map<Item, Integer> map with Item and number of units required.
+     * @return  Map <Item, Integer> map with Item and number of units required.
      */
     public Map<Artifacts, Integer> getRequiredItems() {
         return requiredItems;
@@ -85,7 +85,7 @@ public class ObjectiveNumeric extends Objective{
 
     /**
      * Method to find the minimum number in a list of integers
-     * @param list List<Integer>.
+     * @param list List <Integer>.
      * @return int minimum number of the list.
      */
     public int findMin (List<Integer> list){

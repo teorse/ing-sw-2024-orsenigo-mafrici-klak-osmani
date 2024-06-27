@@ -43,7 +43,7 @@ public class CardPool {
     /**
      * Method to retrieve cards from the collection.
      * @param index Specifies the card to be retrieved. If index = -1 then pops a card from the deck,
-     *              If -1< index < number of visible cards then returns the specified visible card.
+     *              If -1 lt index lt number of visible cards then returns the specified visible card.
      * @return      Card object specified by the index.
      */
     public Card getCard(int index){
