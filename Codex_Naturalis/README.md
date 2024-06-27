@@ -2,7 +2,7 @@
 ![alt text](doc/CodexNaturalisLogo.png)
 
 ## Final Project for "Software Engineering" at PoliMi 23/24
-[📖 Rules](doc/Rules/CODEX_Rulebook_EN.pdf)
+[📖 Rulebook](doc/Rules/CODEX_Rulebook_EN.pdf)
 
 [📝 License](LICENSE)
 
@@ -16,7 +16,7 @@
 | TUI | ✅ |
 | GUI | ⛔️ |
 | Multiple Games  | ✅ |
-| Resilience | ⛔️ |
+| Persistence | ⛔️ |
 | Server disconnections | ✅ |
 | Chat | ✅ |
 
