@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class CardViewPretty extends Component{
-    private final CardRecord card;
-    private final String cardColor;
-    private final String cardBackgroundColor;
-    private final boolean printFront;
-    private final boolean printRear;
+    protected final CardRecord card;
+    protected final String cardColor;
+    protected final String cardBackgroundColor;
+    protected final boolean printFront;
+    protected final boolean printRear;
 
     public CardViewPretty(CardRecord card, boolean printFront, boolean printRear) {
         this.card = card;
@@ -80,9 +80,9 @@ public class CardViewPretty extends Component{
             System.out.println();
 
             for (int i = 0; i < 7; i++) {
-                cardToPrint.append(drawSide(true, i, true)).append(drawCenter(i, true)).append(drawSide(false, i, true))
+                cardToPrint.append(renderSide(true, i, true)).append(renderCenter(i, true)).append(renderSide(false, i, true))
                         .append("     ")
-                        .append(drawSide(true, i, false)).append(drawCenter(i, false)).append(drawSide(false, i, false))
+                        .append(renderSide(true, i, false)).append(renderCenter(i, false)).append(renderSide(false, i, false))
                         .append("\n");
             }
 
@@ -97,7 +97,7 @@ public class CardViewPretty extends Component{
             System.out.println();
 
             for(int i = 0; i < 7; i++){
-                cardToPrint.append(drawSide(true, i, true)).append(drawCenter(i, true)).append(drawSide(false, i, true))
+                cardToPrint.append(renderSide(true, i, true)).append(renderCenter(i, true)).append(renderSide(false, i, true))
                         .append("\n");
             }
             System.out.println(cardToPrint);
@@ -111,7 +111,7 @@ public class CardViewPretty extends Component{
             System.out.println();
 
             for(int i = 0; i < 7; i++){
-                cardToPrint.append(drawSide(true, i, false)).append(drawCenter(i, false)).append(drawSide(false, i, false))
+                cardToPrint.append(renderSide(true, i, false)).append(renderCenter(i, false)).append(renderSide(false, i, false))
                         .append("\n");
             }
             System.out.println(cardToPrint);
@@ -119,7 +119,7 @@ public class CardViewPretty extends Component{
     }
 
     //true = right, false = left
-    private String drawSide(boolean leftSide, int row, boolean faceUp) {
+    protected String renderSide(boolean leftSide, int row, boolean faceUp) {
         Corner corner;
         if (leftSide) {
             switch (row) {
@@ -229,7 +229,7 @@ public class CardViewPretty extends Component{
         return "";
     }
 
-    private String drawCenter(int row, boolean faceUp) {
+    protected String renderCenter(int row, boolean faceUp) {
         if (faceUp) {
             switch (row) {
                 case 0 -> {
