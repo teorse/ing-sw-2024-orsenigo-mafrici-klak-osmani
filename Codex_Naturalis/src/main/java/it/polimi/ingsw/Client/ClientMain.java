@@ -53,7 +53,7 @@ public class ClientMain {
         //no dedicated enum class has been created yet, if in the future the number of keywords will grow
         //it would be a good idea to create the enum.
 
-        if(args.length != 0){
+        if(args != null && args.length != 0){
             List<String> arguments = Arrays.stream(args).toList();
 
             int CLIGraphicsIndex = arguments.indexOf("graphics");

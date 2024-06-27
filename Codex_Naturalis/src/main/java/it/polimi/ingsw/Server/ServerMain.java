@@ -41,7 +41,7 @@ public class ServerMain {
         Logger logger = Logger.getLogger(ServerMain.class.getName());
         logger.info("Server application started");
 
-        if(args.length != 0){
+        if(args != null && args.length != 0){
             String ipAddress = args[0];
 
             boolean validIp = LanIpFinder.isValidIPAddress(ipAddress);
