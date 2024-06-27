@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Server;
 
+import it.polimi.ingsw.CommunicationProtocol.LanIpFinder;
 import it.polimi.ingsw.Server.Controller.ServerController;
 import it.polimi.ingsw.Server.Model.Server.ServerModel;
 import it.polimi.ingsw.Server.Network.Listener.ListenerRMI;
@@ -39,6 +40,20 @@ public class ServerMain {
 
         Logger logger = Logger.getLogger(ServerMain.class.getName());
         logger.info("Server application started");
+
+        if(args.length != 0){
+            String ipAddress = args[0];
+
+            boolean validIp = LanIpFinder.isValidIPAddress(ipAddress);
+
+            if(validIp)
+                LanIpFinder.getInstance().setIp(ipAddress);
+            else{
+                logger.warning("The ip passed as parameter is not correctly formatted, shutting down the server");
+                System.exit(1234);
+            }
+        }
+
 
         ServerCentralManager serverCentralManager = new ServerCentralManager();
 
