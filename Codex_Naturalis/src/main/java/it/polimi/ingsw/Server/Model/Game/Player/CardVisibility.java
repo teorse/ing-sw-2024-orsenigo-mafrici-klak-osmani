@@ -149,6 +149,6 @@ public class CardVisibility implements Serializable {
                 corners.put(entry.getKey().getCornerDirection(), entry.getValue());
         }
 
-        return new CardVisibilityRecord(card.getCardColor(), corners, cornerVisibility);
+        return new CardVisibilityRecord(card.getCardColor(), corners, cornerVisibility, card.toRecord());
     }
 }
