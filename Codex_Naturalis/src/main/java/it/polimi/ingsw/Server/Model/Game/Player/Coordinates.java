@@ -105,6 +105,13 @@ public class Coordinates implements Serializable {
 
 
     //OBJECT METHOD OVERRIDES
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     * Two Coordinates objects are considered equal if they have the same X and Y coordinates.
+     *
+     * @param o The object to compare this Coordinates instance with.
+     * @return true if the given object is equal to this Coordinates object, false otherwise.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -112,11 +119,23 @@ public class Coordinates implements Serializable {
         return coordX == that.coordX && coordY == that.coordY;
     }
 
+    /**
+     * Returns a hash code value for the Coordinates object.
+     * The hash code is computed based on the X and Y coordinates.
+     *
+     * @return A hash code value for this Coordinates object.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(coordX, coordY);
     }
 
+    /**
+     * Returns a string representation of the Coordinates object.
+     * The string format includes the X and Y coordinates.
+     *
+     * @return A string representation of the Coordinates in the format "X: x_value, Y: y_value".
+     */
     @Override
     public String toString(){
         return "X: "+coordX+", Y: "+coordY;

@@ -27,6 +27,15 @@ public class Corner implements Serializable {
 
 
     //CONSTRUCTOR
+    /**
+     * Constructs a Corner object with the specified CornerType and Artifact.
+     * Throws an IllegalArgumentException if the provided CornerType is NULL or EMPTY
+     * and the Artifact is not NULL, as they are incompatible.
+     *
+     * @param cornerType The type of corner (EMPTY, NULL, ARTIFACT).
+     * @param artifact The artifact associated with the corner.
+     * @throws IllegalArgumentException If the CornerType is NULL or EMPTY and the Artifact is not NULL.
+     */
     public Corner(CornerType cornerType, Artifacts artifact) {
         if((cornerType.equals(CornerType.NULL) || cornerType.equals(CornerType.EMPTY)) && !artifact.equals(Artifacts.NULL))
             throw new IllegalArgumentException("Incompatible CornerType and Artifact.\nProvided not null artifact but " +
@@ -81,6 +90,15 @@ public class Corner implements Serializable {
 
 
     //EQUALS
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     * This method checks if the provided object is an instance of {@code Corner}
+     * and if it has the same {@code cornerType} and {@code artifact} as this one.
+     *
+     * @param o The reference object with which to compare.
+     * @return {@code true} if this object is the same as the {@code o} argument;
+     *         {@code false} otherwise.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -88,6 +106,14 @@ public class Corner implements Serializable {
         return cornerType == corner.cornerType && artifact == corner.artifact;
     }
 
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     * This method checks if the provided object is an instance of {@code Corner}
+     * and if it has the same {@code cornerType} and {@code artifact} as this one.
+     *
+     * @return {@code true} if this object is the same as the {@code o} argument;
+     *         {@code false} otherwise.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(cornerType, artifact);

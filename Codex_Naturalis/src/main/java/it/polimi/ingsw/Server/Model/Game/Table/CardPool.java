@@ -75,6 +75,12 @@ public class CardPool {
 
 
     //MODEL CLIENT CONVERSION
+    /**
+     * Converts this CardPool instance into a CardPoolRecord object for serialization.
+     * The CardPoolRecord contains information about the deck and visible cards in this CardPool.
+     *
+     * @return The CardPoolRecord representing this CardPool instance.
+     */
     public CardPoolRecord toRecord(){
         List<CardRecord> visibleCards = new ArrayList<>();
         for (Card visibleCard : this.visibleCards) {

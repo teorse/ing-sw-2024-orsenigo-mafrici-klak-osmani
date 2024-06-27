@@ -7,6 +7,10 @@ import it.polimi.ingsw.Server.Network.Listener.ListenerSocket;
 
 import java.util.logging.Logger;
 
+/**
+ * The central manager class responsible for initializing and managing the server components.
+ * It creates and manages the server model, controller, socket listener, and RMI listener.
+ */
 public class ServerCentralManager {
     //ATTRIBUTES
     private static ServerModel serverModel;
@@ -22,6 +26,11 @@ public class ServerCentralManager {
 
 
     //CONSTRUCTOR
+    /**
+     * Constructs a ServerCentralManager object.
+     * Initializes the server components including the server model, controller,
+     * socket listener, and RMI listener.
+     */
     public ServerCentralManager(){
 
         logger = Logger.getLogger(ServerMain.class.getName());
@@ -54,6 +63,10 @@ public class ServerCentralManager {
 
 
     //SERVER MANAGER METHODS
+    /**
+     * Starts the server by opening it to incoming requests.
+     * Starts the socket and RMI listeners in separate threads.
+     */
     public void startServer(){
         logger.info("Opening the server to requests");
 
@@ -67,6 +80,9 @@ public class ServerCentralManager {
         RMIThread.start();
     }
 
+    /**
+     * Stops the server.
+     */
     public void stopServer(){
         //todo
     }
@@ -76,6 +92,11 @@ public class ServerCentralManager {
 
 
     //GETTERS
+    /**
+     * Checks if the server is currently running.
+     *
+     * @return true if the server is running, false otherwise.
+     */
     public boolean isRunning() {
         return running;
     }

@@ -13,6 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * Abstract class representing a generic card in the game.
+ * Specific card types extend this class and provide concrete implementations for methods.
+ */
 public abstract class Card implements Serializable {
 
     //ATTRIBUTES
@@ -25,6 +29,11 @@ public abstract class Card implements Serializable {
 
 
     //CONSTRUCTOR
+    /**
+     * Constructs a Card with the specified corners.
+     *
+     * @param corners The corners of the card.
+     */
     public Card(Map<CornerOrientation, Corner> corners) {
         this.corners = corners;
     }
@@ -34,11 +43,35 @@ public abstract class Card implements Serializable {
 
 
     //GETTER
+    /**
+     * Abstract method to get the color of the card.
+     *
+     * @return The color of the card as an enum Artifacts.
+     */
     public abstract Artifacts getCardColor();
+
+    /**
+     * Abstract method to get the points of the card.
+     *
+     * @return The points of the card.
+     */
     public abstract int getPoints();
+
+    /**
+     * Returns all corners of the card.
+     *
+     * @return A map containing all corners of the card.
+     */
     public Map<CornerOrientation, Corner> getCorners() {
         return corners;
     }
+
+    /**
+     * Returns corners of the card based on whether they are face up or face down.
+     *
+     * @param faceUp If true, returns face-up corners; if false, returns face-down corners.
+     * @return A map containing the corners of the card based on the faceUp parameter.
+     */
     public Map<CornerOrientation, Corner> getCorners(boolean faceUp){
         if(faceUp){
             Map<CornerOrientation, Corner> faceUpCorners = new HashMap<>();
@@ -131,7 +164,19 @@ public abstract class Card implements Serializable {
         return corners.get(new CornerOrientation(direction, faceUp)).getCornerType();
     }
 
+    /**
+     * Abstract method to convert the card into a CardRecord for data transfer purposes.
+     *
+     * @return A CardRecord representing the card.
+     */
     public abstract CardRecord toRecord();
 
+    /**
+     * Abstract method to convert the card into a CardRecord for data transfer purposes.
+     * Includes the option to specify whether the card is face up or face down.
+     *
+     * @param faceUp Whether the card is recorded as face up or face down.
+     * @return A CardRecord representing the card with the specified faceUp status.
+     */
     public abstract CardRecord toRecord(boolean faceUp);
 }
