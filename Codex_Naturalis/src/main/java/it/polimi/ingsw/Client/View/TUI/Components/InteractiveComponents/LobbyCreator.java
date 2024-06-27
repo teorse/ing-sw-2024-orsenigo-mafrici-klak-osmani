@@ -6,6 +6,12 @@ import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPStartLobby;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.ErrorsDictionary;
 
+/**
+ * Represents an interactive component responsible for guiding the user through the process of creating a game lobby.
+ * It manages the input for setting the lobby name and the target number of users, validates the inputs,
+ * and sends a packet to start the lobby creation process. This component handles state transitions and
+ * displays appropriate messages for input validation errors and status updates during the lobby creation process.
+ */
 public class LobbyCreator extends  InteractiveComponent {
     private int targetNumberUsers;
     private String lobbyName;
@@ -15,7 +21,13 @@ public class LobbyCreator extends  InteractiveComponent {
 
     private ErrorsDictionary nameAlreadyTaken;
 
-
+    /**
+     * Initializes a LobbyCreator instance with the necessary attributes and prepares it to guide the user
+     * through the process of creating a game lobby. The LobbyCreator interacts with the client-side model
+     * to manage lobby creation requests and handles input validation for setting the lobby name and the
+     * target number of users. It observes changes in the lobby creation process and updates its state
+     * accordingly.
+     */
     public LobbyCreator() {
         super(1);
         this.model = ClientModel.getInstance();
@@ -70,16 +82,34 @@ public class LobbyCreator extends  InteractiveComponent {
         return InteractiveComponentReturns.INCOMPLETE;
     }
 
+    /**
+     *{@inheritDoc}
+     */
     @Override
     public String getKeyword() {
         return "createlobby";
     }
 
+    /**
+     * This method returns an empty string as there is no specific description associated with the
+     * LobbyCreator component.
+     *
+     * @return an empty string
+     */
     @Override
     public String getDescription() {
         return "";
     }
 
+    /**
+     * Prints the current state of the lobby creation process to the console. It handles various scenarios
+     * such as displaying errors for invalid player numbers or name conflicts, prompting for lobby name
+     * and number of users, and indicating waiting states for server responses.
+     * <p>
+     * The method also checks for the presence of errors related to lobby name availability and updates
+     * the input counter based on the state of nameAlreadyTaken. It invokes the superclass print method
+     * to print any inherited messages.
+     */
     //TODO move the update of the boolean in the handle input
     @Override
     public void print() {
@@ -110,11 +140,19 @@ public class LobbyCreator extends  InteractiveComponent {
         }
     }
 
+    /**
+     * This method overrides the cleanObserved method in InteractiveComponent but does not implement any
+     * specific cleaning actions for observed components within the LobbyCreator.
+     */
     @Override
     public void cleanObserved() {
 
     }
 
+    /**
+     * This method overrides the refreshObserved method in InteractiveComponent but does not implement any
+     * specific actions for refreshing observed components within the LobbyCreator.
+     */
     @Override
     public void refreshObserved() {
 

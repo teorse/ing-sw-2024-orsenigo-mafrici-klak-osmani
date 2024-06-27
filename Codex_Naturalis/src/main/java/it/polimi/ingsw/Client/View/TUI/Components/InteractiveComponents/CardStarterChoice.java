@@ -10,10 +10,23 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.Ca
 
 import java.util.List;
 
+/**
+ * Represents an interactive component for handling the choice of placing a card on either the front or back side of the game.
+ * This component allows the player to select between placing a card on the front side (1) or the back side (2) of the game board.
+ * It manages user input validation, sends corresponding packets to the server, and displays the appropriate views and error messages.
+ * Observes changes in the {@link CardsHeld} instance to update the available cards for placement.
+ */
+
 public class CardStarterChoice extends InteractiveComponent {
     private final ClientModel model;
     private boolean invalidBinaryChoice;
 
+    /**
+     * Initializes a new instance of {@code CardStarterChoice} component.
+     * This component allows the player to choose whether to place a card on the front or back side of the game.
+     * It initializes the {@link ClientModel} instance for game state management and sets up observation
+     * of the {@link CardsHeld} instance to monitor changes in available cards for placement.
+     */
     public CardStarterChoice() {
         super(0);
         this.model = ClientModel.getInstance();
@@ -60,12 +73,20 @@ public class CardStarterChoice extends InteractiveComponent {
         return InteractiveComponentReturns.INCOMPLETE;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getKeyword() {
         return "placestarter";
     }
 
+    /**
+     * Retrieves the description of this interactive component.
+     * This method returns an empty string as this component does not provide a specific description.
+     *
+     * @return An empty string.
+     */
     @Override
     public String getDescription() {
         return "";
@@ -99,11 +120,19 @@ public class CardStarterChoice extends InteractiveComponent {
         }
     }
 
+    /**
+     * Cleans up the observation of changes in the state of the CardsHeld instance by removing this
+     * CardStarterChoice instance as an observer.
+     */
     @Override
     public void cleanObserved() {
         RefreshManager.getInstance().addObserved(this, CardsHeld.getInstance());
     }
 
+    /**
+     * Refreshes the observation of changes in the state of the CardsHeld instance by adding this
+     * CardStarterChoice instance as an observer.
+     */
     @Override
     public void refreshObserved() {
         RefreshManager.getInstance().addObserved(this, CardsHeld.getInstance());

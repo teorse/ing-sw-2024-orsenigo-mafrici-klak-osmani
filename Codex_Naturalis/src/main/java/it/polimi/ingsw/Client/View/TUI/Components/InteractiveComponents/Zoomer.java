@@ -4,6 +4,12 @@ import it.polimi.ingsw.Client.Model.Game;
 import it.polimi.ingsw.Client.View.TUI.Components.CardsHeldView;
 import it.polimi.ingsw.Client.View.InputValidator;
 
+/**
+ * Handles user interaction for zooming into details of different components related to the game.
+ * This component allows the user to select and view details of specific game elements such as
+ * the CardMap, CardsHeld, or CardPool. It manages input validation, interaction with subcomponents,
+ * and provides navigation options for returning to the previous menu.
+ */
 //todo further review zoomer class
 public class Zoomer extends InteractiveComponent {
     //ATTRIBUTES
@@ -11,6 +17,10 @@ public class Zoomer extends InteractiveComponent {
     private InteractiveComponent subComponent;
     private boolean invalidInput;
 
+    /**
+     * Constructs a Zoomer object with initial setup.
+     * Initializes the Zoomer with a single input stage and prepares for interaction.
+     */
     public Zoomer() {
         super(1);
 
@@ -84,12 +94,19 @@ public class Zoomer extends InteractiveComponent {
     }
 
 
-
+    /**
+     *{@inheritDoc}
+     */
     @Override
     public String getKeyword() {
         return "zoom";
     }
 
+    /**
+     * Provides a description of this component.
+     *
+     * @return a description of the component's functionality ("/zoom -> to zoom a card map, cards held or card pool")
+     */
     @Override
     public String getDescription() {
         return "/zoom -> to zoom a card map, cards held or card pool";
@@ -138,12 +155,20 @@ public class Zoomer extends InteractiveComponent {
         }
     }
 
+    /**
+     * Cleans up any resources or observations associated with this component.
+     * This method delegates cleanup to its subcomponent if one exists.
+     */
     @Override
     public void cleanObserved() {
         if(subComponent != null)
             subComponent.cleanObserved();
     }
 
+    /**
+     * Refreshes any observations or resources associated with this component.
+     * This method delegates refresh to its subcomponent if one exists.
+     */
     @Override
     public void refreshObserved() {
         if(subComponent != null)

@@ -7,11 +7,23 @@ import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.Server.Model.Game.Table.CardPoolTypes;
 
+/**
+ * Represents an interactive component for zooming into either the Resource Pool or Golden Pool of cards.
+ * This component handles user input to select between these two card pools and displays the corresponding
+ * pool view once a selection is made. It manages input validation, error handling for invalid inputs,
+ * and updates its state based on user interaction.
+ */
+
 public class CardPoolZoom extends InteractiveComponent{
     private CardPoolTypes choice;
     boolean invalidInput;
 
-
+    /**
+     * Initializes a CardPoolZoom interactive component with an input counter limit of 1.
+     * Sets up observation for changes in the CardPools instance and initializes attributes.
+     * The component allows the user to select between the Resource Pool and the Golden Pool
+     * of cards and displays the corresponding pool view based on the user's choice.
+     */
     public CardPoolZoom() {
         super(1);
         invalidInput = false;
@@ -58,21 +70,40 @@ public class CardPoolZoom extends InteractiveComponent{
         return InteractiveComponentReturns.INCOMPLETE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getKeyword() {
         return "cardpoolzoom";
     }
 
+    /**
+     * Retrieves the description associated with the CardPoolZoom interactive component.
+     * This method returns an empty string as there is no specific description for this component.
+     *
+     * @return An empty string.
+     */
     @Override
     public String getDescription() {
         return "";
     }
 
+    /**
+     * Removes this instance from the list of observers for changes in CardPools.
+     * This method ensures that the CardPoolZoom component no longer receives updates
+     * about changes in the CardPools instance.
+     */
     @Override
     public void cleanObserved() {
         RefreshManager.getInstance().removeObserved(this, CardPools.getInstance());
     }
 
+    /**
+     * Adds this instance to the list of observers for changes in CardPools.
+     * This method ensures that the CardPoolZoom component receives updates
+     * about changes in the CardPools instance.
+     */
     @Override
     public void refreshObserved() {
         RefreshManager.getInstance().addObserved(this, CardPools.getInstance());

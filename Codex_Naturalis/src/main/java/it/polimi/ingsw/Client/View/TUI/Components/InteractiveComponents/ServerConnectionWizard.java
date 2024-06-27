@@ -12,6 +12,12 @@ import java.rmi.ConnectException;
 import java.rmi.RemoteException;
 import java.util.logging.Logger;
 
+/**
+ * The `ServerConnectionWizard` component facilitates the process of establishing a connection
+ * to the game server. It guides the user through selecting the connection type (RMI or Socket)
+ * and entering the server's IP address. It handles input validation, connection attempts, and
+ * displays appropriate messages based on the connection status.
+ */
 public class ServerConnectionWizard extends InteractiveComponent {
 
     private final Logger logger;
@@ -116,17 +122,29 @@ public class ServerConnectionWizard extends InteractiveComponent {
     }
 
 
-
+    /**
+     *{@inheritDoc}
+     */
     @Override
     public String getKeyword() {
         return "connect";
     }
 
+    /**
+     * Provides a description of this component.
+     *
+     * @return an empty string (no specific description provided)
+     */
     @Override
     public String getDescription() {
         return "";
     }
 
+    /**
+     * Prints messages and prompts based on the current state of the connection process.
+     * Displays instructions for choosing between RMI or Socket connection and entering the server's IP address.
+     * Also handles displaying connection error messages if the connection attempt fails.
+     */
     @Override
     public void print() {
         logger.info("Printing ServerConnectionWizard");
@@ -163,11 +181,18 @@ public class ServerConnectionWizard extends InteractiveComponent {
 
 
 
-
+    /**
+     * Cleans up any resources or observations associated with this component.
+     * This method is empty because the `ServerConnectionWizard` component does not observe any resources.
+     */
     //Method is empty because this component does not observe anything.
     @Override
     public void cleanObserved() {}
 
+    /**
+     * Refreshes any observations or resources associated with this component.
+     * This method is empty because the `ServerConnectionWizard` component does not observe any resources.
+     */
     @Override
     public void refreshObserved() {
 

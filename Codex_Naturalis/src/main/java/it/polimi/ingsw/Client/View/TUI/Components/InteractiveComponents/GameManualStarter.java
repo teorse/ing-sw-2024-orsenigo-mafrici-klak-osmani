@@ -7,10 +7,21 @@ import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPStartGame;
 
+/**
+ * Represents an interactive component for managing the manual start of a game session in a text-based user interface (TUI).
+ * This component allows the admin user to initiate the game if there are enough players in the lobby.
+ * It handles user input to start the game and provides feedback messages based on the outcome of the input handling.
+ */
 public class GameManualStarter extends InteractiveComponent {
     private boolean wrongCommand;
     private boolean notEnoughPlayers;
 
+    /**
+     * Constructs a GameManualStarter object.
+     * Initializes the object by calling the superclass constructor with a value of 0.
+     * Sets up observation for changes in the lobby users through RefreshManager.
+     * Initializes flags for tracking erroneous commands and insufficient player count.
+     */
     public GameManualStarter() {
         super(0);
         refreshObserved();
@@ -60,17 +71,31 @@ public class GameManualStarter extends InteractiveComponent {
         return InteractiveComponentReturns.COMPLETE;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getKeyword() {
         return "gamestarter";
     }
 
+    /**
+     * Retrieves the description of this interactive component.
+     *
+     * @return An empty string since this component does not provide a description.
+     */
     @Override
     public String getDescription() {
         return "";
     }
 
+    /**
+     * Prints the current state of the game manual starter component based on various conditions:
+     * - If the player is not an admin and there are at least 2 players, it notifies that the game will start soon.
+     * - If the player is an admin and there are at least 2 players, it prompts the admin to start the game by typing "start".
+     * - If an incorrect command was entered previously, it prompts the user with a message to type "START".
+     * - If there are not enough players to start the game, it notifies the admin that they cannot start the game alone.
+     */
     @Override
     public void print() {
         if(!MyPlayer.getInstance().isAdmin()) {
@@ -97,11 +122,17 @@ public class GameManualStarter extends InteractiveComponent {
         }
     }
 
+    /**
+     * Cleans up observation of lobby user changes by removing this component from RefreshManager's observed list.
+     */
     @Override
     public void cleanObserved() {
         RefreshManager.getInstance().addObserved(this, LobbyUsers.getInstance());
     }
 
+    /**
+     * Sets up observation of lobby user changes by adding this component to RefreshManager's observed list.
+     */
     @Override
     public void refreshObserved() {
         RefreshManager.getInstance().addObserved(this, LobbyUsers.getInstance());

@@ -6,6 +6,15 @@ import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPPlayCard;
 
 //todo review the code
+/**
+ * This class represents an interactive component responsible for handling the process
+ * of placing a card onto the board in the game's client-side user interface (TUI).
+ * It manages the selection of a card from the player's hand, choosing a specific row
+ * and column on the board, and deciding whether to place the card face up or face down.
+ * Error messages are provided for invalid inputs or placements, guiding the user
+ * through the card placement process. Upon successful input validation, the appropriate
+ * packet is sent to the server for card placement.
+ */
 public class CardPlacer extends InteractiveComponent {
     //ATTRIBUTES
     private final CardMaps cardMaps;
@@ -30,6 +39,13 @@ public class CardPlacer extends InteractiveComponent {
 
 
     //CONSTRUCTOR
+    /**
+     * Constructs a new instance of {@code CardPlacer} interactive component.
+     * Initializes the component with a maximum input counter of 3.
+     * Retrieves singleton instances of {@code ClientModel}, {@code CardMaps}, and {@code CardsHeld}
+     * for managing client-side game data and interactions.
+     * Registers itself as an observer of {@code CardsHeld} and {@code CardMaps} to receive updates.
+     */
     public CardPlacer(){
         super(3);
         this.model = ClientModel.getInstance();
@@ -136,22 +152,38 @@ public class CardPlacer extends InteractiveComponent {
         return InteractiveComponentReturns.INCOMPLETE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getKeyword() {
         return "place";
     }
 
+    /**
+     * Returns an empty description for the {@code CardPlacer} interactive component.
+     *
+     * @return An empty string as no specific description is provided.
+     */
     @Override
     public String getDescription() {
         return "";
     }
 
+    /**
+     * Removes this {@code CardPlacer} instance as an observer from {@code CardsHeld} and {@code CardMaps}
+     * in the {@code RefreshManager} instance, stopping updates from these components.
+     */
     @Override
     public void cleanObserved() {
         RefreshManager.getInstance().removeObserved(this, cardsHeld);
         RefreshManager.getInstance().removeObserved(this, cardMaps);
     }
 
+    /**
+     * Adds this {@code CardPlacer} instance as an observer to {@code CardsHeld} and {@code CardMaps}
+     * in the {@code RefreshManager} instance, allowing updates from these components to be received.
+     */
     @Override
     public void refreshObserved() {
         RefreshManager.getInstance().addObserved(this, cardsHeld);
@@ -207,7 +239,11 @@ public class CardPlacer extends InteractiveComponent {
         super.print();
     }
 
-
+    /**
+     * Constructs and sends a {@code CSPPlayCard} packet to the server via the client connector.
+     * The packet contains information about the card index, coordinates on the board, and whether
+     * the card should be placed face up or face down.
+     */
     private void sendPacket(){
         model.getClientConnector().sendPacket(new CSPPlayCard(cardIndex, coordinateIndex, faceUp));
     }
