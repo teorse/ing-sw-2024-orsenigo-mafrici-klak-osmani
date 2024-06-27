@@ -214,19 +214,9 @@ public class CardDrawer extends InteractiveComponent{
      */
     @Override
     public void print() {
-
-        if(!isResourceOver && !isGoldenOver) {
-            new CardPoolView(CardPoolTypes.RESOURCE).print();
-            new CardPoolView(CardPoolTypes.GOLDEN).print();
-        }
-        else if(isGoldenOver) {
-            new CardPoolView(CardPoolTypes.RESOURCE).print();
-        }
-        else {
-            new CardPoolView(CardPoolTypes.GOLDEN).print();
-        }
-
         if (getInputCounter() == 0) {
+            new CardPoolView(CardPoolTypes.RESOURCE).print();
+            new CardPoolView(CardPoolTypes.GOLDEN).print();
             // Stage 1: Prompt user to choose from which pool they want to draw a card
             if (!isResourceOver && !isGoldenOver) {
                 // Print the available cards in both RESOURCE and GOLDEN pools
@@ -236,10 +226,12 @@ public class CardDrawer extends InteractiveComponent{
                          1 - Resource
                          2 - Golden""");
             } else if (isResourceOver) {
+                new CardPoolView(CardPoolTypes.GOLDEN).print();
                 // If resource pool is empty, force choice to GOLDEN pool and reprint
                 cardPoolChoice = CardPoolTypes.GOLDEN;
                 incrementInputCounter();
             } else {
+                new CardPoolView(CardPoolTypes.RESOURCE).print();
                 // If golden pool is empty, force choice to RESOURCE pool and reprint
                 cardPoolChoice = CardPoolTypes.RESOURCE;
                 incrementInputCounter();
@@ -247,11 +239,13 @@ public class CardDrawer extends InteractiveComponent{
         }
 
         if (getInputCounter() == 1 && cardPoolChoice == CardPoolTypes.RESOURCE) {
+            new CardPoolView(CardPoolTypes.RESOURCE).print();
             if(isGoldenOver)
                 System.out.println("\nYou can draw only from the Resource deck");
             // Stage 2: Prompt user to enter a number to pick a card from RESOURCE pool
             System.out.println("\nEnter a number between " + resourceLB + " and " + resourceUB + " to pick a card: ");
         } else if (getInputCounter() == 1 && cardPoolChoice == CardPoolTypes.GOLDEN) {
+            new CardPoolView(CardPoolTypes.GOLDEN).print();
             if(isResourceOver)
                 System.out.println("\nYou can draw only from the Golden deck");
             // Stage 3: Prompt user to enter a number to pick a card from GOLDEN pool
