@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  * ClientHandlerSocket class represents the socket implementation of the ClientHandler interface.
  * It handles communication with a client over a socket connection.
  */
-public class ClientHandlerSocket implements ClientHandler, Runnable{
+public class ClientHandlerSocket implements ClientHandler {
     //ATTRIBUTES
     private ObjectInputStream ois;
     private ObjectOutputStream oos;

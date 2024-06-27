@@ -23,13 +23,11 @@ import java.util.logging.Logger;
  * ClientHandlerRMI class represents the RMI implementation of the ClientHandler interface.
  * It handles communication with a client over an RMI connection.
  */
-public class ClientHandlerRMI implements ClientHandler, Runnable, ClientHandlerRemoteInterface {
+public class ClientHandlerRMI implements ClientHandler, ClientHandlerRemoteInterface {
     //ATTRIBUTES
     /**
      * The unique identifier for this client handler.
      */
-    private String id;
-    private final Registry serverRegistry;
     private final ClientRemoteInterface clientRemote;
 
     private boolean ping;
@@ -45,53 +43,28 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, ClientHandlerR
     /**
      * Constructs a ClientHandlerRMI object with the specified ID, client IP address, and client ID of the client that requested this client handler.
      *
-     * @param client                The remote object representing the client associated with this client handler.
+     * @param client     The remote object representing the client associated with this client handler.
      */
     public ClientHandlerRMI(ClientRemoteInterface client){
-
         logger = Logger.getLogger(ClientHandlerRMI.class.getName());
         logger.info("Initializing Client Handler RMI");
 
         this.clientRemote = client;
+        clientInputHandler = new ClientInputHandler(this);
+    }
 
-        //Locates the server register and binds itself in it.
-
-        logger.fine("exporting client handler object");
-
-        Registry serverRegistryTemp = null;
+    public ClientHandlerRemoteInterface getRemote(){
         try {
-            ClientHandlerRemoteInterface thisRemote = (ClientHandlerRemoteInterface) UnicastRemoteObject.exportObject(this, 0);
-            serverRegistryTemp = LocateRegistry.getRegistry(NetworkConstants.RMIServerRegistryPort);
-
-
-            //todo remove binding to registry
-            boolean bound = false;
-            while (!bound) {
-                //generate the id for the new client handler
-                id = Utilities.RandomStringGenerator(20);
-                logger.fine("New id generated for client handler is: " + id);
-
-                try {
-                    logger.info("Binding this Client Handler to registry");
-                    serverRegistryTemp.bind(NetworkConstants.RMIClientHandlerDirectory + id, thisRemote);
-                    logger.info("Client handler " + id + " successfully bound to registry");
-
-                    bound = true;
-                }
-                catch (AlreadyBoundException e) {
-                    logger.fine(id + " was already bound, generating new id");
-                }
-            }
+            logger.fine("exporting client handler object");
+            return (ClientHandlerRemoteInterface) UnicastRemoteObject.exportObject(this, 0);
         }
         catch (RemoteException e) {
             String stackTrace = Utilities.StackTraceToString(e);
-            logger.warning("RemoteException thrown while initializing ClientHandlerRMI for client: " + client + "\n" +
+            logger.warning("RemoteException thrown while initializing ClientHandlerRMI for client: " + clientRemote + "\n" +
                     "Stacktrace:\n" + stackTrace);
             System.exit(666);
         }
-        serverRegistry = serverRegistryTemp;
-
-        clientInputHandler = new ClientInputHandler(this);
+        return null;
     }
 
 
@@ -105,7 +78,7 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, ClientHandlerR
      */
     @Override
     public void run() {
-        logger.info("Client Handler RMI "+id+" is now listening for pings");
+        logger.info("Client Handler RMI "+ clientRemote +" is now listening for pings");
         //Setting up thread to handle the ping heartbeat mechanism to detect client disconnections.
         boolean receivedPing = true;
 
@@ -129,22 +102,6 @@ public class ClientHandlerRMI implements ClientHandler, Runnable, ClientHandlerR
             logger.warning("No heartbeat detected from RMI Client: "+clientRemote);
             System.out.println("No heartbeat detected from client: "+clientRemote);
             clientInputHandler.clientDisconnectionProcedure();
-        }
-        finally {
-            //Removing the client handler from the registry to clean up
-            logger.fine("Executing 'finally' block in client handler, proceeding to remove from registry");
-            try {
-                logger.info("Unbinding RMI client handler "+id);
-                serverRegistry.unbind(NetworkConstants.RMIClientHandlerDirectory+id);
-            }
-            catch (RemoteException ex) {
-                String stackTraceString = Utilities.StackTraceToString(ex);
-                logger.warning("RemoteException caught in Client Handler RMI while unbinding client handler.\nName: "+ex.getCause()+"\nStacktrace:\n"+stackTraceString);
-            }
-            catch (NotBoundException ex) {
-                String stackTraceString = Utilities.StackTraceToString(ex);
-                logger.warning("NotBoundException caught in Client Handler RMI while unbinding client handler.\nStacktrace:\n"+stackTraceString);
-            }
         }
     }
 

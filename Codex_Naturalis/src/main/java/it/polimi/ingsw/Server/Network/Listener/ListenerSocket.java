@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 public class ListenerSocket implements Runnable{
     //ATTRIBUTES
     private ServerSocket serverSocket;
-    private final ServerController serverController;
     private final Logger logger;
 
 
@@ -34,7 +33,6 @@ public class ListenerSocket implements Runnable{
         logger = Logger.getLogger(ListenerSocket.class.getName());
         logger.fine("Initializing Socket Listener");
 
-        serverController = ServerController.getInstance();
         try {
             serverSocket = new ServerSocket(NetworkConstants.ServerSocketListenerPort);
             logger.fine("Socket Listener initialized");
@@ -74,12 +72,11 @@ public class ListenerSocket implements Runnable{
 
                 System.out.println("Creating new socket handler...");
                 logger.info("Creating new socket client handler for client: " + socket);
-                ClientHandler handler = new ClientHandlerSocket(socket);
 
                 // Start the thread for the new clientHandler.
-                Thread thread = new Thread(handler);
-                thread.start();
+                new Thread(new ClientHandlerSocket(socket)).start();
                 System.out.println("Client Handler started");
+                logger.info("Client Handler started");
             }
         }
         catch (IOException e) {

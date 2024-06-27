@@ -113,7 +113,7 @@ public class ListenerRMI implements Runnable, ServerListenerRemoteInterface, Unr
     @SuppressWarnings("removal")
     @Override
     protected void finalize(){
-        //todo remove this method if through further testing the listener rmi will not be garbage collected anymore.
+        //this method is here only for logging purposes to debug RMI garbage collection.
         logger.warning("ListenerRMI is being garbage collected, bye bye :)");
     }
 
@@ -146,6 +146,6 @@ public class ListenerRMI implements Runnable, ServerListenerRemoteInterface, Unr
         logger.info("Server is listening on RMI");
 
         //Return the client handler  to the client.
-        return clientHandler;
+        return clientHandler.getRemote();
     }
 }
