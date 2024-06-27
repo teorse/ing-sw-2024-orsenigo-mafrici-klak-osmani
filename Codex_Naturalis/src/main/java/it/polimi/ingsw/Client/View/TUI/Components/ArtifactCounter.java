@@ -46,9 +46,10 @@ public class ArtifactCounter extends LiveComponent {
     public void print() {
         CardMaps map = CardMaps.getInstance();
         Map<Artifacts, Integer> artifactsCounter = map.getCardMaps().get(MyPlayer.getInstance().getUsername()).artifactsCounter();
-        System.out.println("ARTIFACT COUNTER:");
+        System.out.println("\nARTIFACT COUNTER:");
         for (Artifacts artifacts : artifactsCounter.keySet()) {
             System.out.println(artifacts.name() + ": " + artifactsCounter.get(artifacts));
         }
+        System.out.println();
     }
 }
