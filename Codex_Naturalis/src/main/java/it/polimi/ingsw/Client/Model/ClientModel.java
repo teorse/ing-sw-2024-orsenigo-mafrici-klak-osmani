@@ -41,9 +41,9 @@ public class ClientModel extends Observable {
         view = new ConnectionState();
 
         logger.fine("Printing view object");
+        fancyGraphics = true;
         view.print();
     }
-    private boolean fancyGraphics;
 
 
     // Internal Logic
@@ -54,6 +54,8 @@ public class ClientModel extends Observable {
     boolean gameStarted;
     boolean gameOver;
     ViewState view;
+
+    private boolean fancyGraphics;
 
     // Connector
     ClientConnector clientConnector;
