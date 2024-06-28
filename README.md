@@ -21,22 +21,21 @@
 | Chat | ✅ |
 
 ## How to Use
-**From Github: (for windows users)**<br>
-`Option1:`
-1. Go to releases
-2. Download the latest release published
-3. Double click on the .exe file to run `ServerMain.exe` and `ClientMain.exe`
+- In the [Deliverables](Codex_Naturalis/deliverables/JAR) folder there are two multi-platform JAR files: one for starting the Server and the other for starting the Client.
+- The Server can be run with the following command, the RMI port is 50001, the socket port is 50000:
+    ```shell
+    > java -jar codex-naturalis-server.jar
+    ```
+  This command can be followed by this argument:
+    - The desired IP adress for the Server (useful when the are connection problems between Server and Client);
 
-`Option2:`
-1. Go to /Deployable folder
-2. Download the .exe files of the server and the client
-
-**From Repo clone: (for mac and windows users)**
-1. Go to /Deployable and download both files  
-2. Open `CMD` and navigate to C:/[dir]/[folder with the jar files]  
-3. From here, just type in the `CMD`:  
-   -> `java -jar softeng-gc04-1.0-SNAPSHOT-client.jar` (to run the clients)<br>
-   -> `java -jar softeng-gc04-1.0-SNAPSHOT-server.jar` (to run the server)
+- The Client can be run with the following command:
+    ```shell
+    > java -jar codex-naturalis-client.jar
+    ```
+  This command can be followed by this argument:
+  - **-graphics**: followed by 0 or 1 to show emojii in the CLI (default is set to 1, so emoji are displayed);
+  - **-ip**: followed by the desired IP adress for the Client (useful when the are connection problems between Server and Client);
 
 ## Team (Group 31)
 
