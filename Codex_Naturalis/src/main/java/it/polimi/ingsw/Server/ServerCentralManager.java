@@ -74,12 +74,6 @@ public class ServerCentralManager {
         RMIThread.start();
     }
 
-    /**
-     * Stops the server.
-     */
-    public void stopServer(){
-    }
-
 
 
 

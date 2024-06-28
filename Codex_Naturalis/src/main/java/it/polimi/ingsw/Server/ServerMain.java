@@ -73,14 +73,6 @@ public class ServerMain {
                     }
                     break;
 
-                case "stop":
-                    if (serverCentralManager.isRunning()) {
-                        serverCentralManager.stopServer();
-                    } else {
-                        System.out.println("Server is not running.");
-                    }
-                    break;
-
                 case "status":
                     if (serverCentralManager.isRunning()) {
                         System.out.println("Server is running.");
@@ -90,15 +82,12 @@ public class ServerMain {
                     break;
 
                 case "exit":
-                    if (serverCentralManager.isRunning()) {
-                        serverCentralManager.stopServer();
-                    }
                     scanner.close();
                     System.exit(0);
                     break;
 
                 default:
-                    System.out.println("Unknown command. Please enter 'start', 'stop', 'status', or 'exit'.");
+                    System.out.println("Unknown command. Please enter 'start', 'status', or 'exit'.");
             }
         }
     }
