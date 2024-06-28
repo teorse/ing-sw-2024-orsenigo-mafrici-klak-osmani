@@ -1,0 +1,135 @@
+@startuml
+
+participant Client
+participant ClientConnectorSocket
+participant Socket
+participant ListenerSocket
+participant ClientHandlerSocket
+participant NewThread
+participant ClientInputHandler
+participant ServerController
+participant ServerModel
+participant ServerUserInfo
+
+Client -> ClientConnectorSocket : request
+activate ClientConnectorSocket
+ClientConnectorSocket -> Socket : request
+deactivate ClientConnectorSocket
+Socket -> ListenerSocket : request
+activate ListenerSocket
+create ClientHandlerSocket
+ListenerSocket -> ClientHandlerSocket : .accept()
+activate ClientHandlerSocket
+deactivate ListenerSocket
+create ClientInputHandler
+ClientHandlerSocket -> ClientInputHandler : new
+activate ClientInputHandler
+ClientInputHandler --> ClientHandlerSocket
+deactivate ClientInputHandler
+ClientHandlerSocket --> Socket : SCPconnectionAck
+deactivate ClientHandlerSocket
+Socket --> ClientConnectorSocket : SCPconnectionAck
+activate ClientConnectorSocket
+ClientConnectorSocket --> Client : SCPconnectionAck
+deactivate ClientConnectorSocket
+
+Client -> ClientConnectorSocket : CSPLogIn
+activate ClientConnectorSocket
+ClientConnectorSocket -> Socket : CSPLogIn
+deactivate ClientConnectorSocket
+Socket -> ClientHandlerSocket : CSPLogIn
+activate ClientHandlerSocket
+create NewThread
+ClientHandlerSocket -> NewThread : new
+deactivate ClientHandlerSocket
+activate NewThread
+NewThread -> ClientInputHandler : .handleInput(CSPLogIn)
+activate ClientInputHandler
+
+    alt client not already logged in
+    ClientInputHandler -> ServerController : login()
+    activate ServerController
+    ServerController -> ServerModel : login()
+    activate ServerModel
+
+        alt account found and not already logged in by another client
+        ServerModel -> ServerUserInfo : getUser(username)
+        activate ServerUserInfo
+        ServerUserInfo -> ServerUserInfo : checkingPassword()
+
+            alt correct password
+            ServerUserInfo --> ServerModel
+            ServerModel --> ServerController
+            ServerController --> ClientInputHandler
+            ClientInputHandler --> NewThread
+            NewThread --> ClientHandlerSocket
+            activate ClientHandlerSocket
+            ClientHandlerSocket --> Socket : sendMessage(SCPLogInSuccess)
+            deactivate ClientHandlerSocket
+            Socket --> ClientConnectorSocket : SCPLogInSuccess
+            activate ClientConnectorSocket
+            ClientConnectorSocket --> Client : SCPLogInSuccess.execute()
+            deactivate ClientConnectorSocket
+
+            else wrong password
+            ServerUserInfo --> ServerModel : IncorrectPasswordException
+            deactivate ServerUserInfo
+            ServerModel --> ServerController
+            ServerController --> ClientInputHandler
+            ClientInputHandler --> NewThread
+            NewThread --> ClientHandlerSocket
+            activate ClientHandlerSocket
+            ClientHandlerSocket --> Socket : sendMessage(SCPLogInFailed)
+            deactivate ClientHandlerSocket
+            Socket --> ClientConnectorSocket : SCPLogInFailed
+            activate ClientConnectorSocket
+            ClientConnectorSocket --> Client : SCPLogInFailed.execute()
+            deactivate ClientConnectorSocket
+            end
+
+        else Account not found
+        ServerModel --> ServerController : AccountNotFoundException
+        ServerController --> ClientInputHandler
+        ClientInputHandler --> NewThread
+        NewThread --> ClientHandlerSocket
+        activate ClientHandlerSocket
+        ClientHandlerSocket --> Socket : sendMessage(SCPLogInFailed)
+        deactivate ClientHandlerSocket
+        Socket --> ClientConnectorSocket : SCPLogInFailed
+        activate ClientConnectorSocket
+        ClientConnectorSocket --> Client : SCPLogInFailed.execute()
+        deactivate ClientConnectorSocket
+
+
+        else Account already loggedIn by Another Client
+        ServerModel --> ServerController : AccountAlreadyLoggedInException
+        deactivate ServerModel
+        ServerController --> ClientInputHandler
+        deactivate ServerController
+        ClientInputHandler --> NewThread
+        NewThread --> ClientHandlerSocket
+        activate ClientHandlerSocket
+        ClientHandlerSocket --> Socket : sendMessage(SCPLogInFailed)
+        deactivate ClientHandlerSocket
+        Socket --> ClientConnectorSocket : SCPLogInFailed
+        activate ClientConnectorSocket
+        ClientConnectorSocket --> Client : SCPLogInFailed.execute()
+        deactivate ClientConnectorSocket
+        end
+
+    else client already logged in
+    activate ClientInputHandler
+    activate NewThread
+    ClientInputHandler --> NewThread : MultipleLoginViolationException
+    deactivate ClientInputHandler
+    NewThread --> ClientHandlerSocket
+    destroy NewThread
+    activate ClientHandlerSocket
+    ClientHandlerSocket --> Socket : sendMessage(SCPLogInFailed)
+    deactivate ClientHandlerSocket
+    Socket --> ClientConnectorSocket : SCPLogInFailed
+    activate ClientConnectorSocket
+    ClientConnectorSocket --> Client : SCPLogInFailed.execute()
+    deactivate ClientConnectorSocket
+    end
+@enduml

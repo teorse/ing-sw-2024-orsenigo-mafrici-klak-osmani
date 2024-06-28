@@ -1,0 +1,110 @@
+@startuml
+
+participant Client
+participant ClientConnectorSocket
+participant Socket
+participant ClientHandlerSocket
+participant NewThread
+participant ClientInputHandler
+participant LobbyController
+participant ObserverRelay
+participant Lobby
+participant GameController
+participant Game
+
+Client -> ClientConnectorSocket : .send(CSPStartGame)
+activate ClientConnectorSocket
+ClientConnectorSocket -> Socket : CSPStartGame
+deactivate ClientConnectorSocket
+Socket -> ClientHandlerSocket : CSPStartGame
+activate ClientHandlerSocket
+create NewThread
+ClientHandlerSocket -> NewThread : new
+activate NewThread
+deactivate ClientHandlerSocket
+NewThread -> ClientInputHandler : .handleInput(CSPStartGame)
+deactivate NewThread
+activate ClientInputHandler
+ClientInputHandler -> ClientInputHandler : CSPStartGame.execute()
+
+    opt User is Logged in and part of a Lobby
+    ClientInputHandler -> LobbyController : .startGame()
+    activate LobbyController
+    LobbyController -> Lobby : .startGameManually()
+    activate Lobby
+
+        opt The user is Admin
+
+            opt There are enough people in the Lobby to start the Game and the game has yet to start
+            create Game
+            Lobby -> Game : new
+            deactivate Lobby
+            activate Game
+            Game -> Game : setup the game
+            Game -> ObserverRelay : Broadcast SCPGameStarted
+            activate ObserverRelay
+            ObserverRelay -> ClientHandlerSocket : .send(SCPGameStarted)
+            activate ClientHandlerSocket
+            ClientHandlerSocket -> Socket : SCPGameStarted
+            ClientHandlerSocket --> ObserverRelay
+            deactivate ClientHandlerSocket
+            ObserverRelay --> Game
+            deactivate ObserverRelay
+            Socket -> ClientConnectorSocket : SCPGameStarted
+            activate ClientConnectorSocket
+            ClientConnectorSocket -> Client : SCPGameStarted.execute()
+            deactivate ClientConnectorSocket
+
+            Game --> ObserverRelay : foreach player .update(SCPUpdateClientGameState)
+            activate ObserverRelay
+            ObserverRelay -> ClientHandlerSocket : .send(SCPUpdateClientGameState)
+            activate ClientHandlerSocket
+            ClientHandlerSocket -> Socket : SCPUpdateClientGameState
+            ClientHandlerSocket --> ObserverRelay
+            deactivate ClientHandlerSocket
+            ObserverRelay --> Game
+            deactivate ObserverRelay
+            Socket -> ClientConnectorSocket : SCPUpdateClientGameState
+            activate ClientConnectorSocket
+            ClientConnectorSocket -> Client : SCPUpdateClientGameState.execute()
+            deactivate ClientConnectorSocket
+            Game --> Lobby
+            deactivate Game
+            activate Lobby
+            create GameController
+            Lobby -> GameController : new
+            activate GameController
+            GameController --> Lobby
+            deactivate GameController
+            Lobby -> ClientInputHandler : foreach ClientInputHandler in the Lobby .update(GameController)
+
+            else There are not enough people in the Lobby to start a game
+            Lobby --> LobbyController : InvalidLobbySizeToStartGameException
+            LobbyController --> ClientInputHandler : InvalidLobbySizeToStartGameException
+            ClientInputHandler -> ClientInputHandler : Add event to logger and\nignore the command from user as it was illegal
+
+            else The game had already started
+            Lobby --> LobbyController : GameAlreadyStartedException
+            LobbyController --> ClientInputHandler : GameAlreadyStartedException
+            ClientInputHandler -> ClientInputHandler : Add event to logger and\nignore the command from user as it was illegal
+            end
+
+        else The user is not an Admin
+        Lobby --> LobbyController : AdminRoleRequiredException
+        deactivate Lobby
+        LobbyController --> ClientInputHandler : AdminRoleRequiredException
+        deactivate LobbyController
+        ClientInputHandler -> ClientInputHandler : Add event to logger and\nignore the command from user as it was illegal
+        end
+
+    else The user is not logged in
+    ClientInputHandler --> ClientInputHandler : LogInRequiredException
+    ClientInputHandler -> ClientInputHandler : Add event to logger and\nignore the command from user as it was illegal
+
+    else The user is not in any Lobby
+    ClientInputHandler --> ClientInputHandler : LobbyRequiredException
+    ClientInputHandler -> ClientInputHandler : Add event to logger and\nignore the command from user as it was illegal
+    end
+    deactivate ClientInputHandler
+
+@enduml

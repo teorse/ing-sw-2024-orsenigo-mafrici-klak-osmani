@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.View.TUI.TerminalColor;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardVisibilityRecord;
 import it.polimi.ingsw.Server.Model.Game.Cards.Corner;
@@ -29,31 +30,36 @@ public class PlacedCardView extends Component {
      */
     @Override
     public void print() {
-        out.println("\nArtifact Type: " + card.cardColor());
+        if (!ClientModel.getInstance().getFancyGraphics()) {
+            out.println("\nArtifact Type: " + card.cardColor());
 
-        // Print the corners of the card and their details
-        out.println("Corners: (Covered corners will be printed in red)");
-        for (CornerDirection cd : card.corners().keySet()) {
-            // Retrieve the corner based on its direction
-            Corner corner = card.corners().get(cd);
+            // Print the corners of the card and their details
+            out.println("Corners: (Covered corners will be printed in red)");
+            for (CornerDirection cd : card.corners().keySet()) {
+                // Retrieve the corner based on its direction
+                Corner corner = card.corners().get(cd);
 
-            // Check if the corner is covered, indicated by red color
-            if (!card.cornerVisibility().get(cd)) {
-                out.print(TerminalColor.RED);
+                // Check if the corner is covered, indicated by red color
+                if (!card.cornerVisibility().get(cd)) {
+                    out.print(TerminalColor.RED);
+                }
+
+                // Display the corner direction and its contents
+                out.print(" - " + cd.name() + ":");
+
+                // Print the artifact or corner type based on the corner's content
+                if (corner.getCornerType() == CornerType.ARTIFACT) {
+                    out.println(" " + corner.getArtifact());
+                } else {
+                    out.println(" " + corner.getCornerType());
+                }
+
+                // Reset the terminal color to avoid affecting other output
+                out.print(TerminalColor.RESET);
             }
-
-            // Display the corner direction and its contents
-            out.print(" - " + cd.name() + ":");
-
-            // Print the artifact or corner type based on the corner's content
-            if (corner.getCornerType() == CornerType.ARTIFACT) {
-                out.println(" " + corner.getArtifact());
-            } else {
-                out.println(" " + corner.getCornerType());
-            }
-
-            // Reset the terminal color to avoid affecting other output
-            out.print(TerminalColor.RESET);
+        }
+        else{
+            new PlacedCardViewPretty(card).print();
         }
     }
 }

@@ -1,0 +1,118 @@
+@startuml
+
+participant Client
+participant ClientConnectorSocket
+participant Socket
+participant ClientHandlerSocket
+participant NewThread
+participant ClientInputHandler
+participant ServerController
+participant ServerModel
+participant LobbyController
+participant Lobby
+
+Client -> ClientConnectorSocket : .send(CSPJoinLobby)
+activate ClientConnectorSocket
+ClientConnectorSocket -> Socket : CSPJoinLobby
+deactivate ClientConnectorSocket
+Socket -> ClientHandlerSocket : CSPJoinLobby
+activate ClientHandlerSocket
+create NewThread
+ClientHandlerSocket -> NewThread : new
+activate NewThread
+deactivate ClientHandlerSocket
+NewThread -> ClientInputHandler : .handleInput(CSPJoinLobby)
+activate ClientInputHandler
+ClientInputHandler -> ClientInputHandler : CSPJoinLobby.execute()
+
+    opt User is already logged in and they are not already in another lobby
+    ClientInputHandler -> ServerController : .joinLobby(lobbyName, user)
+    activate ServerController
+    ServerController -> ServerModel : .joinLobby(lobbyName, user)
+    activate ServerModel
+    ServerModel -> ServerModel : .getLobbyController(lobbyName)
+
+        opt The Lobby exists
+        ServerModel -> LobbyController
+        activate LobbyController
+        LobbyController -> Lobby : joinLobby(user)
+        activate Lobby
+
+            opt The user Can join the Lobby
+            Lobby -> Lobby : adding user to Lobby
+            Lobby --> LobbyController
+            LobbyController --> ServerModel
+            ServerModel --> ServerController : return LobbyController
+            ServerController --> ClientInputHandler : return LobbyController
+            ClientInputHandler --> NewThread
+            NewThread --> ClientHandlerSocket : .sendPacket(SCPJoinLobbySuccessful)
+            activate ClientHandlerSocket
+            ClientHandlerSocket --> Socket : SCPJoinLobbySuccessful
+            deactivate ClientHandlerSocket
+            Socket --> ClientConnectorSocket : SCPJoinLobbySuccessful
+            activate ClientConnectorSocket
+            ClientConnectorSocket --> Client : SCPJoinLobbySuccessful.execute()
+            deactivate ClientConnectorSocket
+
+            else The Lobby is closed
+            Lobby --> LobbyController : LobbyClosedException
+            deactivate Lobby
+            LobbyController --> ServerModel : LobbyClosedException
+            deactivate LobbyController
+            ServerModel --> ServerController : LobbyClosedException
+            ServerController --> ClientInputHandler : LobbyClosedException
+            ClientInputHandler --> NewThread
+            NewThread --> ClientHandlerSocket : .sendPacket(SCPJoinLobbyFailed)
+            activate ClientHandlerSocket
+            ClientHandlerSocket --> Socket : SCPJoinLobbyFailed
+            deactivate ClientHandlerSocket
+            Socket --> ClientConnectorSocket : SCPJoinLobbyFailed
+            activate ClientConnectorSocket
+            ClientConnectorSocket --> Client : SCPJoinLobbyFailed.execute()
+            deactivate ClientConnectorSocket
+            end
+
+        else The Lobby does not exist
+        ServerModel --> ServerController : LobbyNotFoundException
+        deactivate ServerModel
+        ServerController --> ClientInputHandler : LobbyNotFoundException
+        deactivate ServerController
+        ClientInputHandler --> NewThread
+        NewThread --> ClientHandlerSocket : .sendPacket(SCPJoinLobbyFailed)
+        activate ClientHandlerSocket
+        ClientHandlerSocket --> Socket : SCPJoinLobbyFailed
+        deactivate ClientHandlerSocket
+        Socket --> ClientConnectorSocket : SCPJoinLobbyFailed
+        activate ClientConnectorSocket
+        ClientConnectorSocket --> Client : SCPJoinLobbyFailed.execute()
+        deactivate ClientConnectorSocket
+        end
+
+    else The Client has yet to Log in
+    ClientInputHandler --> ClientInputHandler : LogInRequiredException
+    ClientInputHandler --> NewThread
+    NewThread --> ClientHandlerSocket : .sendPacket(SCPJoinLobbyFailed)
+    activate ClientHandlerSocket
+    ClientHandlerSocket --> Socket : SCPJoinLobbyFailed
+    deactivate ClientHandlerSocket
+    Socket --> ClientConnectorSocket : SCPJoinLobbyFailed
+    activate ClientConnectorSocket
+    ClientConnectorSocket --> Client : SCPJoinLobbyFailed.execute()
+    deactivate ClientConnectorSocket
+
+    else The Client is already in a Lobby
+    ClientInputHandler --> ClientInputHandler : MultipleLobbiesException
+    ClientInputHandler --> NewThread
+    deactivate ClientInputHandler
+    NewThread --> ClientHandlerSocket : .sendPacket(SCPJoinLobbyFailed)
+    destroy NewThread
+    activate ClientHandlerSocket
+    ClientHandlerSocket --> Socket : SCPJoinLobbyFailed
+    deactivate ClientHandlerSocket
+    Socket --> ClientConnectorSocket : SCPJoinLobbyFailed
+    activate ClientConnectorSocket
+    ClientConnectorSocket --> Client : SCPJoinLobbyFailed.execute()
+    deactivate ClientConnectorSocket
+    end
+
+@enduml
