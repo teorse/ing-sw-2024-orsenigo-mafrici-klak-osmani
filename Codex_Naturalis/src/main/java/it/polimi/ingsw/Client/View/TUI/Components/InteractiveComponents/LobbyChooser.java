@@ -36,6 +36,7 @@ public class LobbyChooser extends InteractiveComponent{
      */
     @Override
     public InteractiveComponentReturns handleInput(String input) {
+        wrongBinaryChoice = false;
         int inputCounter = getInputCounter();
 
         // Handle initial input for choosing lobby creation or joining
