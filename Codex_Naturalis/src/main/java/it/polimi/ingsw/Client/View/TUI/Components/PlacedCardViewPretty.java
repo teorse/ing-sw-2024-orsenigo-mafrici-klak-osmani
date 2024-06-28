@@ -10,13 +10,14 @@ import it.polimi.ingsw.Server.Model.Game.Cards.CornerType;
 public class PlacedCardViewPretty extends CardViewPretty{
     private final CardVisibilityRecord cardVisibility;
 
-    public PlacedCardViewPretty(CardVisibilityRecord card, boolean printFront, boolean printRear) {
-        super(card.card(), printFront, printRear);
+    public PlacedCardViewPretty(CardVisibilityRecord card) {
+        super(card.card(), true, true);
         this.cardVisibility = card;
     }
 
 
     //true = right, false = left
+    @Override
     protected String renderSide(boolean leftSide, int row, boolean faceUp) {
         Corner corner;
         if (leftSide) {
@@ -174,5 +175,18 @@ public class PlacedCardViewPretty extends CardViewPretty{
             }
         }
         return "";
+    }
+
+    @Override
+    public void print() {
+        StringBuilder cardToPrint = new StringBuilder();
+
+        System.out.println();
+        for(int i = 0; i < 7; i++){
+            cardToPrint.append(renderSide(true, i, cardVisibility.faceUp())).append(renderCenter(i, cardVisibility.faceUp())).append(renderSide(false, i, cardVisibility.faceUp()))
+                    .append("\n");
+        }
+
+        System.out.println(cardToPrint);
     }
 }
