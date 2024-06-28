@@ -26,15 +26,13 @@ import java.util.logging.Logger;
  * The class extends InteractiveComponent and integrates with the client model's Chat instance
  * to facilitate chat operations. It observes changes in the chat state using RefreshManager
  * and interacts with the client connector to send chat messages to the server.
- * </p>
- * <p>
+ * </p><br>
  * The chat messaging flow includes:
  * <ul>
  * <li>Choosing between public and private chat.</li>
  * <li>Selecting recipients for private messages.</li>
  * <li>Sending messages and handling errors such as empty messages or invalid inputs.</li>
  * </ul>
- * </p>
  * <p>
  * Debug logging is used to track the state of the chat and ensure proper functionality
  * during conversation handling.
