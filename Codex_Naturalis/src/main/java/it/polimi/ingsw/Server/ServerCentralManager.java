@@ -37,8 +37,6 @@ public class ServerCentralManager {
         logger.info("Server Manager started");
         logger.info("Initializing Server");
 
-        //todo add configuration files to read from
-
         running = false;
 
         logger.fine("Creating Server Model");
@@ -80,7 +78,6 @@ public class ServerCentralManager {
      * Stops the server.
      */
     public void stopServer(){
-        //todo
     }
 
 

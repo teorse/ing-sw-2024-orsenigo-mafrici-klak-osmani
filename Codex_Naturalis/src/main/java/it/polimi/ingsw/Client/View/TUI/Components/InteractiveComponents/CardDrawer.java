@@ -13,7 +13,6 @@ import it.polimi.ingsw.Server.Model.Game.Table.CardPoolTypes;
 import java.util.Map;
 import java.util.logging.Logger;
 
-//todo review code
 /**
  * The CardDrawer class represents an interactive component in a text-based user interface (TUI)
  * that allows the user to choose and draw cards from either the RESOURCE or GOLDEN card pools.

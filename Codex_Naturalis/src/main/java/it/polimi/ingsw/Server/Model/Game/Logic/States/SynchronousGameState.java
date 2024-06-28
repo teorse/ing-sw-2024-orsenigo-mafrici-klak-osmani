@@ -103,7 +103,6 @@ public abstract class SynchronousGameState extends GameState {
         currentPlayerIndex = playerSwitcher.firstPlayerIndex();
 
         if(currentPlayerIndex == -1){
-            //todo add exception
             game.gameOver();
         }
         else {

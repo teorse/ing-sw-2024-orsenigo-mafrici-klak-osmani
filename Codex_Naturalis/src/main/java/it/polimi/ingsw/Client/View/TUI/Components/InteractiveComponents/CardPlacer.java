@@ -5,7 +5,6 @@ import it.polimi.ingsw.Client.View.TUI.ViewStates.ViewState;
 import it.polimi.ingsw.Client.View.InputValidator;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.Packets.CSPPlayCard;
 
-//todo review the code
 /**
  * This class represents an interactive component responsible for handling the process
  * of placing a card onto the board in the game's client-side user interface (TUI).

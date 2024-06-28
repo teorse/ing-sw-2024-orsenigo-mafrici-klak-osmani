@@ -110,7 +110,6 @@ public class LobbyCreator extends  InteractiveComponent {
      * the input counter based on the state of nameAlreadyTaken. It invokes the superclass print method
      * to print any inherited messages.
      */
-    //TODO move the update of the boolean in the handle input
     @Override
     public void print() {
         super.print();

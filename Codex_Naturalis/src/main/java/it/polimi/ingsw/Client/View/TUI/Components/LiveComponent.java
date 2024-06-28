@@ -12,7 +12,6 @@ public abstract class LiveComponent extends Component {
      * Constructs a new LiveComponent and initializes the output stream.
      */
     public LiveComponent() {
-        //todo remove duplicate attribute view from subclasses
         super();
     }
 

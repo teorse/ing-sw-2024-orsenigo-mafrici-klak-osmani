@@ -10,7 +10,6 @@ import it.polimi.ingsw.Client.View.InputValidator;
  * the CardMap, CardsHeld, or CardPool. It manages input validation, interaction with subcomponents,
  * and provides navigation options for returning to the previous menu.
  */
-//todo further review zoomer class
 public class Zoomer extends InteractiveComponent {
     //ATTRIBUTES
     private int choice;
@@ -89,7 +88,6 @@ public class Zoomer extends InteractiveComponent {
         }
 
         // This code should not be reached; log an error if it does
-        // todo add logger, program should not reach this code
         return InteractiveComponentReturns.INCOMPLETE;
     }
 

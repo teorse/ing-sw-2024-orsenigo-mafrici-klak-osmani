@@ -92,15 +92,12 @@ public class DrawInitialCards extends SynchronousGameState {
         //Throws exception if the player can't perform this move.
         PlayerStates playerState = player.getPlayerState();
         if(playerState != PlayerStates.DRAW)
-            //todo implement exception
             throw new RuntimeException("You can't perform this move in your current state.");
 
         if(goldenCardsDrawn.get(player) == GameConstants.goldenCardsToDrawSetup && cardPoolType == CardPoolTypes.GOLDEN){
-            //todo implement exception
             throw new RuntimeException("Player State DRAW_GOLDEN but player wants to draw something else");
         }
         if(resourceCardsDrawn.get(player) == GameConstants.resourceCardsToDrawSetup  && cardPoolType == CardPoolTypes.RESOURCE)
-            //todo implement exception
             throw new RuntimeException("Player State DRAW_RESOURCE but player wants to draw something else");
 
 

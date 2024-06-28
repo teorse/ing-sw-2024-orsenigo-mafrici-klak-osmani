@@ -99,7 +99,6 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
 
         try {
             if (this.username != null) {
-                // todo
                 throw new MultipleLoginViolationException(connection, "placeholder", username, "");
             }
             this.username = serverController.login(connection, username, password);
@@ -136,7 +135,6 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
 
         try {
             if (this.username != null) {
-                // todo
                 throw new MultipleLoginViolationException(connection, "placeholder", username, "");
             }
 
@@ -379,7 +377,6 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
             logger.warning("LobbyRequiredException\nStacktrace:\n"+stackTraceString);
         }
         catch (UnavailableLobbyUserColorException e){
-            //todo add change color failed message
             String stackTraceString = Utilities.StackTraceToString(e);
             logger.warning("UnavailableLobbyUserColorException\nStacktrace:\n"+stackTraceString);
         }
@@ -444,7 +441,6 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
             gameController.playCard(username, cardIndex, coordinateIndex, faceUp);
         }
         catch (MissingRequirementException | GameException | InvalidGameInputException e){
-            //todo
             //connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
         }
     }
@@ -471,7 +467,6 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
             gameController.drawCard(username, cardPoolType, cardIndex);
         }
         catch (MissingRequirementException | GameException e){
-            //todo
             //connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
         }
     }
@@ -495,7 +490,6 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
             gameController.pickPlayerObjective(username, objectiveIndex);
         }
         catch (MissingRequirementException | GameException e){
-            //todo
             //connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
         }
     }

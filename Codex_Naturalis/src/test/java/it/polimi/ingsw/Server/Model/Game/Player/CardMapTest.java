@@ -578,7 +578,6 @@ public class CardMapTest {
             //                              +--------------+
         }
 
-        //todo remove reflections from test
         public class UpdateAvailablePlacementsTest{
             private List<CardMap> scenarios = new ArrayList<>();
             private List<List<Coordinates>> expectedAvailablePlacements = new ArrayList<>();

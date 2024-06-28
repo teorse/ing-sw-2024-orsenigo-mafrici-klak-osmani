@@ -14,8 +14,6 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.Packets.SCPUpdateSecre
 import java.util.*;
 import java.util.logging.Logger;
 
-//todo fix javadoc
-
 /**
  * Represents the setup state where players select their secret objectives.
  * This state is the second setup state in the game and precedes the main game loop.

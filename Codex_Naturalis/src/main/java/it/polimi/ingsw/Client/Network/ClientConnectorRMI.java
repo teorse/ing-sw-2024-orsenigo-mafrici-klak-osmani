@@ -108,7 +108,6 @@ public class ClientConnectorRMI implements ClientConnector, ClientRemoteInterfac
         }
 
         catch (RemoteException | NotBoundException e) {
-            //todo add better exception handling
             throw new RuntimeException(e);
         }
     }

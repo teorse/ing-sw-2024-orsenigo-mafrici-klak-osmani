@@ -20,10 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-//todo fix javadoc
 /**
- * Represents the main loop state in the game, where players take turns to place cards and draw new cards.<br>
- * This state implements the GameState interface and defines methods to handle actions during the main gameplay loop.
+ * The MainLoop class represents the main game loop state in a synchronous game.
+ * This class extends SynchronousGameState and handles the main logic for the game
+ * during its active state.
  */
 public class MainLoop extends SynchronousGameState {
     //ATTRIBUTES

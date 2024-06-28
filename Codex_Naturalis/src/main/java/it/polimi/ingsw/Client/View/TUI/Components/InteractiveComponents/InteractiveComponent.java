@@ -63,7 +63,6 @@ public abstract class InteractiveComponent extends LiveComponent {
                 return InteractiveComponentReturns.QUIT;
             }
         }
-        // todo add logger because code should not reach this
         return InteractiveComponentReturns.INCOMPLETE;
     }
 

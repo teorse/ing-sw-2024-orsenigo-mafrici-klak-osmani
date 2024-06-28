@@ -93,8 +93,6 @@ public class CardMapZoom extends InteractiveComponent{
                 incrementInputCounter();
                 // Print current state
                 print();
-            } else {
-                // todo: Print error message for index out of bounds
             }
             return InteractiveComponentReturns.INCOMPLETE;
         } else if (inputCounter == 1) {

@@ -187,7 +187,6 @@ public class Lobby implements ServerModelLayer {
             if (lobbyUsers.containsKey(serverUser.getUsername())){
                 LobbyUser lobbyUser = lobbyUsers.get(serverUser.getUsername());
                 reconnect(lobbyUser, ch);
-                //todo
                 return;
             }
         }
@@ -500,7 +499,6 @@ public class Lobby implements ServerModelLayer {
 
 
 
-//todo fix bug not updating game started in previews
     //LOBBY METHODS
     /**
      * Starts the game in the lobby.

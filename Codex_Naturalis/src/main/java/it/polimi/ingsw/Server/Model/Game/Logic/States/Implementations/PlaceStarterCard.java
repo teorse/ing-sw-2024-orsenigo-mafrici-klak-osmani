@@ -12,8 +12,6 @@ import it.polimi.ingsw.Exceptions.Game.MoveAttemptOnWaitStateException;
 import java.util.Map;
 import java.util.logging.Logger;
 
-//todo fix javadoc
-
 /**
  * Represents the initial setup state in the game, where players receive their starting cards and choose their colors.<br>
  * This state implements the GameState interface and handles starter card distribution and placement, initial card draws and player color selection.

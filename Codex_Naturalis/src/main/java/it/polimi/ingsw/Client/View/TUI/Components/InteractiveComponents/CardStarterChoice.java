@@ -36,7 +36,6 @@ public class CardStarterChoice extends InteractiveComponent {
         refreshObserved();
     }
 
-    //TODO doesn't update properly when choosing front or back
 
     /**
      * Handles user input for playing a card on either the front or back side of the game.
