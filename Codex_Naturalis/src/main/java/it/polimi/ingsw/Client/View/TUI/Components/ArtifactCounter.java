@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.View.TUI.Components;
 
 import it.polimi.ingsw.Client.Model.CardMaps;
+import it.polimi.ingsw.Client.Model.ClientModel;
 import it.polimi.ingsw.Client.Model.MyPlayer;
 import it.polimi.ingsw.Client.Model.RefreshManager;
 import it.polimi.ingsw.Server.Model.Game.Artifacts;
@@ -46,9 +47,16 @@ public class ArtifactCounter extends LiveComponent {
     public void print() {
         CardMaps map = CardMaps.getInstance();
         Map<Artifacts, Integer> artifactsCounter = map.getCardMaps().get(MyPlayer.getInstance().getUsername()).artifactsCounter();
-        System.out.println("ARTIFACT COUNTER:");
-        for (Artifacts artifacts : artifactsCounter.keySet()) {
-            System.out.println(artifacts.name() + ": " + artifactsCounter.get(artifacts));
+        System.out.println("\nARTIFACT COUNTER:");
+        if (!ClientModel.getInstance().getFancyGraphics()) {
+            for (Artifacts artifacts : artifactsCounter.keySet()) {
+                System.out.println(artifacts.name() + ": " + artifactsCounter.get(artifacts));
+            }
+        } else {
+            for (Artifacts artifacts : artifactsCounter.keySet()) {
+                System.out.println(artifacts.getUnicodeIcon() + ": " + artifactsCounter.get(artifacts));
+            }
         }
+            System.out.println();
     }
 }

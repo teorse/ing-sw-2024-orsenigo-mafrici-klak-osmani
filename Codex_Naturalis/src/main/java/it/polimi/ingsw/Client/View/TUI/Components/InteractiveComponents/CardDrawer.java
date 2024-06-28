@@ -215,11 +215,11 @@ public class CardDrawer extends InteractiveComponent{
     @Override
     public void print() {
 
-        if(!isResourceOver && !isGoldenOver) {
+        if(!isResourceOver && !isGoldenOver && cardPoolChoice != CardPoolTypes.RESOURCE && cardPoolChoice != CardPoolTypes.GOLDEN) {
             new CardPoolView(CardPoolTypes.RESOURCE).print();
             new CardPoolView(CardPoolTypes.GOLDEN).print();
         }
-        else if(isGoldenOver) {
+        else if(isGoldenOver || cardPoolChoice == CardPoolTypes.RESOURCE) {
             new CardPoolView(CardPoolTypes.RESOURCE).print();
         }
         else {
