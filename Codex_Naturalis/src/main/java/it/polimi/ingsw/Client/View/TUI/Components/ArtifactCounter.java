@@ -50,11 +50,11 @@ public class ArtifactCounter extends LiveComponent {
         System.out.println("\nARTIFACT COUNTER:");
         if (!ClientModel.getInstance().getFancyGraphics()) {
             for (Artifacts artifacts : artifactsCounter.keySet()) {
-                System.out.println(artifacts.name() + ": " + artifactsCounter.get(artifacts));
+                System.out.println(artifacts.getName() + ": " + artifactsCounter.get(artifacts));
             }
         } else {
             for (Artifacts artifacts : artifactsCounter.keySet()) {
-                System.out.println(artifacts.getUnicodeIcon() + ": " + artifactsCounter.get(artifacts));
+                System.out.println(artifacts.getName() + " " + artifacts.getUnicodeIcon() + ": " + artifactsCounter.get(artifacts));
             }
         }
             System.out.println();

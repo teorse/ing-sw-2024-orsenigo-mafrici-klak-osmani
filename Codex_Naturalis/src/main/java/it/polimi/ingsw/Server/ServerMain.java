@@ -61,7 +61,7 @@ public class ServerMain {
         String command;
 
         while (true) {
-            System.out.println("Enter command (start, stop, status, exit): ");
+            System.out.println("Enter command (start, status, exit): ");
             command = scanner.nextLine();
 
             switch (command.toLowerCase()) {
