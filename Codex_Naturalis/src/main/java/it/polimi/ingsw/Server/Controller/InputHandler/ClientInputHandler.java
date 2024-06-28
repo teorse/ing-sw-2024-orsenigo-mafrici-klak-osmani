@@ -3,6 +3,7 @@ package it.polimi.ingsw.Server.Controller.InputHandler;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.ChatMessageRecord;
 import it.polimi.ingsw.CommunicationProtocol.ClientServer.ClientServerMessageExecutor;
 import it.polimi.ingsw.Exceptions.Game.GameException;
+import it.polimi.ingsw.Exceptions.Game.Model.InvalidGameInputException;
 import it.polimi.ingsw.Exceptions.Game.Model.Player.CoordinateIndexOutOfBounds;
 import it.polimi.ingsw.Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.GameRequiredException;
 import it.polimi.ingsw.Exceptions.Server.InputHandlerExceptions.MissingRequirementExceptions.LobbyRequiredException;
@@ -301,6 +302,9 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
     public void startGame() {
         logger.info("Start Game message received");
         try {
+            if(username == null ||username.isEmpty())
+                throw new LogInRequiredException("You need to be logged in to perform this action");
+
             if (lobbyController != null) {
                 lobbyController.startGame(username);
             } else {
@@ -308,18 +312,22 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
             }
         }
         catch (LobbyRequiredException e){
-            //todo
             String stackTraceString = Utilities.StackTraceToString(e);
             logger.warning("LobbyRequiredException\nStacktrace:\n"+stackTraceString);
         }
         catch (AdminRoleRequiredException e) {
-            //todo
             String stackTraceString = Utilities.StackTraceToString(e);
             logger.warning("AdminRoleRequiredException, "+username+" attempted to start a game while not admin\nStacktrace:\n"+stackTraceString);
         }
         catch (InvalidLobbySizeToStartGameException e){
             String stackTraceString = Utilities.StackTraceToString(e);
             logger.warning("InvalidLobbySizeToStartGameException\nStacktrace:\n"+stackTraceString);
+        } catch (GameAlreadyStartedException e) {
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("GameAlreadyStartedException\nStacktrace:\n"+stackTraceString);
+        } catch (LogInRequiredException e) {
+            String stackTraceString = Utilities.StackTraceToString(e);
+            logger.warning("LogInRequiredException\nStacktrace:\n"+stackTraceString);
         }
     }
 
@@ -347,8 +355,6 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
             String stackTraceString = Utilities.StackTraceToString(e);
             logger.warning("LobbyRequiredException, User is trying to quit lobby but he is not in any lobby." +
                     "\nStacktrace:\n"+stackTraceString);
-            //todo
-            //connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
         }
     }
 
@@ -437,7 +443,7 @@ public class ClientInputHandler implements ClientServerMessageExecutor, InputHan
 
             gameController.playCard(username, cardIndex, coordinateIndex, faceUp);
         }
-        catch (MissingRequirementException | GameException | CoordinateIndexOutOfBounds e){
+        catch (MissingRequirementException | GameException | InvalidGameInputException e){
             //todo
             //connection.sendPacket(new SCPPrintPlaceholder(e.getMessage()));
         }

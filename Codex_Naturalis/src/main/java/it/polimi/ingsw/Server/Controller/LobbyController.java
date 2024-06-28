@@ -96,7 +96,7 @@ public class LobbyController {
      * @throws AdminRoleRequiredException           If the user does not have admin privileges to start the game.
      * @throws InvalidLobbySizeToStartGameException If the lobby size is insufficient to start the game.
      */
-    public void startGame(String username) throws AdminRoleRequiredException, InvalidLobbySizeToStartGameException {
+    public void startGame(String username) throws AdminRoleRequiredException, InvalidLobbySizeToStartGameException, GameAlreadyStartedException {
         model.startGameManually(username);
     }
 

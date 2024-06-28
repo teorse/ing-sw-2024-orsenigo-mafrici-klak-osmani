@@ -505,13 +505,16 @@ public class Lobby implements ServerModelLayer {
     /**
      * Starts the game in the lobby.
      */
-    public void startGameManually(String username) throws AdminRoleRequiredException, InvalidLobbySizeToStartGameException {
+    public void startGameManually(String username) throws AdminRoleRequiredException, InvalidLobbySizeToStartGameException, GameAlreadyStartedException {
 
         if(!lobbyUsers.get(username).getLobbyRole().equals(LobbyRoles.ADMIN))
             throw new AdminRoleRequiredException("You need to be an admin to start the game in this lobby");
 
         if(lobbyUsers.size() < 2)
             throw new InvalidLobbySizeToStartGameException("You need at least two players in your lobby to start a game.");
+
+        if(game != null)
+            throw new GameAlreadyStartedException("The game has already started in this lobby");
 
         logger.info("Game started manually in lobby: "+lobbyName);
         if(startGameTimer != null) {

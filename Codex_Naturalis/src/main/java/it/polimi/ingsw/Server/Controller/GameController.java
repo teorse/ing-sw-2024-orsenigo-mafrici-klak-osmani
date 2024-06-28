@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Server.Controller;
 
+import it.polimi.ingsw.Exceptions.Game.Model.InvalidGameInputException;
 import it.polimi.ingsw.Exceptions.Game.Model.Player.CoordinateIndexOutOfBounds;
 import it.polimi.ingsw.Server.Model.Game.Table.CardPoolTypes;
 import it.polimi.ingsw.Server.Model.Game.Logic.Game;
@@ -45,7 +46,7 @@ public class GameController {
      * @throws InvalidActionForGameStateException      If the action is invalid for the current state of the game.
      * @throws CoordinateIndexOutOfBounds              If the coordinate index is out of bounds.
      */
-    public void playCard(String username, int cardIndex, int coordinateIndex, boolean faceUp) throws NotYourTurnException, MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException, CoordinateIndexOutOfBounds {
+    public void playCard(String username, int cardIndex, int coordinateIndex, boolean faceUp) throws NotYourTurnException, MoveAttemptOnWaitStateException, InvalidActionForPlayerStateException, InvalidActionForGameStateException, InvalidGameInputException {
         model.playCard(username, cardIndex, coordinateIndex, faceUp);
     }
 

@@ -4,6 +4,7 @@ import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.Ca
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.CardRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.PlayerRecord;
 import it.polimi.ingsw.CommunicationProtocol.ServerClient.DataTransferObjects.PlayerSecretInfoRecord;
+import it.polimi.ingsw.Exceptions.Game.Model.InvalidGameInputException;
 import it.polimi.ingsw.Exceptions.Game.Model.Player.CoordinateIndexOutOfBounds;
 import it.polimi.ingsw.Server.Model.Game.Cards.Card;
 import it.polimi.ingsw.Server.Model.Game.Objectives.Objective;
@@ -184,15 +185,14 @@ public class Player implements LayerUser {
      * @param coordinateIndex
      * @param faceUp
      */
-    public void playCard(int cardIndex, int coordinateIndex, boolean faceUp) throws CoordinateIndexOutOfBounds {
+    public void playCard(int cardIndex, int coordinateIndex, boolean faceUp) throws InvalidGameInputException {
         Card playedCard;
 
         try {
-            playedCard = cardsHeld.remove(cardIndex);
+            playedCard = cardsHeld.get(cardIndex);
         }
         catch (IndexOutOfBoundsException i){
-            //todo add better exception handling
-            throw new RuntimeException("Index provided is not a valid index");
+            throw new InvalidGameInputException();
         }
 
 
@@ -201,11 +201,12 @@ public class Player implements LayerUser {
         //If the card can't be played faceUp but the player provided faceUp = true, throws an exception
         //Otherwise the card is played as expected.
         if(!cardCanBeFaceUp && faceUp)
-            //todo add better exception handling
-            throw new RuntimeException("You can't play this card faceUp!");
+            throw new InvalidGameInputException();
 
         //Updates player's points after playing the card.
         points = points + cardMap.place(playedCard ,coordinateIndex,faceUp);
+
+        cardsHeld.remove(cardIndex);
 
         //Updates the playable sides of the remaining cards held after placing the card in the card map.
         updatePlayableSides();

@@ -95,7 +95,6 @@ public class ClientHandlerSocket implements ClientHandler {
                 }
             }
         }
-        //todo implement more "graceful" disconnection protocol
         catch(IOException e){
             System.out.println("Lost connection to client: "+socket);
             String stackTraceString = Utilities.StackTraceToString(e);
