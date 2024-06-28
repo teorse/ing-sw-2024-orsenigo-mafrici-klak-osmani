@@ -1,0 +1,170 @@
+@startuml
+
+participant Client
+participant ClientConnectorSocket
+participant Socket
+participant ClientHandlerSocket
+participant NewThread
+participant ClientInputHandler
+participant GameController
+participant ObserverRelay
+participant Lobby
+participant Game
+
+Client -> ClientConnectorSocket : .send(CSPDrawCard)
+activate ClientConnectorSocket
+ClientConnectorSocket -> Socket : CSPDrawCard
+deactivate ClientConnectorSocket
+Socket -> ClientHandlerSocket : CSPDrawCard
+activate ClientHandlerSocket
+create NewThread
+ClientHandlerSocket -> NewThread : new
+activate NewThread
+deactivate ClientHandlerSocket
+NewThread -> ClientInputHandler : .handleInput(CSPDrawCard)
+deactivate NewThread
+activate ClientInputHandler
+ClientInputHandler -> ClientInputHandler : CSPDrawCard.execute()
+
+    opt User is Logged In
+
+        opt User is in a Lobby
+
+            opt The Game has started in the lobby
+            ClientInputHandler -> GameController : drawCard()
+            activate GameController
+            GameController -> Game : drawCard()
+            activate Game
+
+                opt It is the user's turn
+
+                    opt The user is in the state of Draw Card
+                    Game -> Game : drawCard()
+
+                        opt The user provided a valid input
+                        Game -> ObserverRelay : foreach player .update(SCPUpdateTable)
+                        activate ObserverRelay
+                        ObserverRelay -> ClientHandlerSocket : .send(SCPUpdateTable)
+                        activate ClientHandlerSocket
+                        ClientHandlerSocket -> Socket : SCPUpdateTable
+                        Socket -> ClientConnectorSocket : SCPUpdateTable
+                        activate ClientConnectorSocket
+                        ClientConnectorSocket -> Client : SCPUpdateTable.execute()
+                        deactivate ClientConnectorSocket
+                        ClientHandlerSocket --> ObserverRelay
+                        deactivate ClientHandlerSocket
+                        ObserverRelay --> Game
+                        deactivate ObserverRelay
+
+                        Game -> ObserverRelay : for current player .update(SCPUpdateSecret)
+                        activate ObserverRelay
+                        ObserverRelay -> ClientHandlerSocket : .send(SCPUpdateSecret)
+                        activate ClientHandlerSocket
+                        ClientHandlerSocket -> Socket : SCPUpdateSecret
+                        Socket -> ClientConnectorSocket : SCPUpdateSecret
+                        activate ClientConnectorSocket
+                        ClientConnectorSocket -> Client : SCPUpdateSecret.execute()
+                        deactivate ClientConnectorSocket
+                        ClientHandlerSocket --> ObserverRelay
+                        deactivate ClientHandlerSocket
+                        ObserverRelay --> Game
+                        deactivate ObserverRelay
+
+                        Game -> ObserverRelay : for each player .update(SCPUpdateSpecificPlayer)
+                        activate ObserverRelay
+                        ObserverRelay -> ClientHandlerSocket : .send(SCPUpdateSpecificPlayer)
+                        activate ClientHandlerSocket
+                        ClientHandlerSocket -> Socket : SCPUpdateSpecificPlayer
+                        Socket -> ClientConnectorSocket : SCPUpdateSpecificPlayer
+                        activate ClientConnectorSocket
+                        ClientConnectorSocket -> Client : SCPUpdateSpecificPlayer.execute()
+                        deactivate ClientConnectorSocket
+                        ClientHandlerSocket --> ObserverRelay
+                        deactivate ClientHandlerSocket
+                        ObserverRelay --> Game
+                        deactivate ObserverRelay
+
+                        Game -> ObserverRelay : for current player .update(SCPUpdateClientGameState(WAIT))
+                        activate ObserverRelay
+                        ObserverRelay -> ClientHandlerSocket : .send(SCPUpdateClientGameState(WAIT))
+                        activate ClientHandlerSocket
+                        ClientHandlerSocket -> Socket : SCPUpdateClientGameState(WAIT)
+                        Socket -> ClientConnectorSocket : SCPUpdateClientGameState(WAIT)
+                        activate ClientConnectorSocket
+                        ClientConnectorSocket -> Client : SCPUpdateClientGameState(WAIT).execute()
+                        deactivate ClientConnectorSocket
+                        ClientHandlerSocket --> ObserverRelay
+                        deactivate ClientHandlerSocket
+                        ObserverRelay --> Game
+                        deactivate ObserverRelay
+
+                        else The user provided an invalid input
+                        Game -> Game : InvalidGameInputException
+                        Game --> GameController : InvalidGameInputException
+                        GameController --> ClientInputHandler : InvalidGameInputException
+                        activate ClientInputHandler
+                        ClientInputHandler -> ClientInputHandler : Add event to logger and\nignore the command from user as it was illegal
+                        ClientInputHandler --> NewThread
+                        deactivate ClientInputHandler
+                        activate NewThread
+                        NewThread --> ClientHandlerSocket
+                        deactivate NewThread
+                        end
+
+                    else The user is not in the state to draw cards
+                    Game -> Game : InvalidActionForPlayerStateException
+                    Game --> GameController : InvalidActionForPlayerStateException
+                    GameController --> ClientInputHandler : InvalidActionForPlayerStateException
+                    activate ClientInputHandler
+                    ClientInputHandler -> ClientInputHandler : Add event to logger and\nignore the command from user as it was illegal
+                    ClientInputHandler --> NewThread
+                    deactivate ClientInputHandler
+                    activate NewThread
+                    NewThread --> ClientHandlerSocket
+                    deactivate NewThread
+                    end
+
+                else It's not the user's turn
+                Game -> Game : NotYourTurnException
+                Game --> GameController : NotYourTurnException
+                deactivate Game
+                GameController --> ClientInputHandler : NotYourTurnException
+                deactivate GameController
+                activate ClientInputHandler
+                ClientInputHandler -> ClientInputHandler : Add event to logger and\nignore the command from user as it was illegal
+                ClientInputHandler --> NewThread
+                deactivate ClientInputHandler
+                activate NewThread
+                NewThread --> ClientHandlerSocket
+                deactivate NewThread
+                end
+
+            else The Game has not yet Started in the Lobby
+            ClientInputHandler --> ClientInputHandler : GameRequiredException
+            ClientInputHandler -> ClientInputHandler : Add event to logger and\nignore the command from user as it was illegal
+            ClientInputHandler --> NewThread
+            activate NewThread
+            NewThread --> ClientHandlerSocket
+            deactivate NewThread
+            end
+
+        else The user is not in a Lobby
+        ClientInputHandler --> ClientInputHandler : LobbyRequiredException
+        ClientInputHandler -> ClientInputHandler : Add event to logger and\nignore the command from user as it was illegal
+        ClientInputHandler --> NewThread
+        activate NewThread
+        NewThread --> ClientHandlerSocket
+        deactivate NewThread
+        end
+
+    else The user is not logged in
+    ClientInputHandler --> ClientInputHandler : LogInRequiredException
+    ClientInputHandler -> ClientInputHandler : Add event to logger and\nignore the command from user as it was illegal
+    ClientInputHandler --> NewThread
+    deactivate ClientInputHandler
+    activate NewThread
+    NewThread --> ClientHandlerSocket
+    destroy NewThread
+    end
+
+@enduml

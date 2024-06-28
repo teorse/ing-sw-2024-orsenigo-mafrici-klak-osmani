@@ -1,0 +1,67 @@
+@startuml
+
+participant Client
+participant ClientConnectorSocket
+participant Socket
+participant ClientHandlerSocket
+participant ClientInputHandler
+participant ObserverRelay
+participant Lobby
+participant GameStartTimerThread
+participant GameController
+participant Game
+
+
+activate Lobby
+Lobby -> Lobby : Last necessary player joined the lobby
+create GameStartTimerThread
+Lobby -> GameStartTimerThread : start game GameStartTimer
+deactivate Lobby
+activate GameStartTimerThread
+GameStartTimerThread -> GameStartTimerThread : Waiting for time to run out
+GameStartTimerThread -> Lobby : .startGame()
+deactivate GameStartTimerThread
+activate Lobby
+create Game
+Lobby -> Game : new
+deactivate Lobby
+activate Game
+Game -> Game : setup the game
+Game -> ObserverRelay : Broadcast SCPGameStarted
+activate ObserverRelay
+ObserverRelay -> ClientHandlerSocket : .send(SCPGameStarted)
+activate ClientHandlerSocket
+ClientHandlerSocket -> Socket : SCPGameStarted
+ClientHandlerSocket --> ObserverRelay
+deactivate ClientHandlerSocket
+ObserverRelay --> Game
+deactivate ObserverRelay
+Socket -> ClientConnectorSocket : SCPGameStarted
+activate ClientConnectorSocket
+ClientConnectorSocket -> Client : SCPGameStarted.execute()
+deactivate ClientConnectorSocket
+
+Game --> ObserverRelay : foreach player .update(SCPUpdateClientGameState)
+activate ObserverRelay
+ObserverRelay -> ClientHandlerSocket : .send(SCPUpdateClientGameState)
+activate ClientHandlerSocket
+ClientHandlerSocket -> Socket : SCPUpdateClientGameState
+ClientHandlerSocket --> ObserverRelay
+deactivate ClientHandlerSocket
+ObserverRelay --> Game
+deactivate ObserverRelay
+Socket -> ClientConnectorSocket : SCPUpdateClientGameState
+activate ClientConnectorSocket
+ClientConnectorSocket -> Client : SCPUpdateClientGameState.execute()
+deactivate ClientConnectorSocket
+Game --> Lobby
+deactivate Game
+activate Lobby
+create GameController
+Lobby -> GameController : new
+activate GameController
+GameController --> Lobby
+Lobby -> ClientInputHandler : foreach ClientInputHandler in the Lobby .update(GameController)
+deactivate Lobby
+
+@enduml
