@@ -1,8 +1,8 @@
 # Codex Naturalis
-![alt text](Codex_Naturalis/doc/CodexNaturalisLogo.png)
+![alt text](Codex_Naturalis/deliverables/CodexNaturalisLogo.png)
 
 ## Final Project for "Software Engineering" at PoliMi 23/24
-[📖 Rules](Codex_Naturalis/doc/Rules/CODEX_Rulebook_EN.pdf)
+[📖 Rules](Codex_Naturalis/deliverables/Rules/CODEX_Rulebook_EN.pdf)
 
 [📝 License](Codex_Naturalis/LICENSE)
 
