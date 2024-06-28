@@ -27,7 +27,7 @@
     > java -jar codex-naturalis-server.jar
     ```
   This command can be followed by this argument:
-    - The desired IP adress for the Server (useful when the are connection problems between Server and Client);
+    - The desired IP address for the Server (useful when the are connection problems between Server and Client);
 
 - The Client can be run with the following command:
     ```shell
